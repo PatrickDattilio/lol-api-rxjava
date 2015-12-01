@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.squareup.retrofit:converter-gson:2.+'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.+'
+	compile 'io.reactivex:rxandroid:1.+'
+    testCompile 'junit:junit:4.+'
+}
+
+task showCache << {
+	configurations.compile.each { println it }
+}
