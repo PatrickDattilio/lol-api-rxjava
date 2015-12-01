@@ -7,8 +7,11 @@ import org.dc.riot.lol.rx.model.ChampionListDto;
 import org.dc.riot.lol.rx.model.LeagueDto;
 import org.dc.riot.lol.rx.model.LeagueEntryDto;
 import org.dc.riot.lol.rx.model.MasteryPagesDto;
+import org.dc.riot.lol.rx.model.PlayerStatsSummaryListDto;
+import org.dc.riot.lol.rx.model.RankedStatsDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.RunePagesDto;
+import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.model.SummonerDto;
 
 import rx.Observable;
@@ -58,7 +61,7 @@ public interface RiotApi {
 //                throw new UnhandledReponseCodeException("Unhandled response code: " + code);
 //        }
 //    }
-
+	
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
      */
@@ -77,7 +80,7 @@ public interface RiotApi {
          * @return {@link ChampionListDto} same as <code>getChampions(false)</code>
          * @throws IOException
          */
-        ChampionListDto getChampions(Region region) throws IOException;
+        ChampionListDto getChampions(Region region);
 
         /**
          * /api/lol/{region}/v1.2/champion<br/>
@@ -93,7 +96,7 @@ public interface RiotApi {
          * @return {@link ChampionListDto}
          * @throws IOException
          */
-//        RiotApiResponse<ChampionListDto> getChampions(Region region, boolean freeToPlay) throws IOException;
+//        RiotApiResponse<ChampionListDto> getChampions(Region region, boolean freeToPlay);
 
         /**
          * /api/lol/{region}/v1.2/champion/{id}<br/>
@@ -109,7 +112,7 @@ public interface RiotApi {
          * @return {@link ChampionDto} single champion dto
          * @throws IOException
          */
-//        RiotApiResponse<ChampionDto> getChampion(Region region, long championId) throws IOException;
+//        RiotApiResponse<ChampionDto> getChampion(Region region, long championId);
     }
 
     /**
@@ -128,7 +131,7 @@ public interface RiotApi {
          * @return {@link CurrentGameInfo} object
          * @throws IOException
          */
-//        RiotApiResponse<CurrentGameInfo> getSpectatorInfo(Region region, long summonerId) throws IOException;
+//        RiotApiResponse<CurrentGameInfo> getSpectatorInfo(Region region, long summonerId);
     }
 
     /**
@@ -146,7 +149,7 @@ public interface RiotApi {
          * queried against or <code>null</code> if some network error occurred
          * @throws IOException
          */
-//        RiotApiResponse<FeaturedGamesDto> getFeaturedGames(Region region) throws IOException;
+//        RiotApiResponse<FeaturedGamesDto> getFeaturedGames(Region region);
     }
 
     /**
@@ -169,7 +172,7 @@ public interface RiotApi {
          * @return {@link RecentGamesDto} for the given player or <code>null</code> if no data found
          * @throws IOException
          */
-//        RiotApiResponse<RecentGamesDto> getRecentGames(Region region, long summonerId) throws IOException;
+//        RiotApiResponse<RecentGamesDto> getRecentGames(Region region, long summonerId);
     }
 
     /**
@@ -194,7 +197,7 @@ public interface RiotApi {
          * if nothing found
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, LeagueDto[]>> getBySummonerEntry(Region region, long... summonerIds) throws IOException;
+//        RiotApiResponse<Map<String, LeagueDto[]>> getBySummonerEntry(Region region, long... summonerIds);
 
         /**
          * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br/>
@@ -212,7 +215,7 @@ public interface RiotApi {
          * if nothing found
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, LeagueDto[]>> getBySummoner(Region region, long... summonerIds) throws IOException;
+//        RiotApiResponse<Map<String, LeagueDto[]>> getBySummoner(Region region, long... summonerIds);
 
         /**
          * /api/lol/{region}/v2.5/league/by-team/{teamIds}<br/>
@@ -230,7 +233,7 @@ public interface RiotApi {
          * if nothing found
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, LeagueDto[]>> getByTeam(Region region, String... teamIds) throws IOException;
+//        RiotApiResponse<Map<String, LeagueDto[]>> getByTeam(Region region, String... teamIds);
 
         /**
          * /api/lol/{region}/v2.5/league/by-team/{teamIds}/entry<br/>
@@ -248,7 +251,7 @@ public interface RiotApi {
          * if nothing found
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, LeagueDto[]>> getByTeamEntry(Region region, String... teamIds) throws IOException;
+//        RiotApiResponse<Map<String, LeagueDto[]>> getByTeamEntry(Region region, String... teamIds);
 
         /**
          * /api/lol/{region}/v2.5/league/challenger<br/>
@@ -265,7 +268,7 @@ public interface RiotApi {
          * @return a {@link LeagueDto} object with data
          * @throws IOException
          */
-//        RiotApiResponse<LeagueDto> getChallenger(Region region, QueueType queue) throws IOException;
+//        RiotApiResponse<LeagueDto> getChallenger(Region region, QueueType queue);
 
         /**
          * /api/lol/{region}/v2.5/league/master<br/>
@@ -282,7 +285,7 @@ public interface RiotApi {
          * @return a {@link LeagueDto} object with data
          * @throws IOException
          */
-//        RiotApiResponse<LeagueDto> getMaster(Region region, QueueType queue) throws IOException;
+//        RiotApiResponse<LeagueDto> getMaster(Region region, QueueType queue);
     }
 
     /**
@@ -308,7 +311,7 @@ public interface RiotApi {
          * if no champion could be found matching the given query
          * @throws IOException
          */
-//        RiotApiResponse<ChampionListDto> getChampions(Region region, String version, String locale, ChampDataTag... champData) throws IOException;
+//        RiotApiResponse<ChampionListDto> getChampions(Region region, String version, String locale, ChampDataTag... champData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/champion/{id}<br/>
@@ -329,7 +332,7 @@ public interface RiotApi {
          * if no champion could be found matching the given query
          * @throws IOException
          */
-//        RiotApiResponse<ChampionDto> getChampion(Region region, long champId, String version, String locale, ChampDataTag... champData) throws IOException;
+//        RiotApiResponse<ChampionDto> getChampion(Region region, long champId, String version, String locale, ChampDataTag... champData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/item<br/>
@@ -349,7 +352,7 @@ public interface RiotApi {
          * @return {@link ItemListDto} filled in
          * @throws IOException
          */
-//        RiotApiResponse<ItemListDto> getItems(Region region, String version, String locale, ItemListDataTag... itemListData) throws IOException;
+//        RiotApiResponse<ItemListDto> getItems(Region region, String version, String locale, ItemListDataTag... itemListData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/item/{id}<br/>
@@ -370,7 +373,7 @@ public interface RiotApi {
          * @return {@link ItemListDto} filled in according to itemListData
          * @throws IOException
          */
-//        RiotApiResponse<ItemDto> getItem(Region region, long itemId, String version, String locale, ItemListDataTag... itemData) throws IOException;
+//        RiotApiResponse<ItemDto> getItem(Region region, long itemId, String version, String locale, ItemListDataTag... itemData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/language-strings<br/>
@@ -386,7 +389,7 @@ public interface RiotApi {
          * @return {@link LanguageStringsDto}
          * @throws IOException
          */
-//        RiotApiResponse<LanguageStringsDto> getLanguageStrings(Region region, String version, String locale) throws IOException;
+//        RiotApiResponse<LanguageStringsDto> getLanguageStrings(Region region, String version, String locale);
 
         /**
          * /api/lol/static-data/{region}/v1.2/languages<br/>
@@ -402,7 +405,7 @@ public interface RiotApi {
          * @return String array of all supported locales
          * @throws IOException
          */
-//        RiotApiResponse<String[]> getLocales(Region region) throws IOException;
+//        RiotApiResponse<String[]> getLocales(Region region);
 
         /**
          * /api/lol/static-data/{region}/v1.2/map<br/>
@@ -418,7 +421,7 @@ public interface RiotApi {
          * @return {@link MapDataDto} object
          * @throws IOException
          */
-//        RiotApiResponse<MapDataDto> getMap(Region region, String version, String locale) throws IOException;
+//        RiotApiResponse<MapDataDto> getMap(Region region, String version, String locale);
 
         /**
          * /api/lol/static-data/{region}/v1.2/mastery<br/>
@@ -437,7 +440,7 @@ public interface RiotApi {
          * @return {@link MasteryListDto} filled in according to tags
          * @throws IOException
          */
-//        RiotApiResponse<MasteryListDto> getMasteries(Region region, String version, String locale, MasteryListDataTag... masteryListData) throws IOException;
+//        RiotApiResponse<MasteryListDto> getMasteries(Region region, String version, String locale, MasteryListDataTag... masteryListData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/mastery/{id}<br/>
@@ -457,7 +460,7 @@ public interface RiotApi {
          * @return {@link MasteryListDto} filled in according to tags
          * @throws IOException
          */
-//        RiotApiResponse<MasteryDto> getMastery(Region region, long id, String version, String locale, MasteryDataTag... masteryData) throws IOException;
+//        RiotApiResponse<MasteryDto> getMastery(Region region, long id, String version, String locale, MasteryDataTag... masteryData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/realm<br/>
@@ -471,7 +474,7 @@ public interface RiotApi {
          * @return {@link RealmDto} object
          * @throws IOException
          */
-//        RiotApiResponse<RealmDto> getRealm(Region region) throws IOException;
+//        RiotApiResponse<RealmDto> getRealm(Region region);
 
         /**
          * /api/lol/static-data/na/v1.2/rune<br/>
@@ -490,7 +493,7 @@ public interface RiotApi {
          * @return {@link RuneListDto} object filled in according to tags
          * @throws IOException
          */
-//        RiotApiResponse<RuneListDto> getRunes(Region region, String version, String locale, RuneListDataTag... runeListData) throws IOException;
+//        RiotApiResponse<RuneListDto> getRunes(Region region, String version, String locale, RuneListDataTag... runeListData);
 
         /**
          * /api/lol/static-data/na/v1.2/rune/{id}<br/>
@@ -511,7 +514,7 @@ public interface RiotApi {
          * @return {@link RuneListDto} object filled in according to tags
          * @throws IOException
          */
-//        RiotApiResponse<RuneDto> getRune(Region region, long id, String version, String locale, RuneDataTag... runeData) throws IOException;
+//        RiotApiResponse<RuneDto> getRune(Region region, long id, String version, String locale, RuneDataTag... runeData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/summoner-spell<br/>
@@ -533,7 +536,7 @@ public interface RiotApi {
          * @return {@link SummonerSpellListDto} object filled in according to tags
          * @throws IOException
          */
-//        RiotApiResponse<SummonerSpellListDto> getSummonerSpells(Region region, boolean dataById, String version, String locale, SpellDataTag... spellData) throws IOException;
+//        RiotApiResponse<SummonerSpellListDto> getSummonerSpells(Region region, boolean dataById, String version, String locale, SpellDataTag... spellData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/summoner-spell/{id}<br/>
@@ -554,7 +557,7 @@ public interface RiotApi {
          * @return {@link SummonerSpellDto} object filled in according to tags
          * @throws IOException
          */
-//        RiotApiResponse<SummonerSpellDto> getSummonerSpell(Region region, long id, String version, String locale, SpellDataTag... spellData) throws IOException;
+//        RiotApiResponse<SummonerSpellDto> getSummonerSpell(Region region, long id, String version, String locale, SpellDataTag... spellData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/versions<br/>
@@ -567,7 +570,7 @@ public interface RiotApi {
          * at [length - 1]
          * @throws IOException
          */
-//        RiotApiResponse<String[]> getVersions(Region region) throws IOException;
+//        RiotApiResponse<String[]> getVersions(Region region);
     }
 
     /**
@@ -586,7 +589,7 @@ public interface RiotApi {
          * @return Array of {@link Shard} statuses
          * @throws IOException
          */
-//        RiotApiResponse<Shard[]> getShards(Region region) throws IOException;
+//        RiotApiResponse<Shard[]> getShards(Region region);
 
         /**
          * /shards/{region}<br/>
@@ -599,7 +602,7 @@ public interface RiotApi {
          * @return a {@link ShardStatus} for the specified {@link Region}
          * @throws IOException
          */
-//        RiotApiResponse<ShardStatus> getShard(Region region) throws IOException;
+//        RiotApiResponse<ShardStatus> getShard(Region region);
     }
 
     /**
@@ -625,7 +628,7 @@ public interface RiotApi {
          * @return a {@link MatchDetail}
          * @throws IOException
          */
-//        RiotApiResponse<MatchDetail> getMatch(Region region, long matchId, boolean includeTimeline) throws IOException;
+//        RiotApiResponse<MatchDetail> getMatch(Region region, long matchId, boolean includeTimeline);
     }
 
     /**
@@ -666,7 +669,7 @@ public interface RiotApi {
          * @return {@link MatchListDto}
          * @throws IOException
          */
-//        RiotApiResponse<MatchListDto> getMatchList(Region region, long summonerId, long[] championIds, RankedQueue[] rankedQueues, Season[] seasons, long beginTime, long endTime, int beginIndex, int endIndex) throws IOException;
+//        RiotApiResponse<MatchListDto> getMatchList(Region region, long summonerId, long[] championIds, RankedQueue[] rankedQueues, Season[] seasons, long beginTime, long endTime, int beginIndex, int endIndex);
     }
 
     public interface Stats {
@@ -688,7 +691,7 @@ public interface RiotApi {
          * @return a {@link RankedStatsDto} for the specified player.
          * @throws IOException
          */
-//        RiotApiResponse<RankedStatsDto> getRanked(Region region, long summonerId, Season season) throws IOException;
+        Observable<RankedStatsDto> getRanked(Region region, long summonerId, Season season);
 
         /**
          * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary<br/>
@@ -707,7 +710,7 @@ public interface RiotApi {
          * @return Full player stats summary.
          * @throws IOException
          */
-//        RiotApiResponse<PlayerStatsSummaryListDto> getSummary(Region region, long summonerId, Season season) throws IOException;
+        Observable<PlayerStatsSummaryListDto> getSummary(Region region, long summonerId, Season season);
     }
 
     /**
@@ -821,7 +824,7 @@ public interface RiotApi {
          * collection of all teams of which that summoner is a member.
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, TeamDto[]>> getTeamsBySummoners(Region region, long... summonerIds) throws IOException;
+//        RiotApiResponse<Map<String, TeamDto[]>> getTeamsBySummoners(Region region, long... summonerIds);
 
         /**
          * /api/lol/{region}/v2.4/team/{teamIds}<br/>
@@ -838,6 +841,6 @@ public interface RiotApi {
          * @return Map of team ID to {@link TeamDto} objects.
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, TeamDto>> getTeams(Region region, String... teamIds) throws IOException;
+//        RiotApiResponse<Map<String, TeamDto>> getTeams(Region region, String... teamIds);
     }
 }

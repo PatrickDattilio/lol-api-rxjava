@@ -16,10 +16,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
-
 /**
  * Use this class to generate instances of {@link RiotApi} interfaces. Use the associated {@link Builder}
  * to call into specific versions if needed.
@@ -97,15 +93,15 @@ public final class RiotApiFactory {
 //            throw new InvalidVersionException("Lowest supported FeaturedGames version is 1.0");
 //        }
 //    }
-//
-//    public RiotApi.RecentGames newRecentGamesInterface(String apiKey) {
-//        if (recentGamesVersion >= 1.3f) {
-//            return new ImplRecentGames_v1_3(apiKey);
-//        } else {
-//            throw new InvalidVersionException("Lowest supported RecentGames version is 1.3");
-//        }
-//    }
-//
+
+    public RiotApi.RecentGames newRecentGamesInterface(ApiKey apiKey, Region region) {
+        if (recentGamesVersion >= 1.3f) {
+            return new RecentGames_v1_3(apiKey, region);
+        } else {
+            throw new InvalidVersionException("Lowest supported RecentGames version is 1.3");
+        }
+    }
+
 //    public RiotApi.League newLeagueInterface(String apiKey) {
 //        if (leagueVersion >= 2.5) {
 //            return new ImplLeague_v2_5(apiKey);

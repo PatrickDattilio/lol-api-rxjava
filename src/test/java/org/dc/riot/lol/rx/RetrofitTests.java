@@ -14,9 +14,6 @@ import org.junit.Test;
 
 import retrofit.HttpException;
 import rx.Observable;
-import rx.Observer;
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 public class RetrofitTests {
@@ -38,29 +35,22 @@ public class RetrofitTests {
 				}
 			});
 			assertNotNull(summonerStream);
-			summonerStream.subscribe(new Action1<SummonerDto>() {
-				@Override
-				public void call(SummonerDto t) {
-					System.out.println(t.getId() + " : " + t.getName());
-				}
-			},
-			new Action1<Throwable>() {
-				@Override
-				public void call(Throwable e) {
+			summonerStream.subscribe(
+				(SummonerDto dto) -> {
+					System.out.println(dto.getId() + " : " + dto.getName());
+				},
+				(Throwable e) -> {
 					if (e instanceof HttpException) {
 						HttpException ex = (HttpException) e;
 						System.out.println(" got code: " + ex.response().code());
 					} else {
 						e.printStackTrace();
 					}
-				}
-			},
-			new Action0() {
-				@Override
-				public void call() {
+				},
+				() -> {
 					System.out.println("Done!");
 				}
-			});
+			);
 		}
 	}
 
