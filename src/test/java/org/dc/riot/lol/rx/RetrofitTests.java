@@ -4,6 +4,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.SummonerDto;
@@ -14,9 +16,13 @@ import org.junit.Test;
 
 import retrofit.HttpException;
 import rx.Observable;
+import rx.Scheduler;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
+	
+	private Scheduler scheduler = Schedulers.from(Executors.newFixedThreadPool(10));
 	
 	@Test
 	public void testRetrofitInterfaceExtensions() throws IOException {
@@ -34,23 +40,26 @@ public class RetrofitTests {
 					return Observable.from(t.values());	// emits all SummonerDto objects in a loop
 				}
 			});
-			assertNotNull(summonerStream);
-			summonerStream.subscribe(
-				(SummonerDto dto) -> {
-					System.out.println(dto.getId() + " : " + dto.getName());
-				},
-				(Throwable e) -> {
-					if (e instanceof HttpException) {
-						HttpException ex = (HttpException) e;
-						System.out.println(" got code: " + ex.response().code());
-					} else {
-						e.printStackTrace();
-					}
-				},
-				() -> {
-					System.out.println("Done!");
-				}
-			);
+//			assertNotNull(summonerStream);
+//			summonerStream.subscribeOn(scheduler);
+//			summonerStream.subscribe(
+//				(SummonerDto dto) -> {
+//					System.out.println("Subscribe: " + Thread.currentThread());
+//					System.out.println(dto.getId() + " : " + dto.getName());
+//				},
+//				(Throwable e) -> {
+//					System.out.println("Error: " + Thread.currentThread());
+//					if (e instanceof HttpException) {
+//						HttpException ex = (HttpException) e;
+//						System.out.println(" got code: " + ex.response().code());
+//					} else {
+//						e.printStackTrace();
+//					}
+//				},
+//				() -> {
+//					System.out.println("Done! " + Thread.currentThread());
+//				}
+//			);
 		}
 	}
 

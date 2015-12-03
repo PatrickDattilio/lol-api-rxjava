@@ -1,6 +1,7 @@
 package org.dc.riot.lol.rx.service.impl;
 
 import java.lang.reflect.Type;
+import java.net.Proxy;
 
 import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.model.Region;
@@ -15,6 +16,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Use this class to generate instances of {@link RiotApi} interfaces. Use the associated {@link Builder}
@@ -51,6 +53,8 @@ public final class RiotApiFactory {
     public static RiotApiFactory getDefaultFactory() {
         return new Builder().build();
     }
+    
+    private final OkHttpClient client;
 
     private float champVersion;
     private float currentGameVersion;
@@ -68,7 +72,9 @@ public final class RiotApiFactory {
     	return GSON;
     }
 
-    private RiotApiFactory() { }
+    private RiotApiFactory() {
+    	client = new OkHttpClient();
+    }
 
 //    public RiotApi.Champion newChampionInterface(String apiKey) {
 //        if (champVersion >= 1.2) {
@@ -173,6 +179,7 @@ public final class RiotApiFactory {
         private float matchlistVersion = 2.2f;      // baseline MatchListDto version
         private float summonerVersion = 1.4f;       // baseline Summoner version
         private float teamVersion = 2.4f;           // baseline Team version
+        private Proxy proxy = null;
 
         public Builder setChampionVersion(float champVersion) {
             this.champVersion = champVersion;
@@ -228,6 +235,11 @@ public final class RiotApiFactory {
             this.teamVersion = teamVersion;
             return this;
         }
+        
+        public Builder setProxy(Proxy proxy) {
+        	this.proxy = proxy;
+        	return this;
+        }
 
         public RiotApiFactory build() {
             RiotApiFactory factory = new RiotApiFactory();
@@ -242,6 +254,7 @@ public final class RiotApiFactory {
             factory.matchlistVersion = matchlistVersion;
             factory.summonerVersion = summonerVersion;
             factory.teamVersion = teamVersion;
+            factory.client.setProxy(proxy);
             return factory;
         }
     }
