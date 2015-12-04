@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.service.impl;
+package org.dc.riot.lol.rx.service.interfaces;
 
 import java.lang.reflect.Type;
 import java.net.Proxy;
