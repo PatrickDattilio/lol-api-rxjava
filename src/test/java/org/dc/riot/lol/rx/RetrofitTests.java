@@ -4,29 +4,40 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.Executors;
+import java.util.UUID;
 
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApiRateRule;
 import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
+import org.junit.Before;
 import org.junit.Test;
 
 import retrofit.HttpException;
 import rx.Observable;
+import rx.Observable.OnSubscribe;
 import rx.Scheduler;
+import rx.Subscriber;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
 	
-	private Scheduler scheduler = Schedulers.from(new RiotApiThreadPoolExecutor(10));
+	private Scheduler scheduler;
+	private ApiKey apiKey;
+	
+	@Before
+	public void setup() {
+		apiKey = ApiKey.getFirstDevelopmentKey();
+		RiotApiRateRule[] rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
+		scheduler = Schedulers.from(new RiotApiThreadPoolExecutor(rules, 10));
+	}
 	
 	@Test
 	public void testRetrofitInterfaceExtensions() throws IOException {
-		ApiKey apiKey = ApiKey.getApiKeys()[0];
 		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
 		
 		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
@@ -57,6 +68,33 @@ public class RetrofitTests {
 				}
 			);
 		}
+	}
+	
+	@Test
+	public void testObservableNoNet() {
+		// retrofit will do this for us
+		Observable<String> o = Observable.create(new OnSubscribe<String>() {
+			@Override
+			public void call(Subscriber<? super String> t) {
+				try {
+					for (int i=0; i<500; i++) {
+						Thread.sleep(40);
+						String s = UUID.randomUUID().toString();
+						t.onNext(s);
+					}
+
+					t.onCompleted();
+
+				} catch (InterruptedException e) {
+					t.onError(e);
+				}
+			}
+		});
+		
+		o.observeOn(scheduler)
+			.subscribe((String s) -> System.out.println(s),
+					(Throwable t) -> t.printStackTrace(),
+					() -> System.out.println("done"));
 	}
 
 }

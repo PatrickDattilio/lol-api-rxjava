@@ -92,4 +92,19 @@ public class ApiKey {
 
         return keys.toArray(new ApiKey[keys.size()]);
     }
+    
+    /**
+     * 
+     * @return the first development key in the API_KEY file
+     */
+    public static ApiKey getFirstDevelopmentKey() {
+    	ApiKey[] keys = getApiKeys();
+    	for (ApiKey key : keys) {
+    		if (key.isDevelopmentKey()) {
+    			return key;
+    		}
+    	}
+    	
+    	return null;
+    }
 }
