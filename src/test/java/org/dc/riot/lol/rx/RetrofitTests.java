@@ -5,13 +5,14 @@ import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
+import org.dc.riot.lol.rx.service.RiotApiScheduler;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,36 +23,40 @@ import rx.Observable.OnSubscribe;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
 	
 	private Scheduler scheduler;
 	private ApiKey apiKey;
+	private RiotApiRateRule[] rules;
 	
 	@Before
 	public void setup() {
 		apiKey = ApiKey.getFirstDevelopmentKey();
-		RiotApiRateRule[] rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
-		scheduler = Schedulers.from(new RiotApiThreadPoolExecutor(rules, 10));
+		rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
+//		scheduler = Schedulers.from(new RiotApiThreadPoolExecutor(10, 500, 1, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(1000)));
+		scheduler = new RiotApiScheduler(rules);
 	}
 	
 	@Test
-	public void testRetrofitInterfaceExtensions() throws IOException {
+	public void testRetrofitInterfaceExtensions() throws IOException, InterruptedException {
+		int gets = 4;
 		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		final CountDownLatch lock = new CountDownLatch(gets);
 		
 		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
-		for (int i=0; i<10; i++) {
-			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames("HuskarDc","feed l0rd","Wildturtle","Nightblue3","TheOddOne");
+		for (int i=0; i<gets; i++) {
+			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames("HuskarDc");//,"feed l0rd","Wildturtle","Nightblue3","TheOddOne");
 			assertNotNull(rawStream);
 
-			Observable<SummonerDto> summonerStream = rawStream.observeOn(scheduler).flatMap(new Func1<Map<String,SummonerDto>, Observable<SummonerDto>>() {
+			rawStream.flatMap(new Func1<Map<String,SummonerDto>, Observable<SummonerDto>>() {
 				@Override
 				public Observable<SummonerDto> call(Map<String, SummonerDto> t) {
 					return Observable.from(t.values());	// emits all SummonerDto objects in a loop
 				}
-			});
-			summonerStream.subscribe(
+			})
+			.observeOn(scheduler)
+			.subscribe(
 				(SummonerDto dto) -> {
 					System.out.println(dto.getId() + " : " + dto.getName());
 				},
@@ -64,10 +69,15 @@ public class RetrofitTests {
 					}
 				},
 				() -> {
-					System.out.println("Done! " + Thread.currentThread());
+					System.out.println("Done");
+					lock.countDown();
 				}
 			);
 		}
+		
+		System.out.println("All streams posted");
+		lock.await();
+		System.out.println("Main thread complete");
 	}
 	
 	@Test
