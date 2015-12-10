@@ -40,13 +40,13 @@ public class RetrofitTests {
 	
 	@Test
 	public void testRetrofitInterfaceExtensions() throws IOException, InterruptedException {
-		int gets = 4;
+		int gets = 10;
 		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
 		final CountDownLatch lock = new CountDownLatch(gets);
 		
 		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
 		for (int i=0; i<gets; i++) {
-			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames("HuskarDc");//,"feed l0rd","Wildturtle","Nightblue3","TheOddOne");
+			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames("HuskarDc","feed l0rd","Wildturtle","Nightblue3","TheOddOne");
 			assertNotNull(rawStream);
 
 			rawStream.flatMap(new Func1<Map<String,SummonerDto>, Observable<SummonerDto>>() {
