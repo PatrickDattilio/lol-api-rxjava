@@ -10,34 +10,18 @@ import java.util.Comparator;
  */
 class RiotApiScheduleTimeline {
 	
-	private ArrayList<RiotApiScheduleEntry> entries = new ArrayList<>();
-	private Comparator<RiotApiScheduleEntry> comparator = new Comparator<RiotApiScheduleEntry>() {
+	private ArrayList<RiotApiTime> entries = new ArrayList<>();
+	private Comparator<RiotApiTime> comparator = new Comparator<RiotApiTime>() {
 		@Override
-		public int compare(RiotApiScheduleEntry lhs, RiotApiScheduleEntry rhs) {
+		public int compare(RiotApiTime lhs, RiotApiTime rhs) {
 			if (lhs.isExecuted() && !rhs.isExecuted()) {
 				return -1;
 			} else if (!lhs.isExecuted() && rhs.isExecuted()) {
 				return 1;
-			} else if (!lhs.isExecuted() && !rhs.isExecuted()) {
-				if (lhs.isScheduled() && rhs.isScheduled()) {
-					if (lhs.getScheduledTime() > rhs.getScheduledTime()) {
-						return 1;
-					} else if (lhs.getScheduledTime() < rhs.getScheduledTime()) {
-						return -1;
-					} else {
-						return 0;
-					}
-				} else if (!lhs.isScheduled() && !rhs.isScheduled()) {
-					return 0;
-				} else if (lhs.isScheduled() && !rhs.isScheduled()) {
-					return -1;
-				} else {
-					return 1;
-				}
 			} else {
-				if (lhs.getExecutedTime() > rhs.getExecutedTime()) {
+				if (lhs.getTime() > rhs.getTime()) {
 					return 1;
-				} else if (lhs.getExecutedTime() < rhs.getExecutedTime()) {
+				} else if (lhs.getTime() < rhs.getTime()) {
 					return -1;
 				} else {
 					return 0;
@@ -46,15 +30,15 @@ class RiotApiScheduleTimeline {
 		}
 	};
 
-	public synchronized void add(RiotApiScheduleEntry entry) {
+	public synchronized void add(RiotApiTime entry) {
 		if (entry != null) {
 			entries.add(entry);
 			entries.sort(comparator);
 		}
 	}
 	
-	public synchronized RiotApiScheduleEntry[] getEntries() {
-		return entries.toArray(new RiotApiScheduleEntry[entries.size()]);
+	public synchronized RiotApiTime[] getEntries() {
+		return entries.toArray(new RiotApiTime[entries.size()]);
 	}
 
 	/**
@@ -66,8 +50,8 @@ class RiotApiScheduleTimeline {
 			long oldestTime = timeNow - rule.getSeconds() * 1000;
 			int trimToIndex = entries.size()-1;
 			for (int i=entries.size()-1; i>=0; i--) {
-				RiotApiScheduleEntry entry = entries.get(i);
-				if (!(entry.isExecuted() && entry.getExecutedTime() < oldestTime)) {
+				RiotApiTime entry = entries.get(i);
+				if (!(entry.isExecuted() && entry.getTime() < oldestTime)) {
 					trimToIndex = i+1;
 					break;
 				}
@@ -78,5 +62,9 @@ class RiotApiScheduleTimeline {
 				entries.trimToSize();
 			}
 		}
+	}
+
+	public synchronized void clear() {
+		entries.clear();
 	}
 }

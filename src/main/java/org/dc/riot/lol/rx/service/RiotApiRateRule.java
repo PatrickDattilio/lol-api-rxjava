@@ -34,14 +34,14 @@ public class RiotApiRateRule {
      * @return the next epoch ms time in the timeline that could be a valid request time to satisfy
      * this rule
      */
-    public long getNextTime(long timeNow, int offset, RiotApiScheduleEntry... entries) {
+    public long getNextTime(long timeNow, int offset, RiotApiTime ... entries) {
     	if (entries.length < requests) {
     		return timeNow;
     	}
 
     	long nextValidTime = timeNow;
     	for (int i=0; i<entries.length; i++) {
-    		RiotApiScheduleEntry ei = entries[i];
+    		RiotApiTime ei = entries[i];
     		if (ei.getTime() < timeNow - seconds*1000) {
     			// this entry is older than this rule cares about
     			continue;
@@ -50,7 +50,7 @@ public class RiotApiRateRule {
     		long timeWindowEnd = ei.getTime() + seconds*1000;
     		int count = 1;	// e is the first entry in the window
     		for (int j=i+1; j<entries.length; j++) {
-    			RiotApiScheduleEntry ej = entries[j];
+    			RiotApiTime ej = entries[j];
     			if (ej.getTime() < timeWindowEnd) {
     				count++;
     				if (count == requests) {
