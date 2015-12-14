@@ -1,5 +1,6 @@
 package org.dc.riot.lol.rx;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiScheduler;
+import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,9 @@ import rx.Observable;
 import rx.Observable.OnSubscribe;
 import rx.Scheduler;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
 	
@@ -34,25 +37,26 @@ public class RetrofitTests {
 	public void setup() {
 		apiKey = ApiKey.getFirstDevelopmentKey();
 		rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
-		scheduler = new RiotApiScheduler(rules);
+		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
 	}
 	
+	boolean testRetrofitInterfaceExtensionsFailed = false;
+	private int processedSummoners = 0;
 	@Test
 	public void testRetrofitInterfaceExtensions() throws IOException, InterruptedException {
 		String[] names = new String[] {"HuskarDc","feed l0rd","Wildturtle","Nightblue3","TheOddOne"};
-		int gets = 11;
+		int gets = 521;
 
 		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
 		final CountDownLatch lock = new CountDownLatch(gets);
 		
 		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
+		Subscription s = null;
 		for (int i=0; i<gets; i++) {
-			System.out.println("Observable count: " + i);
 			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames(names);
 			assertNotNull(rawStream);
 
-			rawStream
-			.subscribeOn(scheduler)
+			s = rawStream.observeOn(scheduler)
 			.flatMap(new Func1<Map<String,SummonerDto>, Observable<SummonerDto>>() {
 				@Override
 				public Observable<SummonerDto> call(Map<String, SummonerDto> t) {
@@ -61,18 +65,24 @@ public class RetrofitTests {
 			})
 			.subscribe(
 				(SummonerDto dto) -> {
-					System.out.println(dto.getId() + " : " + dto.getName());
+					processedSummoners++;
+					System.out.println(dto.getName() + " count " + processedSummoners + " on " + Thread.currentThread().getName());
 				},
 				(Throwable e) -> {
 					if (e instanceof HttpException) {
+						lock.countDown();
 						HttpException ex = (HttpException) e;
 						System.out.println(" got code: " + ex.response().code());
 					} else {
 						e.printStackTrace();
 					}
+
+					testRetrofitInterfaceExtensionsFailed = true;
+					for (int j=0; j<gets; j++) {
+						lock.countDown();
+					}
 				},
 				() -> {
-					System.out.println("Done");
 					lock.countDown();
 				}
 			);
@@ -80,7 +90,8 @@ public class RetrofitTests {
 		
 		System.out.println("All streams posted");
 		lock.await();
-		System.out.println("Main thread complete");
+		s.unsubscribe();
+		assertFalse(testRetrofitInterfaceExtensionsFailed);
 	}
 	
 	@Test

@@ -1,0 +1,164 @@
+package org.dc.riot.lol.rx.service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
+
+class RiotApiSemaphore {
+
+	private ArrayList<Bucket> buckets;
+
+	RiotApiSemaphore(RiotApiRateRule... rules) {
+		buckets = new ArrayList<>(rules.length);
+		for (int i=0; i<rules.length; i++) {
+			buckets.add(new Bucket(rules[i]));
+		}
+
+		Collections.sort(buckets, new Comparator<Bucket>() {
+			@Override
+			public int compare(Bucket lhs, Bucket rhs) {
+				if (lhs.getRule().getMilliseconds() > rhs.getRule().getMilliseconds()) {
+					return 1;
+				} else if (lhs.getRule().getMilliseconds() < rhs.getRule().getMilliseconds()) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		});
+	}
+
+	/**
+	 * Takes a {@link Ticket} from each {@link Bucket} in this semaphore.
+	 * Blocks until each {@link Bucket} yields a {@link Ticket}
+	 * 
+	 * @return a {@link Ticket} from each {@link Bucket}
+	 */
+	public Ticket[] take() throws InterruptedException {
+		Ticket[] tickets = new Ticket[buckets.size()];
+		for (int i=0; i<tickets.length; i++) {
+			tickets[i] = buckets.get(i).take();
+		}
+
+		return tickets;
+	}
+
+	/**
+	 * Return a set of {@link Ticket} to the appropriate {@link Bucket}(s)
+	 * 
+	 * @param tickets
+	 */
+	public void put(Ticket... tickets) throws InterruptedException {
+		long startTime = getTime();
+		for (Ticket t : tickets) {
+			for (Bucket b : buckets) {
+				if (b.put(t, getTime() - startTime)) {
+					break;
+				}
+			}
+		}
+	}
+
+	protected long getTime() {
+		return System.currentTimeMillis();
+	}
+
+	/**
+	 * Structured list of {@link Ticket} objects
+	 * 
+	 * @author Dc
+	 */
+	private class Bucket {
+		private static final int BUFFER_MS = 750;
+		
+		private UUID myName = UUID.randomUUID();
+		private ArrayBlockingQueue<Ticket> tickets;
+		private RiotApiRateRule rule;
+
+		/**
+		 * Generates the {@link Ticket} items contained in this {@link Bucket}
+		 * 
+		 * @param rule
+		 */
+		Bucket(RiotApiRateRule rule) {
+			this.rule = rule;
+			tickets = new ArrayBlockingQueue<>(rule.getRequests());
+			for (int i=0; i<rule.getRequests(); i++) {
+				try {
+					tickets.put(new Ticket(myName, i));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					// eat this, won't ever happen
+				}
+			}
+		}
+
+		/**
+		 * Take a single {@link Ticket}. Blocks until a {@link Ticket} is available.
+		 * 
+		 * @return next available {@link Ticket}
+		 * @throws InterruptedException
+		 */
+		Ticket take() throws InterruptedException {
+			return tickets.take();
+		}
+
+		/**
+		 * Handles necessary <code>Thread.sleep</code> calls to ensure rates are maintained
+		 * 
+		 * @param t {@link Ticket} to return
+		 * @param alreadySlept allows a single Thread to return {@link Ticket}s to multiple {@link Bucket}s
+		 * @return <code>true</code> if the supplied {@link Ticket} was returned, <code>false</code> otherwise
+		 * @throws InterruptedException
+		 */
+		boolean put(Ticket t, long alreadySlept) throws InterruptedException {
+			if (t.getParent().equals(myName)) {
+				try {
+					Thread.sleep(rule.getMilliseconds() - alreadySlept + BUFFER_MS);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+					// negative, just treat like it's a no sleep
+				}
+
+				tickets.put(t);
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		RiotApiRateRule getRule() {
+			return rule;
+		}
+	}
+
+	/**
+	 * 
+	 * @author Dc
+	 */
+	static class Ticket {
+		private UUID myName = UUID.randomUUID();
+		private int index = -1;
+		private UUID parentName;
+
+		Ticket(UUID parentName, int index) {
+			this.parentName = parentName;
+			this.index = index;
+		}
+
+		UUID getName() {
+			return myName;
+		}
+
+		UUID getParent() {
+			return parentName;
+		}
+
+		int getIndex() {
+			return index;
+		}
+	}
+
+}

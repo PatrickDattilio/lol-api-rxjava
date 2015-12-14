@@ -1,5 +1,7 @@
 package org.dc.riot.lol.rx.service;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Generic object containing request per time frame
  * @author Dc
@@ -8,84 +10,51 @@ package org.dc.riot.lol.rx.service;
 public class RiotApiRateRule {
 
     private int requests;
-    private int seconds;
+    private int per;
+    private TimeUnit timeUnit;
 
     /**
      * @param requests requests allowed to make
      * @param seconds  window span in seconds allowed
      */
-    public RiotApiRateRule(int requests, int seconds) {
+    public RiotApiRateRule(int requests, int per, TimeUnit timeUnit) {
         this.requests = requests;
-        this.seconds = seconds;
+        this.per = per;
+        this.timeUnit = timeUnit;
     }
 
     public int getRequests() {
         return requests;
     }
 
-    public int getSeconds() {
-        return seconds;
+    public int getPer() {
+        return per;
     }
-
-    /**
-     * @param timeNow current time in epoch ms
-     * @param offset index to start searching the timeline
-     * @param entries the request timeline
-     * @return the next epoch ms time in the timeline that could be a valid request time to satisfy
-     * this rule
-     */
-    public long getNextTime(long timeNow, int offset, RiotApiTime ... entries) {
-    	if (entries.length < requests) {
-    		return timeNow;
-    	}
-
-    	long nextValidTime = timeNow;
-    	for (int i=0; i<entries.length; i++) {
-    		RiotApiTime ei = entries[i];
-    		if (ei.getTime() < timeNow - seconds*1000) {
-    			// this entry is older than this rule cares about
-    			continue;
-    		}
-
-    		long timeWindowEnd = ei.getTime() + seconds*1000;
-    		int count = 1;	// e is the first entry in the window
-    		for (int j=i+1; j<entries.length; j++) {
-    			RiotApiTime ej = entries[j];
-    			if (ej.getTime() < timeWindowEnd) {
-    				count++;
-    				if (count == requests) {
-    					long candidateTime = timeWindowEnd;
-    					if (candidateTime >= nextValidTime) {
-    						nextValidTime = candidateTime;
-    					}
-    					break;
-    				}
-    			}
-    		}
-    		
-    		
-    	}
-    	
-    	return nextValidTime;
+    
+    public TimeUnit getTimeUnit() {
+    	return timeUnit;
+    }
+    
+    public long getMilliseconds() {
+    	return timeUnit.toMillis(per);
     }
 
     @Override
     public String toString() {
-        return "[" + RiotApiRateRule.class.getSimpleName() + "] " + requests + "/" + seconds;
+        return "[" + RiotApiRateRule.class.getSimpleName() + "] " + requests + "/" + per + " " + timeUnit;
     }
 
     public static RiotApiRateRule[] getDevelopmentRates() {
         RiotApiRateRule[] rules = new RiotApiRateRule[2];
-        rules[0] = new RiotApiRateRule(500, 600);
-        rules[1] = new RiotApiRateRule(10, 10);
+        rules[0] = new RiotApiRateRule(500, 10, TimeUnit.MINUTES);
+        rules[1] = new RiotApiRateRule(10, 10, TimeUnit.SECONDS);
         return rules;
     }
 
     public static RiotApiRateRule[] getProductionRates() {
         RiotApiRateRule[] rules = new RiotApiRateRule[1];
-        rules[0] = new RiotApiRateRule(300, 10);
-//        rules[1] = new RiotApiScheduleRule(180000, 600);  // commented out because it's linearly
-                                                            // related to the previous rule
+        rules[0] = new RiotApiRateRule(300, 10, TimeUnit.SECONDS);
+        rules[1] = new RiotApiRateRule(180000, 10, TimeUnit.MINUTES);
         return rules;
     }
 }
