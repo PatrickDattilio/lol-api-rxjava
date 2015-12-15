@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 class RiotApiSemaphore {
 
@@ -51,18 +55,13 @@ class RiotApiSemaphore {
 	 * @param tickets
 	 */
 	public void put(Ticket... tickets) throws InterruptedException {
-		long startTime = getTime();
 		for (Ticket t : tickets) {
 			for (Bucket b : buckets) {
-				if (b.put(t, getTime() - startTime)) {
+				if (b.put(t)) {
 					break;
 				}
 			}
 		}
-	}
-
-	protected long getTime() {
-		return System.currentTimeMillis();
 	}
 
 	/**
@@ -72,10 +71,12 @@ class RiotApiSemaphore {
 	 */
 	private class Bucket {
 		private static final int BUFFER_MS = 750;
-		
-		private UUID myName = UUID.randomUUID();
+
+		private UUID name = UUID.randomUUID();
 		private ArrayBlockingQueue<Ticket> tickets;
 		private RiotApiRateRule rule;
+
+		private ScheduledExecutorService librarian;
 
 		/**
 		 * Generates the {@link Ticket} items contained in this {@link Bucket}
@@ -84,15 +85,23 @@ class RiotApiSemaphore {
 		 */
 		Bucket(RiotApiRateRule rule) {
 			this.rule = rule;
+
 			tickets = new ArrayBlockingQueue<>(rule.getRequests());
-			for (int i=0; i<rule.getRequests(); i++) {
-				try {
-					tickets.put(new Ticket(myName, i));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					// eat this, won't ever happen
+			try {
+				for (int i=0; i<rule.getRequests(); i++) {
+					tickets.put(new Ticket(name, i));
 				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				// eat this, won't ever happen
 			}
+
+			librarian = Executors.newScheduledThreadPool(1, new ThreadFactory() {
+				@Override
+				public Thread newThread(Runnable r) {
+					return new Thread(r, "LIBRARIAN-" + name);
+				}
+			});
 		}
 
 		/**
@@ -102,7 +111,8 @@ class RiotApiSemaphore {
 		 * @throws InterruptedException
 		 */
 		Ticket take() throws InterruptedException {
-			return tickets.take();
+			Ticket t = tickets.take();
+			return t;
 		}
 
 		/**
@@ -113,16 +123,18 @@ class RiotApiSemaphore {
 		 * @return <code>true</code> if the supplied {@link Ticket} was returned, <code>false</code> otherwise
 		 * @throws InterruptedException
 		 */
-		boolean put(Ticket t, long alreadySlept) throws InterruptedException {
-			if (t.getParent().equals(myName)) {
-				try {
-					Thread.sleep(rule.getMilliseconds() - alreadySlept + BUFFER_MS);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-					// negative, just treat like it's a no sleep
-				}
+		boolean put(Ticket t) throws InterruptedException {
+			if (t.getParent().equals(name)) {
+				librarian.schedule(() -> {
+						try {
+							tickets.put(t);
+						} catch (InterruptedException e) {
+							System.out.println("May have leaked a Ticket " + t.name);
+						}
+					},
+					rule.getMilliseconds() + BUFFER_MS,
+					TimeUnit.MILLISECONDS);
 
-				tickets.put(t);
 				return true;
 			} else {
 				return false;
@@ -139,7 +151,7 @@ class RiotApiSemaphore {
 	 * @author Dc
 	 */
 	static class Ticket {
-		private UUID myName = UUID.randomUUID();
+		private UUID name = UUID.randomUUID();
 		private int index = -1;
 		private UUID parentName;
 
@@ -149,7 +161,7 @@ class RiotApiSemaphore {
 		}
 
 		UUID getName() {
-			return myName;
+			return name;
 		}
 
 		UUID getParent() {
