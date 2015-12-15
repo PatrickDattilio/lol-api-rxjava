@@ -62,6 +62,7 @@ public final class RiotApiFactory {
     private float recentGamesVersion;
     private float leagueVersion;
     private float staticDataVersion;
+    private float statsVersion;
     private float statusVersion;
     private float matchVersion;
     private float matchlistVersion;
@@ -123,7 +124,15 @@ public final class RiotApiFactory {
 //            throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
 //        }
 //    }
-//
+
+    public RiotApi.Stats newStatsInterface(ApiKey apiKey, Region region) {
+    	if (staticDataVersion >= 1.3) {
+    		return new Stats_v1_3(apiKey, region);
+    	} else {
+    		throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
+    	}
+    }
+
 //    public RiotApi.LolStatus newStatusInterface(String apiKey) {
 //        if (statusVersion >= 1.0f) {
 //            return new ImplLolStatus_v1_0(apiKey);
@@ -156,13 +165,13 @@ public final class RiotApiFactory {
         }
     }
 
-//    public RiotApi.Team newTeamInterface(String apiKey) {
-//        if (teamVersion >= 2.4f) {
-//            return new ImplTeam_v2_4(apiKey);
-//        } else {
-//            throw new InvalidVersionException("Lowest supported Team version is 2.4");
-//        }
-//    }
+    public RiotApi.Team newTeamInterface(ApiKey apiKey, Region region) {
+        if (teamVersion >= 2.4f) {
+            return new Team_v2_4(apiKey, region);
+        } else {
+            throw new InvalidVersionException("Lowest supported Team version is 2.4");
+        }
+    }
 
     /**
      * Used to create {@link RiotApiFactory} instances pointed at specific versions.
@@ -173,6 +182,7 @@ public final class RiotApiFactory {
         private float featuredGamesVersion = 1.0f;  // baseline FeaturedGame version
         private float recentGamesVersion = 1.3f;    // baseline FeaturedGame version
         private float leagueVersion = 2.5f;         // baseline League version
+        private float statsVersion = 1.3f;			// baseline Stats version
         private float staticDataVersion = 1.2f;     // baseline StaticData version
         private float statusVersion = 1.0f;         // baseline LolStatus version
         private float matchVersion = 2.2f;          // baseline Match version
@@ -209,6 +219,11 @@ public final class RiotApiFactory {
         public Builder setStaticDataVersion(float staticDataVersion) {
             this.staticDataVersion = staticDataVersion;
             return this;
+        }
+        
+        public Builder setStatsVersion(float statsVersion) {
+        	this.statsVersion = statsVersion;
+        	return this;
         }
 
         public Builder setStatusVersion(float statusVersion) {
@@ -249,6 +264,7 @@ public final class RiotApiFactory {
             factory.recentGamesVersion = recentGamesVersion;
             factory.leagueVersion = leagueVersion;
             factory.staticDataVersion = staticDataVersion;
+            factory.statsVersion = statsVersion;
             factory.statusVersion = statusVersion;
             factory.matchVersion = matchVersion;
             factory.matchlistVersion = matchlistVersion;

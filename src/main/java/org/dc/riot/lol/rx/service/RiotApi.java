@@ -13,6 +13,7 @@ import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.RunePagesDto;
 import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.model.SummonerDto;
+import org.dc.riot.lol.rx.model.TeamDto;
 
 import rx.Observable;
 
@@ -684,14 +685,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region     the {@link Region}
          * @param summonerId ID of summoner. See {@link Summoner} to fetch valid IDs.
-         * @param region     the {@link Region}
          * @param season     Optional. Competitive {@link Season} to search.
          * @return a {@link RankedStatsDto} for the specified player.
          * @throws IOException
          */
-        Observable<RankedStatsDto> getRanked(Region region, long summonerId, Season season);
+        Observable<RankedStatsDto> getRanked(long summonerId, Season season);
 
         /**
          * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary<br/>
@@ -703,14 +702,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region     the {@link Region}
          * @param summonerId ID of summoner. See {@link Summoner} to fetch valid IDs.
-         * @param region     the {@link Region}
          * @param season     Optional. Competitive {@link Season} to search.
          * @return Full player stats summary.
          * @throws IOException
          */
-        Observable<PlayerStatsSummaryListDto> getSummary(Region region, long summonerId, Season season);
+        Observable<PlayerStatsSummaryListDto> getSummary(long summonerId, Season season);
     }
 
     /**
@@ -817,14 +814,13 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param summonerIds List of summoner IDs to search. See {@link Summoner} to get valid
          *                    summoner IDs.
          * @return Map of stringified summonerIds to list of {@link TeamDto} objects that is the
          * collection of all teams of which that summoner is a member.
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, TeamDto[]>> getTeamsBySummoners(Region region, long... summonerIds);
+        Observable<Map<String, TeamDto[]>> getTeamsBySummoners(long... summonerIds);
 
         /**
          * /api/lol/{region}/v2.4/team/{teamIds}<br/>
@@ -836,11 +832,10 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region  the {@link Region}
          * @param teamIds List of team IDs. TODO document how to fetch team IDs
          * @return Map of team ID to {@link TeamDto} objects.
          * @throws IOException
          */
-//        RiotApiResponse<Map<String, TeamDto>> getTeams(Region region, String... teamIds);
+        Observable<Map<String, TeamDto>> getTeams(String... teamIds);
     }
 }
