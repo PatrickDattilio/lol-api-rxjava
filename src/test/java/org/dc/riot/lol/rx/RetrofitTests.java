@@ -126,31 +126,4 @@ public class RetrofitTests {
 		System.out.println("Main thread complete");
 	}
 	
-	@Test
-	public void testObservableNoNet() {
-		// retrofit will do this for us
-		Observable<String> o = Observable.create(new OnSubscribe<String>() {
-			@Override
-			public void call(Subscriber<? super String> t) {
-				try {
-					for (int i=0; i<500; i++) {
-						Thread.sleep(40);
-						String s = UUID.randomUUID().toString();
-						t.onNext(s);
-					}
-
-					t.onCompleted();
-
-				} catch (InterruptedException e) {
-					t.onError(e);
-				}
-			}
-		});
-		
-		o.observeOn(scheduler)
-			.subscribe((String s) -> System.out.println(s),
-					(Throwable t) -> t.printStackTrace(),
-					() -> System.out.println("done"));
-	}
-
 }

@@ -18,6 +18,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.squareup.okhttp.OkHttpClient;
 
+import rx.Scheduler;
+
 /**
  * Use this class to generate instances of {@link RiotApi} interfaces. Use the associated {@link Builder}
  * to call into specific versions if needed.
@@ -55,6 +57,7 @@ public final class RiotApiFactory {
     }
     
     private final OkHttpClient client;
+    private Scheduler scheduler = null;
 
     private float champVersion;
     private float currentGameVersion;
@@ -190,6 +193,7 @@ public final class RiotApiFactory {
         private float summonerVersion = 1.4f;       // baseline Summoner version
         private float teamVersion = 2.4f;           // baseline Team version
         private Proxy proxy = null;
+        private Scheduler scheduler = null;
 
         public Builder setChampionVersion(float champVersion) {
             this.champVersion = champVersion;
@@ -255,6 +259,11 @@ public final class RiotApiFactory {
         	this.proxy = proxy;
         	return this;
         }
+        
+        public Builder setScheduler(Scheduler scheduler) {
+        	this.scheduler = scheduler;
+        	return this;
+        }
 
         public RiotApiFactory build() {
             RiotApiFactory factory = new RiotApiFactory();
@@ -271,6 +280,7 @@ public final class RiotApiFactory {
             factory.summonerVersion = summonerVersion;
             factory.teamVersion = teamVersion;
             factory.client.setProxy(proxy);
+            factory.scheduler = scheduler;
             return factory;
         }
     }

@@ -41,7 +41,7 @@ public class RiotApiRateRule {
 
     @Override
     public String toString() {
-        return "[" + RiotApiRateRule.class.getSimpleName() + "] " + requests + "/" + per + " " + timeUnit;
+        return "[" + RiotApiRateRule.class.getSimpleName() + " " + requests + "/" + per + " " + timeUnit + "]";
     }
 
     public static RiotApiRateRule[] getDevelopmentRates() {

@@ -1,6 +1,5 @@
 package org.dc.riot.lol.rx.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -29,8 +28,6 @@ public class RiotApiThreadPoolExecutor extends ThreadPoolExecutor {
     	}
     });
 
-    private HashMap<Runnable, Ticket[]> tickets = new HashMap<>();
-    
 	public RiotApiThreadPoolExecutor(RiotApiRateRule[] rules, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
 			BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
@@ -66,6 +63,16 @@ public class RiotApiThreadPoolExecutor extends ThreadPoolExecutor {
 		running = true;
 		managerThread.start();
 	}
+	
+	@Override
+	public ThreadFactory getThreadFactory() {
+		return new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new TicketedThread(r);
+			}
+		};
+	}
 
 	@Override
 	public void execute(Runnable command) {
@@ -76,11 +83,7 @@ public class RiotApiThreadPoolExecutor extends ThreadPoolExecutor {
 	protected void beforeExecute(Thread t, Runnable r) {
 		try {
 			Ticket[] taskTickets = semaphore.take();
-			while (taskTickets == null) {
-				Thread.sleep(100);
-			}
-
-			tickets.put(r, taskTickets);
+			((TicketedThread)Thread.currentThread()).setTickets(taskTickets);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			// shouldn't happen
@@ -94,7 +97,8 @@ public class RiotApiThreadPoolExecutor extends ThreadPoolExecutor {
 		super.afterExecute(r, t);
 
 		try {
-			Ticket[] taskTickets = tickets.remove(r);
+			Ticket[] taskTickets = ((TicketedThread)Thread.currentThread()).getTickets();
+			((TicketedThread)Thread.currentThread()).clearTickets();
 			semaphore.put(taskTickets);
 		} catch (InterruptedException e) {
 			e.printStackTrace();

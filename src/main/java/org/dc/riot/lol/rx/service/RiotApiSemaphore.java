@@ -46,6 +46,8 @@ class RiotApiSemaphore {
 		for (int i=0; i<tickets.length; i++) {
 			tickets[i] = buckets.get(i).take();
 		}
+		
+		System.out.println(Thread.currentThread() + " TAKE");
 
 		return tickets;
 	}
@@ -56,6 +58,7 @@ class RiotApiSemaphore {
 	 * @param tickets
 	 */
 	public void put(Ticket... tickets) throws InterruptedException {
+		System.out.println(Thread.currentThread() + " PUT");
 		for (Ticket t : tickets) {
 			for (Bucket b : buckets) {
 				if (b.put(t)) {
@@ -122,8 +125,7 @@ class RiotApiSemaphore {
 		 * @throws InterruptedException
 		 */
 		Ticket take() throws InterruptedException {
-			Ticket t = tickets.take();
-			return t;
+			return tickets.take();
 		}
 
 		/**
@@ -155,6 +157,11 @@ class RiotApiSemaphore {
 		RiotApiRateRule getRule() {
 			return rule;
 		}
+		
+		@Override
+		public String toString() {
+			return "[" + Bucket.class.getSimpleName() + " " + name + " " + rule + "]";
+		}
 	}
 
 	/**
@@ -181,6 +188,11 @@ class RiotApiSemaphore {
 
 		int getIndex() {
 			return index;
+		}
+		
+		@Override
+		public String toString() {
+			return "[Ticket " + name + "]";
 		}
 	}
 
