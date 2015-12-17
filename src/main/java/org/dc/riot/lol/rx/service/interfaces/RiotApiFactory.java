@@ -79,7 +79,7 @@ public final class RiotApiFactory {
 
     public RiotApi.Champion newChampionInterface(ApiKey apiKey, Region region) {
         if (champVersion >= 1.2) {
-            return new Champion_v1_2(apiKey, region);
+            return new Champion_v1_2(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported Champion version is 1.2");
         }
@@ -103,7 +103,7 @@ public final class RiotApiFactory {
 
     public RiotApi.RecentGames newRecentGamesInterface(ApiKey apiKey, Region region) {
         if (recentGamesVersion >= 1.3f) {
-            return new RecentGames_v1_3(apiKey, region);
+            return new RecentGames_v1_3(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported RecentGames version is 1.3");
         }
@@ -127,7 +127,7 @@ public final class RiotApiFactory {
 
     public RiotApi.Stats newStatsInterface(ApiKey apiKey, Region region) {
     	if (statsVersion >= 1.3) {
-    		return new Stats_v1_3(apiKey, region);
+    		return new Stats_v1_3(apiKey, region, client);
     	} else {
     		throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
     	}
@@ -151,7 +151,7 @@ public final class RiotApiFactory {
 
     public RiotApi.MatchList newMatchListInterface(ApiKey apiKey, Region region) {
         if (matchlistVersion >= 2.2) {
-            return new MatchList_v2_2(apiKey, region);
+            return new MatchList_v2_2(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported MatchListDto version is 2.2");
         }
@@ -159,7 +159,7 @@ public final class RiotApiFactory {
 
     public RiotApi.Summoner newSummonerInterface(ApiKey apiKey, Region region) {
         if (summonerVersion >= 1.4f) {
-        	return new Summoner_v1_4(apiKey, region);
+        	return new Summoner_v1_4(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported Summoner version is 1.4");
         }
@@ -167,7 +167,7 @@ public final class RiotApiFactory {
 
     public RiotApi.Team newTeamInterface(ApiKey apiKey, Region region) {
         if (teamVersion >= 2.4f) {
-            return new Team_v2_4(apiKey, region);
+            return new Team_v2_4(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported Team version is 2.4");
         }

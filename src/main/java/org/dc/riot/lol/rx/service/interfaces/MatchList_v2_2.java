@@ -7,6 +7,8 @@ import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -22,13 +24,14 @@ class MatchList_v2_2 implements RiotApi.MatchList {
 	
 	private Interface inter;
 	
-	MatchList_v2_2(ApiKey apiKey, Region region) {
+	MatchList_v2_2(ApiKey apiKey, Region region, OkHttpClient client) {
 		this.apiKey = apiKey;
 		this.region = region;
 		
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);

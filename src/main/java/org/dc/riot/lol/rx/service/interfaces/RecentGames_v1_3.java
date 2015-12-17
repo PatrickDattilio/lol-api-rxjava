@@ -8,6 +8,8 @@ import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApi.Summoner;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
@@ -25,13 +27,14 @@ class RecentGames_v1_3 implements RiotApi.RecentGames {
 	
 	private Interface inter;
 
-	RecentGames_v1_3(ApiKey apiKey, Region region) {
+	RecentGames_v1_3(ApiKey apiKey, Region region, OkHttpClient client) {
 		this.apiKey = apiKey;
 		this.region = region;
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);

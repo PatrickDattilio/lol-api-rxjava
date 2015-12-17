@@ -10,6 +10,8 @@ import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.CommaSeparatedArray;
 import org.dc.riot.lol.rx.service.RiotApi;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -25,13 +27,14 @@ class Summoner_v1_4 implements RiotApi.Summoner {
 	
 	private Interface inter;
 	
-	Summoner_v1_4(ApiKey apiKey, Region region) {
+	Summoner_v1_4(ApiKey apiKey, Region region, OkHttpClient client) {
 		this.region = region;
 		this.apiKey = apiKey;
 		
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);

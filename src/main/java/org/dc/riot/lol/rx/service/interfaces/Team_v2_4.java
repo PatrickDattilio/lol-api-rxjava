@@ -8,6 +8,8 @@ import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.CommaSeparatedArray;
 import org.dc.riot.lol.rx.service.RiotApi;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -23,13 +25,14 @@ class Team_v2_4 implements RiotApi.Team {
 	
 	private Interface inter;
 
-	public Team_v2_4(ApiKey apiKey, Region region) {
+	public Team_v2_4(ApiKey apiKey, Region region, OkHttpClient client) {
 		this.apiKey = apiKey;
 		this.region = region;
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);

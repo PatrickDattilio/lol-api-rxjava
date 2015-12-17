@@ -6,6 +6,8 @@ import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -21,14 +23,14 @@ class Champion_v1_2 implements RiotApi.Champion {
 
 	private Interface inter;
 
-	public Champion_v1_2(ApiKey apiKey, Region region) {
+	public Champion_v1_2(ApiKey apiKey, Region region, OkHttpClient client) {
 		this.apiKey = apiKey;
 		this.region = region;
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-//				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+				.client(client)
 				.build();
 
 		inter = ra.create(Interface.class);
