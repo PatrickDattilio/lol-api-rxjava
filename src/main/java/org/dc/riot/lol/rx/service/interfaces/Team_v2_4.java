@@ -8,9 +8,9 @@ import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.CommaSeparatedArray;
 import org.dc.riot.lol.rx.service.RiotApi;
 
+import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -30,7 +30,6 @@ class Team_v2_4 implements RiotApi.Team {
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 				.build();
 		
 		inter = ra.create(Interface.class);
@@ -38,21 +37,25 @@ class Team_v2_4 implements RiotApi.Team {
 
 	@Override
 	public Observable<Map<String,TeamDto[]>> getTeamsBySummoners(long... summonerIds) {
-		return inter.getTeamsBySummoners(region, new CommaSeparatedArray(summonerIds), apiKey);
+		return RetroRxCaller.makeObservable(() -> {
+			return inter.getTeamsBySummoners(region, new CommaSeparatedArray(summonerIds), apiKey);
+		});
 	}
 
 	@Override
 	public Observable<Map<String,TeamDto>> getTeams(String... teamIds) {
-		return inter.getTeams(region, new CommaSeparatedArray(teamIds), apiKey);
+		return RetroRxCaller.makeObservable(() -> {
+			return inter.getTeams(region, new CommaSeparatedArray(teamIds), apiKey);
+		});
 	}
 	
 	interface Interface {
 		
 		@GET("/api/lol/{region}/v2.4/team/by-summoner/{summonerIds}")
-		public Observable<Map<String,TeamDto[]>> getTeamsBySummoners(@Path("region") Region region, @Path("summonerIds") CommaSeparatedArray summonerIdsteamIds, @Query("api_key") ApiKey apiKey);
+		public Call<Map<String,TeamDto[]>> getTeamsBySummoners(@Path("region") Region region, @Path("summonerIds") CommaSeparatedArray summonerIdsteamIds, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v2.4/team/by-summoner/{teamIds}")
-		public Observable<Map<String,TeamDto>> getTeams(@Path("region") Region region, @Path("teamIds") CommaSeparatedArray teamIds, @Query("api_key") ApiKey apiKey);
+		public Call<Map<String,TeamDto>> getTeams(@Path("region") Region region, @Path("teamIds") CommaSeparatedArray teamIds, @Query("api_key") ApiKey apiKey);
 	}
 
 }

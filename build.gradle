@@ -6,9 +6,9 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.squareup.retrofit:retrofit:2.+'
+    compile 'io.reactivex:rxjava:1.+'
     compile 'com.squareup.retrofit:converter-gson:2.+'
-    compile 'com.squareup.retrofit:adapter-rxjava:2.+'
-	compile 'io.reactivex:rxandroid:1.+'
     testCompile 'junit:junit:4.+'
 }
 

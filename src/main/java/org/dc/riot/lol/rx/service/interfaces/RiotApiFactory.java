@@ -77,14 +77,14 @@ public final class RiotApiFactory {
     	client = new OkHttpClient();
     }
 
-//    public RiotApi.Champion newChampionInterface(String apiKey) {
-//        if (champVersion >= 1.2) {
-//            return new ImplChampion_v1_2(apiKey);
-//        } else {
-//            throw new InvalidVersionException("Lowest supported Champion version is 1.2");
-//        }
-//    }
-//
+    public RiotApi.Champion newChampionInterface(ApiKey apiKey, Region region) {
+        if (champVersion >= 1.2) {
+            return new Champion_v1_2(apiKey, region);
+        } else {
+            throw new InvalidVersionException("Lowest supported Champion version is 1.2");
+        }
+    }
+
 //    public RiotApi.CurrentGame newCurrentGameInterface(String apiKey) {
 //        if (currentGameVersion >= 1.0f) {
 //            return new ImplCurrentGame_v1_0(apiKey);
@@ -126,7 +126,7 @@ public final class RiotApiFactory {
 //    }
 
     public RiotApi.Stats newStatsInterface(ApiKey apiKey, Region region) {
-    	if (staticDataVersion >= 1.3) {
+    	if (statsVersion >= 1.3) {
     		return new Stats_v1_3(apiKey, region);
     	} else {
     		throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
@@ -148,14 +148,14 @@ public final class RiotApiFactory {
 //            throw new InvalidVersionException("Lowest supported Match version is 2.2");
 //        }
 //    }
-//
-//    public RiotApi.MatchList newMatchListInterface(String apiKey) {
-//        if (matchlistVersion >= 2.2) {
-//            return new ImplMatchList_v2_2(apiKey);
-//        } else {
-//            throw new InvalidVersionException("Lowest supported MatchListDto version is 2.2");
-//        }
-//    }
+
+    public RiotApi.MatchList newMatchListInterface(ApiKey apiKey, Region region) {
+        if (matchlistVersion >= 2.2) {
+            return new MatchList_v2_2(apiKey, region);
+        } else {
+            throw new InvalidVersionException("Lowest supported MatchListDto version is 2.2");
+        }
+    }
 
     public RiotApi.Summoner newSummonerInterface(ApiKey apiKey, Region region) {
         if (summonerVersion >= 1.4f) {

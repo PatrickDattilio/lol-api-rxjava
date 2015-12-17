@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 class RiotApiSemaphore {
 
+	private int buffer = 750;
 	private ArrayList<Bucket> buckets;
 
 	RiotApiSemaphore(RiotApiRateRule... rules) {
@@ -62,6 +63,16 @@ class RiotApiSemaphore {
 				}
 			}
 		}
+	}
+	
+	public void setBuffer(int buffer) {
+		if (buffer > -1) {
+			this.buffer = buffer;
+		}
+	}
+	
+	public int getBuffer() {
+		return buffer;
 	}
 
 	/**

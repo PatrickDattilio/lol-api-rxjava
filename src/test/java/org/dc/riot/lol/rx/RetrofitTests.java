@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.dc.riot.lol.rx.model.ChampionListDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
@@ -22,132 +23,109 @@ import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import retrofit.HttpException;
 import rx.Observable;
 import rx.Observable.OnSubscribe;
 import rx.Scheduler;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
-
+	
 	private Scheduler scheduler;
 	private ApiKey apiKey;
 	private RiotApiRateRule[] rules;
-
+	
 	@Before
 	public void setup() {
 		apiKey = ApiKey.getFirstDevelopmentKey();
 		rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
 		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
 	}
-
-	boolean testRetrofitInterfaceExtensionsFailed = false;
-	private int processedSummoners = 0;
+	
+	private int testManualObservablesCount = 0;
+	private boolean testManualObservablesFailed = true;
 	@Test
-	public void testRetrofitInterfaceExtensions() throws IOException, InterruptedException {
-		String[] names = new String[] {"HuskarDc","feed l0rd","Wildturtle","Nightblue3","TheOddOne"};
-		int gets = 521;
+	public void testManualObservables() throws InterruptedException {
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss.sss");
+		final int gets = 501;
 
 		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
 		final CountDownLatch lock = new CountDownLatch(gets);
-
-		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
-		Subscription s = null;
-		for (int i=0; i<gets; i++) {
-			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames(names);
-			assertNotNull(rawStream);
-
-			s = rawStream.observeOn(scheduler)
-					.flatMap(new Func1<Map<String,SummonerDto>, Observable<SummonerDto>>() {
-						@Override
-						public Observable<SummonerDto> call(Map<String, SummonerDto> t) {
-							return Observable.from(t.values());	// emits all SummonerDto objects in a loop
-						}
-					})
-					.subscribe((SummonerDto dto) -> {
-						processedSummoners++;
-						System.out.println(dto.getName() + " count " + processedSummoners + " on " + Thread.currentThread().getName());
-					},
-							(Throwable e) -> {
-								if (e instanceof HttpException) {
-									lock.countDown();
-									HttpException ex = (HttpException) e;
-									System.out.println(" got code: " + ex.response().code());
-								} else {
-									e.printStackTrace();
-								}
-
-								testRetrofitInterfaceExtensionsFailed = true;
-								for (int j=0; j<gets; j++) {
-									lock.countDown();
-								}
-							},
-							() -> {
-								lock.countDown();
-							});
-		}
-
-		System.out.println("All streams posted");
-		lock.await();
-		s.unsubscribe();
-		assertFalse(testRetrofitInterfaceExtensionsFailed);
-	}
-	
-	private boolean testRetrofitExtensionsNoNetFailed = false;
-	private int testRetrofitExtensionsNoNetCount = 0;
-	@Test
-	public void testRetrofitExtensionsNoNet() throws InterruptedException {
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.sss");
-		RiotApiRateRule[] rules = RiotApiRateRule.getDevelopmentRates();
-		Scheduler scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
-		int gets = 501;
-
 		final Object printLock = new Object();
-		final CountDownLatch lock = new CountDownLatch(gets);
-
+		
+		RiotApi.Champion champInterface = factory.newChampionInterface(apiKey, Region.NORTH_AMERICA);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<gets; i++) {
-			Observable.create(new OnSubscribe<Date>() {
-				@Override
-				public void call(Subscriber<? super Date> t) {
-					try {
-						Thread.sleep(50);
-						t.onNext(new Date());
-						t.onCompleted();
-					} catch (InterruptedException e) {
-						t.onError(e);
-					}
-				}
-			})
-			.subscribeOn(scheduler)
-			.subscribe((Date d) -> {
+			Observable<ChampionListDto> obs = champInterface.getChampions();
+			obs.subscribeOn(scheduler)
+			.subscribe((ChampionListDto dto) -> {
 				synchronized (printLock) {
-					System.out.println(testRetrofitExtensionsNoNetCount++ + "   " + sdf.format(d));
+					System.out.println(sdf.format(new Date(System.currentTimeMillis())) + "  " + ++testManualObservablesCount);
 				}
 			},
-			(Throwable t) -> {
-				testRetrofitExtensionsNoNetFailed = true;
+			(Throwable e) -> {
+				e.printStackTrace();
+				
+				testManualObservablesFailed = true;
+				for (int j=0; j<gets; j++) {
+					lock.countDown();
+				}
 			},
 			() -> {
 				lock.countDown();
 			});
 		}
-
-		System.out.println("All streams posted");
+		
 		lock.await();
 		long endTime = System.currentTimeMillis();
-		long elapsed = endTime - startTime;
-		long minimumElapsed = TimeUnit.MINUTES.toMillis(10);
-		long maximumElapsed = minimumElapsed + TimeUnit.SECONDS.toMillis(2);
-		
-		assertFalse(testRetrofitExtensionsNoNetFailed);
-		assertTrue(elapsed > minimumElapsed);
-		assertTrue(elapsed < maximumElapsed);
+		long elapsedTime = endTime - startTime;
+		assertFalse(testManualObservablesFailed);
+		assertTrue(elapsedTime > TimeUnit.MINUTES.toMillis(10));
+		assertTrue(elapsedTime < TimeUnit.MINUTES.toMillis(10) + TimeUnit.SECONDS.toMillis(5));
 	}
 
+	@Test
+	public void testRetrofitInterfaceExtensions() throws IOException, InterruptedException {
+		String[] names = new String[] {"HuskarDc","feed l0rd","Wildturtle","Nightblue3","TheOddOne"};
+		int gets = 11;
+
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		final CountDownLatch lock = new CountDownLatch(gets);
+		
+		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
+		for (int i=0; i<gets; i++) {
+			System.out.println("Observable count: " + i);
+			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames(names);
+			assertNotNull(rawStream);
+
+			rawStream
+			.subscribeOn(scheduler)
+			.flatMap(new Func1<Map<String,SummonerDto>, Observable<SummonerDto>>() {
+				@Override
+				public Observable<SummonerDto> call(Map<String, SummonerDto> t) {
+					return Observable.from(t.values());	// emits all SummonerDto objects in a loop
+				}
+			})
+			.subscribe(
+				(SummonerDto dto) -> {
+					System.out.println(dto.getId() + " : " + dto.getName());
+				},
+				(Throwable e) -> {
+					e.printStackTrace();
+				},
+				() -> {
+					System.out.println("Done");
+					lock.countDown();
+				}
+			);
+		}
+		
+		System.out.println("All streams posted");
+		lock.await();
+		System.out.println("Main thread complete");
+	}
+	
 	@Test
 	public void testObservableNoNet() {
 		// retrofit will do this for us
@@ -168,11 +146,11 @@ public class RetrofitTests {
 				}
 			}
 		});
-
+		
 		o.observeOn(scheduler)
-		.subscribe((String s) -> System.out.println(s),
-				(Throwable t) -> t.printStackTrace(),
-				() -> System.out.println("done"));
+			.subscribe((String s) -> System.out.println(s),
+					(Throwable t) -> t.printStackTrace(),
+					() -> System.out.println("done"));
 	}
 
 }

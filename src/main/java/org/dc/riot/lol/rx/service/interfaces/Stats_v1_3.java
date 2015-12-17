@@ -7,9 +7,9 @@ import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 
+import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -29,7 +29,6 @@ class Stats_v1_3 implements RiotApi.Stats {
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 				.build();
 		
 		inter = ra.create(Interface.class);
@@ -37,21 +36,25 @@ class Stats_v1_3 implements RiotApi.Stats {
 
 	@Override
 	public Observable<RankedStatsDto> getRanked(long summonerId, Season season) {
-		return inter.getRanked(region, summonerId, season, apiKey);
+		return RetroRxCaller.makeObservable(() -> {
+			return inter.getRanked(region, summonerId, season, apiKey);
+		});
 	}
 
 	@Override
 	public Observable<PlayerStatsSummaryListDto> getSummary(long summonerId, Season season) {
-		return inter.getSummary(region, summonerId, season, apiKey);
+		return RetroRxCaller.makeObservable(() -> {
+			 return inter.getSummary(region, summonerId, season, apiKey);
+		});
 	}
 	
-	interface Interface {
+	private interface Interface {
 
 		@GET("/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked")
-		public Observable<RankedStatsDto> getRanked(@Path("region") Region region, @Path("summonerId") long summonerId, Season season, @Query("api_key") ApiKey apiKey);
+		public Call<RankedStatsDto> getRanked(@Path("region") Region region, @Path("summonerId") long summonerId, Season season, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary")
-		public Observable<PlayerStatsSummaryListDto> getSummary(@Path("region") Region region, @Path("summonerId") long summonerId, Season season, @Query("api_key") ApiKey apiKey);
+		public Call<PlayerStatsSummaryListDto> getSummary(@Path("region") Region region, @Path("summonerId") long summonerId, Season season, @Query("api_key") ApiKey apiKey);
 	}
 
 }

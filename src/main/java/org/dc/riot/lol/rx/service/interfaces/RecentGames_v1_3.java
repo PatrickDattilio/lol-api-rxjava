@@ -1,33 +1,37 @@
 package org.dc.riot.lol.rx.service.interfaces;
 
+import java.io.IOException;
+
 import org.dc.riot.lol.rx.model.RecentGamesDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApi.Summoner;
 
+import retrofit.Call;
 import retrofit.GsonConverterFactory;
+import retrofit.Response;
 import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
+import rx.Subscriber;
 
-public class RecentGames_v1_3 implements RiotApi.RecentGames {
+class RecentGames_v1_3 implements RiotApi.RecentGames {
 	
 	private ApiKey apiKey;
 	private Region region;
 	
 	private Interface inter;
 
-	public RecentGames_v1_3(ApiKey apiKey, Region region) {
+	RecentGames_v1_3(ApiKey apiKey, Region region) {
 		this.apiKey = apiKey;
 		this.region = region;
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 				.build();
 		
 		inter = ra.create(Interface.class);
@@ -49,13 +53,22 @@ public class RecentGames_v1_3 implements RiotApi.RecentGames {
 	 * @throws IOException
 	 */
     public Observable<RecentGamesDto> getRecentGames(long summonerId) {
-    	return inter.getRecentGames(region, summonerId, apiKey);
+    	return Observable.create((Subscriber<? super RecentGamesDto> t) -> {
+    		try {
+    			Call<RecentGamesDto> call = inter.getRecentGames(region, summonerId, apiKey);
+    			Response<RecentGamesDto> response = call.execute();
+    			t.onNext(response.body());
+    			t.onCompleted();
+    		} catch (Exception e) {
+    			t.onError(e);
+    		}
+    	});
     }
 
-    interface Interface {
+    private interface Interface {
 
     	@GET("/api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent")
-    	Observable<RecentGamesDto> getRecentGames(@Path("region") Region region, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey);
+    	Call<RecentGamesDto> getRecentGames(@Path("region") Region region, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey);
 
     }
 }
