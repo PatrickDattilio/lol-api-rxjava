@@ -16,16 +16,13 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-class Champion_v1_2 implements RiotApi.Champion {
-
-	private ApiKey apiKey;
-	private Region region;
+// TODO not fully implemented
+class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
 
 	private Interface inter;
 
-	public Champion_v1_2(ApiKey apiKey, Region region, OkHttpClient client) {
-		this.apiKey = apiKey;
-		this.region = region;
+	Champion_v1_2(ApiKey apiKey, Region region, OkHttpClient client) {
+		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")

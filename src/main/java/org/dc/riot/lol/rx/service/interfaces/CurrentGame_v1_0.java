@@ -16,16 +16,12 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-public class CurrentGame_v1_0 implements RiotApi.CurrentGame {
+public class CurrentGame_v1_0 extends RiotApiBase implements RiotApi.CurrentGame {
 	
-	private ApiKey apiKey;
-	private PlatformId pid;
-
 	private Interface inter;
 	
 	public CurrentGame_v1_0(ApiKey apiKey, Region region, OkHttpClient client) {
-		this.apiKey = apiKey;
-		this.pid = PlatformId.from(region);
+		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
@@ -39,7 +35,7 @@ public class CurrentGame_v1_0 implements RiotApi.CurrentGame {
 	@Override
 	public Observable<CurrentGameInfo> getSpectatorInfo(long summonerId) {
 		return RetroRxCaller.makeObservable(() -> {
-			return inter.getSpectatorInfo(pid, summonerId, apiKey);
+			return inter.getSpectatorInfo(PlatformId.from(region), summonerId, apiKey);
 		});
 	}
 	

@@ -20,16 +20,12 @@ import retrofit.http.Query;
 import rx.Observable;
 import rx.Subscriber;
 
-class RecentGames_v1_3 implements RiotApi.RecentGames {
-	
-	private ApiKey apiKey;
-	private Region region;
+class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 	
 	private Interface inter;
 
 	RecentGames_v1_3(ApiKey apiKey, Region region, OkHttpClient client) {
-		this.apiKey = apiKey;
-		this.region = region;
+		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")

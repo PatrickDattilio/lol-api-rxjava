@@ -18,16 +18,12 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-class Team_v2_4 implements RiotApi.Team {
-	
-	private ApiKey apiKey;
-	private Region region;
+class Team_v2_4 extends RiotApiBase implements RiotApi.Team {
 	
 	private Interface inter;
 
 	public Team_v2_4(ApiKey apiKey, Region region, OkHttpClient client) {
-		this.apiKey = apiKey;
-		this.region = region;
+		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")

@@ -6,18 +6,42 @@ import java.util.Map;
 import org.dc.riot.lol.rx.model.ChampionDto;
 import org.dc.riot.lol.rx.model.ChampionListDto;
 import org.dc.riot.lol.rx.model.CurrentGameInfo;
+import org.dc.riot.lol.rx.model.FeaturedGamesDto;
+import org.dc.riot.lol.rx.model.ItemDto;
+import org.dc.riot.lol.rx.model.ItemListDto;
+import org.dc.riot.lol.rx.model.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.LeagueDto;
 import org.dc.riot.lol.rx.model.LeagueEntryDto;
+import org.dc.riot.lol.rx.model.MapDataDto;
+import org.dc.riot.lol.rx.model.MasteryDto;
+import org.dc.riot.lol.rx.model.MasteryListDto;
 import org.dc.riot.lol.rx.model.MasteryPagesDto;
+import org.dc.riot.lol.rx.model.MatchDetail;
 import org.dc.riot.lol.rx.model.MatchListDto;
 import org.dc.riot.lol.rx.model.PlayerStatsSummaryListDto;
+import org.dc.riot.lol.rx.model.QueueType;
 import org.dc.riot.lol.rx.model.RankedQueue;
 import org.dc.riot.lol.rx.model.RankedStatsDto;
+import org.dc.riot.lol.rx.model.RealmDto;
+import org.dc.riot.lol.rx.model.RecentGamesDto;
 import org.dc.riot.lol.rx.model.Region;
+import org.dc.riot.lol.rx.model.RuneDto;
+import org.dc.riot.lol.rx.model.RuneListDto;
 import org.dc.riot.lol.rx.model.RunePagesDto;
 import org.dc.riot.lol.rx.model.Season;
+import org.dc.riot.lol.rx.model.Shard;
+import org.dc.riot.lol.rx.model.ShardStatus;
 import org.dc.riot.lol.rx.model.SummonerDto;
+import org.dc.riot.lol.rx.model.SummonerSpellDto;
+import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.TeamDto;
+import org.dc.riot.lol.rx.service.request.ChampDataTag;
+import org.dc.riot.lol.rx.service.request.ItemListDataTag;
+import org.dc.riot.lol.rx.service.request.MasteryDataTag;
+import org.dc.riot.lol.rx.service.request.MasteryListDataTag;
+import org.dc.riot.lol.rx.service.request.RuneDataTag;
+import org.dc.riot.lol.rx.service.request.RuneListDataTag;
+import org.dc.riot.lol.rx.service.request.SpellDataTag;
 
 import rx.Observable;
 
@@ -53,6 +77,10 @@ public interface RiotApi {
 	public default RateType getRateType() {
 		return RateType.PERSONAL;
 	}
+	
+	public Region getRegion();
+	
+	public ApiKey getApiKey();
 	
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
@@ -137,7 +165,7 @@ public interface RiotApi {
          * queried against or <code>null</code> if some network error occurred
          * @throws IOException
          */
-//        Observable<FeaturedGamesDto> getFeaturedGames(Region region);
+        Observable<FeaturedGamesDto> getFeaturedGames();
     }
 
     /**
@@ -155,12 +183,11 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region     the {@link Region}
          * @param summonerId player's summoner ID, See the {@link Summoner} interface for valid IDs.
          * @return {@link RecentGamesDto} for the given player or <code>null</code> if no data found
          * @throws IOException
          */
-//        Observable<RecentGamesDto> getRecentGames(Region region, long summonerId);
+        Observable<RecentGamesDto> getRecentGames(long summonerId);
     }
 
     /**
@@ -179,13 +206,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param summonerIds set of summoners to look up
          * @return a Map of summonerId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
          * @throws IOException
          */
-//        Observable<Map<String, LeagueDto[]>> getBySummonerEntry(Region region, long... summonerIds);
+        Observable<Map<String, LeagueDto[]>> getBySummonerEntry(long... summonerIds);
 
         /**
          * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br/>
@@ -197,13 +223,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param summonerIds set of summoners to look up
          * @return a Map of summonerId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
          * @throws IOException
          */
-//        Observable<Map<String, LeagueDto[]>> getBySummoner(Region region, long... summonerIds);
+        Observable<Map<String, LeagueDto[]>> getBySummoner(long... summonerIds);
 
         /**
          * /api/lol/{region}/v2.5/league/by-team/{teamIds}<br/>
@@ -215,13 +240,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region  the {@link Region}
          * @param teamIds set of teams to look up
          * @return a Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
          * @throws IOException
          */
-//        Observable<Map<String, LeagueDto[]>> getByTeam(Region region, String... teamIds);
+        Observable<Map<String, LeagueDto[]>> getByTeam(String... teamIds);
 
         /**
          * /api/lol/{region}/v2.5/league/by-team/{teamIds}/entry<br/>
@@ -233,13 +257,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region  the {@link Region}
          * @param teamIds set of teams to look up
          * @return a Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
          * @throws IOException
          */
-//        Observable<Map<String, LeagueDto[]>> getByTeamEntry(Region region, String... teamIds);
+        Observable<Map<String, LeagueDto[]>> getByTeamEntry(String... teamIds);
 
         /**
          * /api/lol/{region}/v2.5/league/challenger<br/>
@@ -251,12 +274,11 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region the {@link Region}
          * @param queue  the queue type to search for
          * @return a {@link LeagueDto} object with data
          * @throws IOException
          */
-//        Observable<LeagueDto> getChallenger(Region region, QueueType queue);
+        Observable<LeagueDto> getChallenger(QueueType queue);
 
         /**
          * /api/lol/{region}/v2.5/league/master<br/>
@@ -268,12 +290,11 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region the {@link Region}
          * @param queue  the queue type to search for
          * @return a {@link LeagueDto} object with data
          * @throws IOException
          */
-//        Observable<LeagueDto> getMaster(Region region, QueueType queue);
+        Observable<LeagueDto> getMaster(QueueType queue);
     }
 
     /**
@@ -300,7 +321,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region    the {@link Region}
          * @param version   patch to reference, <code>null</code> will use latest patch
          * @param locale    locale String (e.g. en_US) <code>null</code> will use default for region
          * @param champData Champ data tags to retrieve. Only id, key, name, and title are returned
@@ -309,7 +329,7 @@ public interface RiotApi {
          * if no champion could be found matching the given query
          * @throws IOException
          */
-//        Observable<ChampionListDto> getChampions(Region region, String version, String locale, ChampDataTag... champData);
+        Observable<ChampionListDto> getChampions(String version, String locale, ChampDataTag... champData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/champion/{id}<br/>
@@ -320,7 +340,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region    the {@link Region}
          * @param champId   the champion ID
          * @param version   patch to reference, <code>null</code> will use latest patch
          * @param locale    locale String (e.g. en_US) <code>null</code> will use default for region
@@ -330,7 +349,7 @@ public interface RiotApi {
          * if no champion could be found matching the given query
          * @throws IOException
          */
-//        Observable<ChampionDto> getChampion(Region region, long champId, String version, String locale, ChampDataTag... champData);
+        Observable<ChampionDto> getChampion(long champId, String version, String locale, ChampDataTag... champData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/item<br/>
@@ -340,7 +359,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region       the {@link Region}
          * @param version      patch to reference, <code>null</code> will use latest patch
          * @param locale       locale String (e.g. en_US) <code>null</code> will use default for region
          * @param itemListData Tags to return additional data. Only type, version, basic, data, id,
@@ -350,7 +368,7 @@ public interface RiotApi {
          * @return {@link ItemListDto} filled in
          * @throws IOException
          */
-//        Observable<ItemListDto> getItems(Region region, String version, String locale, ItemListDataTag... itemListData);
+        Observable<ItemListDto> getItems(String version, String locale, ItemListDataTag... itemListData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/item/{id}<br/>
@@ -361,7 +379,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region   the {@link Region}
          * @param itemId   item id to fetch
          * @param version  patch to reference, <code>null</code> will use latest patch
          * @param locale   locale String (e.g. en_US) <code>null</code> will use default for region
@@ -371,7 +388,7 @@ public interface RiotApi {
          * @return {@link ItemListDto} filled in according to itemListData
          * @throws IOException
          */
-//        Observable<ItemDto> getItem(Region region, long itemId, String version, String locale, ItemListDataTag... itemData);
+        Observable<ItemDto> getItem(long itemId, String version, String locale, ItemListDataTag... itemData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/language-strings<br/>
@@ -381,13 +398,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region  the {@link Region}
          * @param version patch to reference, <code>null</code> will use latest patch
          * @param locale  locale String (e.g. en_US) <code>null</code> will use default for region
          * @return {@link LanguageStringsDto}
          * @throws IOException
          */
-//        Observable<LanguageStringsDto> getLanguageStrings(Region region, String version, String locale);
+        Observable<LanguageStringsDto> getLanguageStrings(String version, String locale);
 
         /**
          * /api/lol/static-data/{region}/v1.2/languages<br/>
@@ -399,11 +415,10 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region the {@link Region}
          * @return String array of all supported locales
          * @throws IOException
          */
-//        Observable<String[]> getLocales(Region region);
+        Observable<String[]> getLocales();
 
         /**
          * /api/lol/static-data/{region}/v1.2/map<br/>
@@ -413,13 +428,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region  the {@link Region}
          * @param version patch to reference, <code>null</code> will use latest patch
          * @param locale  locale String (e.g. en_US) <code>null</code> will use default for region
          * @return {@link MapDataDto} object
          * @throws IOException
          */
-//        Observable<MapDataDto> getMap(Region region, String version, String locale);
+        Observable<MapDataDto> getMap(String version, String locale);
 
         /**
          * /api/lol/static-data/{region}/v1.2/mastery<br/>
@@ -429,7 +443,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region          the {@link Region}
          * @param version         patch to reference, <code>null</code> will use latest patch
          * @param locale          locale String (e.g. en_US) <code>null</code> will use default for region
          * @param masteryListData Tags to return additional data. Only type, version, data, id, name,
@@ -438,7 +451,7 @@ public interface RiotApi {
          * @return {@link MasteryListDto} filled in according to tags
          * @throws IOException
          */
-//        Observable<MasteryListDto> getMasteries(Region region, String version, String locale, MasteryListDataTag... masteryListData);
+        Observable<MasteryListDto> getMasteries(String version, String locale, MasteryListDataTag... masteryListData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/mastery/{id}<br/>
@@ -449,7 +462,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param version     patch to reference, <code>null</code> will use latest patch
          * @param locale      locale String (e.g. en_US) <code>null</code> will use default for region
          * @param masteryData Tags to return additional data. Only id, name, and description are
@@ -458,7 +470,7 @@ public interface RiotApi {
          * @return {@link MasteryListDto} filled in according to tags
          * @throws IOException
          */
-//        Observable<MasteryDto> getMastery(Region region, long id, String version, String locale, MasteryDataTag... masteryData);
+        Observable<MasteryDto> getMastery(long id, String version, String locale, MasteryDataTag... masteryData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/realm<br/>
@@ -468,11 +480,10 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region the {@link Region}
          * @return {@link RealmDto} object
          * @throws IOException
          */
-//        Observable<RealmDto> getRealm(Region region);
+        Observable<RealmDto> getRealm();
 
         /**
          * /api/lol/static-data/na/v1.2/rune<br/>
@@ -482,7 +493,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region       the {@link Region}
          * @param version      patch to reference, <code>null</code> will use latest patch
          * @param locale       locale String (e.g. en_US) <code>null</code> will use default for region
          * @param runeListData Tags to return additional data. Only type, version, data, id, name,
@@ -491,7 +501,7 @@ public interface RiotApi {
          * @return {@link RuneListDto} object filled in according to tags
          * @throws IOException
          */
-//        Observable<RuneListDto> getRunes(Region region, String version, String locale, RuneListDataTag... runeListData);
+        Observable<RuneListDto> getRunes(String version, String locale, RuneListDataTag... runeListData);
 
         /**
          * /api/lol/static-data/na/v1.2/rune/{id}<br/>
@@ -502,7 +512,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region   the {@link Region}
          * @param id       rune id to query
          * @param version  patch to reference, <code>null</code> will use latest patch
          * @param locale   locale String (e.g. en_US) <code>null</code> will use default for region
@@ -512,7 +521,7 @@ public interface RiotApi {
          * @return {@link RuneListDto} object filled in according to tags
          * @throws IOException
          */
-//        Observable<RuneDto> getRune(Region region, long id, String version, String locale, RuneDataTag... runeData);
+        Observable<RuneDto> getRune(long id, String version, String locale, RuneDataTag... runeData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/summoner-spell<br/>
@@ -522,7 +531,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region    the {@link Region}
          * @param dataById  If specified as true, the returned data map will use the spells' IDs as
          *                  the keys. If not specified or specified as false,
          *                  the returned data map will use the spells' keys instead.
@@ -534,7 +542,7 @@ public interface RiotApi {
          * @return {@link SummonerSpellListDto} object filled in according to tags
          * @throws IOException
          */
-//        Observable<SummonerSpellListDto> getSummonerSpells(Region region, boolean dataById, String version, String locale, SpellDataTag... spellData);
+        Observable<SummonerSpellListDto> getSummonerSpells(boolean dataById, String version, String locale, SpellDataTag... spellData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/summoner-spell/{id}<br/>
@@ -545,7 +553,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region    the {@link Region}
          * @param id        summoner spell ID
          * @param version   patch to reference, <code>null</code> will use latest patch
          * @param locale    locale String (e.g. en_US) <code>null</code> will use default for region
@@ -555,7 +562,7 @@ public interface RiotApi {
          * @return {@link SummonerSpellDto} object filled in according to tags
          * @throws IOException
          */
-//        Observable<SummonerSpellDto> getSummonerSpell(Region region, long id, String version, String locale, SpellDataTag... spellData);
+        Observable<SummonerSpellDto> getSummonerSpell(long id, String version, String locale, SpellDataTag... spellData);
 
         /**
          * /api/lol/static-data/{region}/v1.2/versions<br/>
@@ -568,7 +575,7 @@ public interface RiotApi {
          * at [length - 1]
          * @throws IOException
          */
-//        Observable<String[]> getVersions(Region region);
+        Observable<String[]> getVersions();
     }
 
     /**
@@ -587,7 +594,7 @@ public interface RiotApi {
          * @return Array of {@link Shard} statuses
          * @throws IOException
          */
-//        Observable<Shard[]> getShards(Region region);
+        Observable<Shard[]> getShards();
 
         /**
          * /shards/{region}<br/>
@@ -596,11 +603,10 @@ public interface RiotApi {
          * <br/>
          * 403	Forbidden
          *
-         * @param region the {@link Region} to query against
          * @return a {@link ShardStatus} for the specified {@link Region}
          * @throws IOException
          */
-//        Observable<ShardStatus> getShard(Region region);
+        Observable<ShardStatus> getShard();
     }
 
     /**
@@ -619,14 +625,13 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region          the {@link Region}
          * @param matchId         see {@link MatchList} interface to get valid match IDs
          * @param includeTimeline Attempt to include timeline data. Not all matches have timeline
          *                        data associated with them.
          * @return a {@link MatchDetail}
          * @throws IOException
          */
-//        Observable<MatchDetail> getMatch(Region region, long matchId, boolean includeTimeline);
+        Observable<MatchDetail> getMatch(long matchId, boolean includeTimeline);
     }
 
     /**
@@ -721,7 +726,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region        the {@link Region}
          * @param summonerNames array of String names
          * @return Map of encoded names (name with all lowercase and spaces trimmed) to
          * {@link SummonerDto}
@@ -739,7 +743,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
          * @throws IOException
@@ -756,7 +759,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
          * @throws IOException
@@ -773,7 +775,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
          * @throws IOException
@@ -790,7 +791,6 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param region      the {@link Region}
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
          * @throws IOException

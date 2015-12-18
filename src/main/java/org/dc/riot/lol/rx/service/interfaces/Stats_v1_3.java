@@ -17,16 +17,12 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-class Stats_v1_3 implements RiotApi.Stats {
-	
-	private Region region;
-	private ApiKey apiKey;
+class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 	
 	private Interface inter;
 
-	public Stats_v1_3(ApiKey apiKey, Region region, OkHttpClient client) {
-		this.apiKey = apiKey;
-		this.region = region;
+	Stats_v1_3(ApiKey apiKey, Region region, OkHttpClient client) {
+		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")

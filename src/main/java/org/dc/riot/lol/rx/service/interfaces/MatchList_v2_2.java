@@ -17,7 +17,7 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-class MatchList_v2_2 implements RiotApi.MatchList {
+class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 	
 	private ApiKey apiKey;
 	private Region region;
@@ -25,8 +25,7 @@ class MatchList_v2_2 implements RiotApi.MatchList {
 	private Interface inter;
 	
 	MatchList_v2_2(ApiKey apiKey, Region region, OkHttpClient client) {
-		this.apiKey = apiKey;
-		this.region = region;
+		super(apiKey, region);
 		
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")

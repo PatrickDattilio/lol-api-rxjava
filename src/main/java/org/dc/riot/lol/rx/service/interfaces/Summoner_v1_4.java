@@ -20,16 +20,12 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
-class Summoner_v1_4 implements RiotApi.Summoner {
-	
-	private Region region;
-	private ApiKey apiKey;
+class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	
 	private Interface inter;
 	
 	Summoner_v1_4(ApiKey apiKey, Region region, OkHttpClient client) {
-		this.region = region;
-		this.apiKey = apiKey;
+		super(apiKey, region);
 		
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
