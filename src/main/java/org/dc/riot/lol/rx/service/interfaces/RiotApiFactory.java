@@ -88,14 +88,14 @@ public final class RiotApiFactory {
         }
     }
 
-//    public RiotApi.CurrentGame newCurrentGameInterface(String apiKey) {
-//        if (currentGameVersion >= 1.0f) {
-//            return new ImplCurrentGame_v1_0(apiKey);
-//        } else {
-//            throw new InvalidVersionException("Lowest supported CurrentGame version is 1.0");
-//        }
-//    }
-//
+    public RiotApi.CurrentGame newCurrentGameInterface(ApiKey apiKey, Region region) {
+        if (currentGameVersion >= 1.0f) {
+            return new CurrentGame_v1_0(apiKey, region, client);
+        } else {
+            throw new InvalidVersionException("Lowest supported CurrentGame version is 1.0");
+        }
+    }
+
 //    public RiotApi.FeaturedGames newFeaturedGamesInterface(String apiKey) {
 //        if (featuredGamesVersion >= 1.0f) {
 //            return new ImplFeaturedGames_v1_0(apiKey);

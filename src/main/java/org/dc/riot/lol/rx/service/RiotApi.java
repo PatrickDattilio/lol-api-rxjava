@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.dc.riot.lol.rx.model.ChampionDto;
 import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.CurrentGameInfo;
 import org.dc.riot.lol.rx.model.LeagueDto;
 import org.dc.riot.lol.rx.model.LeagueEntryDto;
 import org.dc.riot.lol.rx.model.MasteryPagesDto;
@@ -114,12 +115,11 @@ public interface RiotApi {
          * 403	Forbidden<br/>
          * 429	Rate limit exceeded
          *
-         * @param region     the {@link Region}
          * @param summonerId summoner id number
          * @return {@link CurrentGameInfo} object
          * @throws IOException
          */
-//        Observable<CurrentGameInfo> getSpectatorInfo(Region region, long summonerId);
+        Observable<CurrentGameInfo> getSpectatorInfo(long summonerId);
     }
 
     /**

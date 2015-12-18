@@ -47,8 +47,6 @@ class RiotApiSemaphore {
 			tickets[i] = buckets.get(i).take();
 		}
 		
-		System.out.println(Thread.currentThread() + " TAKE");
-
 		return tickets;
 	}
 
@@ -58,7 +56,6 @@ class RiotApiSemaphore {
 	 * @param tickets
 	 */
 	public void put(Ticket... tickets) throws InterruptedException {
-		System.out.println(Thread.currentThread() + " PUT");
 		for (Ticket t : tickets) {
 			for (Bucket b : buckets) {
 				if (b.put(t)) {
