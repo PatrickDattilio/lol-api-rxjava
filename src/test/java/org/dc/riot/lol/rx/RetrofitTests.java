@@ -5,28 +5,28 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.GameDto;
+import org.dc.riot.lol.rx.model.RecentGamesDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
+import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiRateRule;
 import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
+import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 import rx.Observable;
-import rx.Observable.OnSubscribe;
 import rx.Scheduler;
-import rx.Subscriber;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -35,33 +35,37 @@ public class RetrofitTests {
 	private Scheduler scheduler;
 	private ApiKey apiKey;
 	private RiotApiRateRule[] rules;
+	private Region region;
+	private Debug debug;
 	
 	@Before
 	public void setup() {
 		apiKey = ApiKey.getFirstDevelopmentKey();
 		rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
 		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
+		region = Region.NORTH_AMERICA;
+		debug = Debug.getInstance();
+		debug.setDebug(true);
 	}
 	
 	private int testManualObservablesCount = 0;
-	private boolean testManualObservablesFailed = true;
+	private boolean testManualObservablesFailed = false;
 	@Test
 	public void testManualObservables() throws InterruptedException {
-		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss.sss");
 		final int gets = 501;
 
 		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
 		final CountDownLatch lock = new CountDownLatch(gets);
 		final Object printLock = new Object();
 		
-		RiotApi.Champion champInterface = factory.newChampionInterface(apiKey, Region.NORTH_AMERICA);
+		RiotApi.Champion champInterface = factory.newChampionInterface(apiKey, region);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<gets; i++) {
 			Observable<ChampionListDto> obs = champInterface.getChampions();
 			obs.subscribeOn(scheduler)
 			.subscribe((ChampionListDto dto) -> {
 				synchronized (printLock) {
-					System.out.println(sdf.format(new Date(System.currentTimeMillis())) + "  " + ++testManualObservablesCount);
+					debug.println(++testManualObservablesCount);
 				}
 			},
 			(Throwable e) -> {
@@ -84,6 +88,67 @@ public class RetrofitTests {
 		assertTrue(elapsedTime > TimeUnit.MINUTES.toMillis(10));
 		assertTrue(elapsedTime < TimeUnit.MINUTES.toMillis(10) + TimeUnit.SECONDS.toMillis(5));
 	}
+	
+	@Test
+	public void testRetrofitChainedObservables() throws InterruptedException {
+		final int gets = 11;
+
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		final CountDownLatch lock = new CountDownLatch(gets);
+		final Object printLock = new Object();
+		
+		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, region);
+		RiotApi.RecentGames recentGameInterface = factory.newRecentGamesInterface(apiKey, region);
+		long startTime = System.currentTimeMillis();
+		for (int i=0; i<gets; i++) {
+			Observable<Map<String,SummonerDto>> obs = summonerInterface.getByNames("HuskarDc");
+			obs.flatMap((Map<String,SummonerDto> t) -> {
+				Collection<SummonerDto> summoners = t.values();
+				SummonerDto[] array = new SummonerDto[summoners.size()];
+				summoners.toArray(array);
+				return Observable.from(array);
+			})
+			.map((SummonerDto d) -> {
+				long id = d.getId();
+				return recentGameInterface.getRecentGames(id);
+			})
+			.flatMap((Observable<RecentGamesDto> o) -> {
+				return o;
+			})
+			.subscribeOn(scheduler)
+			.subscribe((RecentGamesDto t) -> {
+				synchronized (printLock) {
+					debug.println(++testManualObservablesCount + " " + Thread.currentThread().getName());
+					for (GameDto d : t.getGames()) {
+						debug.println("\t" + d.getFellowPlayers().size());
+					}
+				}
+			},
+			(Throwable e) -> {
+				if (e instanceof HttpException) {
+					HttpException he = (HttpException) e;
+					debug.println("Error: " + he.getCode());
+				} else {
+					e.printStackTrace();
+				}
+				
+				testManualObservablesFailed = true;
+				for (int j=0; j<gets; j++) {
+					lock.countDown();
+				}
+			},
+			() -> {
+				lock.countDown();
+			});
+		}
+		
+		lock.await();
+		long endTime = System.currentTimeMillis();
+		long elapsedTime = endTime - startTime;
+		assertFalse(testManualObservablesFailed);
+		assertTrue(elapsedTime > TimeUnit.MINUTES.toMillis(20));
+		assertTrue(elapsedTime < TimeUnit.MINUTES.toMillis(10) + TimeUnit.SECONDS.toMillis(5));
+	}
 
 	@Test
 	public void testRetrofitInterfaceExtensions() throws IOException, InterruptedException {
@@ -95,7 +160,7 @@ public class RetrofitTests {
 		
 		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
 		for (int i=0; i<gets; i++) {
-			System.out.println("Observable count: " + i);
+			debug.println("Observable count: " + i);
 			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames(names);
 			assertNotNull(rawStream);
 
@@ -109,21 +174,21 @@ public class RetrofitTests {
 			})
 			.subscribe(
 				(SummonerDto dto) -> {
-					System.out.println(dto.getId() + " : " + dto.getName());
+					debug.println(dto.getId() + " : " + dto.getName());
 				},
 				(Throwable e) -> {
 					e.printStackTrace();
 				},
 				() -> {
-					System.out.println("Done");
+					debug.println("Done");
 					lock.countDown();
 				}
 			);
 		}
 		
-		System.out.println("All streams posted");
+		debug.println("All streams posted");
 		lock.await();
-		System.out.println("Main thread complete");
+		debug.println("Main thread complete");
 	}
 	
 }

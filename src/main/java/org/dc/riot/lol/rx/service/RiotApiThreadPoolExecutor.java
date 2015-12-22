@@ -16,52 +16,52 @@ public class RiotApiThreadPoolExecutor extends ThreadPoolExecutor {
     private RiotApiSemaphore semaphore;
     
     private boolean running = false;
-    private ArrayBlockingQueue<Runnable> taskQueue;
-    private Thread managerThread = new Thread(() -> {
-    	try {
-    		while (running) { 
-    			Runnable r = taskQueue.take();
-    			RiotApiThreadPoolExecutor.super.execute(r);
-    		}
-    	} catch (InterruptedException e) {
-    		Thread.currentThread().interrupt();
-    	}
-    });
+//    private ArrayBlockingQueue<Runnable> taskQueue;
+//    private Thread managerThread = new Thread(() -> {
+//    	try {
+//    		while (running) { 
+//    			Runnable r = taskQueue.take();
+//    			RiotApiThreadPoolExecutor.super.execute(r);
+//    		}
+//    	} catch (InterruptedException e) {
+//    		Thread.currentThread().interrupt();
+//    	}
+//    });
 
 	public RiotApiThreadPoolExecutor(RiotApiRateRule[] rules, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
 			BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
 		semaphore = new RiotApiSemaphore(rules);
-		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5, true);
-		running = true;
-		managerThread.start();
+//		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5, true);
+//		running = true;
+//		managerThread.start();
 	}
 
 	public RiotApiThreadPoolExecutor(RiotApiRateRule[] rules, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
 			BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
 		semaphore = new RiotApiSemaphore(rules);
-		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5);
-		running = true;
-		managerThread.start();
+//		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5);
+//		running = true;
+//		managerThread.start();
 	}
 
 	public RiotApiThreadPoolExecutor(RiotApiRateRule[] rules, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
 			BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
 		semaphore = new RiotApiSemaphore(rules);
-		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5);
-		running = true;
-		managerThread.start();
+//		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5);
+//		running = true;
+//		managerThread.start();
 	}
 
 	public RiotApiThreadPoolExecutor(RiotApiRateRule[] rules, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
 			BlockingQueue<Runnable> workQueue) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 		semaphore = new RiotApiSemaphore(rules);
-		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5);
-		running = true;
-		managerThread.start();
+//		taskQueue = new ArrayBlockingQueue<>(maximumPoolSize * 5);
+//		running = true;
+//		managerThread.start();
 	}
 	
 	@Override
@@ -76,7 +76,8 @@ public class RiotApiThreadPoolExecutor extends ThreadPoolExecutor {
 
 	@Override
 	public void execute(Runnable command) {
-		try { taskQueue.put(command); } catch (InterruptedException e) { e.printStackTrace(); }
+		super.execute(command);
+//		try { taskQueue.put(command); } catch (InterruptedException e) { e.printStackTrace(); }
 	}
 
 	@Override
@@ -131,13 +132,13 @@ public class RiotApiThreadPoolExecutor extends ThreadPoolExecutor {
 	
 	@Override
 	public void shutdown() {
-		managerThread.interrupt();
+//		managerThread.interrupt();
 		super.shutdown();
 	}
 	
 	@Override
 	public List<Runnable> shutdownNow() {
-		managerThread.interrupt();
+//		managerThread.interrupt();
 		return super.shutdownNow();
 	}
 

@@ -6,6 +6,7 @@ import java.net.Proxy;
 import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
+import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.InvalidVersionException;
 
@@ -75,6 +76,7 @@ public final class RiotApiFactory {
 
     private RiotApiFactory() {
     	client = new OkHttpClient();
+    	client.interceptors().add(Debug.getInstance());
     }
 
     public RiotApi.Champion newChampionInterface(ApiKey apiKey, Region region) {
