@@ -53,7 +53,13 @@ public final class RiotApiFactory {
     }
 
     public static RiotApiFactory getDefaultFactory() {
-        return new Builder().build();
+    	return getDefaultFactory(null);
+    }
+    
+    public static RiotApiFactory getDefaultFactory(RiotApiTicketBucket bucket) {
+    	return new Builder()
+    			.setTicketBucket(bucket)
+    			.build();
     }
     
     private final OkHttpClient client;

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.dc.riot.lol.rx.model.ChampionListDto;
@@ -19,6 +20,7 @@ import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiRateRule;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
@@ -27,6 +29,7 @@ import org.junit.Test;
 import rx.Observable;
 import rx.Scheduler;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
 	
@@ -43,6 +46,7 @@ public class RetrofitTests {
 		region = Region.NORTH_AMERICA;
 		debug = Debug.getInstance();
 		debug.setDebug(true);
+		scheduler = Schedulers.from(Executors.newCachedThreadPool());
 	}
 	
 	private int testManualObservablesCount = 0;
@@ -51,7 +55,7 @@ public class RetrofitTests {
 	public void testManualObservables() throws InterruptedException {
 		final int gets = 501;
 
-		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory(new RiotApiTicketBucket(rules));
 		final CountDownLatch lock = new CountDownLatch(gets);
 		final Object printLock = new Object();
 		
@@ -90,7 +94,7 @@ public class RetrofitTests {
 	public void testRetrofitChainedObservables() throws InterruptedException {
 		final int gets = 11;
 
-		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory(new RiotApiTicketBucket(rules));
 		final CountDownLatch lock = new CountDownLatch(gets);
 		final Object printLock = new Object();
 		
@@ -112,7 +116,6 @@ public class RetrofitTests {
 			.flatMap((Observable<RecentGamesDto> o) -> {
 				return o;
 			})
-			.subscribeOn(scheduler)
 			.subscribe((RecentGamesDto t) -> {
 				synchronized (printLock) {
 					debug.println(++testManualObservablesCount + " " + Thread.currentThread().getName());
