@@ -37,18 +37,35 @@ public class ApiKey {
 
     private final String key;
     private final KeyType type;
+    private final RiotApiRateRule[] rules;
 
-    private ApiKey(String key, KeyType type) {
+    public ApiKey(String key, RiotApiRateRule... rules) {
+    	this.rules = rules;
         this.key = key;
-        this.type = type;
+        this.type = KeyType.CUSTOM;
     }
 
-    public boolean isDevelopmentKey() {
-        return type == KeyType.DEVELOPMENT;
+    public ApiKey(String key, KeyType type) {
+        this.key = key;
+        this.type = type;
+        switch (type) {
+        case DEVELOPMENT:
+        	this.rules = RiotApiRateRule.getDevelopmentRates();
+        	break;
+        case PRODUCTION:
+        	this.rules = RiotApiRateRule.getProductionRates();
+        	break;
+		default:
+			throw new IllegalArgumentException("Unable to get rules from KeyType." + type);
+        }
     }
 
     public KeyType getKeyType() {
         return type;
+    }
+    
+    public RiotApiRateRule[] getRules() {
+    	return rules;
     }
 
     @Override
@@ -72,13 +89,8 @@ public class ApiKey {
                 }
 
                 String key = line.trim();
-                boolean isDev = Boolean.valueOf(scanner.nextLine().trim());
-                KeyType type;
-                if (isDev) {
-                    type = KeyType.DEVELOPMENT;
-                } else {
-                    type = KeyType.PRODUCTION;
-                }
+                String keyTypeString = scanner.nextLine().trim();
+                KeyType type = KeyType.valueOf(keyTypeString);
 
                 keys.add(new ApiKey(key, type));
             }
@@ -91,20 +103,5 @@ public class ApiKey {
         }
 
         return keys.toArray(new ApiKey[keys.size()]);
-    }
-    
-    /**
-     * 
-     * @return the first development key in the API_KEY file
-     */
-    public static ApiKey getFirstDevelopmentKey() {
-    	ApiKey[] keys = getApiKeys();
-    	for (ApiKey key : keys) {
-    		if (key.isDevelopmentKey()) {
-    			return key;
-    		}
-    	}
-    	
-    	return null;
     }
 }

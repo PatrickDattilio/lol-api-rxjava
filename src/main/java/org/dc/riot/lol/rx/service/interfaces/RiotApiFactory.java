@@ -8,6 +8,7 @@ import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApiHttpThrottle;
 import org.dc.riot.lol.rx.service.error.InvalidVersionException;
 
 import com.google.gson.Gson;
@@ -55,7 +56,12 @@ public final class RiotApiFactory {
         return new Builder().build();
     }
     
+    public static RiotApiFactory getDefaultFactory(RiotApiHttpThrottle throttle) {
+    	return new Builder().setThrottle(throttle).build();
+    }
+    
     private final OkHttpClient client;
+    private RiotApiHttpThrottle throttle = null;
 
     private float champVersion;
     private float currentGameVersion;
@@ -77,6 +83,10 @@ public final class RiotApiFactory {
     private RiotApiFactory() {
     	client = new OkHttpClient();
     	client.interceptors().add(Debug.getInstance());
+    	if (throttle != null) {
+    		throttle.start();
+    		client.interceptors().add(throttle);
+    	}
     }
 
     public RiotApi.Champion newChampionInterface(ApiKey apiKey, Region region) {
@@ -192,6 +202,7 @@ public final class RiotApiFactory {
         private float summonerVersion = 1.4f;       // baseline Summoner version
         private float teamVersion = 2.4f;           // baseline Team version
         private Proxy proxy = null;
+        private RiotApiHttpThrottle throttle = null;
 
         public Builder setChampionVersion(float champVersion) {
             this.champVersion = champVersion;
@@ -257,6 +268,11 @@ public final class RiotApiFactory {
         	this.proxy = proxy;
         	return this;
         }
+        
+        public Builder setThrottle(RiotApiHttpThrottle throttle) {
+        	this.throttle = throttle;
+        	return this;
+        }
 
         public RiotApiFactory build() {
             RiotApiFactory factory = new RiotApiFactory();
@@ -273,6 +289,7 @@ public final class RiotApiFactory {
             factory.summonerVersion = summonerVersion;
             factory.teamVersion = teamVersion;
             factory.client.setProxy(proxy);
+            factory.throttle = throttle;
             return factory;
         }
     }

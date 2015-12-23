@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.dc.riot.lol.rx.model.ChampionListDto;
@@ -18,8 +19,6 @@ import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
-import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
@@ -34,15 +33,13 @@ public class RetrofitTests {
 	
 	private Scheduler scheduler;
 	private ApiKey apiKey;
-	private RiotApiRateRule[] rules;
 	private Region region;
 	private Debug debug;
 	
 	@Before
 	public void setup() {
-		apiKey = ApiKey.getFirstDevelopmentKey();
-		rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
-		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
+		apiKey = ApiKey.getApiKeys()[0];
+		scheduler = Schedulers.from(Executors.newCachedThreadPool());
 		region = Region.NORTH_AMERICA;
 		debug = Debug.getInstance();
 		debug.setDebug(true);

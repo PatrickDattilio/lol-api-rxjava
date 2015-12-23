@@ -1,10 +1,15 @@
 package org.dc.riot.lol.rx.service;
 
-import org.dc.riot.lol.rx.service.RiotApiSemaphore.Ticket;
+import org.dc.riot.lol.rx.service.RiotApiTokenBucket.Token;
 
+/**
+ * 
+ * @author Dc
+ * @deprecated
+ */
 class TicketedThread extends Thread {
 	
-	private Ticket[] tickets = null;
+	private Token[] tickets = null;
 	
 	public TicketedThread() {
 		super();
@@ -38,19 +43,19 @@ class TicketedThread extends Thread {
 		super(group, name);
 	}
 
-	void setTickets(Ticket... tickets) {
+	void setTickets(Token... tickets) {
 		if (tickets == null) {
-			throw new IllegalArgumentException("Tickets can't be null");
+			throw new IllegalArgumentException("Tokens can't be null");
 		}
 
 		if (this.tickets == null) {
 			this.tickets = tickets;
 		} else {
-			throw new IllegalStateException("Cannot set already defined Tickets w/o first clearing");
+			throw new IllegalStateException("Cannot set already defined Tokens w/o first clearing");
 		}
 	}
 	
-	Ticket[] getTickets() {
+	Token[] getTickets() {
 		return this.tickets;
 	}
 	
@@ -66,7 +71,7 @@ class TicketedThread extends Thread {
 	public String toString() {
 		String suffix = "";
 		if (this.tickets != null) {
-			for (Ticket t : this.tickets) {
+			for (Token t : this.tickets) {
 				suffix += " " + t.toString();
 			}
 		}

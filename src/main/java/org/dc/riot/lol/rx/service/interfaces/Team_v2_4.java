@@ -5,7 +5,6 @@ import java.util.Map;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.TeamDto;
 import org.dc.riot.lol.rx.service.ApiKey;
-import org.dc.riot.lol.rx.service.CommaSeparatedArray;
 import org.dc.riot.lol.rx.service.RiotApi;
 
 import com.squareup.okhttp.OkHttpClient;

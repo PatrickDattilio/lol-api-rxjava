@@ -1,6 +1,6 @@
-package org.dc.riot.lol.rx.service;
+package org.dc.riot.lol.rx.service.interfaces;
 
-public class CommaSeparatedArray {
+class CommaSeparatedArray {
 	
 	private String[] array;
 	

@@ -4,10 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,13 +17,11 @@ import rx.schedulers.Schedulers;
 
 public class ObservableTest {
 
-	private RiotApiRateRule[] rules;
 	private Scheduler scheduler;
 
 	@Before
 	public void setup() {
-		rules = RiotApiRateRule.getDevelopmentRates();
-		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
+		scheduler = Schedulers.from(Executors.newCachedThreadPool());
 	}
 
 	@Test
