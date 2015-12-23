@@ -5,6 +5,7 @@ import org.dc.riot.lol.rx.model.PlatformId;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -34,9 +35,13 @@ public class CurrentGame_v1_0 extends RiotApiBase implements RiotApi.CurrentGame
 
 	@Override
 	public Observable<CurrentGameInfo> getSpectatorInfo(long summonerId) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getSpectatorInfo(PlatformId.from(region), summonerId, apiKey);
-		});
+		return RetroRxCaller.makeObservable(new RetroRxCaller<CurrentGameInfo>() {
+			@Override
+			public Call<CurrentGameInfo> call(RiotApiTicketBucket ticketHolder) {
+				return inter.getSpectatorInfo(PlatformId.from(region), summonerId, apiKey);
+			}
+		},
+		getTicketBucket());
 	}
 	
 	private interface Interface {

@@ -1,13 +1,16 @@
-package org.dc.riot.lol.rx;
+package org.dc.riot.lol.rx.service;
 
 import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket.Ticket;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,16 +23,20 @@ public class ObservableTest {
 
 	private RiotApiRateRule[] rules;
 	private Scheduler scheduler;
+	private Debug debug;
+	private RiotApiTicketBucket bucket;
 
 	@Before
 	public void setup() {
 		rules = RiotApiRateRule.getDevelopmentRates();
-		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
+		scheduler = Schedulers.from(Executors.newCachedThreadPool());
+		debug = Debug.getInstance();
+		bucket = new RiotApiTicketBucket(rules);
 	}
 
 	@Test
 	public void testObservableMultipleSingleEmitters() throws InterruptedException {
-		final int trials = 3;
+		final int trials = 501;
 		final CountDownLatch lock = new CountDownLatch(trials);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<trials; i++) {
@@ -37,7 +44,9 @@ public class ObservableTest {
 			Observable.create((Subscriber<? super String> t) -> {
 //				new Thread(() -> {
 					try {
-						System.out.println("SUB " + observable + " -> " + Thread.currentThread());
+						Ticket[] tickets = bucket.take();
+						debug.println("SUB " + observable + " -> " + Thread.currentThread());
+						bucket.put(tickets);
 						Thread.sleep(40);
 						String s = UUID.randomUUID().toString();
 						t.onNext(s);
@@ -98,8 +107,8 @@ public class ObservableTest {
 			lock.countDown();
 			System.out.println(s + "   " + Thread.currentThread());
 		},
-				(Throwable t) -> t.printStackTrace(),
-				() -> System.out.println("Done"));
+		(Throwable t) -> t.printStackTrace(),
+		() -> System.out.println("Done"));
 
 		lock.await();
 	}

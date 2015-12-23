@@ -7,6 +7,7 @@ import org.dc.riot.lol.rx.model.TeamDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.CommaSeparatedArray;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -36,16 +37,24 @@ class Team_v2_4 extends RiotApiBase implements RiotApi.Team {
 
 	@Override
 	public Observable<Map<String,TeamDto[]>> getTeamsBySummoners(long... summonerIds) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getTeamsBySummoners(region, new CommaSeparatedArray(summonerIds), apiKey);
-		});
+		return RetroRxCaller.makeObservable(new RetroRxCaller<Map<String,TeamDto[]>>() {
+			@Override
+			public Call<Map<String, TeamDto[]>> call(RiotApiTicketBucket ticketHolder) {
+				return inter.getTeamsBySummoners(region, new CommaSeparatedArray(summonerIds), apiKey);
+			}
+		},
+		getTicketBucket());
 	}
 
 	@Override
 	public Observable<Map<String,TeamDto>> getTeams(String... teamIds) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getTeams(region, new CommaSeparatedArray(teamIds), apiKey);
-		});
+		return RetroRxCaller.makeObservable(new RetroRxCaller<Map<String,TeamDto>>() {
+			@Override
+			public Call<Map<String, TeamDto>> call(RiotApiTicketBucket ticketHolder) {
+				return inter.getTeams(region, new CommaSeparatedArray(teamIds), apiKey);
+			}
+		},
+		getTicketBucket());
 	}
 	
 	interface Interface {

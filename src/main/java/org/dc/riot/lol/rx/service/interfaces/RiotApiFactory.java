@@ -6,8 +6,9 @@ import java.net.Proxy;
 import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
-import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApi.RateType;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket;
 import org.dc.riot.lol.rx.service.error.InvalidVersionException;
 
 import com.google.gson.Gson;
@@ -56,7 +57,8 @@ public final class RiotApiFactory {
     }
     
     private final OkHttpClient client;
-
+    private RiotApiTicketBucket bucket = null;
+    
     private float champVersion;
     private float currentGameVersion;
     private float featuredGamesVersion;
@@ -76,103 +78,186 @@ public final class RiotApiFactory {
 
     private RiotApiFactory() {
     	client = new OkHttpClient();
-    	client.interceptors().add(Debug.getInstance());
     }
 
     public RiotApi.Champion newChampionInterface(ApiKey apiKey, Region region) {
+    	RiotApi.Champion api = null;
         if (champVersion >= 1.2) {
-            return new Champion_v1_2(apiKey, region, client);
+            api = new Champion_v1_2(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported Champion version is 1.2");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.CurrentGame newCurrentGameInterface(ApiKey apiKey, Region region) {
+    	RiotApi.CurrentGame api = null;
         if (currentGameVersion >= 1.0f) {
-            return new CurrentGame_v1_0(apiKey, region, client);
+            api = new CurrentGame_v1_0(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported CurrentGame version is 1.0");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.FeaturedGames newFeaturedGamesInterface(ApiKey apiKey, Region region) {
+    	RiotApi.FeaturedGames api = null;
         if (featuredGamesVersion >= 1.0f) {
-            return new FeaturedGames_v1_0(apiKey, region, client);
+            api = new FeaturedGames_v1_0(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported FeaturedGames version is 1.0");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.RecentGames newRecentGamesInterface(ApiKey apiKey, Region region) {
+    	RiotApi.RecentGames api = null;
         if (recentGamesVersion >= 1.3f) {
-            return new RecentGames_v1_3(apiKey, region, client);
+            api = new RecentGames_v1_3(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported RecentGames version is 1.3");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.League newLeagueInterface(ApiKey apiKey, Region region) {
+    	RiotApi.League api = null;
         if (leagueVersion >= 2.5) {
-            return new League_v2_5(apiKey, region, client);
+            api = new League_v2_5(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported League version is 2.5");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.StaticData newStaticDataInterface(ApiKey apiKey, Region region) {
+    	RiotApi.StaticData api = null;
         if (staticDataVersion >= 1.2) {
-            return new StaticData_v1_2(apiKey, region, client);
+            api = new StaticData_v1_2(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.Stats newStatsInterface(ApiKey apiKey, Region region) {
+    	RiotApi.Stats api = null;
     	if (statsVersion >= 1.3) {
-    		return new Stats_v1_3(apiKey, region, client);
+    		api = new Stats_v1_3(apiKey, region, client);
     	} else {
     		throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
     	}
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.LolStatus newStatusInterface(ApiKey apiKey, Region region) {
+    	RiotApi.LolStatus api = null;
         if (statusVersion >= 1.0f) {
-            return new LolStatus_v1_0(apiKey, region, client);
+            api = new LolStatus_v1_0(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported LolStatus version is 1.0");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.Match newMatchInterface(ApiKey apiKey, Region region) {
+    	RiotApi.Match api = null;
         if (matchVersion >= 2.2f) {
-            return new Match_v2_2(apiKey, region, client);
+            api = new Match_v2_2(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported Match version is 2.2");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.MatchList newMatchListInterface(ApiKey apiKey, Region region) {
+    	RiotApi.MatchList api = null;
         if (matchlistVersion >= 2.2) {
-            return new MatchList_v2_2(apiKey, region, client);
+            api = new MatchList_v2_2(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported MatchListDto version is 2.2");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.Summoner newSummonerInterface(ApiKey apiKey, Region region) {
+    	RiotApi.Summoner api = null;
         if (summonerVersion >= 1.4f) {
-        	return new Summoner_v1_4(apiKey, region, client);
+        	api = new Summoner_v1_4(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported Summoner version is 1.4");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     public RiotApi.Team newTeamInterface(ApiKey apiKey, Region region) {
+    	RiotApi.Team api = null;
         if (teamVersion >= 2.4f) {
-            return new Team_v2_4(apiKey, region, client);
+            api = new Team_v2_4(apiKey, region, client);
         } else {
             throw new InvalidVersionException("Lowest supported Team version is 2.4");
         }
+        
+        if (api.getRateType() == RateType.PERSONAL) {
+        	api.setTicketBucket(bucket);
+        }
+        
+        return api;
     }
 
     /**
@@ -192,6 +277,7 @@ public final class RiotApiFactory {
         private float summonerVersion = 1.4f;       // baseline Summoner version
         private float teamVersion = 2.4f;           // baseline Team version
         private Proxy proxy = null;
+        private RiotApiTicketBucket bucket = null;
 
         public Builder setChampionVersion(float champVersion) {
             this.champVersion = champVersion;
@@ -257,6 +343,11 @@ public final class RiotApiFactory {
         	this.proxy = proxy;
         	return this;
         }
+        
+        public Builder setTicketBucket(RiotApiTicketBucket bucket) {
+        	this.bucket = bucket;
+        	return this;
+        }
 
         public RiotApiFactory build() {
             RiotApiFactory factory = new RiotApiFactory();
@@ -273,6 +364,7 @@ public final class RiotApiFactory {
             factory.summonerVersion = summonerVersion;
             factory.teamVersion = teamVersion;
             factory.client.setProxy(proxy);
+            factory.bucket = bucket;
             return factory;
         }
     }

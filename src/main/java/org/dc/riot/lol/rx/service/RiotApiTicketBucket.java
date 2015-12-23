@@ -10,12 +10,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-class RiotApiSemaphore {
+public class RiotApiTicketBucket {
 
 	private int buffer = 750;
 	private ArrayList<Bucket> buckets;
 
-	RiotApiSemaphore(RiotApiRateRule... rules) {
+	RiotApiTicketBucket(RiotApiRateRule... rules) {
 		buckets = new ArrayList<>(rules.length);
 		for (int i=0; i<rules.length; i++) {
 			buckets.add(new Bucket(rules[i]));
@@ -51,7 +51,7 @@ class RiotApiSemaphore {
 	}
 
 	/**
-	 * Return a set of {@link Ticket} to the appropriate {@link Bucket}(s)
+	 * Return a set of {@link Ticket}(s) to the appropriate {@link Bucket}(s)
 	 * 
 	 * @param tickets
 	 */
@@ -165,7 +165,7 @@ class RiotApiSemaphore {
 	 * 
 	 * @author Dc
 	 */
-	static class Ticket {
+	public static class Ticket {
 		private UUID name = UUID.randomUUID();
 		private int index = -1;
 		private UUID parentName;

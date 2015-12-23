@@ -19,7 +19,6 @@ import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
@@ -28,7 +27,6 @@ import org.junit.Test;
 import rx.Observable;
 import rx.Scheduler;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
 	
@@ -40,9 +38,8 @@ public class RetrofitTests {
 	
 	@Before
 	public void setup() {
-		apiKey = ApiKey.getFirstDevelopmentKey();
-		rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
-		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
+		apiKey = ApiKey.getApiKeys()[0];
+		rules = apiKey.getRateRules();
 		region = Region.NORTH_AMERICA;
 		debug = Debug.getInstance();
 		debug.setDebug(true);
@@ -61,7 +58,7 @@ public class RetrofitTests {
 		RiotApi.Champion champInterface = factory.newChampionInterface(apiKey, region);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<gets; i++) {
-			Observable<ChampionListDto> obs = champInterface.getChampions();
+			Observable<ChampionListDto> obs = champInterface.getChampions(false);
 			obs.subscribeOn(scheduler)
 			.subscribe((ChampionListDto dto) -> {
 				synchronized (printLock) {

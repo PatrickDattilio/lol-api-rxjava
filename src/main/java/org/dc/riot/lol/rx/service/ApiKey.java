@@ -37,18 +37,35 @@ public class ApiKey {
 
     private final String key;
     private final KeyType type;
+    private final RiotApiRateRule[] rules;
 
-    private ApiKey(String key, KeyType type) {
+    public ApiKey(String key, KeyType type) {
         this.key = key;
         this.type = type;
+        switch (type) {
+        case DEVELOPMENT:
+        	this.rules = RiotApiRateRule.getDevelopmentRates();
+        break;
+        case PRODUCTION:
+        	this.rules = RiotApiRateRule.getProductionRates();
+        	break;
+		default:
+			throw new IllegalArgumentException("Unable to generate rate rules from KeyType." + type);
+        }
     }
-
-    public boolean isDevelopmentKey() {
-        return type == KeyType.DEVELOPMENT;
+    
+    public ApiKey(String key, RiotApiRateRule... rules) {
+    	this.key = key;
+    	this.type = KeyType.CUSTOM;
+    	this.rules = rules;
     }
 
     public KeyType getKeyType() {
         return type;
+    }
+    
+    public RiotApiRateRule[] getRateRules() {
+    	return rules;
     }
 
     @Override
@@ -91,20 +108,5 @@ public class ApiKey {
         }
 
         return keys.toArray(new ApiKey[keys.size()]);
-    }
-    
-    /**
-     * 
-     * @return the first development key in the API_KEY file
-     */
-    public static ApiKey getFirstDevelopmentKey() {
-    	ApiKey[] keys = getApiKeys();
-    	for (ApiKey key : keys) {
-    		if (key.isDevelopmentKey()) {
-    			return key;
-    		}
-    	}
-    	
-    	return null;
     }
 }

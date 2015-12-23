@@ -6,6 +6,7 @@ import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -39,9 +40,13 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 	@Override
 	public Observable<MatchListDto> getMatchList(long summonerId, long[] championIds,
 			RankedQueue[] rankedQueues, Season[] seasons, long beginTime, long endTime, int beginIndex, int endIndex) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getMatchList(region, summonerId, apiKey, championIds, rankedQueues, seasons, beginTime, endTime, beginIndex, endIndex);
-		});
+		return RetroRxCaller.makeObservable(new RetroRxCaller<MatchListDto>() {
+			@Override
+			public Call<MatchListDto> call(RiotApiTicketBucket ticketHolder) {
+				return inter.getMatchList(region, summonerId, apiKey, championIds, rankedQueues, seasons, beginTime, endTime, beginIndex, endIndex);
+			}
+		},
+		getTicketBucket());
 	}
 	
 	private interface Interface {

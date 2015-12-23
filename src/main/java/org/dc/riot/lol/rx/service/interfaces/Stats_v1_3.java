@@ -6,6 +6,7 @@ import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApiTicketBucket;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -35,16 +36,24 @@ class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 
 	@Override
 	public Observable<RankedStatsDto> getRanked(long summonerId, Season season) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getRanked(region, summonerId, season, apiKey);
-		});
+		return RetroRxCaller.makeObservable(new RetroRxCaller<RankedStatsDto>() {
+			@Override
+			public Call<RankedStatsDto> call(RiotApiTicketBucket ticketHolder) {
+				return inter.getRanked(region, summonerId, season, apiKey);
+			}
+		},
+		getTicketBucket());
 	}
 
 	@Override
 	public Observable<PlayerStatsSummaryListDto> getSummary(long summonerId, Season season) {
-		return RetroRxCaller.makeObservable(() -> {
-			 return inter.getSummary(region, summonerId, season, apiKey);
-		});
+		return RetroRxCaller.makeObservable(new RetroRxCaller<PlayerStatsSummaryListDto>() {
+			@Override
+			public Call<PlayerStatsSummaryListDto> call(RiotApiTicketBucket ticketHolder) {
+				 return inter.getSummary(region, summonerId, season, apiKey);
+			}
+		},
+		getTicketBucket());
 	}
 	
 	private interface Interface {

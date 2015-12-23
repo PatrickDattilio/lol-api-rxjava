@@ -9,6 +9,9 @@ import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+/**
+ * @author Dc
+ */
 public class Debug implements Interceptor {
 	
 	private static final Debug INSTANCE = new Debug();

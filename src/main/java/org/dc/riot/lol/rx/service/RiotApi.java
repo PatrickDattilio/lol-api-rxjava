@@ -82,24 +82,12 @@ public interface RiotApi {
 	
 	public ApiKey getApiKey();
 	
+	public void setTicketBucket(RiotApiTicketBucket bucket);
+	
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
      */
     public interface Champion extends RiotApi {
-
-        /**
-         * /api/lol/{region}/v1.2/champion<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
-         * 503	Service unavailable
-         *
-         * @return {@link ChampionListDto} same as <code>getChampions(false)</code>
-         * @throws IOException
-         */
-        Observable<ChampionListDto> getChampions();
 
         /**
          * /api/lol/{region}/v1.2/champion<br/>
