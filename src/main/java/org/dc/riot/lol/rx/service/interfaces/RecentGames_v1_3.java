@@ -51,17 +51,9 @@ class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 	 * @return {@link RecentGamesDto} for the given player or <code>null</code> if no data found
 	 * @throws IOException
 	 */
-    public Observable<RecentGamesDto> getRecentGames(long summonerId) {
-    	return Observable.create((Subscriber<? super RecentGamesDto> t) -> {
-    		try {
-    			Call<RecentGamesDto> call = inter.getRecentGames(region, summonerId, apiKey);
-    			Response<RecentGamesDto> response = call.execute();
-    			t.onNext(response.body());
-    			t.onCompleted();
-    		} catch (Exception e) {
-    			t.onError(e);
-    		}
-    	});
+    public RecentGamesDto getRecentGames(long summonerId) {
+    	// TODO implement
+    	return null;
     }
 
     private interface Interface {

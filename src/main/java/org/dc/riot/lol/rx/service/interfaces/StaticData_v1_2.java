@@ -28,7 +28,6 @@ import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
-import rx.Observable;
 
 // TODO unconventional base URL
 class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
@@ -61,95 +60,95 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 	}
 
 	@Override
-	public Observable<ChampionListDto> getChampions(String version, String locale,
+	public ChampionListDto getChampions(String version, String locale,
 			ChampDataTag... champData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<ChampionDto> getChampion(long champId, String version, String locale, ChampDataTag... champData) {
+	public ChampionDto getChampion(long champId, String version, String locale, ChampDataTag... champData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<ItemListDto> getItems(String version, String locale, ItemListDataTag... itemListData) {
+	public ItemListDto getItems(String version, String locale, ItemListDataTag... itemListData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<ItemDto> getItem(long itemId, String version, String locale, ItemListDataTag... itemData) {
+	public ItemDto getItem(long itemId, String version, String locale, ItemListDataTag... itemData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<LanguageStringsDto> getLanguageStrings(String version, String locale) {
+	public LanguageStringsDto getLanguageStrings(String version, String locale) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<String[]> getLocales() {
+	public String[] getLocales() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<MapDataDto> getMap(String version, String locale) {
+	public MapDataDto getMap(String version, String locale) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<MasteryListDto> getMasteries(String version, String locale,
+	public MasteryListDto getMasteries(String version, String locale,
 			MasteryListDataTag... masteryListData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<MasteryDto> getMastery(long id, String version, String locale, MasteryDataTag... masteryData) {
+	public MasteryDto getMastery(long id, String version, String locale, MasteryDataTag... masteryData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<RealmDto> getRealm() {
+	public RealmDto getRealm() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<RuneListDto> getRunes(String version, String locale, RuneListDataTag... runeListData) {
+	public RuneListDto getRunes(String version, String locale, RuneListDataTag... runeListData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<RuneDto> getRune(long id, String version, String locale, RuneDataTag... runeData) {
+	public RuneDto getRune(long id, String version, String locale, RuneDataTag... runeData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<SummonerSpellListDto> getSummonerSpells(boolean dataById, String version, String locale,
+	public SummonerSpellListDto getSummonerSpells(boolean dataById, String version, String locale,
 			SpellDataTag... spellData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<SummonerSpellDto> getSummonerSpell(long id, String version, String locale,
+	public SummonerSpellDto getSummonerSpell(long id, String version, String locale,
 			SpellDataTag... spellData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<String[]> getVersions() {
+	public String[] getVersions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

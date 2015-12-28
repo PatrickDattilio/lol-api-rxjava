@@ -7,8 +7,6 @@ import org.dc.riot.lol.rx.service.RiotApi;
 
 import com.squareup.okhttp.OkHttpClient;
 
-import rx.Observable;
-
 class FeaturedGames_v1_0 extends RiotApiBase implements RiotApi.FeaturedGames {
 
 	FeaturedGames_v1_0(ApiKey apiKey, Region region, OkHttpClient client) {
@@ -16,7 +14,7 @@ class FeaturedGames_v1_0 extends RiotApiBase implements RiotApi.FeaturedGames {
 	}
 
 	@Override
-	public Observable<FeaturedGamesDto> getFeaturedGames() {
+	public FeaturedGamesDto getFeaturedGames() {
 		// TODO Auto-generated method stub
 		return null;
 	}

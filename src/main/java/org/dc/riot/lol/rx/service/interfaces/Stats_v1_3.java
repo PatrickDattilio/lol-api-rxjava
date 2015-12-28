@@ -15,7 +15,6 @@ import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
 
 class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 	
@@ -34,17 +33,13 @@ class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 	}
 
 	@Override
-	public Observable<RankedStatsDto> getRanked(long summonerId, Season season) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getRanked(region, summonerId, season, apiKey);
-		});
+	public RankedStatsDto getRanked(long summonerId, Season season) {
+		return null;
 	}
 
 	@Override
-	public Observable<PlayerStatsSummaryListDto> getSummary(long summonerId, Season season) {
-		return RetroRxCaller.makeObservable(() -> {
-			 return inter.getSummary(region, summonerId, season, apiKey);
-		});
+	public PlayerStatsSummaryListDto getSummary(long summonerId, Season season) {
+		return null;
 	}
 	
 	private interface Interface {

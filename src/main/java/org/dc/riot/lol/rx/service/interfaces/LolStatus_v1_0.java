@@ -8,8 +8,6 @@ import org.dc.riot.lol.rx.service.RiotApi;
 
 import com.squareup.okhttp.OkHttpClient;
 
-import rx.Observable;
-
 class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 
 	LolStatus_v1_0(ApiKey apiKey, Region region, OkHttpClient client) {
@@ -17,13 +15,13 @@ class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 	}
 
 	@Override
-	public Observable<Shard[]> getShards() {
+	public Shard[] getShards() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Observable<ShardStatus> getShard() {
+	public ShardStatus getShard() {
 		// TODO Auto-generated method stub
 		return null;
 	}

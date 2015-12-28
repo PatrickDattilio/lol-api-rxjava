@@ -1,5 +1,6 @@
 package org.dc.riot.lol.rx.service.interfaces;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.dc.riot.lol.rx.model.MasteryPagesDto;
@@ -9,6 +10,7 @@ import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.CommaSeparatedArray;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.error.HttpException;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -18,7 +20,6 @@ import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
 
 class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	
@@ -37,41 +38,36 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	}
 
 	@Override
-	public Observable<Map<String, SummonerDto>> getByNames(String... summonerNames) {
-		return RetroRxCaller.makeObservable(() -> {
-			String[] array = new String[summonerNames.length];
-			for (int i=0; i<array.length; i++) {
-				array[i] = RiotApi.encodeName(summonerNames[i]);
-			}
-
-			return inter.getByNames(region, new CommaSeparatedArray(array), apiKey);
+	public Map<String, SummonerDto> getByNames(String... summonerNames) throws IOException, HttpException {
+		return RetrofitCaller.handleCaller(() -> {
+			return inter.getByNames(region, new CommaSeparatedArray(summonerNames), apiKey);
 		});
 	}
 
 	@Override
-	public Observable<Map<String, SummonerDto>> getByIds(long... summonerIds) {
-		return RetroRxCaller.makeObservable(() -> {
+	public Map<String, SummonerDto> getByIds(long... summonerIds) throws IOException, HttpException {
+		return RetrofitCaller.handleCaller(() -> {
 			return inter.getByIds(region, new CommaSeparatedArray(summonerIds), apiKey);
 		});
 	}
 
 	@Override
-	public Observable<Map<String, MasteryPagesDto>> getMasteries(long... summonerIds) {
-		return RetroRxCaller.makeObservable(() -> {
+	public Map<String, MasteryPagesDto> getMasteries(long... summonerIds) throws IOException, HttpException {
+		return RetrofitCaller.handleCaller(() -> {
 			return inter.getMasteries(region, new CommaSeparatedArray(summonerIds), apiKey);
 		});
 	}
 
 	@Override
-	public Observable<Map<String, String>> getNames(long... summonerIds) {
-		return RetroRxCaller.makeObservable(() -> {
+	public Map<String, String> getNames(long... summonerIds) throws IOException, HttpException {
+		return RetrofitCaller.handleCaller(() -> {
 			return inter.getNames(region, new CommaSeparatedArray(summonerIds), apiKey);
 		});
 	}
 
 	@Override
-	public Observable<Map<String, RunePagesDto>> getRunes(long... summonerIds) {
-		return RetroRxCaller.makeObservable(() -> {
+	public Map<String, RunePagesDto> getRunes(long... summonerIds) throws IOException, HttpException {
+		return RetrofitCaller.handleCaller(() -> {
 			return inter.getRunes(region, new CommaSeparatedArray(summonerIds), apiKey);
 		});
 	}

@@ -3,7 +3,7 @@ package org.dc.riot.lol.rx.service.error;
 import java.util.List;
 import java.util.Map;
 
-public class HttpException extends RuntimeException {
+public class HttpException extends Exception {
 	private static final long serialVersionUID = 9125763118458524121L;
 	private int code;
 	private Map<String, List<String>> headers;

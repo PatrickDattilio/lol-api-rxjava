@@ -1,10 +1,13 @@
 package org.dc.riot.lol.rx.service.interfaces;
 
+import java.io.IOException;
+
 import org.dc.riot.lol.rx.model.CurrentGameInfo;
 import org.dc.riot.lol.rx.model.PlatformId;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.error.HttpException;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -14,7 +17,6 @@ import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
 
 public class CurrentGame_v1_0 extends RiotApiBase implements RiotApi.CurrentGame {
 	
@@ -33,8 +35,8 @@ public class CurrentGame_v1_0 extends RiotApiBase implements RiotApi.CurrentGame
 	}
 
 	@Override
-	public Observable<CurrentGameInfo> getSpectatorInfo(long summonerId) {
-		return RetroRxCaller.makeObservable(() -> {
+	public CurrentGameInfo getSpectatorInfo(long summonerId) throws IOException, HttpException {
+		return RetrofitCaller.handleCaller(() -> {
 			return inter.getSpectatorInfo(PlatformId.from(region), summonerId, apiKey);
 		});
 	}

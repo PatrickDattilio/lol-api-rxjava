@@ -16,7 +16,6 @@ import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
 
 class Team_v2_4 extends RiotApiBase implements RiotApi.Team {
 	
@@ -35,17 +34,15 @@ class Team_v2_4 extends RiotApiBase implements RiotApi.Team {
 	}
 
 	@Override
-	public Observable<Map<String,TeamDto[]>> getTeamsBySummoners(long... summonerIds) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getTeamsBySummoners(region, new CommaSeparatedArray(summonerIds), apiKey);
-		});
+	public Map<String,TeamDto[]> getTeamsBySummoners(long... summonerIds) {
+		// TODO implement
+		return null;
 	}
 
 	@Override
-	public Observable<Map<String,TeamDto>> getTeams(String... teamIds) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getTeams(region, new CommaSeparatedArray(teamIds), apiKey);
-		});
+	public Map<String,TeamDto> getTeams(String... teamIds) {
+		// TODO implement
+		return null;
 	}
 	
 	interface Interface {

@@ -61,7 +61,7 @@ public class RetrofitTests {
 		RiotApi.Champion champInterface = factory.newChampionInterface(apiKey, region);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<gets; i++) {
-			Observable<ChampionListDto> obs = champInterface.getChampions();
+			Observable<ChampionListDto> obs = null;
 			obs.subscribeOn(scheduler)
 			.subscribe((ChampionListDto dto) -> {
 				synchronized (printLock) {
@@ -101,7 +101,7 @@ public class RetrofitTests {
 		RiotApi.RecentGames recentGameInterface = factory.newRecentGamesInterface(apiKey, region);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<gets; i++) {
-			Observable<Map<String,SummonerDto>> obs = summonerInterface.getByNames("HuskarDc");
+			Observable<Map<String,SummonerDto>> obs = null;
 			obs.flatMap((Map<String,SummonerDto> t) -> {
 				Collection<SummonerDto> summoners = t.values();
 				SummonerDto[] array = new SummonerDto[summoners.size()];
@@ -111,9 +111,6 @@ public class RetrofitTests {
 			.map((SummonerDto d) -> {
 				long id = d.getId();
 				return recentGameInterface.getRecentGames(id);
-			})
-			.flatMap((Observable<RecentGamesDto> o) -> {
-				return o;
 			})
 			.subscribeOn(scheduler)
 			.subscribe((RecentGamesDto t) -> {
@@ -161,7 +158,7 @@ public class RetrofitTests {
 		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);
 		for (int i=0; i<gets; i++) {
 			debug.println("Observable count: " + i);
-			Observable<Map<String, SummonerDto>> rawStream = summonerInterface.getByNames(names);
+			Observable<Map<String, SummonerDto>> rawStream = null;
 			assertNotNull(rawStream);
 
 			rawStream

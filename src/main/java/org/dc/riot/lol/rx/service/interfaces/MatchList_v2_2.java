@@ -37,11 +37,10 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 	}
 
 	@Override
-	public Observable<MatchListDto> getMatchList(long summonerId, long[] championIds,
+	public MatchListDto getMatchList(long summonerId, long[] championIds,
 			RankedQueue[] rankedQueues, Season[] seasons, long beginTime, long endTime, int beginIndex, int endIndex) {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getMatchList(region, summonerId, apiKey, championIds, rankedQueues, seasons, beginTime, endTime, beginIndex, endIndex);
-		});
+		// TODO implement
+		return null;
 	}
 	
 	private interface Interface {

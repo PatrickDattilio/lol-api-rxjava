@@ -14,7 +14,6 @@ import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
 
 // TODO not fully implemented
 class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
@@ -34,19 +33,18 @@ class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
 	}
 
 	@Override
-	public Observable<ChampionListDto> getChampions() {
-		return RetroRxCaller.makeObservable(() -> {
-			return inter.getChampions(region, apiKey);
-		});
-	}
-
-	@Override
-	public Observable<ChampionListDto> getChampions(boolean freeToPlay) {
+	public ChampionListDto getChampions() {
+		// TODO implement
 		return null;
 	}
 
 	@Override
-	public Observable<ChampionDto> getChampion(long championId) {
+	public ChampionListDto getChampions(boolean freeToPlay) {
+		return null;
+	}
+
+	@Override
+	public ChampionDto getChampion(long championId) {
 		return null;
 	}
 

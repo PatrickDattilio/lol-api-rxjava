@@ -7,8 +7,6 @@ import org.dc.riot.lol.rx.service.RiotApi;
 
 import com.squareup.okhttp.OkHttpClient;
 
-import rx.Observable;
-
 class Match_v2_2 extends RiotApiBase implements RiotApi.Match {
 
 	Match_v2_2(ApiKey apiKey, Region region, OkHttpClient client) {
@@ -16,7 +14,7 @@ class Match_v2_2 extends RiotApiBase implements RiotApi.Match {
 	}
 
 	@Override
-	public Observable<MatchDetail> getMatch(long matchId, boolean includeTimeline) {
+	public MatchDetail getMatch(long matchId, boolean includeTimeline) {
 		// TODO Auto-generated method stub
 		return null;
 	}
