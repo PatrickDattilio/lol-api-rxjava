@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
  * @author Dc
  * @since 10/29/15
  */
-public class RiotApiRateRule {
+public class RateRule {
 
     private int requests;
     private int per;
@@ -17,7 +17,7 @@ public class RiotApiRateRule {
      * @param requests requests allowed to make
      * @param seconds  window span in seconds allowed
      */
-    public RiotApiRateRule(int requests, int per, TimeUnit timeUnit) {
+    public RateRule(int requests, int per, TimeUnit timeUnit) {
         this.requests = requests;
         this.per = per;
         this.timeUnit = timeUnit;
@@ -41,20 +41,20 @@ public class RiotApiRateRule {
 
     @Override
     public String toString() {
-        return "[" + RiotApiRateRule.class.getSimpleName() + " " + requests + "/" + per + " " + timeUnit + "]";
+        return "[" + RateRule.class.getSimpleName() + " " + requests + "/" + per + " " + timeUnit + "]";
     }
 
-    public static RiotApiRateRule[] getDevelopmentRates() {
-        RiotApiRateRule[] rules = new RiotApiRateRule[2];
-        rules[0] = new RiotApiRateRule(500, 10, TimeUnit.MINUTES);
-        rules[1] = new RiotApiRateRule(10, 10, TimeUnit.SECONDS);
+    public static RateRule[] getDevelopmentRates() {
+        RateRule[] rules = new RateRule[2];
+        rules[0] = new RateRule(500, 10, TimeUnit.MINUTES);
+        rules[1] = new RateRule(10, 10, TimeUnit.SECONDS);
         return rules;
     }
 
-    public static RiotApiRateRule[] getProductionRates() {
-        RiotApiRateRule[] rules = new RiotApiRateRule[1];
-        rules[0] = new RiotApiRateRule(300, 10, TimeUnit.SECONDS);
-        rules[1] = new RiotApiRateRule(180000, 10, TimeUnit.MINUTES);
+    public static RateRule[] getProductionRates() {
+        RateRule[] rules = new RateRule[1];
+        rules[0] = new RateRule(300, 10, TimeUnit.SECONDS);
+        rules[1] = new RateRule(180000, 10, TimeUnit.MINUTES);
         return rules;
     }
 }

@@ -18,8 +18,7 @@ import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
-import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
+import org.dc.riot.lol.rx.service.RateRule;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
 import org.junit.Before;
@@ -28,21 +27,19 @@ import org.junit.Test;
 import rx.Observable;
 import rx.Scheduler;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class RetrofitTests {
 	
 	private Scheduler scheduler;
 	private ApiKey apiKey;
-	private RiotApiRateRule[] rules;
+	private RateRule[] rules;
 	private Region region;
 	private Debug debug;
 	
 	@Before
 	public void setup() {
 		apiKey = ApiKey.getFirstDevelopmentKey();
-		rules = (apiKey.isDevelopmentKey()) ? RiotApiRateRule.getDevelopmentRates() : RiotApiRateRule.getProductionRates();
-		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
+		rules = (apiKey.isDevelopmentKey()) ? RateRule.getDevelopmentRates() : RateRule.getProductionRates();
 		region = Region.NORTH_AMERICA;
 		debug = Debug.getInstance();
 		debug.setDebug(true);

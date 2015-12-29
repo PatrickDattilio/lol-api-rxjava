@@ -6,8 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.dc.riot.lol.rx.service.RiotApiRateRule;
-import org.dc.riot.lol.rx.service.RiotApiThreadPoolExecutor;
+import org.dc.riot.lol.rx.service.RateRule;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,13 +17,11 @@ import rx.schedulers.Schedulers;
 
 public class ObservableTest {
 
-	private RiotApiRateRule[] rules;
-	private Scheduler scheduler;
+	private RateRule[] rules;
 
 	@Before
 	public void setup() {
-		rules = RiotApiRateRule.getDevelopmentRates();
-		scheduler = Schedulers.from(RiotApiThreadPoolExecutor.from(rules));
+		rules = RateRule.getDevelopmentRates();
 	}
 
 	@Test
@@ -52,7 +49,6 @@ public class ObservableTest {
 				System.out.println("MAP " + observable + " -> " + Thread.currentThread());
 				return UUID.fromString(t);
 			})
-			.subscribeOn(scheduler)
 			.subscribe((UUID s) -> {
 				lock.countDown();
 				System.out.println("DONE " + observable + " -> " + Thread.currentThread());
@@ -93,7 +89,6 @@ public class ObservableTest {
 			System.out.println(t + "   " + Thread.currentThread());
 			return UUID.fromString(t).getLeastSignificantBits();
 		})
-		.subscribeOn(scheduler)
 		.subscribe((Long s) -> {
 			lock.countDown();
 			System.out.println(s + "   " + Thread.currentThread());

@@ -10,12 +10,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-class RiotApiSemaphore {
+class TicketBucket {
 
 	private int buffer = 750;
 	private ArrayList<Bucket> buckets;
 
-	RiotApiSemaphore(RiotApiRateRule... rules) {
+	TicketBucket(RateRule... rules) {
 		buckets = new ArrayList<>(rules.length);
 		for (int i=0; i<rules.length; i++) {
 			buckets.add(new Bucket(rules[i]));
@@ -85,7 +85,7 @@ class RiotApiSemaphore {
 
 		private UUID name = UUID.randomUUID();
 		private ArrayBlockingQueue<Ticket> tickets;
-		private RiotApiRateRule rule;
+		private RateRule rule;
 
 		private ScheduledExecutorService librarian;
 
@@ -94,7 +94,7 @@ class RiotApiSemaphore {
 		 * 
 		 * @param rule
 		 */
-		Bucket(RiotApiRateRule rule) {
+		Bucket(RateRule rule) {
 			this.rule = rule;
 
 			tickets = new ArrayBlockingQueue<>(rule.getRequests());
@@ -151,7 +151,7 @@ class RiotApiSemaphore {
 			}
 		}
 
-		RiotApiRateRule getRule() {
+		RateRule getRule() {
 			return rule;
 		}
 		

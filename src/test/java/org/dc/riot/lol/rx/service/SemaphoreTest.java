@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class SemaphoreTest {
 
-	RiotApiRateRule[] rules = RiotApiRateRule.getDevelopmentRates();
+	RateRule[] rules = RateRule.getDevelopmentRates();
 	
 	@Before
 	public void setup() {
@@ -25,20 +25,8 @@ public class SemaphoreTest {
 		int trials = 1001;
 		long startTime = System.currentTimeMillis();
 		final CountDownLatch lock = new CountDownLatch(trials);
-		Executor exec = RiotApiThreadPoolExecutor.from(rules);
 		for (int i=0; i<trials; i++) {
 			final int taskNumber = i+1;
-			exec.execute(() -> {
-				try {
-					Thread.sleep(40);
-					Date date = new Date(System.currentTimeMillis());
-					SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.sss");
-					System.out.println(sdf.format(date) + " " + taskNumber);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				lock.countDown();
-			});
 		}
 		
 		System.out.println("All threads posted");
@@ -55,8 +43,6 @@ public class SemaphoreTest {
 	
 	@Test
 	public void testSemaphoreStartup() {
-		Executor exec = RiotApiThreadPoolExecutor.from(rules);
-		exec.execute(() -> System.out.println("Hello, semaphore"));
 	}
 
 }
