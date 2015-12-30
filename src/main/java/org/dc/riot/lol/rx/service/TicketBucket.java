@@ -10,12 +10,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-class TicketBucket {
+public class TicketBucket {
 
 	private int buffer = 750;
 	private ArrayList<Bucket> buckets;
 
-	TicketBucket(RateRule... rules) {
+	public TicketBucket(RateRule... rules) {
 		buckets = new ArrayList<>(rules.length);
 		for (int i=0; i<rules.length; i++) {
 			buckets.add(new Bucket(rules[i]));

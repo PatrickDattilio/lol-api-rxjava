@@ -26,7 +26,10 @@ public class TicketedFuture<T> extends FutureTask<T> {
 	public T get() throws InterruptedException, ExecutionException {
 		Ticket[] tickets = null;
 		try {
-			tickets = bucket.take();
+			if (bucket != null) {
+				tickets = bucket.take();
+			}
+
 			return super.get();
 		} finally {
 			if (tickets != null) {
@@ -39,7 +42,10 @@ public class TicketedFuture<T> extends FutureTask<T> {
 	public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 		Ticket[] tickets = null;
 		try {
-			tickets = bucket.take();
+			if (bucket != null) {
+				tickets = bucket.take();
+			}
+
 			return super.get(timeout, unit);
 		} finally {
 			if (tickets != null) {

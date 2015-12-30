@@ -3,10 +3,15 @@ package org.dc.riot.lol.rx;
 import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RateRule;
+import org.dc.riot.lol.rx.service.RiotApiExecutors;
+import org.dc.riot.lol.rx.service.TicketBucket;
+import org.dc.riot.lol.rx.service.TicketedFuture;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,48 +22,43 @@ import rx.schedulers.Schedulers;
 
 public class ObservableTest {
 
+	private Debug debug = Debug.getInstance();
 	private RateRule[] rules;
+	private Scheduler scheduler;
+	private TicketBucket bucket;
 
 	@Before
 	public void setup() {
 		rules = RateRule.getDevelopmentRates();
+		scheduler = Schedulers.from(RiotApiExecutors.newFixedThreadPool(rules));
+		bucket = new TicketBucket(rules);
 	}
 
 	@Test
 	public void testObservableMultipleSingleEmitters() throws InterruptedException {
-		final int trials = 3;
+		final int trials = 501;
 		final CountDownLatch lock = new CountDownLatch(trials);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<trials; i++) {
 			final int observable = i+1;
-			Observable.create((Subscriber<? super String> t) -> {
-//				new Thread(() -> {
-					try {
-						System.out.println("SUB " + observable + " -> " + Thread.currentThread());
-						Thread.sleep(40);
-						String s = UUID.randomUUID().toString();
-						t.onNext(s);
-						t.onCompleted();
-
-					} catch (InterruptedException e) {
-						t.onError(e);
-					}
-//				}).start();
-			})
-			.map((String t) -> {
-				System.out.println("MAP " + observable + " -> " + Thread.currentThread());
-				return UUID.fromString(t);
-			})
-			.subscribe((UUID s) -> {
+			Observable.from(new TicketedFuture<UUID>(bucket, new Callable<UUID>() {
+				@Override
+				public UUID call() throws Exception {
+					Thread.sleep(60);
+					return UUID.randomUUID();
+				}
+			}))
+			.subscribeOn(scheduler)
+			.subscribe((UUID t) -> {
+				debug.println(t);
 				lock.countDown();
-				System.out.println("DONE " + observable + " -> " + Thread.currentThread());
 			},
 			(Throwable t) -> t.printStackTrace(),
-			() -> {});
+			() -> debug.println("DONE " + observable));
 		}
 
 		lock.await();
-		System.out.println("Done");
+		debug.println("Done");
 
 		long endTime = System.currentTimeMillis();
 		long elapsedTime = endTime - startTime;
