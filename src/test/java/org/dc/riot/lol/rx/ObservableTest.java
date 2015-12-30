@@ -5,13 +5,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RateRule;
 import org.dc.riot.lol.rx.service.RiotApiExecutors;
 import org.dc.riot.lol.rx.service.TicketBucket;
-import org.dc.riot.lol.rx.service.TicketedFuture;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,13 +41,17 @@ public class ObservableTest {
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<trials; i++) {
 			final int observable = i+1;
-			Observable.from(new TicketedFuture<UUID>(bucket, new Callable<UUID>() {
-				@Override
-				public UUID call() throws Exception {
-					Thread.sleep(60);
-					return UUID.randomUUID();
+			debug.println("Executing " + observable);
+			Observable.create((Subscriber<? super UUID> t) -> {
+				try {
+					Thread.sleep(50);
+					UUID ru = UUID.randomUUID();
+					t.onNext(ru);
+					t.onCompleted();
+				} catch (Exception e) {
+					t.onError(e);
 				}
-			}))
+			})
 			.subscribeOn(scheduler)
 			.subscribe((UUID t) -> {
 				debug.println(t);

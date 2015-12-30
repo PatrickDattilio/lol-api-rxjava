@@ -32,26 +32,9 @@ import retrofit.Retrofit;
 // TODO unconventional base URL
 class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 	
-	private static Interface INTER = null;
-	private static OkHttpClient CLIENT = null;
-
-	StaticData_v1_2(ApiKey apiKey, Region region, OkHttpClient client) {
+	StaticData_v1_2(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 		
-		if (INTER == null || (client != null && client != CLIENT)) {
-			INTER = createInterface(client);
-			CLIENT = client;
-		}
-	}
-	
-	private static Interface createInterface(OkHttpClient client) {
-		Retrofit ra = new Retrofit.Builder()
-				.baseUrl("https://global.api.pvp.net")
-				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-				.client(client)
-				.build();
-
-		return ra.create(Interface.class);
 	}
 	
 	@Override

@@ -24,13 +24,12 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 	
 	private Interface inter;
 	
-	MatchList_v2_2(ApiKey apiKey, Region region, OkHttpClient client) {
+	MatchList_v2_2(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 		
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);

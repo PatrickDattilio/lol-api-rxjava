@@ -9,7 +9,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 class FeaturedGames_v1_0 extends RiotApiBase implements RiotApi.FeaturedGames {
 
-	FeaturedGames_v1_0(ApiKey apiKey, Region region, OkHttpClient client) {
+	FeaturedGames_v1_0(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 	}
 

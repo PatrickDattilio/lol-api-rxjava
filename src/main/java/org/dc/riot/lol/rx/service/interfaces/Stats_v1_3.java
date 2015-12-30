@@ -20,13 +20,12 @@ class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 	
 	private Interface inter;
 
-	Stats_v1_3(ApiKey apiKey, Region region, OkHttpClient client) {
+	Stats_v1_3(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);

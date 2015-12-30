@@ -12,8 +12,6 @@ import org.dc.riot.lol.rx.service.CommaSeparatedArray;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.HttpException;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -25,7 +23,7 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	
 	private Interface inter;
 	
-	Summoner_v1_4(ApiKey apiKey, Region region, OkHttpClient client) {
+	Summoner_v1_4(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 		
 		Retrofit ra = new Retrofit.Builder()

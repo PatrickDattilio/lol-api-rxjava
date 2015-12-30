@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Observer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,7 @@ import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.TicketBucket;
 import org.dc.riot.lol.rx.service.RateRule;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
@@ -26,6 +28,7 @@ import org.junit.Test;
 
 import rx.Observable;
 import rx.Scheduler;
+import rx.Subscriber;
 import rx.functions.Func1;
 
 public class RetrofitTests {
@@ -33,12 +36,13 @@ public class RetrofitTests {
 	private Scheduler scheduler;
 	private ApiKey apiKey;
 	private RateRule[] rules;
+	private TicketBucket bucket;
 	private Region region;
 	private Debug debug;
 	
 	@Before
 	public void setup() {
-		apiKey = ApiKey.getFirstDevelopmentKey();
+		apiKey = ApiKey.getApiKeys()[0];
 		rules = (apiKey.isDevelopmentKey()) ? RateRule.getDevelopmentRates() : RateRule.getProductionRates();
 		region = Region.NORTH_AMERICA;
 		debug = Debug.getInstance();
@@ -51,15 +55,19 @@ public class RetrofitTests {
 	public void testManualObservables() throws InterruptedException {
 		final int gets = 501;
 
-		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory(bucket);
 		final CountDownLatch lock = new CountDownLatch(gets);
 		final Object printLock = new Object();
 		
 		RiotApi.Champion champInterface = factory.newChampionInterface(apiKey, region);
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<gets; i++) {
-			Observable<ChampionListDto> obs = null;
-			obs.subscribeOn(scheduler)
+			Observable.create((Subscriber<? super ChampionListDto> s) -> {
+				ChampionListDto dto = champInterface.getChampions();
+				s.onNext(dto);
+				s.onCompleted();
+			})
+			.subscribeOn(scheduler)
 			.subscribe((ChampionListDto dto) -> {
 				synchronized (printLock) {
 					debug.println(++testManualObservablesCount);

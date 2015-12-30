@@ -20,13 +20,12 @@ class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
 
 	private Interface inter;
 
-	Champion_v1_2(ApiKey apiKey, Region region, OkHttpClient client) {
+	Champion_v1_2(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
-				.client(client)
 				.build();
 
 		inter = ra.create(Interface.class);

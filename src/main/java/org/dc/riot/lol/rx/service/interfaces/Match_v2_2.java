@@ -9,7 +9,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 class Match_v2_2 extends RiotApiBase implements RiotApi.Match {
 
-	Match_v2_2(ApiKey apiKey, Region region, OkHttpClient client) {
+	Match_v2_2(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 	}
 

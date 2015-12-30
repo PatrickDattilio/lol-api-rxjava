@@ -10,7 +10,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 
-	LolStatus_v1_0(ApiKey apiKey, Region region, OkHttpClient client) {
+	LolStatus_v1_0(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 	}
 

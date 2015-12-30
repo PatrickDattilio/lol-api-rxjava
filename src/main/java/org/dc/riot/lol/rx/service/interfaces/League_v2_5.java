@@ -12,7 +12,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 class League_v2_5 extends RiotApiBase implements RiotApi.League {
 
-	League_v2_5(ApiKey apiKey, Region region, OkHttpClient client) {
+	League_v2_5(ApiKey apiKey, Region region) {
 		super(apiKey, region);
 	}
 

@@ -165,7 +165,7 @@ public class TicketBucket {
 	 * 
 	 * @author Dc
 	 */
-	static class Ticket {
+	public static class Ticket {
 		private UUID name = UUID.randomUUID();
 		private int index = -1;
 		private UUID parentName;

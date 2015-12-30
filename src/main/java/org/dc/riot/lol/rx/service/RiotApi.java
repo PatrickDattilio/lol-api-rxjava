@@ -81,6 +81,12 @@ public interface RiotApi {
 	
 	public ApiKey getApiKey();
 	
+	/**
+	 * Allows one-time set only
+	 * @param bucket the {@link TicketBucket} to use for rate control
+	 */
+	public void setBucket(TicketBucket bucket);
+	
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
      */
