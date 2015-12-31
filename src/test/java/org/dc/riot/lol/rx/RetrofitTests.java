@@ -35,7 +35,6 @@ public class RetrofitTests {
 	
 	private Scheduler scheduler;
 	private ApiKey apiKey;
-	private RateRule[] rules;
 	private TicketBucket bucket;
 	private Region region;
 	private Debug debug;
@@ -43,10 +42,8 @@ public class RetrofitTests {
 	@Before
 	public void setup() {
 		apiKey = ApiKey.getApiKeys()[0];
-		rules = (apiKey.isDevelopmentKey()) ? RateRule.getDevelopmentRates() : RateRule.getProductionRates();
 		region = Region.NORTH_AMERICA;
 		debug = Debug.getInstance();
-		debug.setDebug(true);
 	}
 	
 	private int testManualObservablesCount = 0;
@@ -55,7 +52,7 @@ public class RetrofitTests {
 	public void testManualObservables() throws InterruptedException {
 		final int gets = 501;
 
-		RiotApiFactory factory = RiotApiFactory.getDefaultFactory(bucket);
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory(apiKey);
 		final CountDownLatch lock = new CountDownLatch(gets);
 		final Object printLock = new Object();
 		
@@ -63,9 +60,13 @@ public class RetrofitTests {
 		long startTime = System.currentTimeMillis();
 		for (int i=0; i<gets; i++) {
 			Observable.create((Subscriber<? super ChampionListDto> s) -> {
-				ChampionListDto dto = champInterface.getChampions();
-				s.onNext(dto);
-				s.onCompleted();
+				try {
+					ChampionListDto dto = champInterface.getChampions(true);
+					s.onNext(dto);
+					s.onCompleted();
+				} catch (Exception e) {
+					s.onError(e);
+				}
 			})
 			.subscribeOn(scheduler)
 			.subscribe((ChampionListDto dto) -> {
@@ -98,7 +99,7 @@ public class RetrofitTests {
 	public void testRetrofitChainedObservables() throws InterruptedException {
 		final int gets = 11;
 
-		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory(apiKey);
 		final CountDownLatch lock = new CountDownLatch(gets);
 		final Object printLock = new Object();
 		
@@ -157,7 +158,7 @@ public class RetrofitTests {
 		String[] names = new String[] {"HuskarDc","feed l0rd","Wildturtle","Nightblue3","TheOddOne"};
 		int gets = 11;
 
-		RiotApiFactory factory = RiotApiFactory.getDefaultFactory();
+		RiotApiFactory factory = RiotApiFactory.getDefaultFactory(apiKey);
 		final CountDownLatch lock = new CountDownLatch(gets);
 		
 		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(apiKey, Region.NORTH_AMERICA);

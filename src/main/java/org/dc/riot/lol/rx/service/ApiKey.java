@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,38 +18,20 @@ import java.util.Scanner;
  * @since 10/23/15
  */
 public class ApiKey {
-
-    public enum KeyType {
-        /**
-         * Development key with rages specified by Riot Games
-         */
-        DEVELOPMENT,
-
-        /**
-         * Production key with rates specified by Riot Games
-         */
-        PRODUCTION,
-
-        /**
-         * Custom rate key, with usually much higher rate limits than PRODUCTION
-         */
-        CUSTOM
-    }
+	
+	private static final String DEVELOPMENT = "DEV";
+	private static final String PRODUCTION = "PROD";
 
     private final String key;
-    private final KeyType type;
-
-    private ApiKey(String key, KeyType type) {
-        this.key = key;
-        this.type = type;
+    private final RateRule[] rules;
+    
+    public ApiKey(String key, RateRule... rules) {
+    	this.key = key;
+    	this.rules = rules;
     }
 
-    public boolean isDevelopmentKey() {
-        return type == KeyType.DEVELOPMENT;
-    }
-
-    public KeyType getKeyType() {
-        return type;
+    public RateRule[] getRules() {
+    	return rules;
     }
 
     @Override
@@ -72,15 +55,17 @@ public class ApiKey {
                 }
 
                 String key = line.trim();
-                boolean isDev = Boolean.valueOf(scanner.nextLine().trim());
-                KeyType type;
-                if (isDev) {
-                    type = KeyType.DEVELOPMENT;
+                String keyDetails = scanner.nextLine().trim();
+                RateRule[] rules = null;
+                if (DEVELOPMENT.equals(keyDetails)) {
+                	rules = RateRule.getDevelopmentRates();
+                } else if (PRODUCTION.equals(keyDetails)) {
+                	rules = RateRule.getProductionRates();
                 } else {
-                    type = KeyType.PRODUCTION;
+                	rules = parseRules(keyDetails, scanner);
                 }
-
-                keys.add(new ApiKey(key, type));
+                
+                keys.add(new ApiKey(key, rules));
             }
         } catch (FileNotFoundException e) {
             // eat this exception
@@ -93,18 +78,20 @@ public class ApiKey {
         return keys.toArray(new ApiKey[keys.size()]);
     }
     
-    /**
-     * 
-     * @return the first development key in the API_KEY file
-     */
-    public static ApiKey getFirstDevelopmentKey() {
-    	ApiKey[] keys = getApiKeys();
-    	for (ApiKey key : keys) {
-    		if (key.isDevelopmentKey()) {
-    			return key;
+    private static RateRule[] parseRules(String keyDetails, Scanner scanner) {
+    	ArrayList<RateRule> parsedRules = new ArrayList<>();
+    	parsedRules.add(RateRule.from(keyDetails));
+    	
+    	while (scanner.hasNextLine()) {
+    		String line = scanner.nextLine().trim();
+    		if ("".equals(line) ||
+    				line.startsWith("#")) {
+    			break;
+    		} else {
+				parsedRules.add(RateRule.from(line));
     		}
     	}
     	
-    	return null;
+    	return parsedRules.toArray(new RateRule[parsedRules.size()]);
     }
 }

@@ -2,6 +2,7 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.lang.reflect.Type;
 import java.net.Proxy;
+import java.util.EnumMap;
 
 import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.model.Region;
@@ -53,12 +54,12 @@ public final class RiotApiFactory {
         GSON = builder.create();
     }
 
-    public static RiotApiFactory getDefaultFactory() {
-        return new Builder().build();
+    public static RiotApiFactory getDefaultFactory(ApiKey apiKey) {
+        return new Builder(apiKey).build();
     }
     
-    public static RiotApiFactory getDefaultFactory(TicketBucket bucket) {
-    	return new Builder().setBucket(bucket).build();
+    public static Gson getGson() {
+    	return GSON;
     }
     
     private float champVersion;
@@ -75,21 +76,17 @@ public final class RiotApiFactory {
     private float teamVersion;
     
     private Proxy proxy;
-    private TicketBucket bucket;
+    private EnumMap<Region, TicketBucket> bucketMap = new EnumMap<>(Region.class);
     
-    public static Gson getGson() {
-    	return GSON;
-    }
+    private final ApiKey apiKey;
 
-    private RiotApiFactory() { }
+    private RiotApiFactory(ApiKey apiKey) {
+    	this.apiKey = apiKey;
+    }
 
     public RiotApi.Champion newChampionInterface(ApiKey apiKey, Region region) {
         if (champVersion >= 1.2) {
             RiotApi.Champion api = new Champion_v1_2(apiKey, region);
-            if (api.getRateType() == RateType.PERSONAL &&
-            		bucket != null) {
-            	api.setBucket(bucket);
-            }
             
             return api;
         } else {
@@ -172,10 +169,6 @@ public final class RiotApiFactory {
     public RiotApi.Summoner newSummonerInterface(ApiKey apiKey, Region region) {
         if (summonerVersion >= 1.4f) {
         	RiotApi.Summoner api = new Summoner_v1_4(apiKey, region);
-        	if (api.getRateType() == RateType.PERSONAL
-        			&& bucket != null) {
-        		api.setBucket(bucket);
-        	}
         	
         	return api;
         } else {
@@ -209,6 +202,12 @@ public final class RiotApiFactory {
         private float teamVersion = 2.4f;           // baseline Team version
         private Proxy proxy = null;
         private TicketBucket bucket = null;
+        
+        private final ApiKey apiKey;
+        
+        public Builder(ApiKey apiKey) {
+        	this.apiKey = apiKey;
+        }
 
         public Builder setChampionVersion(float champVersion) {
             this.champVersion = champVersion;
@@ -281,7 +280,7 @@ public final class RiotApiFactory {
         }
 
         public RiotApiFactory build() {
-            RiotApiFactory factory = new RiotApiFactory();
+            RiotApiFactory factory = new RiotApiFactory(apiKey);
             factory.champVersion = champVersion;
             factory.currentGameVersion = currentGameVersion;
             factory.featuredGamesVersion = featuredGamesVersion;
@@ -295,7 +294,6 @@ public final class RiotApiFactory {
             factory.summonerVersion = summonerVersion;
             factory.teamVersion = teamVersion;
             factory.proxy = proxy;
-            factory.bucket = bucket;
             return factory;
         }
     }
