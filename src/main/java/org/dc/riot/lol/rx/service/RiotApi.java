@@ -101,25 +101,12 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @return {@link ChampionListDto} same as <code>getChampions(false)</code>
-         * @throws IOException
-         */
-        ChampionListDto getChampions();
-
-        /**
-         * /api/lol/{region}/v1.2/champion<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
-         * 503	Service unavailable
-         *
          * @param freeToPlay fetch only free to play champions
          * @return {@link ChampionListDto}
+         * @throws HttpException 
          * @throws IOException
          */
-        ChampionListDto getChampions(boolean freeToPlay);
+        ChampionListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v1.2/champion/{id}<br/>
@@ -132,9 +119,10 @@ public interface RiotApi {
          *
          * @param championId the champ id
          * @return {@link ChampionDto} single champion dto
+         * @throws HttpException 
          * @throws IOException
          */
-        ChampionDto getChampion(long championId);
+        ChampionDto getChampion(long championId) throws IOException, HttpException;
     }
 
     /**
