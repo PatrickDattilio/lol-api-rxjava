@@ -24,8 +24,6 @@ import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.dc.riot.lol.rx.service.request.SpellDataTag;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 

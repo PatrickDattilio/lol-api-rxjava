@@ -4,18 +4,17 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Controlled access to API keys. This allows users to have a file named API_KEY in their root
- * directory and load it without checking the API key into any source. This class mainly exists
+ * directory and load it without checking the API key into any source control. This class mainly exists
  * to ensure unit tests have access to valid API keys, though client source code may find this class
  * useful as well.
  * TODO add some kind of file encryption (RSA most likely, though symmetric encryption should be enough)
  * @author Dc
- * @since 10/23/15
+ * @since 1.0
  */
 public class ApiKey {
 	
@@ -39,7 +38,7 @@ public class ApiKey {
         return key;
     }
 
-    public static ApiKey[] getApiKeys() {
+    public static ApiKey[] loadApiKeys() {
         ArrayList<ApiKey> keys = new ArrayList<>();
         Scanner scanner = null;
         try {

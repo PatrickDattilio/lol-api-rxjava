@@ -1,6 +1,7 @@
 package org.dc.riot.lol.rx.service;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.Map;
 
 import org.dc.riot.lol.rx.model.ChampionDto;
@@ -86,6 +87,8 @@ public interface RiotApi {
 	 * @param bucket the {@link TicketBucket} to use for rate control
 	 */
 	public void setBucket(TicketBucket bucket);
+	
+	public void setProxy(Proxy proxy);
 	
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
@@ -179,9 +182,10 @@ public interface RiotApi {
          *
          * @param summonerId player's summoner ID, See the {@link Summoner} interface for valid IDs.
          * @return {@link RecentGamesDto} for the given player or <code>null</code> if no data found
+         * @throws HttpException 
          * @throws IOException
          */
-        RecentGamesDto getRecentGames(long summonerId);
+        RecentGamesDto getRecentGames(long summonerId) throws IOException, HttpException;
     }
 
     /**

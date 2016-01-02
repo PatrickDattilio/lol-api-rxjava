@@ -8,7 +8,7 @@ public class ApiKeyTest {
 
 	@Test
 	public void testApiKeyLoading() {
-		ApiKey[] apiKeys = ApiKey.getApiKeys();
+		ApiKey[] apiKeys = ApiKey.loadApiKeys();
 		for (ApiKey k : apiKeys) {
 			System.out.print("{ " + k + " ");
 			for (RateRule r : k.getRules()) {

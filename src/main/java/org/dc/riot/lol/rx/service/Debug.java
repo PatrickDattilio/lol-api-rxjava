@@ -40,7 +40,11 @@ public class Debug implements Interceptor {
 	}
 	
 	public void println(Object o) {
-		outputStream.println("[DEBUG " + sdf.format(new Date(System.currentTimeMillis())) + "] " + o);
+		if (o == null) {
+			outputStream.println();
+		} else {
+			outputStream.println("[DEBUG " + sdf.format(new Date(System.currentTimeMillis())) + "] " + o);
+		}
 	}
 
 	@Override

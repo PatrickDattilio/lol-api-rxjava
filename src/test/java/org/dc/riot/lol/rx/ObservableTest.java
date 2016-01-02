@@ -3,15 +3,14 @@ package org.dc.riot.lol.rx;
 import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
 import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.RateRule;
 import org.dc.riot.lol.rx.service.RiotApiExecutors;
 import org.dc.riot.lol.rx.service.TicketBucket;
+import org.dc.riot.lol.rx.service.TicketBucket.Ticket;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +43,9 @@ public class ObservableTest {
 			debug.println("Executing " + observable);
 			Observable.create((Subscriber<? super UUID> t) -> {
 				try {
+					Ticket[] tickets = bucket.take();
 					Thread.sleep(50);
+					bucket.put(tickets);
 					UUID ru = UUID.randomUUID();
 					t.onNext(ru);
 					t.onCompleted();
@@ -74,7 +75,6 @@ public class ObservableTest {
 	public void testObservableMultiEmitter() throws InterruptedException {
 		final int trials = 501;
 		final CountDownLatch lock = new CountDownLatch(trials);
-		// retrofit will do this for us
 		Observable.create((Subscriber<? super String> t) -> {
 			try {
 				for (int i=0; i<trials; i++) {

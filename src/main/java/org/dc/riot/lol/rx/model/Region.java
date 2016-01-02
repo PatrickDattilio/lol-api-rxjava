@@ -1,8 +1,9 @@
 package org.dc.riot.lol.rx.model;
 
 /**
- * Region enumeration all operations expect upper case
- * Created by Dan on 8/28/15.
+ * All Riot LoL API regions
+ * @author Dc
+ * @since 1.0
  */
 public enum Region {
 

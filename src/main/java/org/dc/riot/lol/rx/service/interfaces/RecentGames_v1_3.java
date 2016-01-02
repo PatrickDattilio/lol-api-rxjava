@@ -6,19 +6,14 @@ import org.dc.riot.lol.rx.model.RecentGamesDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
-import org.dc.riot.lol.rx.service.RiotApi.Summoner;
-
-import com.squareup.okhttp.OkHttpClient;
+import org.dc.riot.lol.rx.service.error.HttpException;
 
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
-import retrofit.Response;
 import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
-import rx.Subscriber;
 
 class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 	
@@ -30,6 +25,7 @@ class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);
@@ -45,14 +41,15 @@ class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 	 * 500	Internal server error<br/>
 	 * 503	Service unavailable
 	 *
-	 * @param region     the {@link Region}
 	 * @param summonerId player's summoner ID, See the {@link Summoner} interface for valid IDs.
 	 * @return {@link RecentGamesDto} for the given player or <code>null</code> if no data found
+	 * @throws HttpException 
 	 * @throws IOException
 	 */
-    public RecentGamesDto getRecentGames(long summonerId) {
-    	// TODO implement
-    	return null;
+    public RecentGamesDto getRecentGames(long summonerId) throws IOException, HttpException {
+    	return RetrofitCaller.handleCaller(() -> {
+    		return inter.getRecentGames(region, summonerId, apiKey);
+    	});
     }
 
     private interface Interface {

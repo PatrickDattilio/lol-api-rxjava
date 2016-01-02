@@ -1,5 +1,7 @@
 package org.dc.riot.lol.rx.service.interfaces;
 
+import java.net.Proxy;
+
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -36,6 +38,11 @@ class RiotApiBase implements RiotApi {
 			client.interceptors().add(new TicketedInterceptor(bucket));
 			isTicketed = true;
 		}
+	}
+	
+	@Override
+	public void setProxy(Proxy proxy) {
+		client.setProxy(proxy);
 	}
 
 }

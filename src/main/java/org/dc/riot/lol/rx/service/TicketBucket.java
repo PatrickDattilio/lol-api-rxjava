@@ -10,6 +10,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Rate throttling semaphore. This is the primary rate throttling service.
+ * A single instance of this class should exist per {@link org.dc.riot.lol.rx.model.Region Region}.
+ * 
+ * @author Dc
+ * @since 1.0
+ * @see {@link org.dc.riot.lol.rx.service.interfaces.RiotApiFactory RiotApiFactory}
+ * @see {@link org.dc.riot.lol.rx.model.Region Region}
+ */
 public class TicketBucket {
 
 	private int buffer = 750;
@@ -76,7 +85,7 @@ public class TicketBucket {
 	}
 
 	/**
-	 * Structured list of {@link Ticket} objects
+	 * Structured queue of {@link Ticket} objects
 	 * 
 	 * @author Dc
 	 */
@@ -162,8 +171,21 @@ public class TicketBucket {
 	}
 
 	/**
+	 * Rate control ticket. Client code need not create these directly, they
+	 * should be obtained from <code>TicketBucket.take();</code>
+	 * <br/>
+	 * <br/>
+	 * It is very important that tickets be returned to their parent {@link TicketBucket},
+	 * else the {@link TicketBucket} will have no Tickets to give and the application will deadlock.
+	 * <br/>
+	 * <br/>
+	 * Using {@link org.dc.riot.lol.rx.service.interfaces.RiotApiFactory RiotApiFactory}'s
+	 * <code>new*Interface(Region,true);</code>
+	 * will produce interface accessors with all rate control and Ticket management already set up.
 	 * 
 	 * @author Dc
+	 * @since 1.0
+	 * @see {@link org.dc.riot.lol.rx.service.interfaces.RiotApiFactory RiotApiFactory}
 	 */
 	public static class Ticket {
 		private UUID name = UUID.randomUUID();
@@ -175,15 +197,15 @@ public class TicketBucket {
 			this.index = index;
 		}
 
-		UUID getName() {
+		public UUID getName() {
 			return name;
 		}
 
-		UUID getParent() {
+		public UUID getParent() {
 			return parentName;
 		}
 
-		int getIndex() {
+		public int getIndex() {
 			return index;
 		}
 		
