@@ -14,6 +14,7 @@ import rx.Observable;
  *
  * @param <T>
  */
+@FunctionalInterface
 interface RetrofitCaller<T> {
 
 	public static boolean DEBUG = false;
@@ -31,7 +32,7 @@ interface RetrofitCaller<T> {
 	 * @throws IOException network issue
 	 * @throws HttpException - any non 2XX response code
 	 */
-	static <T> T handleCaller(final RetrofitCaller<T> caller) throws IOException, HttpException {
+	static <T> T processCall(final RetrofitCaller<T> caller) throws IOException, HttpException {
 		Call<T> call = caller.call();
 		Response<T> response = call.execute();
 		switch (response.code()) {

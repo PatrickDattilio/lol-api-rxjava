@@ -31,23 +31,14 @@ class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 		inter = ra.create(Interface.class);
 	}
 	
-	/**
-	 * /api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent<br/>
-	 * <br/>
-	 * 400	Bad request<br/>
-	 * 401	Unauthorized<br/>
-	 * 404  Game data not found<br/>
-	 * 429	Rate limit exceeded<br/>
-	 * 500	Internal server error<br/>
-	 * 503	Service unavailable
-	 *
-	 * @param summonerId player's summoner ID, See the {@link Summoner} interface for valid IDs.
-	 * @return {@link RecentGamesDto} for the given player or <code>null</code> if no data found
-	 * @throws HttpException 
-	 * @throws IOException
-	 */
+	@Override
+	public float getVersion() {
+		return 1.3f;
+	}
+	
+	@Override
     public RecentGamesDto getRecentGames(long summonerId) throws IOException, HttpException {
-    	return RetrofitCaller.handleCaller(() -> {
+    	return RetrofitCaller.processCall(() -> {
     		return inter.getRecentGames(region, summonerId, apiKey);
     	});
     }

@@ -38,7 +38,8 @@ public class ObservableFactory<T> {
 	/**
 	 * 
 	 * @param callable {@link Callable} that should make a single API call
-	 * and return the result
+	 * and return the result. We use {@link Callable} instead of {@link java.util.function.Supplier
+	 * Supplier} for the exception handling.
 	 * @return an {@link Observable} that will emit the object returned by callable
 	 */
 	public static <T> Observable<T> create(final Callable<T> callable) {

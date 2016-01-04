@@ -29,4 +29,17 @@ class CSA<T> {
 			return "";
 		}
 	}
+	
+	static class Long extends CSA<Long> {
+		Long(Long... ls) {
+			super(ls);
+		}
+
+		Long(long... primvs) {
+			array = new Long[primvs.length];
+			for (int i=0; i<primvs.length; i++) {
+				array[i] = new Long(primvs[i]);
+			}
+		}
+	}
 }

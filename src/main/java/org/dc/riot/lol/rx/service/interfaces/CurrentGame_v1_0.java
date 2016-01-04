@@ -9,8 +9,6 @@ import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.HttpException;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -28,14 +26,20 @@ public class CurrentGame_v1_0 extends RiotApiBase implements RiotApi.CurrentGame
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.client(client)
 				.build();
 
 		inter = ra.create(Interface.class);
 	}
+	
+	@Override
+	public float getVersion() {
+		return 1.0f;
+	}
 
 	@Override
 	public CurrentGameInfo getSpectatorInfo(long summonerId) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
+		return RetrofitCaller.processCall(() -> {
 			return inter.getSpectatorInfo(PlatformId.from(region), summonerId, apiKey);
 		});
 	}

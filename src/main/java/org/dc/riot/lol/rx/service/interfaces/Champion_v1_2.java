@@ -31,17 +31,22 @@ class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
 
 		inter = ra.create(Interface.class);
 	}
+	
+	@Override
+	public float getVersion() {
+		return 1.2f;
+	}
 
 	@Override
 	public ChampionListDto getChampions(final boolean freeToPlay) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
+		return RetrofitCaller.processCall(() -> {
 			return inter.getChampions(region, apiKey, freeToPlay);
 		});
 	}
 
 	@Override
 	public ChampionDto getChampion(long championId) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
+		return RetrofitCaller.processCall(() -> {
 			return inter.getChampion(region, championId, apiKey);
 		});
 	}

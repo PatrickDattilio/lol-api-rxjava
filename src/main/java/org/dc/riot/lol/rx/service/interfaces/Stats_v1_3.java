@@ -1,13 +1,14 @@
 package org.dc.riot.lol.rx.service.interfaces;
 
+import java.io.IOException;
+
 import org.dc.riot.lol.rx.model.PlayerStatsSummaryListDto;
 import org.dc.riot.lol.rx.model.RankedStatsDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
-
-import com.squareup.okhttp.OkHttpClient;
+import org.dc.riot.lol.rx.service.error.HttpException;
 
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
@@ -26,19 +27,29 @@ class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.client(client)
 				.build();
 		
 		inter = ra.create(Interface.class);
 	}
-
+	
 	@Override
-	public RankedStatsDto getRanked(long summonerId, Season season) {
-		return null;
+	public float getVersion() {
+		return 1.3f;
 	}
 
 	@Override
-	public PlayerStatsSummaryListDto getSummary(long summonerId, Season season) {
-		return null;
+	public RankedStatsDto getRanked(long summonerId, Season season) throws IOException, HttpException {
+		return RetrofitCaller.processCall(() -> {
+			return inter.getRanked(region, summonerId, season, apiKey);
+		});
+	}
+
+	@Override
+	public PlayerStatsSummaryListDto getSummary(long summonerId, Season season) throws IOException, HttpException {
+		return RetrofitCaller.processCall(() -> {
+			return inter.getSummary(region, summonerId, season, apiKey);
+		});
 	}
 	
 	private interface Interface {

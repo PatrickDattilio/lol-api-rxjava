@@ -110,7 +110,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported Champion version is 1.2");
         }
 
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.Champion.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -123,7 +123,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported CurrentGame version is 1.0");
         }
 
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.CurrentGame.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -136,7 +136,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported FeaturedGames version is 1.0");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.FeaturedGames.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -149,7 +149,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported RecentGames version is 1.3");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.RecentGames.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -162,7 +162,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported League version is 2.5");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.League.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -175,7 +175,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.StaticData.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -188,7 +188,7 @@ public final class RiotApiFactory {
     		throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
     	}
     	
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.Stats.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -201,7 +201,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported LolStatus version is 1.0");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.LolStatus.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -214,7 +214,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported Match version is 2.2");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.Match.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -227,7 +227,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported MatchListDto version is 2.2");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.MatchList.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -240,7 +240,7 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported Summoner version is 1.4");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.Summoner.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
 
@@ -253,13 +253,13 @@ public final class RiotApiFactory {
             throw new InvalidVersionException("Lowest supported Team version is 2.4");
         }
         
-		completeBuild(region, api, autoRateControl);
+		completeBuild(RiotApi.Team.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
     }
     
-    private void completeBuild(Region region, RiotApi api, boolean autoRateControl) {
+    private void completeBuild(Region[] supportedRegions, Region region, RiotApi api, boolean autoRateControl) {
     	boolean supported = false;
-    	for (Region r : api.getSupportedRegions()) {
+    	for (Region r : supportedRegions) {
     		if (r == region) {
     			supported = true;
     			break;

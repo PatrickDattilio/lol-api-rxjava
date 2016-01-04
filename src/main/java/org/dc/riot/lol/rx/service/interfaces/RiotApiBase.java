@@ -14,12 +14,18 @@ import com.squareup.okhttp.OkHttpClient;
  * @author Dc
  * @since 1.0
  */
-class RiotApiBase implements RiotApi {
+abstract class RiotApiBase implements RiotApi {
 	
 	protected final ApiKey apiKey;
 	protected final Region region;
 	private boolean isTicketed = false;
 	protected final OkHttpClient client;
+	
+	protected RiotApiBase(ApiKey apiKey, Region region, OkHttpClient client) {
+		this.apiKey = apiKey;
+		this.region = region;
+		this.client = client;
+	}
 	
 	RiotApiBase(ApiKey apiKey, Region region) {
 		this.apiKey = apiKey;
@@ -49,5 +55,5 @@ class RiotApiBase implements RiotApi {
 	public void setProxy(Proxy proxy) {
 		client.setProxy(proxy);
 	}
-
+	
 }

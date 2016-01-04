@@ -33,39 +33,44 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 		
 		inter = ra.create(Interface.class);
 	}
+	
+	@Override
+	public float getVersion() {
+		return 1.4f;
+	}
 
 	@Override
 	public Map<String, SummonerDto> getByNames(String... summonerNames) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
+		return RetrofitCaller.processCall(() -> {
 			return inter.getByNames(region, new CSA<String>(summonerNames), apiKey);
 		});
 	}
 
 	@Override
 	public Map<String, SummonerDto> getByIds(long... summonerIds) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
-			return inter.getByIds(region, new LongCSA(summonerIds), apiKey);
+		return RetrofitCaller.processCall(() -> {
+			return inter.getByIds(region, new CSA.Long(summonerIds), apiKey);
 		});
 	}
 
 	@Override
 	public Map<String, MasteryPagesDto> getMasteries(long... summonerIds) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
-			return inter.getMasteries(region, new LongCSA(summonerIds), apiKey);
+		return RetrofitCaller.processCall(() -> {
+			return inter.getMasteries(region, new CSA.Long(summonerIds), apiKey);
 		});
 	}
 
 	@Override
 	public Map<String, String> getNames(long... summonerIds) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
-			return inter.getNames(region, new LongCSA(summonerIds), apiKey);
+		return RetrofitCaller.processCall(() -> {
+			return inter.getNames(region, new CSA.Long(summonerIds), apiKey);
 		});
 	}
 
 	@Override
 	public Map<String, RunePagesDto> getRunes(long... summonerIds) throws IOException, HttpException {
-		return RetrofitCaller.handleCaller(() -> {
-			return inter.getRunes(region, new LongCSA(summonerIds), apiKey);
+		return RetrofitCaller.processCall(() -> {
+			return inter.getRunes(region, new CSA.Long(summonerIds), apiKey);
 		});
 	}
 
@@ -80,16 +85,16 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 		Call<Map<String, SummonerDto>> getByNames(@Path("region") Region region, @Path("summonerNames") CSA<String> encodedSummonerNames, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.4/summoner/{summonerIds}")
-		Call<Map<String, SummonerDto>> getByIds(@Path("region") Region region, @Path("summonerIds") CSA<Long> summonerIds, @Query("api_key") ApiKey apiKey);
+		Call<Map<String, SummonerDto>> getByIds(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.4/summoner/{summonerIds}/masteries")
-		Call<Map<String, MasteryPagesDto>> getMasteries(@Path("region") Region region, @Path("summonerIds") CSA<Long> summonerIds, @Query("api_key") ApiKey apiKey);
+		Call<Map<String, MasteryPagesDto>> getMasteries(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.4/summoner/{summonerIds}/name")
-		Call<Map<String, String>> getNames(@Path("region") Region region, @Path("summonerIds") CSA<Long> summonerIds, @Query("api_key") ApiKey apiKey);
+		Call<Map<String, String>> getNames(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.4/summoner/{summonerIds}/runes")
-		Call<Map<String, RunePagesDto>> getRunes(@Path("region") Region region, @Path("summonerIds") CSA<Long> summonerIds, @Query("api_key") ApiKey apiKey);
+		Call<Map<String, RunePagesDto>> getRunes(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
 
 	}
 }

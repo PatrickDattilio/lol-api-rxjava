@@ -37,6 +37,7 @@ import org.dc.riot.lol.rx.model.SummonerSpellDto;
 import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.TeamDto;
 import org.dc.riot.lol.rx.service.error.HttpException;
+import org.dc.riot.lol.rx.service.error.InvalidVersionException;
 import org.dc.riot.lol.rx.service.request.ChampDataTag;
 import org.dc.riot.lol.rx.service.request.ChampListDataTag;
 import org.dc.riot.lol.rx.service.request.ItemDataTag;
@@ -54,26 +55,27 @@ import org.dc.riot.lol.rx.service.request.SpellDataTag;
 public interface RiotApi {
 	
 	public enum RateType {
-		PERSONAL, SERVICE
-	}
-	
-	public static String encodeName(String name) {
-		return name.toLowerCase().replace(" ", "").trim();
-	}
-	
-	public default Region[] getSupportedRegions() {
-		Region[] regions = new Region[Region.values().length - 1];
-		int i = 0;
-		for (Region r : Region.values()) {
-			if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-				continue;
-			}
-			
-			regions[i] = r;
-			i++;
+		PERSONAL("user"), SERVICE("service");
+		
+		private final String text;
+		private RateType(String text) {
+			this.text = text;
 		}
 		
-		return regions;
+		@Override
+		public String toString() {
+			return text;
+		}
+		
+		public static RateType from(String s) {
+			for (RateType t : RateType.values()) {
+				if (t.text.equals(s)) {
+					return t;
+				}
+			}
+			
+			return null;
+		}
 	}
 	
 	public default RateType getRateType() {
@@ -83,6 +85,8 @@ public interface RiotApi {
 	public Region getRegion();
 	
 	public ApiKey getApiKey();
+	
+	public float getVersion();
 	
 	/**
 	 * Allows one-time set only
@@ -96,6 +100,25 @@ public interface RiotApi {
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
      */
     public interface Champion extends RiotApi {
+
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 1.2f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
 
         /**
          * /api/lol/{region}/v1.2/champion<br/>
@@ -135,6 +158,14 @@ public interface RiotApi {
      */
     public interface CurrentGame extends RiotApi {
 
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 1.0f) {
+				return Region.values();
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
+
         /**
          * /observer-mode/rest/consumer/getSpectatorGameInfo/{platformId}/{summonerId}<br/>
          * <br/>
@@ -154,6 +185,14 @@ public interface RiotApi {
      */
     public interface FeaturedGames extends RiotApi {
 
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 1.0f) {
+				return Region.values();
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
+
         /**
          * /observer-mode/rest/featured<br/>
          * <br/>
@@ -162,15 +201,35 @@ public interface RiotApi {
          *
          * @return {@link FeaturedGames} object with all the featured games for the {@link Region}
          * queried against or <code>null</code> if some network error occurred
+         * @throws HttpException 
          * @throws IOException
          */
-        FeaturedGamesDto getFeaturedGames();
+        FeaturedGamesDto getFeaturedGames() throws IOException, HttpException;
     }
 
     /**
      * Get recent game data on specific players
      */
     public interface RecentGames extends RiotApi {
+
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 1.3f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
 
         /**
          * /api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent<br/>
@@ -191,27 +250,30 @@ public interface RiotApi {
     }
 
     /**
-     * Retrieves data about players' leagues. See {@link LeagueDto} and
-     * {@link LeagueEntryDto}
+     * Retrieves data about players' leagues.
+     * @see {@link LeagueDto}
+     * @see {@link LeagueEntryDto}
      */
     public interface League extends RiotApi {
 
-        /**
-         * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  League data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
-         * 503	Service unavailable
-         *
-         * @param summonerIds set of summoners to look up
-         * @return a Map of summonerId Strings to List of {@link LeagueDto} objects or <code>null</code>
-         * if nothing found
-         * @throws IOException
-         */
-        Map<String, LeagueDto[]> getBySummonerEntry(long... summonerIds);
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 2.5f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
 
         /**
          * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br/>
@@ -226,9 +288,28 @@ public interface RiotApi {
          * @param summonerIds set of summoners to look up
          * @return a Map of summonerId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
+         * @throws HttpException 
          * @throws IOException
          */
-        Map<String, LeagueDto[]> getBySummoner(long... summonerIds);
+        Map<String, LeagueDto[]> getBySummonerEntries(long... summonerIds) throws IOException, HttpException;
+
+        /**
+         * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br/>
+         * <br/>
+         * 400	Bad request<br/>
+         * 401	Unauthorized<br/>
+         * 404  League data not found<br/>
+         * 429	Rate limit exceeded<br/>
+         * 500	Internal server error<br/>
+         * 503	Service unavailable
+         *
+         * @param summonerIds set of summoners to look up
+         * @return a Map of summonerId Strings to List of {@link LeagueDto} objects or <code>null</code>
+         * if nothing found
+         * @throws HttpException 
+         * @throws IOException
+         */
+        Map<String, LeagueDto[]> getBySummoners(long... summonerIds) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v2.5/league/by-team/{teamIds}<br/>
@@ -243,9 +324,10 @@ public interface RiotApi {
          * @param teamIds set of teams to look up
          * @return a Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
+         * @throws HttpException 
          * @throws IOException
          */
-        Map<String, LeagueDto[]> getByTeam(String... teamIds);
+        Map<String, LeagueDto[]> getByTeams(String... teamIds) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v2.5/league/by-team/{teamIds}/entry<br/>
@@ -260,9 +342,10 @@ public interface RiotApi {
          * @param teamIds set of teams to look up
          * @return a Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
+         * @throws HttpException 
          * @throws IOException
          */
-        Map<String, LeagueDto[]> getByTeamEntry(String... teamIds);
+        Map<String, LeagueDto[]> getByTeamEntries(String... teamIds) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v2.5/league/challenger<br/>
@@ -276,9 +359,10 @@ public interface RiotApi {
          *
          * @param queue  the queue type to search for
          * @return a {@link LeagueDto} object with data
+         * @throws HttpException 
          * @throws IOException
          */
-        LeagueDto getChallenger(QueueType queue);
+        LeagueDto getChallenger(QueueType queue) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v2.5/league/master<br/>
@@ -292,9 +376,10 @@ public interface RiotApi {
          *
          * @param queue  the queue type to search for
          * @return a {@link LeagueDto} object with data
+         * @throws HttpException 
          * @throws IOException
          */
-        LeagueDto getMaster(QueueType queue);
+        LeagueDto getMaster(QueueType queue) throws IOException, HttpException;
     }
 
     /**
@@ -303,9 +388,12 @@ public interface RiotApi {
      */
     public interface StaticData extends RiotApi {
     	
-    	@Override
-    	public default Region[] getSupportedRegions() {
-    		return Region.values();
+    	public static Region[] getSupportedRegions(float version) {
+    		if (version >= 1.2f) {
+				return Region.values();
+    		} else {
+    			throw new InvalidVersionException();
+    		}
     	}
     	
     	@Override
@@ -600,6 +688,23 @@ public interface RiotApi {
      */
     public interface LolStatus extends RiotApi {
 
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 1.0f) {
+				Region[] ra = new Region[Region.values().length - 1];
+				int i = 0;
+				for (Region r : Region.values()) {
+					if (r != Region.KOREA) {
+						ra[i] = r;
+						i++;
+					}
+				}
+
+				return ra;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
+
         /**
          * /shards<br/>
          * <br/>
@@ -608,9 +713,10 @@ public interface RiotApi {
          * 403	Forbidden
          *
          * @return Array of {@link Shard} statuses
+         * @throws HttpException 
          * @throws IOException
          */
-        Shard[] getShards();
+        Shard[] getShards() throws IOException, HttpException;
 
         /**
          * /shards/{region}<br/>
@@ -620,9 +726,10 @@ public interface RiotApi {
          * 403	Forbidden
          *
          * @return a {@link ShardStatus} for the specified {@link Region}
+         * @throws HttpException 
          * @throws IOException
          */
-        ShardStatus getShard();
+        ShardStatus getShard() throws IOException, HttpException;
     }
 
     /**
@@ -630,6 +737,25 @@ public interface RiotApi {
      * statistics for specified matches.
      */
     public interface Match extends RiotApi {
+
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 2.2f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
 
         /**
          * /api/lol/{region}/v2.2/match/{matchId}<br/>
@@ -645,9 +771,10 @@ public interface RiotApi {
          * @param includeTimeline Attempt to include timeline data. Not all matches have timeline
          *                        data associated with them.
          * @return a {@link MatchDetail}
+         * @throws HttpException 
          * @throws IOException
          */
-        MatchDetail getMatch(long matchId, boolean includeTimeline);
+        MatchDetail getMatch(long matchId, boolean includeTimeline) throws IOException, HttpException;
     }
 
     /**
@@ -655,6 +782,25 @@ public interface RiotApi {
      * to the {@link Match} interface.
      */
     public interface MatchList extends RiotApi {
+
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 2.2f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
 
         /**
          * /api/lol/{region}/v2.2/matchlist/by-summoner/{summonerId}<br/>
@@ -685,12 +831,32 @@ public interface RiotApi {
          * @param beginIndex   Optional. Specify -1 for no value.
          * @param endIndex     Optional. Specify -1 for no value.
          * @return {@link MatchListDto}
+         * @throws HttpException 
          * @throws IOException
          */
-        MatchListDto getMatchList(long summonerId, long[] championIds, RankedQueue[] rankedQueues, Season[] seasons, long beginTime, long endTime, int beginIndex, int endIndex);
+        MatchListDto getMatchList(long summonerId, long[] championIds, RankedQueue[] rankedQueues, Season[] seasons, long beginTime, long endTime, int beginIndex, int endIndex) throws IOException, HttpException;
     }
 
     public interface Stats extends RiotApi {
+
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 1.3f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
 
         /**
          * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked<br/>
@@ -705,9 +871,10 @@ public interface RiotApi {
          * @param summonerId ID of summoner. See {@link Summoner} to fetch valid IDs.
          * @param season     Optional. Competitive {@link Season} to search.
          * @return a {@link RankedStatsDto} for the specified player.
+         * @throws HttpException 
          * @throws IOException
          */
-        RankedStatsDto getRanked(long summonerId, Season season);
+        RankedStatsDto getRanked(long summonerId, Season season) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary<br/>
@@ -722,9 +889,10 @@ public interface RiotApi {
          * @param summonerId ID of summoner. See {@link Summoner} to fetch valid IDs.
          * @param season     Optional. Competitive {@link Season} to search.
          * @return Full player stats summary.
+         * @throws HttpException 
          * @throws IOException
          */
-        PlayerStatsSummaryListDto getSummary(long summonerId, Season season);
+        PlayerStatsSummaryListDto getSummary(long summonerId, Season season) throws IOException, HttpException;
     }
 
     /**
@@ -732,6 +900,29 @@ public interface RiotApi {
      */
     public interface Summoner extends RiotApi {
 
+		public static String encodeName(String name) {
+			return name.toLowerCase().replace(" ", "").trim();
+		}
+
+		public static Region[] getSupportedRegions(float version) {
+			if (version >= 1.4f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+			} else {
+				throw new InvalidVersionException();
+			}
+		}
+	
         /**
          * /api/lol/{region}/v1.4/summoner/by-name/{summonerNames}<br/>
          * <br/>
@@ -821,6 +1012,25 @@ public interface RiotApi {
 
     public interface Team extends RiotApi {
 
+    	public static Region[] getSupportedRegions(float version) {
+    		if (version >= 2.4f) {
+    			Region[] regions = new Region[Region.values().length - 1];
+    			int i = 0;
+    			for (Region r : Region.values()) {
+    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
+    					continue;
+    				}
+
+    				regions[i] = r;
+    				i++;
+    			}
+
+    			return regions;
+    		} else {
+    			throw new InvalidVersionException();
+    		}
+    	}
+
         /**
          * /api/lol/{region}/v2.4/team/by-summoner/{summonerIds}<br/>
          * <br/>
@@ -835,9 +1045,10 @@ public interface RiotApi {
          *                    summoner IDs.
          * @return Map of stringified summonerIds to list of {@link TeamDto} objects that is the
          * collection of all teams of which that summoner is a member.
+         * @throws HttpException 
          * @throws IOException
          */
-        Map<String, TeamDto[]> getTeamsBySummoners(long... summonerIds);
+        Map<String, TeamDto[]> getTeamsBySummoners(long... summonerIds) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v2.4/team/{teamIds}<br/>
@@ -851,8 +1062,9 @@ public interface RiotApi {
          *
          * @param teamIds List of team IDs. TODO document how to fetch team IDs
          * @return Map of team ID to {@link TeamDto} objects.
+         * @throws HttpException 
          * @throws IOException
          */
-        Map<String, TeamDto> getTeams(String... teamIds);
+        Map<String, TeamDto> getTeams(String... teamIds) throws IOException, HttpException;
     }
 }
