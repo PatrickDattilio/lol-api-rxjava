@@ -38,11 +38,28 @@ public class ApiKey {
         return key;
     }
 
+    /**
+     * Read API keys in the file ./API_KEY. This method exists as a convenience for
+     * developers to load keys without command line or checking in API keys to
+     * source control
+     * @return list of {@link ApiKey} found in the API_KEY file
+     */
     public static ApiKey[] loadApiKeys() {
+    	return loadApiKeys(new File("./API_KEY"));
+    }
+    
+    /**
+     * Read API keys in the given file. This method exists as a convenience for
+     * developers to load keys without command line or checking in API keys to
+     * source control
+     * @param file API key file to read
+     * @return list of {@link ApiKey} found in the specified file
+     */
+    public static ApiKey[] loadApiKeys(File file) {
         ArrayList<ApiKey> keys = new ArrayList<>();
         Scanner scanner = null;
         try {
-            scanner = new Scanner(new BufferedInputStream(new FileInputStream(new File("./API_KEY"))));
+            scanner = new Scanner(new BufferedInputStream(new FileInputStream(file)));
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 if ("".equals(line.trim())) {

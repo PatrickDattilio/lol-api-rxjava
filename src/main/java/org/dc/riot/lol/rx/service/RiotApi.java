@@ -38,6 +38,8 @@ import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.TeamDto;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.request.ChampDataTag;
+import org.dc.riot.lol.rx.service.request.ChampListDataTag;
+import org.dc.riot.lol.rx.service.request.ItemDataTag;
 import org.dc.riot.lol.rx.service.request.ItemListDataTag;
 import org.dc.riot.lol.rx.service.request.MasteryDataTag;
 import org.dc.riot.lol.rx.service.request.MasteryListDataTag;
@@ -319,15 +321,17 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
+         * @param dataById	If specified as true, the returned data map will use the champions' IDs as the keys. If not specified or specified as false, the returned data map will use the champions' keys instead.
          * @param version   patch to reference, <code>null</code> will use latest patch
          * @param locale    locale String (e.g. en_US) <code>null</code> will use default for region
          * @param champData Champ data tags to retrieve. Only id, key, name, and title are returned
          *                  by default if this parameter isn't specified, <code>null</code> is ok
          * @return a {@link ChampionDto} object with requested data filled in or <code>null</code>
          * if no champion could be found matching the given query
+         * @throws HttpException 
          * @throws IOException
          */
-        ChampionListDto getChampions(String version, String locale, ChampDataTag... champData);
+        ChampionListDto getChampions(boolean dataById, String version, String locale, ChampListDataTag... champData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/champion/{id}<br/>
@@ -345,9 +349,10 @@ public interface RiotApi {
          *                  by default if this parameter isn't specified, <code>null</code> is ok
          * @return a {@link ChampionDto} object with requested data filled in or <code>null</code>
          * if no champion could be found matching the given query
+         * @throws HttpException 
          * @throws IOException
          */
-        ChampionDto getChampion(long champId, String version, String locale, ChampDataTag... champData);
+        ChampionDto getChampion(long champId, String version, String locale, ChampDataTag... champData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/item<br/>
@@ -364,9 +369,10 @@ public interface RiotApi {
          *                     this parameter isn't specified. To return all additional data, use
          *                     the tag 'all'.
          * @return {@link ItemListDto} filled in
+         * @throws HttpException 
          * @throws IOException
          */
-        ItemListDto getItems(String version, String locale, ItemListDataTag... itemListData);
+        ItemListDto getItems(String version, String locale, ItemListDataTag... itemListData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/item/{id}<br/>
@@ -384,9 +390,10 @@ public interface RiotApi {
          *                 description are returned by default if this parameter isn't specified.
          *                 To return all additional data, use the tag 'all'.
          * @return {@link ItemListDto} filled in according to itemListData
+         * @throws HttpException 
          * @throws IOException
          */
-        ItemDto getItem(long itemId, String version, String locale, ItemListDataTag... itemData);
+        ItemDto getItem(long itemId, String version, String locale, ItemDataTag... itemData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/language-strings<br/>
@@ -399,9 +406,10 @@ public interface RiotApi {
          * @param version patch to reference, <code>null</code> will use latest patch
          * @param locale  locale String (e.g. en_US) <code>null</code> will use default for region
          * @return {@link LanguageStringsDto}
+         * @throws HttpException 
          * @throws IOException
          */
-        LanguageStringsDto getLanguageStrings(String version, String locale);
+        LanguageStringsDto getLanguageStrings(String version, String locale) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/languages<br/>
@@ -414,9 +422,10 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @return String array of all supported locales
+         * @throws HttpException 
          * @throws IOException
          */
-        String[] getLocales();
+        String[] getLocales() throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/map<br/>
@@ -429,9 +438,10 @@ public interface RiotApi {
          * @param version patch to reference, <code>null</code> will use latest patch
          * @param locale  locale String (e.g. en_US) <code>null</code> will use default for region
          * @return {@link MapDataDto} object
+         * @throws HttpException 
          * @throws IOException
          */
-        MapDataDto getMap(String version, String locale);
+        MapDataDto getMap(String version, String locale) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/mastery<br/>
@@ -447,9 +457,10 @@ public interface RiotApi {
          *                        and description are returned by default if this parameter isn't
          *                        specified. To return all additional data, use the tag 'all'.
          * @return {@link MasteryListDto} filled in according to tags
+         * @throws HttpException 
          * @throws IOException
          */
-        MasteryListDto getMasteries(String version, String locale, MasteryListDataTag... masteryListData);
+        MasteryListDto getMasteries(String version, String locale, MasteryListDataTag... masteryListData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/mastery/{id}<br/>
@@ -466,9 +477,10 @@ public interface RiotApi {
          *                    returned by default if this parameter isn't specified. To return all
          *                    additional data, use the tag 'all'.
          * @return {@link MasteryListDto} filled in according to tags
+         * @throws HttpException 
          * @throws IOException
          */
-        MasteryDto getMastery(long id, String version, String locale, MasteryDataTag... masteryData);
+        MasteryDto getMastery(long id, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/realm<br/>
@@ -479,9 +491,10 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @return {@link RealmDto} object
+         * @throws HttpException 
          * @throws IOException
          */
-        RealmDto getRealm();
+        RealmDto getRealm() throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/na/v1.2/rune<br/>
@@ -497,9 +510,10 @@ public interface RiotApi {
          *                     rune, and description are returned by default if this parameter isn't
          *                     specified. To return all additional data, use the tag 'all'.
          * @return {@link RuneListDto} object filled in according to tags
+         * @throws HttpException 
          * @throws IOException
          */
-        RuneListDto getRunes(String version, String locale, RuneListDataTag... runeListData);
+        RuneListDto getRunes(String version, String locale, RuneListDataTag... runeListData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/na/v1.2/rune/{id}<br/>
@@ -517,9 +531,10 @@ public interface RiotApi {
          *                 returned by default if this parameter isn't specified. To return all
          *                 additional data, use the tag 'ALL'.
          * @return {@link RuneListDto} object filled in according to tags
+         * @throws HttpException 
          * @throws IOException
          */
-        RuneDto getRune(long id, String version, String locale, RuneDataTag... runeData);
+        RuneDto getRune(long id, String version, String locale, RuneDataTag... runeData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/summoner-spell<br/>
@@ -538,9 +553,10 @@ public interface RiotApi {
          *                  description, and summonerLevel are returned by default if this parameter
          *                  isn't specified. To return all additional data, use the tag 'ALL'.
          * @return {@link SummonerSpellListDto} object filled in according to tags
+         * @throws HttpException 
          * @throws IOException
          */
-        SummonerSpellListDto getSummonerSpells(boolean dataById, String version, String locale, SpellDataTag... spellData);
+        SummonerSpellListDto getSummonerSpells(boolean dataById, String version, String locale, SpellDataTag... spellData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/summoner-spell/{id}<br/>
@@ -558,9 +574,10 @@ public interface RiotApi {
          *                  description, and summonerLevel are returned by default if this parameter
          *                  isn't specified. To return all additional data, use the tag 'ALL'.
          * @return {@link SummonerSpellDto} object filled in according to tags
+         * @throws HttpException 
          * @throws IOException
          */
-        SummonerSpellDto getSummonerSpell(long id, String version, String locale, SpellDataTag... spellData);
+        SummonerSpellDto getSummonerSpell(long id, String version, String locale, SpellDataTag... spellData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/versions<br/>
@@ -571,9 +588,10 @@ public interface RiotApi {
          *
          * @return String array with every patch arranged from newest at [0] to oldest
          * at [length - 1]
+         * @throws HttpException 
          * @throws IOException
          */
-        String[] getVersions();
+        String[] getVersions() throws IOException, HttpException;
     }
 
     /**

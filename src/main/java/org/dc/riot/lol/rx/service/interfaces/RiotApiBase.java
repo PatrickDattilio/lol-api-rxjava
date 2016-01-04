@@ -9,6 +9,11 @@ import org.dc.riot.lol.rx.service.TicketBucket;
 
 import com.squareup.okhttp.OkHttpClient;
 
+/**
+ * Base class for all RiotApi.* interface implementers
+ * @author Dc
+ * @since 1.0
+ */
 class RiotApiBase implements RiotApi {
 	
 	protected final ApiKey apiKey;

@@ -1,11 +1,26 @@
 package org.dc.riot.lol.rx.service.request;
 
 /**
- * Used by {@link org.dc.riotapi.service.RiotApi.StaticData}
- * Created by Dc on 10/20/15.
+ * Used by {@link org.dc.riot.lol.rx.service.RiotApi.StaticData RiotApi.StaticData}
+ * @author Dc
+ * @since 1.0
  */
 public enum ChampDataTag {
-    ALL, ALLYTIPS, ALTIMAGES, BLURB, ENEMYTIPS, IMAGE, INFO, LORE, PARTYPE, PASSIVE, RECOMMENDED, SKINS, SPELLS, STATS, TAGS;
+    ALL,
+    ALLYTIPS,
+    ALTIMAGES,
+    BLURB,
+    ENEMYTIPS,
+    IMAGE,
+    INFO,
+    LORE,
+    PARTYPE,
+    PASSIVE,
+    RECOMMENDED,
+    SKINS,
+    SPELLS,
+    STATS,
+    TAGS;
 
     @Override
     public String toString() {

@@ -23,7 +23,8 @@ import com.google.gson.JsonParseException;
 /**
  * Use this class to generate instances of {@link RiotApi} interfaces. Use the associated {@link Builder}
  * to call into specific versions if needed.
- * Created by Dc on 9/30/15.
+ * @author Dc
+ * @since 1.0
  */
 public final class RiotApiFactory {
 
