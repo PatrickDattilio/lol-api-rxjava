@@ -26,7 +26,7 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 		
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
-				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 				.client(client)
 				.build();
 		

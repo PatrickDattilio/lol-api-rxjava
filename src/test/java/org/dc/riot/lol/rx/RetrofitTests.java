@@ -22,7 +22,7 @@ import org.dc.riot.lol.rx.service.ObservableFactory;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiExecutors;
 import org.dc.riot.lol.rx.service.error.HttpException;
-import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
+import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,14 +36,14 @@ public class RetrofitTests {
 	private ApiKey apiKey;
 	private Region region;
 	private Debug debug;
-	private RiotApiFactory factory;
+	private ApiFactory factory;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
 	
 	@Before
 	public void setup() {
 		apiKey = ApiKey.loadApiKeys()[0];
-		factory = RiotApiFactory.newDefaultFactory(apiKey);
+		factory = ApiFactory.newDefaultFactory(apiKey);
 		region = Region.NORTH_AMERICA;
 		debug = Debug.getInstance();
 		scheduler = Schedulers.from(RiotApiExecutors.newFixedThreadPool(apiKey.getRules()));

@@ -24,6 +24,8 @@ public class ApiKey {
     private final String key;
     private final RateRule[] rules;
     
+    private boolean inGoodStanding = true;
+    
     public ApiKey(String key, RateRule... rules) {
     	this.key = key;
     	this.rules = rules;

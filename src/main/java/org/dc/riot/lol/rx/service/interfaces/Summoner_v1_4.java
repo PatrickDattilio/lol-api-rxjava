@@ -27,7 +27,7 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 		
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
-				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 				.client(client)
 				.build();
 		

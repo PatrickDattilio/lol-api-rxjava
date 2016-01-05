@@ -26,7 +26,7 @@ import com.google.gson.JsonParseException;
  * @author Dc
  * @since 1.0
  */
-public final class RiotApiFactory {
+public final class ApiFactory {
 
     private static Gson GSON = null;
     static {
@@ -62,10 +62,10 @@ public final class RiotApiFactory {
      * will return interface calls for all recent versions of the LoL API.
      * 
      * @param apiKey API key that this factory will use to create interface connections
-     * @return a {@link RiotApiFactory} for the given API key to access all newest
+     * @return a {@link ApiFactory} for the given API key to access all newest
      * LoL API versions
      */
-    public static RiotApiFactory newDefaultFactory(ApiKey apiKey) {
+    public static ApiFactory newDefaultFactory(ApiKey apiKey) {
         return new Builder(apiKey).build();
     }
     
@@ -97,7 +97,7 @@ public final class RiotApiFactory {
     
     private final ApiKey apiKey;
 
-    private RiotApiFactory(ApiKey apiKey) {
+    private ApiFactory(ApiKey apiKey) {
     	this.apiKey = apiKey;
     }
 
@@ -284,7 +284,7 @@ public final class RiotApiFactory {
     }
 
     /**
-     * Used to create {@link RiotApiFactory} instances pointed at specific versions.
+     * Used to create {@link ApiFactory} instances pointed at specific versions.
      */
     public static class Builder {
         private float champVersion = 1.2f;          // baseline Champion version
@@ -372,8 +372,8 @@ public final class RiotApiFactory {
         	return this;
         }
 
-        public RiotApiFactory build() {
-            RiotApiFactory factory = new RiotApiFactory(apiKey);
+        public ApiFactory build() {
+            ApiFactory factory = new ApiFactory(apiKey);
             factory.champVersion = champVersion;
             factory.currentGameVersion = currentGameVersion;
             factory.featuredGamesVersion = featuredGamesVersion;

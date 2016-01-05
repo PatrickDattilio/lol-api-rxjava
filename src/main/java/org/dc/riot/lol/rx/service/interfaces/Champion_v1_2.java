@@ -25,7 +25,7 @@ class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
 
 		Retrofit ra = new Retrofit.Builder()
 				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
-				.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 				.client(client)
 				.build();
 

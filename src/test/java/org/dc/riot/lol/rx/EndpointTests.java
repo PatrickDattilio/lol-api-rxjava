@@ -10,7 +10,7 @@ import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.ObservableFactory;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiExecutors;
-import org.dc.riot.lol.rx.service.interfaces.RiotApiFactory;
+import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,14 +20,14 @@ import rx.schedulers.Schedulers;
 public class EndpointTests {
 	
 	private ApiKey apiKey = null;
-	private RiotApiFactory factory = null;
+	private ApiFactory factory = null;
 	private Scheduler scheduler = null;
 	private Debug debug = Debug.getInstance();
 	
 	@Before
 	public void setup() {
 		apiKey = ApiKey.loadApiKeys()[0];
-		factory = RiotApiFactory.newDefaultFactory(apiKey);
+		factory = ApiFactory.newDefaultFactory(apiKey);
 		scheduler = Schedulers.from(RiotApiExecutors.newFixedThreadPool(apiKey.getRules()));
 	}
 

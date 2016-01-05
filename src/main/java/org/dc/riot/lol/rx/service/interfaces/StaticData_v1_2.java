@@ -52,7 +52,7 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 			Retrofit ra = new Retrofit.Builder()
 					.client(client)
 					.baseUrl("https://global.api.pvp.net")
-					.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+					.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 					.build();
 
 			INTER = ra.create(Interface.class);

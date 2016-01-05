@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author Dc
  * @since 1.0
- * @see {@link org.dc.riot.lol.rx.service.interfaces.RiotApiFactory RiotApiFactory}
+ * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}
  * @see {@link org.dc.riot.lol.rx.model.Region Region}
  */
 public class TicketBucket {
@@ -179,13 +179,13 @@ public class TicketBucket {
 	 * else the {@link TicketBucket} will have no Tickets to give and the application will deadlock.
 	 * <br/>
 	 * <br/>
-	 * Using {@link org.dc.riot.lol.rx.service.interfaces.RiotApiFactory RiotApiFactory}'s
+	 * Using {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}'s
 	 * <code>new*Interface(Region,true);</code>
 	 * will produce interface accessors with all rate control and Ticket management already set up.
 	 * 
 	 * @author Dc
 	 * @since 1.0
-	 * @see {@link org.dc.riot.lol.rx.service.interfaces.RiotApiFactory RiotApiFactory}
+	 * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}
 	 */
 	public static class Ticket {
 		private UUID name = UUID.randomUUID();

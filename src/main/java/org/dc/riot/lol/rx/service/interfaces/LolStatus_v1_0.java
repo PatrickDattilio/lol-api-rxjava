@@ -30,7 +30,7 @@ class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 
 			Retrofit ra = new Retrofit.Builder()
 					.baseUrl("http://status.leagueoflegends.com")
-					.addConverterFactory(GsonConverterFactory.create(RiotApiFactory.getGson()))
+					.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 					.client(client)
 					.build();
 			
