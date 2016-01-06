@@ -13,12 +13,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * Rate throttling semaphore. This is the primary rate throttling service.
  * A single instance of this class should exist per
- * {@link ApiKey} per {@link org.dc.riot.lol.rx.model.Region Region}.
+ * {@link ApiKey} per {@link org.dc.riot.lol.rx.service.Region Region}.
  * 
  * @author Dc
  * @since 1.0
  * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}
- * @see {@link org.dc.riot.lol.rx.model.Region Region}
+ * @see {@link org.dc.riot.lol.rx.service.Region Region}
  */
 public class TicketBucket {
 
@@ -84,6 +84,16 @@ public class TicketBucket {
 	public int getBuffer() {
 		return buffer;
 	}
+	
+	public void stall(long delay, TimeUnit timeUnit) {
+		for (Bucket b : buckets) {
+			b.stall(delay, timeUnit);
+		}
+	}
+	
+	protected long getTime() {
+		return System.currentTimeMillis();
+	}
 
 	/**
 	 * Structured queue of {@link Ticket} objects
@@ -96,6 +106,24 @@ public class TicketBucket {
 		private UUID name = UUID.randomUUID();
 		private ArrayBlockingQueue<Ticket> tickets;
 		private RateRule rule;
+
+		private final Object stallLock = new Object();
+		private boolean stalled = false;
+		private long unstallTime = 0L;
+		private Runnable stallTask = () -> {
+			while (getTime() < unstallTime) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// need to worry about this?
+				}
+			}
+
+			synchronized (stallLock) {
+				stalled = false;
+				stallLock.notifyAll();
+			}
+		};
 
 		private ScheduledExecutorService librarian;
 
@@ -117,7 +145,7 @@ public class TicketBucket {
 				// eat this, won't ever happen
 			}
 
-			librarian = Executors.newScheduledThreadPool(1, new ThreadFactory() {
+			librarian = Executors.newScheduledThreadPool(2, new ThreadFactory() {
 				@Override
 				public Thread newThread(Runnable r) {
 					return new Thread(r, "LIBRARIAN-" + name);
@@ -132,6 +160,14 @@ public class TicketBucket {
 		 * @throws InterruptedException
 		 */
 		Ticket take() throws InterruptedException {
+			if (stalled) {
+				synchronized (stallLock) {
+					if (stalled) {
+						stallLock.wait();
+					}
+				}
+			}
+
 			return tickets.take();
 		}
 
@@ -158,6 +194,14 @@ public class TicketBucket {
 				return true;
 			} else {
 				return false;
+			}
+		}
+		
+		void stall(long delay, TimeUnit unit) {
+			stalled = true;
+			long validTime = getTime() + unit.toMillis(delay);
+			if (validTime > unstallTime) {
+				librarian.schedule(stallTask, delay, unit);
 			}
 		}
 

@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Scanner;
 
-import org.dc.riot.lol.rx.model.Region;
-
 /**
  * Primary entry point for using this service. Once an API key has been created
  * an {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory} can
@@ -47,7 +45,7 @@ public class ApiKey {
     	
     	return tb;
     }
-
+    
     @Override
     public String toString() {
         return key;

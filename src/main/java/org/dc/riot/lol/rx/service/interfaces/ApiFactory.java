@@ -4,8 +4,8 @@ import java.lang.reflect.Type;
 import java.net.Proxy;
 
 import org.dc.riot.lol.rx.model.RangeDto;
-import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
+import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApi.RateType;
 import org.dc.riot.lol.rx.service.error.InvalidVersionException;

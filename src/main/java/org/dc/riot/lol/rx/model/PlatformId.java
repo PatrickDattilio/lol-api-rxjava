@@ -1,5 +1,7 @@
 package org.dc.riot.lol.rx.model;
 
+import org.dc.riot.lol.rx.service.Region;
+
 /**
  * Old platform ID used by some of the older APIs
  * Created by Dc on 9/2/15.

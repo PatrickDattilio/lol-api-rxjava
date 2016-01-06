@@ -1,5 +1,7 @@
 package org.dc.riot.lol.rx.model;
 
+import org.dc.riot.lol.rx.service.Region;
+
 /**
  * Basic summoner data transfer object
  * Created by Dan on 9/1/15.

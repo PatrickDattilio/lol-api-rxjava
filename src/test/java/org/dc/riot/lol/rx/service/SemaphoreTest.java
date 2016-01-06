@@ -25,6 +25,11 @@ public class SemaphoreTest {
 		TicketBucket tb = new TicketBucket(rules);
 		final CountDownLatch lock = new CountDownLatch(trials);
 		for (int i=0; i<trials; i++) {
+			if (i > 0 && i%10 == 0) {
+				Thread.sleep(1000);
+				tb.stall(2, TimeUnit.SECONDS);
+			}
+
 			final int taskNumber = i+1;
 			executor.execute(() -> {
 				try {
@@ -53,7 +58,7 @@ public class SemaphoreTest {
 		
 		long elapsed = endTime - startTime;
 		long minimumElapsed = TimeUnit.MINUTES.toMillis(20);
-		long maximumElapsed = minimumElapsed + TimeUnit.SECONDS.toMillis(5);
+		long maximumElapsed = minimumElapsed + TimeUnit.SECONDS.toMillis(60);
 		assertTrue(elapsed > minimumElapsed);
 		assertTrue(elapsed < maximumElapsed);
 	}

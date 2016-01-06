@@ -1,5 +1,7 @@
 package org.dc.riot.lol.rx.model;
 
+import org.dc.riot.lol.rx.service.Region;
+
 /**
  * Used by the MatchList interface
  * Created by Dc on 10/20/15.

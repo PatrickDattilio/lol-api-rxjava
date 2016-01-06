@@ -25,7 +25,6 @@ import org.dc.riot.lol.rx.model.RankedQueue;
 import org.dc.riot.lol.rx.model.RankedStatsDto;
 import org.dc.riot.lol.rx.model.RealmDto;
 import org.dc.riot.lol.rx.model.RecentGamesDto;
-import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.RuneDto;
 import org.dc.riot.lol.rx.model.RuneListDto;
 import org.dc.riot.lol.rx.model.RunePagesDto;

@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.dc.riot.lol.rx.model.PlayerStatsSummaryListDto;
 import org.dc.riot.lol.rx.model.RankedStatsDto;
-import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.service.ApiKey;
+import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.HttpException;
 
