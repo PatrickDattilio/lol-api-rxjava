@@ -2,6 +2,7 @@ package org.dc.riot.lol.rx;
 
 import static org.junit.Assert.fail;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.dc.riot.lol.rx.model.Region;
@@ -25,7 +26,7 @@ public class EndpointTests {
 	private Debug debug = Debug.getInstance();
 	
 	@Before
-	public void setup() {
+	public void setup() throws FileNotFoundException {
 		apiKey = ApiKey.loadApiKeys()[0];
 		factory = ApiFactory.newDefaultFactory(apiKey);
 		scheduler = Schedulers.from(RiotApiExecutors.newFixedThreadPool(apiKey.getRules()));

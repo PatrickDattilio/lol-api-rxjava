@@ -12,7 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Rate throttling semaphore. This is the primary rate throttling service.
- * A single instance of this class should exist per {@link org.dc.riot.lol.rx.model.Region Region}.
+ * A single instance of this class should exist per
+ * {@link ApiKey} per {@link org.dc.riot.lol.rx.model.Region Region}.
  * 
  * @author Dc
  * @since 1.0
@@ -24,7 +25,7 @@ public class TicketBucket {
 	private int buffer = 750;
 	private ArrayList<Bucket> buckets;
 
-	public TicketBucket(RateRule... rules) {
+	TicketBucket(RateRule... rules) {
 		buckets = new ArrayList<>(rules.length);
 		for (int i=0; i<rules.length; i++) {
 			buckets.add(new Bucket(rules[i]));

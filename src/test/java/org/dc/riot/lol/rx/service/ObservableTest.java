@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx;
+package org.dc.riot.lol.rx.service;
 
 import static org.junit.Assert.assertTrue;
 

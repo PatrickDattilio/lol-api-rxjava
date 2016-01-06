@@ -3,6 +3,7 @@ package org.dc.riot.lol.rx;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -41,7 +42,7 @@ public class RetrofitTests {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
 	
 	@Before
-	public void setup() {
+	public void setup() throws FileNotFoundException {
 		apiKey = ApiKey.loadApiKeys()[0];
 		factory = ApiFactory.newDefaultFactory(apiKey);
 		region = Region.NORTH_AMERICA;

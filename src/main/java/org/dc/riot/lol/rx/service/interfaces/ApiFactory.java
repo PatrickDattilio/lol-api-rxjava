@@ -2,14 +2,12 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.lang.reflect.Type;
 import java.net.Proxy;
-import java.util.EnumMap;
 
 import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApi.RateType;
-import org.dc.riot.lol.rx.service.TicketBucket;
 import org.dc.riot.lol.rx.service.error.InvalidVersionException;
 
 import com.google.gson.Gson;
@@ -89,11 +87,6 @@ public final class ApiFactory {
      * Operating behind HTTP proxies
      */
     private Proxy proxy;
-    
-    /*
-     * Region based rate throttling
-     */
-    private EnumMap<Region, TicketBucket> bucketMap = new EnumMap<>(Region.class);
     
     private final ApiKey apiKey;
 
@@ -271,13 +264,7 @@ public final class ApiFactory {
     	}
     	
     	if (autoRateControl && api.getRateType() == RateType.PERSONAL) {
-    		TicketBucket tb = bucketMap.get(region);
-    		if (tb == null) {
-    			tb = new TicketBucket(apiKey.getRules());
-    			bucketMap.put(region, tb);
-    		}
-
-    		api.setBucket(tb);
+    		api.setRateControl(true);
     	}
     	
     	api.setProxy(proxy);

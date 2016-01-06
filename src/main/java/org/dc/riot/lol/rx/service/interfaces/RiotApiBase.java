@@ -5,7 +5,6 @@ import java.net.Proxy;
 import org.dc.riot.lol.rx.model.Region;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RiotApi;
-import org.dc.riot.lol.rx.service.TicketBucket;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -18,8 +17,9 @@ abstract class RiotApiBase implements RiotApi {
 	
 	protected final ApiKey apiKey;
 	protected final Region region;
-	private boolean isTicketed = false;
 	protected final OkHttpClient client;
+	
+	private TicketedInterceptor ticketer = null;
 	
 	protected RiotApiBase(ApiKey apiKey, Region region, OkHttpClient client) {
 		this.apiKey = apiKey;
@@ -44,16 +44,26 @@ abstract class RiotApiBase implements RiotApi {
 	}
 	
 	@Override
-	public synchronized void setBucket(TicketBucket bucket) {
-		if (!isTicketed) {
-			client.interceptors().add(new TicketedInterceptor(bucket));
-			isTicketed = true;
-		}
+	public void setProxy(Proxy proxy) {
+		client.setProxy(proxy);
 	}
 	
 	@Override
-	public void setProxy(Proxy proxy) {
-		client.setProxy(proxy);
+	public void setRateControl(boolean control) {
+		if (control) {
+			if (ticketer == null) {
+				ticketer = new TicketedInterceptor(apiKey.getTicketBucket(region));
+				if (client != null) {
+					client.interceptors().add(0, ticketer);
+				}
+			}
+		} else {
+			if (ticketer != null && client != null) {
+				client.interceptors().remove(ticketer);
+			}
+
+			ticketer = null;
+		}
 	}
 	
 }

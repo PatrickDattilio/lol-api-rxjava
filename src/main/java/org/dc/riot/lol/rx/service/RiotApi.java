@@ -49,8 +49,14 @@ import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.dc.riot.lol.rx.service.request.SpellDataTag;
 
 /**
- * Basic organization structure for all Riot APIs
- * Created by Dc on 9/26/15.
+ * Basic organization structure for all Riot APIs. Creating
+ * instances of the sub-interfaces of this interface and calling
+ * their methods will retrieve data from the LoL API.
+ * <a href="https://developer.riotgames.com/">Riot Developer Site</a>
+ * 
+ * @author Dc
+ * @since 1.0
+ * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}
  */
 public interface RiotApi {
 	
@@ -78,26 +84,45 @@ public interface RiotApi {
 		}
 	}
 	
+	/**
+	 * @return the {@link RateType} that this {@link RiotApi} instance
+	 * operates under
+	 */
 	public default RateType getRateType() {
 		return RateType.PERSONAL;
 	}
 	
+	/**
+	 * @return the {@link Region} that this {@link RiotApi} instance is set to
+	 * query against
+	 */
 	public Region getRegion();
 	
+	/**
+	 * @return the {@link ApiKey} this {@link RiotApi} instance is using
+	 */
 	public ApiKey getApiKey();
 	
+	/**
+	 * @return the version of this {@link RiotApi} instance
+	 */
 	public float getVersion();
+
+	/**
+	 * Enable or disable rate throttling.
+	 * @param control
+	 */
+	public void setRateControl(boolean control);
 	
 	/**
-	 * Allows one-time set only
-	 * @param bucket the {@link TicketBucket} to use for rate control
+	 * @param proxy {@link Proxy} for http requests
 	 */
-	public void setBucket(TicketBucket bucket);
-	
 	public void setProxy(Proxy proxy);
-	
+
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
+     * @author Dc
+     * @since 1.0
      */
     public interface Champion extends RiotApi {
 
@@ -1060,7 +1085,7 @@ public interface RiotApi {
          * 500	Internal server error<br/>
          * 503	Service unavailable
          *
-         * @param teamIds List of team IDs. TODO document how to fetch team IDs
+         * @param teamIds List of team IDs.
          * @return Map of team ID to {@link TeamDto} objects.
          * @throws HttpException 
          * @throws IOException
