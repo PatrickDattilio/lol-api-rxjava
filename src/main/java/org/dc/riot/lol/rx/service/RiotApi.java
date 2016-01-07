@@ -59,6 +59,13 @@ import org.dc.riot.lol.rx.service.request.SpellDataTag;
  */
 public interface RiotApi {
 	
+	/**
+	 * Rate type enumeration. Mostly used in determining
+	 * what kind of rate-too-fast notifications might be
+	 * coming from the LoL API.
+	 * @author Dc
+	 * @since 1.0
+	 */
 	public enum RateType {
 		PERSONAL("user"), SERVICE("service");
 		

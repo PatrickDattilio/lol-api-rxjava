@@ -156,4 +156,20 @@ public class RetrofitTests {
 		assertTrue(elapsedTime > TimeUnit.MINUTES.toMillis(20));
 		assertTrue(elapsedTime < TimeUnit.MINUTES.toMillis(20) + TimeUnit.SECONDS.toMillis(6));
 	}
+	
+	@Test
+	public void testRetries() throws IOException {
+		int gets = 100;
+		RiotApi.Summoner summonerInterface = factory.newSummonerInterface(region, false);
+		for (int i=0; i<gets; i++) {
+			try {
+				Map<String, SummonerDto> dto = summonerInterface.getByNames("HuskarDc","TheOddOne");
+				for (SummonerDto s : dto.values()) {
+					Debug.getInstance().println(s.getId() + " - " + s.getName());
+				}
+			} catch (HttpException e) {
+				Debug.getInstance().println(e.getCode());
+			}
+		}
+	}
 }

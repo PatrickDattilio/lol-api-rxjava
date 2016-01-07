@@ -25,12 +25,14 @@ abstract class RiotApiBase implements RiotApi {
 		this.apiKey = apiKey;
 		this.region = region;
 		this.client = client;
+		
+		if (client != null) {
+			client.interceptors().add(new RetryInterceptor(apiKey, region));
+		}
 	}
 	
 	RiotApiBase(ApiKey apiKey, Region region) {
-		this.apiKey = apiKey;
-		this.region = region;
-		this.client = new OkHttpClient();
+		this(apiKey, region, new OkHttpClient());
 	}
 
 	@Override
