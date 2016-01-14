@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Basic rune class
- * Created by Dan on 9/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class Rune {
     private int count;

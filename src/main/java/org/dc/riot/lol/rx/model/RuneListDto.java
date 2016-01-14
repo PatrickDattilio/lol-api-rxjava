@@ -4,7 +4,9 @@ import java.util.Map;
 
 /**
  * This object contains rune list data.
- * Created by Dc on 10/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class RuneListDto {
     private BasicDataDto basic;

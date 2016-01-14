@@ -3,7 +3,9 @@ package org.dc.riot.lol.rx.service.request;
 
 /**
  * {@link org.dc.riotapi.service.RiotApi.StaticData} request parameter
- * Created by Dc on 10/20/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public enum RuneListDataTag {
     ALL,

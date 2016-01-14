@@ -54,7 +54,9 @@ public final class ApiFactory {
     }
     
     /**
-     * @return the {@link Gson} to be used for all deserializations
+     * @return the {@link Gson} to be used for all deserializations. This is a custom built
+     * {@link Gson} instance, new instances of {@link Gson} may not properly deserialize
+     * responses.
      */
     public static Gson getGson() {
     	return GSON;

@@ -18,6 +18,10 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	
 	private Interface inter;
@@ -74,11 +78,6 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 		});
 	}
 
-	/**
-	 * This interface definition comes directly from the Riot API full reference
-	 * docs.
-	 * @author Dc
-	 */
 	private interface Interface {
 
 		@GET("/api/lol/{region}/v1.4/summoner/by-name/{summonerNames}")

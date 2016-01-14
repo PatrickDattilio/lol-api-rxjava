@@ -24,14 +24,10 @@ abstract class RiotApiBase implements RiotApi {
 	private RetryInterceptor retry = null;
 	private int retryCount = 5;
 	
-	protected RiotApiBase(ApiKey apiKey, Region region, OkHttpClient client) {
+	RiotApiBase(ApiKey apiKey, Region region) {
 		this.apiKey = apiKey;
 		this.region = region;
-		this.client = client;
-	}
-	
-	RiotApiBase(ApiKey apiKey, Region region) {
-		this(apiKey, region, new OkHttpClient());
+		this.client = new OkHttpClient();
 	}
 
 	@Override
@@ -50,7 +46,7 @@ abstract class RiotApiBase implements RiotApi {
 	}
 	
 	@Override
-	public void setAutoRetry(boolean autoRetry) {
+	public synchronized void setAutoRetry(boolean autoRetry) {
 		if (autoRetry && retry == null && client != null) {
 			client.interceptors().add(retry = new RetryInterceptor(apiKey, region));
 			retry.setRetryCount(retryCount);
@@ -61,7 +57,7 @@ abstract class RiotApiBase implements RiotApi {
 	}
 	
 	@Override
-	public void setRetryCount(int retryCount) {
+	public synchronized void setRetryCount(int retryCount) {
 		this.retryCount = retryCount;
 		if (retry != null) {
 			retry.setRetryCount(retryCount);
@@ -69,7 +65,7 @@ abstract class RiotApiBase implements RiotApi {
 	}
 	
 	@Override
-	public void setRateControl(boolean control) {
+	public synchronized void setRateControl(boolean control) {
 		if (control) {
 			if (ticketer == null) {
 				ticketer = new TicketedInterceptor(apiKey.getTicketBucket(region));

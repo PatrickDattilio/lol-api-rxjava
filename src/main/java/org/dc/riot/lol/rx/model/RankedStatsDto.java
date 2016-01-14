@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Ranked stats for a specific players.
- * Created by Dc on 10/17/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class RankedStatsDto {
     private ChampionStatsDto[] champions;

@@ -15,6 +15,10 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 class FeaturedGames_v1_0 extends RiotApiBase implements RiotApi.FeaturedGames {
 	
 	private Interface inter;

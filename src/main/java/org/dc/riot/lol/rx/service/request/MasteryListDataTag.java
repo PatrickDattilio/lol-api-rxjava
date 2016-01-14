@@ -2,7 +2,8 @@ package org.dc.riot.lol.rx.service.request;
 
 /**
  * Used by {@link org.dc.riotapi.service.RiotApi.StaticData}
- * Created by Dc on 10/20/15.
+ * @author Dc
+ * @since 1.0.0
  */
 public enum MasteryListDataTag {
     ALL,

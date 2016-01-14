@@ -18,7 +18,6 @@ import java.util.Scanner;
  * @see <a href="https://developer.riotgames.com/">Your Dashboard to create an API key</a>
  */
 public class ApiKey {
-	// TODO add some kind of file encryption (RSA most likely, though symmetric encryption should be enough)
 	
 	private static final String DEVELOPMENT = "DEV";
 	private static final String PRODUCTION = "PROD";

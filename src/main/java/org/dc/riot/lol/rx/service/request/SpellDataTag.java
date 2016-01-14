@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.service.request;
 
 /**
  * {@link org.dc.riotapi.service.RiotApi.StaticData} parameter
- * Created by Dc on 10/20/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public enum SpellDataTag {
     ALL,

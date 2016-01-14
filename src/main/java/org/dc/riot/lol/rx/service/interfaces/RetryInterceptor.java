@@ -14,10 +14,11 @@ import com.squareup.okhttp.Response;
 /**
  * Implements the custom headers responses found on the Riot API
  * documentation. Reads the LoL API custom headers and responds
- * appropriately.
+ * appropriately. All {@link RiotApi} instances should probably
+ * use this intercepter.
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  */
 class RetryInterceptor implements Interceptor {
 	

@@ -10,7 +10,9 @@ import rx.Observable;
 
 /**
  * {@link Observable} creator helper
+ * 
  * @author Dc
+ * @since 1.0.0
  *
  * @param <T>
  */

@@ -27,7 +27,7 @@ import rx.Subscriber;
  * </pre>
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  *
  * @param <T>
  */

@@ -4,7 +4,9 @@ import org.dc.riot.lol.rx.service.Region;
 
 /**
  * Used by the MatchList interface
- * Created by Dc on 10/20/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class MatchReference {
     private long champion;

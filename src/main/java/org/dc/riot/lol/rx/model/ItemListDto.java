@@ -5,7 +5,9 @@ import java.util.Map;
 
 /**
  * This object contains item list data.
- * Created by Dc on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class ItemListDto {
     private BasicDataDto basic;

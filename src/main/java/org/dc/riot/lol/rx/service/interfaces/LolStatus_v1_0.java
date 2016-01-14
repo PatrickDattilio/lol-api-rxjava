@@ -9,8 +9,6 @@ import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.HttpException;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -19,23 +17,18 @@ import retrofit.http.Path;
 
 class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 	
-	private static Interface INTER = null;
+	private Interface inter = null;
 
 	LolStatus_v1_0(ApiKey apiKey, Region region) {
-		super(apiKey, region, null);
+		super(apiKey, region);
 		
-		if (INTER == null) {
-			OkHttpClient client = new OkHttpClient();
-//			client.interceptors().add(new TooFastRetryInterceptor());
-
-			Retrofit ra = new Retrofit.Builder()
-					.baseUrl("http://status.leagueoflegends.com")
-					.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
-					.client(client)
-					.build();
-			
-			INTER = ra.create(Interface.class);
-		}
+		Retrofit ra = new Retrofit.Builder()
+				.baseUrl("http://status.leagueoflegends.com")
+				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
+				.client(client)
+				.build();
+		
+		inter = ra.create(Interface.class);
 	}
 
 	@Override
@@ -51,14 +44,14 @@ class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 	@Override
 	public Shard[] getShards() throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getShards();
+			return inter.getShards();
 		});
 	}
 
 	@Override
 	public ShardStatus getShard() throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getShard(region);
+			return inter.getShard(region);
 		});
 	}
 	

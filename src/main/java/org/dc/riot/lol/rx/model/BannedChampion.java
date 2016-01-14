@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Banned champion
- * Created by Dan on 9/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class BannedChampion {
     private long championId;

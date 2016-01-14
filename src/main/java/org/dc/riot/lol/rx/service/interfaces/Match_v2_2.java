@@ -15,6 +15,10 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 class Match_v2_2 extends RiotApiBase implements RiotApi.Match {
 	
 	private Interface inter;

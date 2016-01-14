@@ -1,8 +1,10 @@
 package org.dc.riot.lol.rx.model;
 
 /**
- * Any -1 values are not specifed
- * Created by Dc on 9/16/15.
+ * Any -1 values are not specified
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class RawStatsDto {
     private int assists = -1;

@@ -2,8 +2,9 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 /**
  * CSA means Comma Separated Array
+ * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  *
  * @param <T>
  */

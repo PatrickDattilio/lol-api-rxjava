@@ -4,7 +4,9 @@ import java.util.List;
 
 /**
  * This object contains champion recommended block data.
- * Created by Dc on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class BlockDto {
     private List<BlockItemDto> items;

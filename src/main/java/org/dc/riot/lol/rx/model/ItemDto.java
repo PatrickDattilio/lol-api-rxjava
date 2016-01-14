@@ -7,7 +7,9 @@ import java.util.Map;
  * same as {@link BasicDataDto}.<br/>
  * <a href="https://developer.riotgames.com/discussion/announcements/show/6OqJwp1E">Inheritance
  * Discussion</a>
- * Created by Dc on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class ItemDto extends BasicDataDto {
     private Map<String, String> effect;

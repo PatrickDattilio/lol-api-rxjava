@@ -4,7 +4,9 @@ package org.dc.riot.lol.rx.model;
  * Used to generate the nifty graph in the
  * client showing the strengths of each character and
  * their difficulty.
- * Created by Dc on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class InfoDto {
     private int attack;

@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * This object is deserialized from either a String "Self" or a List&lt;Integer>
- * Created by Dc on 10/4/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class RangeDto {
 

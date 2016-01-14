@@ -4,7 +4,9 @@ import java.util.Map;
 
 /**
  * Contains data about the map
- * Created by Dc on 10/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class MapDataDto {
     private Map<String, MapDetailsDto> data;

@@ -4,7 +4,9 @@ import org.dc.riot.lol.rx.service.Region;
 
 /**
  * Basic summoner data transfer object
- * Created by Dan on 9/1/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class SummonerDto {
     private long id;

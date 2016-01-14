@@ -4,7 +4,9 @@ import org.dc.riot.lol.rx.service.Region;
 
 /**
  * Old platform ID used by some of the older APIs
- * Created by Dc on 9/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public enum PlatformId {
     NA1, EUW1, EUNE1, LA1, LA2, BR1, KR, OC1, RU, TR1;

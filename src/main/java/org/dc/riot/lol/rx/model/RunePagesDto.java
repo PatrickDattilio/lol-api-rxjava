@@ -3,6 +3,10 @@ package org.dc.riot.lol.rx.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 public class RunePagesDto {
 
     private List<RunePage> pages = new ArrayList<>();

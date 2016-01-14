@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Game mode string bound list
- * Created by Dan on 9/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public enum GameMode {
     CLASSIC,

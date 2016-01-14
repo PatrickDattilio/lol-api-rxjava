@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Dc on 9/16/15.
+ * @author Dc
+ * @since 1.0.0
  */
 public class ChampionListDto {
     private Map<String, ChampionDto> data = new HashMap<>();

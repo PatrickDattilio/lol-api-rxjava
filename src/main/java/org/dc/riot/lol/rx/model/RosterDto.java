@@ -4,7 +4,9 @@ import java.util.List;
 
 /**
  * Used by the Team API
- * Created by Dc on 9/20/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class RosterDto {
     private List<TeamMemberInfoDto> memberList;

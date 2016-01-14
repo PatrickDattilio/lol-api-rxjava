@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * This object contains champion level tip data.
- * Created by Dc on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class LevelTipDto {
     private String[] effect;

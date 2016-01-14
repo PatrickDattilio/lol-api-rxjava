@@ -4,7 +4,9 @@ import java.util.Map;
 
 /**
  * This object contains summoner spell list data.
- * Created by Dc on 10/3/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class SummonerSpellListDto {
     private Map<String, SummonerSpellDto> data;

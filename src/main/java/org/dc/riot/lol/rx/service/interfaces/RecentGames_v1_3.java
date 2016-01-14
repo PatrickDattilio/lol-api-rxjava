@@ -15,6 +15,10 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 	
 	private Interface inter;

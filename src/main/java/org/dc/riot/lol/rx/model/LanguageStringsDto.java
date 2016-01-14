@@ -4,7 +4,9 @@ import java.util.Map;
 
 /**
  * Language Strings data. Various language data (insert 26 languages meme here).
- * Created by Dc on 10/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class LanguageStringsDto {
     private Map<String, String> data;

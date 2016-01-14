@@ -5,7 +5,9 @@ import java.util.List;
 
 /**
  * Used by the Stats API
- * Created by Dc on 9/19/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class PlayerStatsSummaryListDto {
     private List<PlayerStatsSummaryDto> playerStatSummaries = new ArrayList<>();

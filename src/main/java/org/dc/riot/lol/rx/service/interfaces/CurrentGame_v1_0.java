@@ -16,6 +16,11 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * 
+ * @author Dc
+ * @since 1.0.0
+ */
 public class CurrentGame_v1_0 extends RiotApiBase implements RiotApi.CurrentGame {
 	
 	private Interface inter;

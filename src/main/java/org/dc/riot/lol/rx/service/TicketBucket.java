@@ -16,9 +16,10 @@ import java.util.concurrent.TimeUnit;
  * {@link ApiKey} per {@link org.dc.riot.lol.rx.service.Region Region}.
  * 
  * @author Dc
- * @since 1.0
- * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}
- * @see {@link org.dc.riot.lol.rx.service.Region Region}
+ * @since 1.0.0
+ * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}
+ * @see {@link Region}
+ * @see {@link ApiKey#getTicketBucket(Region)}
  */
 public class TicketBucket {
 
@@ -79,31 +80,50 @@ public class TicketBucket {
 		}
 	}
 	
+	/**
+	 * Set additional buffer time to wait between valid requests.
+	 * 
+	 * @param buffer time buffer
+	 * @param unit time unit
+	 */
 	public void setBuffer(int buffer, TimeUnit unit) {
 		if (buffer > -1) {
 			this.bufferMS = unit.toMillis(buffer);
 		}
 	}
 	
+	/**
+	 * @return the current time buffer
+	 */
 	public long getBuffer() {
 		return bufferMS;
 	}
 	
+	/**
+	 * @param delay pause this {@link TicketBucket} for this many time units
+	 * @param timeUnit time unit, usually seconds
+	 */
 	public void stall(long delay, TimeUnit timeUnit) {
 		for (Bucket b : buckets) {
 			b.stall(delay, timeUnit);
 		}
 	}
 	
+	/**
+	 * Android subclasses can override this to provide a more
+	 * Android appropriate method.
+	 * 
+	 * @return the current system time
+	 */
 	protected long getTime() {
 		return System.currentTimeMillis();
 	}
 
 	/**
-	 * Structured queue of {@link Ticket} objects
+	 * Structured queue of {@link Ticket} objects.
 	 * 
 	 * @author Dc
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	private class Bucket {
 
@@ -161,7 +181,7 @@ public class TicketBucket {
 		 * Take a single {@link Ticket}. Blocks until a {@link Ticket} is available.
 		 * 
 		 * @return next available {@link Ticket}
-		 * @throws InterruptedException
+		 * @throws InterruptedException if cancelled
 		 */
 		Ticket take() throws InterruptedException {
 			if (stalled) {
@@ -180,7 +200,7 @@ public class TicketBucket {
 		 * 
 		 * @param t {@link Ticket} to return
 		 * @return <code>true</code> if the supplied {@link Ticket} was scheduled for return, <code>false</code> otherwise
-		 * @throws InterruptedException
+		 * @throws InterruptedException if cancelled
 		 */
 		boolean put(Ticket t) throws InterruptedException {
 			if (t.getParent().equals(name)) {
@@ -202,8 +222,8 @@ public class TicketBucket {
 		/**
 		 * Disables this {@link Bucket} for a certain amount of time.
 		 * Note: {@link Ticket}s may be returned during this time
-		 * @param delay
-		 * @param unit
+		 * @param delay time to wait
+		 * @param unit time unit
 		 */
 		void stall(long delay, TimeUnit unit) {
 			stalled = true;
@@ -229,19 +249,19 @@ public class TicketBucket {
 	/**
 	 * Rate control ticket. Client code need not create these directly, they
 	 * should be obtained from {@link TicketBucket#take()}
-	 * <br/>
-	 * <br/>
+	 * <br>
+	 * <br>
 	 * It is very important that tickets be returned via {@link TicketBucket#put(Ticket[])}
 	 * else the {@link TicketBucket} will have no tickets to give and the application will deadlock.
-	 * <br/>
-	 * <br/>
-	 * Using {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}'s
-	 * <code>new*Interface(Region,true);</code>
+	 * <br>
+	 * <br>
+	 * Using {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}'s
+	 * <code>new*Interface({@link Region},true);</code>
 	 * will produce interface accessors with all rate control and Ticket management already set up.
 	 * 
 	 * @author Dc
-	 * @since 1.0
-	 * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}
+	 * @since 1.0.0
+	 * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}
 	 */
 	public static class Ticket {
 		private UUID name = UUID.randomUUID();
@@ -253,14 +273,23 @@ public class TicketBucket {
 			this.index = index;
 		}
 
+		/**
+		 * @return unique name of this {@link Ticket}
+		 */
 		public UUID getName() {
 			return name;
 		}
 
+		/**
+		 * @return unique parent name of this {@link Ticket}
+		 */
 		public UUID getParent() {
 			return parentName;
 		}
 
+		/**
+		 * @return unique index of this {@link Ticket} with its parent
+		 */
 		public int getIndex() {
 			return index;
 		}

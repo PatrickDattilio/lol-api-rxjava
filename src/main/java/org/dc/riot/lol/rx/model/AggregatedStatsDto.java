@@ -3,7 +3,9 @@ package org.dc.riot.lol.rx.model;
 /**
  * Used by the Stats API.
  * Null values indicated by -1.
- * Created by Dc on 9/19/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class AggregatedStatsDto {
     private int averageAssists; // Dominion only.

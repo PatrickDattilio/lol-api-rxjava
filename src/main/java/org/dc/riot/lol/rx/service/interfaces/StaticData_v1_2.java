@@ -29,8 +29,6 @@ import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.dc.riot.lol.rx.service.request.SpellDataTag;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -38,24 +36,26 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * Doesn't need to be rate throttled
+ * 
+ * @author Dc
+ * @since 1.0.0
+ */
 class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 	
-	private static Interface INTER = null;
+	private Interface inter;
 	
 	StaticData_v1_2(ApiKey apiKey, Region region) {
-		super(apiKey, region, null);
+		super(apiKey, region);
 		
-		if (INTER == null) {
-			OkHttpClient client = new OkHttpClient();
+		Retrofit ra = new Retrofit.Builder()
+				.client(client)
+				.baseUrl("https://global.api.pvp.net")
+				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
+				.build();
 
-			Retrofit ra = new Retrofit.Builder()
-					.client(client)
-					.baseUrl("https://global.api.pvp.net")
-					.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
-					.build();
-
-			INTER = ra.create(Interface.class);
-		}
+		inter = ra.create(Interface.class);
 	}
 	
 	@Override
@@ -71,105 +71,105 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 	@Override
 	public ChampionListDto getChampions(boolean dataById, String version, String locale, ChampListDataTag... champData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getChampions(region, dataById, locale, version, new CSA<ChampListDataTag>(champData));
+			return inter.getChampions(region, dataById, locale, version, new CSA<ChampListDataTag>(champData));
 		});
 	}
 
 	@Override
 	public ChampionDto getChampion(long champId, String version, String locale, ChampDataTag... champData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getChampion(region, champId, locale, version, new CSA<ChampDataTag>(champData));
+			return inter.getChampion(region, champId, locale, version, new CSA<ChampDataTag>(champData));
 		});
 	}
 
 	@Override
 	public ItemListDto getItems(String version, String locale, ItemListDataTag... itemListData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getItems(region, locale, version, new CSA<ItemListDataTag>(itemListData));
+			return inter.getItems(region, locale, version, new CSA<ItemListDataTag>(itemListData));
 		});
 	}
 
 	@Override
 	public ItemDto getItem(long itemId, String version, String locale, ItemDataTag... itemData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getItem(region, itemId, locale, version, new CSA<ItemDataTag>(itemData));
+			return inter.getItem(region, itemId, locale, version, new CSA<ItemDataTag>(itemData));
 		});
 	}
 
 	@Override
 	public LanguageStringsDto getLanguageStrings(String version, String locale) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getLanguageStrings(region, locale, version);
+			return inter.getLanguageStrings(region, locale, version);
 		});
 	}
 
 	@Override
 	public String[] getLocales() throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getLocales(region);
+			return inter.getLocales(region);
 		});
 	}
 
 	@Override
 	public MapDataDto getMap(String version, String locale) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getMap(region, locale, version);
+			return inter.getMap(region, locale, version);
 		});
 	}
 
 	@Override
 	public MasteryListDto getMasteries(String version, String locale, MasteryListDataTag... masteryListData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getMasteries(region, locale, version, new CSA<MasteryListDataTag>(masteryListData));
+			return inter.getMasteries(region, locale, version, new CSA<MasteryListDataTag>(masteryListData));
 		});
 	}
 
 	@Override
 	public MasteryDto getMastery(long masteryId, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getMastery(region, masteryId, locale, version, new CSA<MasteryDataTag>(masteryData));
+			return inter.getMastery(region, masteryId, locale, version, new CSA<MasteryDataTag>(masteryData));
 		});
 	}
 
 	@Override
 	public RealmDto getRealm() throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getRealm(region);
+			return inter.getRealm(region);
 		});
 	}
 
 	@Override
 	public RuneListDto getRunes(String version, String locale, RuneListDataTag... runeListData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getRunes(region, locale, version, new CSA<RuneListDataTag>(runeListData));
+			return inter.getRunes(region, locale, version, new CSA<RuneListDataTag>(runeListData));
 		});
 	}
 
 	@Override
 	public RuneDto getRune(long id, String version, String locale, RuneDataTag... runeData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getRune(region, id, locale, version, new CSA<RuneDataTag>(runeData));
+			return inter.getRune(region, id, locale, version, new CSA<RuneDataTag>(runeData));
 		});
 	}
 
 	@Override
 	public SummonerSpellListDto getSummonerSpells(boolean dataById, String version, String locale, SpellDataTag... spellData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getSummonerSpells(region, dataById, apiKey, locale, version, new CSA<SpellDataTag>(spellData));
+			return inter.getSummonerSpells(region, dataById, apiKey, locale, version, new CSA<SpellDataTag>(spellData));
 		});
 	}
 
 	@Override
 	public SummonerSpellDto getSummonerSpell(long summonerSpellId, String version, String locale, SpellDataTag... spellData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getSummonerSpell(region, summonerSpellId, apiKey, locale, version, new CSA<SpellDataTag>(spellData));
+			return inter.getSummonerSpell(region, summonerSpellId, apiKey, locale, version, new CSA<SpellDataTag>(spellData));
 		});
 	}
 
 	@Override
 	public String[] getVersions() throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return INTER.getVersions(region, apiKey);
+			return inter.getVersions(region, apiKey);
 		});
 	}
 

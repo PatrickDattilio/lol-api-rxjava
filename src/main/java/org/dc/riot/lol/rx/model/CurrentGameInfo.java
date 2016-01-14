@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Older data structure returned by V1.0 of the current game API
- * Created by Dan on 9/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class CurrentGameInfo {
     private long gameId;

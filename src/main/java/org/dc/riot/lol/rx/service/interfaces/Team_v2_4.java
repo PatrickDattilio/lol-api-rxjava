@@ -16,6 +16,10 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 class Team_v2_4 extends RiotApiBase implements RiotApi.Team {
 	
 	private Interface inter;

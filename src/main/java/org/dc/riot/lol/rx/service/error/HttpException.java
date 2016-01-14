@@ -7,7 +7,7 @@ import java.util.Map;
  * Exception class wrapping HTTP error codes.
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  * @see {@link #getCode()}
  * @see {@link #getHeaders()}
  */

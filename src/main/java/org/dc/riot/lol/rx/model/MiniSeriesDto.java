@@ -1,7 +1,8 @@
 package org.dc.riot.lol.rx.model;
 
 /**
- * Created by Dc on 9/14/15.
+ * @author Dc
+ * @since 1.0.0
  */
 public class MiniSeriesDto {
     private String progress;

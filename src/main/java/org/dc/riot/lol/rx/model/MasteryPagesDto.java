@@ -3,7 +3,8 @@ package org.dc.riot.lol.rx.model;
 import java.util.List;
 
 /**
- * Created by Dc on 9/14/15.
+ * @author Dc
+ * @since 1.0.0
  */
 public class MasteryPagesDto {
     private long summonerId;

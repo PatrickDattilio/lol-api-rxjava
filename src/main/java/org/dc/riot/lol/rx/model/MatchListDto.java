@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Used by the MatchListDto API
- * Created by Dc on 9/19/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class MatchListDto {
     private int endIndex;

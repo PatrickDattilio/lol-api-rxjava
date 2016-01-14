@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Player roles, not sure this is really used much
- * Created by Dc on 9/16/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public enum PlayerRole {
     DUO(1), SUPPORT(2), CARRY(3), SOLO(4);

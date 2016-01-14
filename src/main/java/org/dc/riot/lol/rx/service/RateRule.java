@@ -3,10 +3,10 @@ package org.dc.riot.lol.rx.service;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Generic object containing request per time frame.
+ * Generic object containing request count per time frame.
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  */
 public class RateRule {
 

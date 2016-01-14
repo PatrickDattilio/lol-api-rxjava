@@ -4,7 +4,9 @@ import java.util.Map;
 
 /**
  * This object contains basic data.
- * Created by Dc on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class BasicDataDto {
     private String colloq;

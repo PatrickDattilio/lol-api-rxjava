@@ -4,7 +4,9 @@ import java.util.List;
 
 /**
  * Recommended items
- * Created by Dc on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class RecommendedDto {
     private List<BlockDto> blocks;

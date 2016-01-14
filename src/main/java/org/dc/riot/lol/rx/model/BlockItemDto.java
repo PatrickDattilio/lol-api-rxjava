@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * This object contains champion recommended block item data.
- * Created by martiuser on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class BlockItemDto {
     private int count;

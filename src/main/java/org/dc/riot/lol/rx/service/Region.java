@@ -1,9 +1,10 @@
 package org.dc.riot.lol.rx.service;
 
 /**
- * All Riot LoL API regions
+ * All Riot LoL API regions.
+ * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  */
 public enum Region {
 
@@ -21,7 +22,7 @@ public enum Region {
 
     private final String text;
 
-    Region(String text) {
+    private Region(String text) {
         this.text = text;
     }
 
@@ -33,6 +34,11 @@ public enum Region {
         return text;
     }
 
+    /**
+     * @param regionCode e.g. 'NA'
+     * @return the {@link Region} corresponding to the input code,
+     * or <code>null</code> if one is not found
+     */
     public static Region from(String regionCode) {
         for (Region r : Region.values()) {
             if (r.text.equals(regionCode)) {

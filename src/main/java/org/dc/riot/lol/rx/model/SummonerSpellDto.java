@@ -3,7 +3,9 @@ package org.dc.riot.lol.rx.model;
 /**
  * This object contains summoner spell data. Shares many fields with {@link ChampionSpellDto} but
  * the classes look different enough to preclude inheritance.
- * Created by Dc on 10/3/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class SummonerSpellDto {
     private double[] cooldown;

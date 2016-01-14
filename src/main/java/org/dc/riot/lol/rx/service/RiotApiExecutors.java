@@ -10,8 +10,7 @@ import java.util.concurrent.ThreadFactory;
  * for an optimal number of threads.
  * 
  * @author Dc
- * @since 1.0
- *
+ * @since 1.0.0
  */
 public final class RiotApiExecutors {
 	

@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Describes passive abilities.
- * Created by martiuser on 9/30/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class PassiveDto {
     private String description;

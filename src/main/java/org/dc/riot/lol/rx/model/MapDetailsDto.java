@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * This object contains map detail data.
- * Created by Dc on 10/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class MapDetailsDto {
     private ImageDto image;

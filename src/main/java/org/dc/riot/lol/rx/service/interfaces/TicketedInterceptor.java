@@ -10,14 +10,14 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 /**
- * {@link Intereptor} for all OkHttpClients used to retrive data
+ * {@link Intereptor} for all OkHttpClients used to retrieve data
  * from the LoL APIs. This should always be added to the beginning
- * of the interceptors list. Note: according to Riot's documentation
+ * of the intercepters list. Note: according to Riot's documentation
  * not all services need to be rate throttled. Only attach this
- * intreceptor to instances that really need it.
+ * intercepter to instances that really need it.
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  */
 class TicketedInterceptor implements Interceptor {
 	

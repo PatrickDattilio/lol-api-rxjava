@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Server status listing
- * Created by Dc on 10/14/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class Shard {
     private String hostname;

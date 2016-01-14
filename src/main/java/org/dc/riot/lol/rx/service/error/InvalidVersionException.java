@@ -5,7 +5,7 @@ package org.dc.riot.lol.rx.service.error;
  * when an invalid version is supplied.
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  */
 public class InvalidVersionException extends RuntimeException {
 

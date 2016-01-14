@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Dc on 9/16/15.
+ * @author Dc
+ * @since 1.0.0
  */
 public class GameDto {
     private List<PlayerDto> fellowPlayers = new ArrayList<>();

@@ -2,7 +2,9 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * This object contains mastery tree item data
- * Created by Dc on 10/2/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class MasteryTreeItemDto {
     private long masteryId;

@@ -17,6 +17,10 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 	
 	private Interface inter;

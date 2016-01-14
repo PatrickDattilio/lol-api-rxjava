@@ -4,7 +4,9 @@ import java.util.List;
 
 /**
  * This objct contains champion data.
- * Created by Dc on 9/16/15.
+ * 
+ * @author Dc
+ * @since 1.0.0
  */
 public class ChampionDto {
     // these fields are defined by the Static data interface

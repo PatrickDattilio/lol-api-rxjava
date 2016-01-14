@@ -54,7 +54,7 @@ import org.dc.riot.lol.rx.service.request.SpellDataTag;
  * <a href="https://developer.riotgames.com/">Riot Developer Site</a>
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}
  */
 public interface RiotApi {
@@ -63,8 +63,9 @@ public interface RiotApi {
 	 * Rate type enumeration. Mostly used in determining
 	 * what kind of rate-too-fast notifications might be
 	 * coming from the LoL API.
+	 * 
 	 * @author Dc
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public enum RateType {
 		PERSONAL("user"), SERVICE("service");
@@ -125,17 +126,31 @@ public interface RiotApi {
 	 */
 	public void setProxy(Proxy proxy);
 
+	/**
+	 * @param autoRetry whether this {@link RiotApi} instance should
+	 * automatically retry failed requests
+	 */
 	public void setAutoRetry(boolean autoRetry);
 	
+	/**
+	 * @param retryCount number of automatic retries to attempt. If
+	 * {@link #setAutoRetry(boolean)} is false this this has no effect.
+	 */
 	public void setRetryCount(int retryCount);
 
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
+     * 
      * @author Dc
-     * @since 1.0
+     * @since 1.0.0
      */
     public interface Champion extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.2f) {
     			Region[] regions = new Region[Region.values().length - 1];
@@ -156,43 +171,51 @@ public interface RiotApi {
 		}
 
         /**
-         * /api/lol/{region}/v1.2/champion<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.2/champion<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param freeToPlay fetch only free to play champions
          * @return {@link ChampionListDto}
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         ChampionListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v1.2/champion/{id}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.2/champion/{id}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param championId the champ id
          * @return {@link ChampionDto} single champion dto
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         ChampionDto getChampion(long championId) throws IOException, HttpException;
     }
 
     /**
      * Spectator details
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface CurrentGame extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
 				return Region.values();
@@ -202,24 +225,32 @@ public interface RiotApi {
 		}
 
         /**
-         * /observer-mode/rest/consumer/getSpectatorGameInfo/{platformId}/{summonerId}<br/>
-         * <br/>
-         * 403	Forbidden<br/>
+         * /observer-mode/rest/consumer/getSpectatorGameInfo/{platformId}/{summonerId}<br>
+         * <br>
+         * 403	Forbidden<br>
          * 429	Rate limit exceeded
          *
          * @param summonerId summoner id number
          * @return {@link CurrentGameInfo} object
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         CurrentGameInfo getSpectatorInfo(long summonerId) throws IOException, HttpException;
     }
 
     /**
      * Gain access to the featured games that appear on the main client page
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface FeaturedGames extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
 				return Region.values();
@@ -229,24 +260,32 @@ public interface RiotApi {
 		}
 
         /**
-         * /observer-mode/rest/featured<br/>
-         * <br/>
-         * 403	Forbidden<br/>
+         * /observer-mode/rest/featured<br>
+         * <br>
+         * 403	Forbidden<br>
          * 429	Rate limit exceeded
          *
          * @return {@link FeaturedGames} object with all the featured games for the {@link Region}
          * queried against or <code>null</code> if some network error occurred
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         FeaturedGamesDto getFeaturedGames() throws IOException, HttpException;
     }
 
     /**
      * Get recent game data on specific players
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface RecentGames extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.3f) {
     			Region[] regions = new Region[Region.values().length - 1];
@@ -267,19 +306,19 @@ public interface RiotApi {
 		}
 
         /**
-         * /api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  Game data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  Game data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerId player's summoner ID, See the {@link Summoner} interface for valid IDs.
          * @return {@link RecentGamesDto} for the given player or <code>null</code> if no data found
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         RecentGamesDto getRecentGames(long summonerId) throws IOException, HttpException;
     }
@@ -288,9 +327,17 @@ public interface RiotApi {
      * Retrieves data about players' leagues.
      * @see {@link LeagueDto}
      * @see {@link LeagueEntryDto}
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface League extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.5f) {
     			Region[] regions = new Region[Region.values().length - 1];
@@ -311,108 +358,108 @@ public interface RiotApi {
 		}
 
         /**
-         * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  League data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  League data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerIds set of summoners to look up
          * @return a Map of summonerId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, LeagueDto[]> getBySummonerEntries(long... summonerIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  League data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  League data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerIds set of summoners to look up
          * @return a Map of summonerId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, LeagueDto[]> getBySummoners(long... summonerIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v2.5/league/by-team/{teamIds}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  League data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.5/league/by-team/{teamIds}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  League data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param teamIds set of teams to look up
          * @return a Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, LeagueDto[]> getByTeams(String... teamIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v2.5/league/by-team/{teamIds}/entry<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  League data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.5/league/by-team/{teamIds}/entry<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  League data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param teamIds set of teams to look up
          * @return a Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, LeagueDto[]> getByTeamEntries(String... teamIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v2.5/league/challenger<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  League data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.5/league/challenger<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  League data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param queue  the queue type to search for
          * @return a {@link LeagueDto} object with data
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         LeagueDto getChallenger(QueueType queue) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v2.5/league/master<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  League data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.5/league/master<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  League data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param queue  the queue type to search for
          * @return a {@link LeagueDto} object with data
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         LeagueDto getMaster(QueueType queue) throws IOException, HttpException;
     }
@@ -420,9 +467,17 @@ public interface RiotApi {
     /**
      * Static data on champion stats, items, gold, runes, masteries, etc. all served up on
      * a per patch basis
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface StaticData extends RiotApi {
     	
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
     	public static Region[] getSupportedRegions(float version) {
     		if (version >= 1.2f) {
 				return Region.values();
@@ -437,11 +492,11 @@ public interface RiotApi {
     	}
 
         /**
-         * /api/lol/static-data/{region}/v1.2/champion<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/champion<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param dataById	If specified as true, the returned data map will use the champions' IDs as the keys. If not specified or specified as false, the returned data map will use the champions' keys instead.
@@ -451,18 +506,18 @@ public interface RiotApi {
          *                  by default if this parameter isn't specified, <code>null</code> is ok
          * @return a {@link ChampionDto} object with requested data filled in or <code>null</code>
          * if no champion could be found matching the given query
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         ChampionListDto getChampions(boolean dataById, String version, String locale, ChampListDataTag... champData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/champion/{id}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Champion not found, bad champId<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/champion/{id}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Champion not found, bad champId<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param champId   the champion ID
@@ -472,17 +527,17 @@ public interface RiotApi {
          *                  by default if this parameter isn't specified, <code>null</code> is ok
          * @return a {@link ChampionDto} object with requested data filled in or <code>null</code>
          * if no champion could be found matching the given query
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         ChampionDto getChampion(long champId, String version, String locale, ChampDataTag... champData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/item<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/item<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param version      patch to reference, <code>null</code> will use latest patch
@@ -492,18 +547,18 @@ public interface RiotApi {
          *                     this parameter isn't specified. To return all additional data, use
          *                     the tag 'all'.
          * @return {@link ItemListDto} filled in
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         ItemListDto getItems(String version, String locale, ItemListDataTag... itemListData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/item/{id}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  Item id not found<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/item/{id}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  Item id not found<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param itemId   item id to fetch
@@ -513,65 +568,65 @@ public interface RiotApi {
          *                 description are returned by default if this parameter isn't specified.
          *                 To return all additional data, use the tag 'all'.
          * @return {@link ItemListDto} filled in according to itemListData
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         ItemDto getItem(long itemId, String version, String locale, ItemDataTag... itemData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/language-strings<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/language-strings<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param version patch to reference, <code>null</code> will use latest patch
          * @param locale  locale String (e.g. en_US) <code>null</code> will use default for region
          * @return {@link LanguageStringsDto}
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         LanguageStringsDto getLanguageStrings(String version, String locale) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/languages<br/>
-         * <br/>
-         * Gets language strings<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/languages<br>
+         * <br>
+         * Gets language strings<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @return String array of all supported locales
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         String[] getLocales() throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/map<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/map<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param version patch to reference, <code>null</code> will use latest patch
          * @param locale  locale String (e.g. en_US) <code>null</code> will use default for region
          * @return {@link MapDataDto} object
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         MapDataDto getMap(String version, String locale) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/mastery<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/mastery<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param version         patch to reference, <code>null</code> will use latest patch
@@ -580,18 +635,18 @@ public interface RiotApi {
          *                        and description are returned by default if this parameter isn't
          *                        specified. To return all additional data, use the tag 'all'.
          * @return {@link MasteryListDto} filled in according to tags
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         MasteryListDto getMasteries(String version, String locale, MasteryListDataTag... masteryListData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/mastery/{id}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  Mastery data not found<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/mastery/{id}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  Mastery data not found<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param version     patch to reference, <code>null</code> will use latest patch
@@ -600,31 +655,31 @@ public interface RiotApi {
          *                    returned by default if this parameter isn't specified. To return all
          *                    additional data, use the tag 'all'.
          * @return {@link MasteryListDto} filled in according to tags
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         MasteryDto getMastery(long id, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/realm<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/realm<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @return {@link RealmDto} object
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         RealmDto getRealm() throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/na/v1.2/rune<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/na/v1.2/rune<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param version      patch to reference, <code>null</code> will use latest patch
@@ -633,18 +688,18 @@ public interface RiotApi {
          *                     rune, and description are returned by default if this parameter isn't
          *                     specified. To return all additional data, use the tag 'all'.
          * @return {@link RuneListDto} object filled in according to tags
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         RuneListDto getRunes(String version, String locale, RuneListDataTag... runeListData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/na/v1.2/rune/{id}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  Rune data not found<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/na/v1.2/rune/{id}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  Rune data not found<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param id       rune id to query
@@ -654,17 +709,17 @@ public interface RiotApi {
          *                 returned by default if this parameter isn't specified. To return all
          *                 additional data, use the tag 'ALL'.
          * @return {@link RuneListDto} object filled in according to tags
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         RuneDto getRune(long id, String version, String locale, RuneDataTag... runeData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/summoner-spell<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/summoner-spell<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param dataById  If specified as true, the returned data map will use the spells' IDs as
@@ -676,18 +731,18 @@ public interface RiotApi {
          *                  description, and summonerLevel are returned by default if this parameter
          *                  isn't specified. To return all additional data, use the tag 'ALL'.
          * @return {@link SummonerSpellListDto} object filled in according to tags
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         SummonerSpellListDto getSummonerSpells(boolean dataById, String version, String locale, SpellDataTag... spellData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/summoner-spell/{id}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404  Summoner spell data not found<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/summoner-spell/{id}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404  Summoner spell data not found<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param id        summoner spell ID
@@ -697,22 +752,22 @@ public interface RiotApi {
          *                  description, and summonerLevel are returned by default if this parameter
          *                  isn't specified. To return all additional data, use the tag 'ALL'.
          * @return {@link SummonerSpellDto} object filled in according to tags
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         SummonerSpellDto getSummonerSpell(long id, String version, String locale, SpellDataTag... spellData) throws IOException, HttpException;
 
         /**
-         * /api/lol/static-data/{region}/v1.2/versions<br/>
-         * <br/>
-         * 401	Unauthorized<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/static-data/{region}/v1.2/versions<br>
+         * <br>
+         * 401	Unauthorized<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @return String array with every patch arranged from newest at [0] to oldest
          * at [length - 1]
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         String[] getVersions() throws IOException, HttpException;
     }
@@ -720,9 +775,17 @@ public interface RiotApi {
     /**
      * Get statuses of servers. API calls to this endpoint
      * do not count against rate limit
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface LolStatus extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
 				Region[] ra = new Region[Region.values().length - 1];
@@ -741,28 +804,28 @@ public interface RiotApi {
 		}
 
         /**
-         * /shards<br/>
-         * <br/>
-         * Most useful for finding which locales are supported on which servers<br/>
-         * <br/>
+         * /shards<br>
+         * <br>
+         * Most useful for finding which locales are supported on which servers<br>
+         * <br>
          * 403	Forbidden
          *
          * @return Array of {@link Shard} statuses
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Shard[] getShards() throws IOException, HttpException;
 
         /**
-         * /shards/{region}<br/>
-         * <br/>
-         * Get shard status. Returns the data available on the status.leagueoflegends.com website for the given region.<br/>
-         * <br/>
+         * /shards/{region}<br>
+         * <br>
+         * Get shard status. Returns the data available on the status.leagueoflegends.com website for the given region.<br>
+         * <br>
          * 403	Forbidden
          *
          * @return a {@link ShardStatus} for the specified {@link Region}
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         ShardStatus getShard() throws IOException, HttpException;
     }
@@ -770,9 +833,17 @@ public interface RiotApi {
     /**
      * This interface is closely related to the {@link MatchList} interface. Retrieves very detailed
      * statistics for specified matches.
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface Match extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.2f) {
     			Region[] regions = new Region[Region.values().length - 1];
@@ -793,21 +864,21 @@ public interface RiotApi {
 		}
 
         /**
-         * /api/lol/{region}/v2.2/match/{matchId}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Match not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.2/match/{matchId}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Match not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param matchId         see {@link MatchList} interface to get valid match IDs
          * @param includeTimeline Attempt to include timeline data. Not all matches have timeline
          *                        data associated with them.
          * @return a {@link MatchDetail}
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         MatchDetail getMatch(long matchId, boolean includeTimeline) throws IOException, HttpException;
     }
@@ -815,9 +886,17 @@ public interface RiotApi {
     /**
      * Interface to allow search of matches by Summoner ID. This interface is closely related
      * to the {@link Match} interface.
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface MatchList extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.2f) {
     			Region[] regions = new Region[Region.values().length - 1];
@@ -838,8 +917,8 @@ public interface RiotApi {
 		}
 
         /**
-         * /api/lol/{region}/v2.2/matchlist/by-summoner/{summonerId}<br/>
-         * <br/>
+         * /api/lol/{region}/v2.2/matchlist/by-summoner/{summonerId}<br>
+         * <br>
          * A number of optional parameters are provided for filtering.
          * It is up to the caller to ensure that the combination of filter parameters provided is
          * valid for the requested summoner, otherwise, no matches may be returned.
@@ -847,14 +926,14 @@ public interface RiotApi {
          * although there is no maximum limit on their range. If the beginTime parameter is
          * specified on its own, endTime is assumed to be the current time.
          * If the endTime parameter is specified on its own, beginTime is assumed to be the start
-         * of the summoner's match history.<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Game not found<br/>
-         * 422	Summoner has an entry, but hasn't played since the start of 2013<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * of the summoner's match history.<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Game not found<br>
+         * 422	Summoner has an entry, but hasn't played since the start of 2013<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerId   ID of summoner to search. See the {@link Summoner} interface for valid IDs.
@@ -866,14 +945,25 @@ public interface RiotApi {
          * @param beginIndex   Optional. Specify -1 for no value.
          * @param endIndex     Optional. Specify -1 for no value.
          * @return {@link MatchListDto}
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         MatchListDto getMatchList(long summonerId, long[] championIds, RankedQueue[] rankedQueues, Season[] seasons, long beginTime, long endTime, int beginIndex, int endIndex) throws IOException, HttpException;
     }
 
+    /**
+     * Get player performance statistics.
+     * 
+     * @author Dc
+     * @since 1.0.0
+     */
     public interface Stats extends RiotApi {
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.3f) {
     			Region[] regions = new Region[Region.values().length - 1];
@@ -894,44 +984,47 @@ public interface RiotApi {
 		}
 
         /**
-         * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerId ID of summoner. See {@link Summoner} to fetch valid IDs.
          * @param season     Optional. Competitive {@link Season} to search.
          * @return a {@link RankedStatsDto} for the specified player.
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         RankedStatsDto getRanked(long summonerId, Season season) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerId ID of summoner. See {@link Summoner} to fetch valid IDs.
          * @param season     Optional. Competitive {@link Season} to search.
          * @return Full player stats summary.
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         PlayerStatsSummaryListDto getSummary(long summonerId, Season season) throws IOException, HttpException;
     }
 
     /**
      * Interface for retrieving data on individual players.
+     * 
+     * @author Dc
+     * @since 1.0.0
      */
     public interface Summoner extends RiotApi {
 
@@ -939,6 +1032,11 @@ public interface RiotApi {
 			return name.toLowerCase().replace(" ", "").trim();
 		}
 
+    	/**
+    	 * @param version a positive value denoting the version (e.g. 1.2)
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.4f) {
     			Region[] regions = new Region[Region.values().length - 1];
@@ -959,92 +1057,98 @@ public interface RiotApi {
 		}
 	
         /**
-         * /api/lol/{region}/v1.4/summoner/by-name/{summonerNames}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.4/summoner/by-name/{summonerNames}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerNames array of String names
          * @return Map of encoded names (name with all lowercase and spaces trimmed) to
          * {@link SummonerDto}
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, SummonerDto> getByNames(String... summonerNames) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v1.4/summoner/{summonerIds}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.4/summoner/{summonerIds}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, SummonerDto> getByIds(long... summonerIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v1.4/summoner/{summonerIds}/masteries<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.4/summoner/{summonerIds}/masteries<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, MasteryPagesDto> getMasteries(long... summonerIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v1.4/summoner/{summonerIds}/name<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.4/summoner/{summonerIds}/name<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, String> getNames(long... summonerIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v1.4/summoner/{summonerIds}/runes<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v1.4/summoner/{summonerIds}/runes<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerIds List of long IDs
          * @return Map of summoner IDs mapped from longs to Strings
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, RunePagesDto> getRunes(long... summonerIds) throws IOException, HttpException;
     }
 
+    /**
+     * Fetch player teams
+     * 
+     * @author Dc
+     * @since 1.0.0
+     */
     public interface Team extends RiotApi {
 
     	public static Region[] getSupportedRegions(float version) {
@@ -1067,38 +1171,38 @@ public interface RiotApi {
     	}
 
         /**
-         * /api/lol/{region}/v2.4/team/by-summoner/{summonerIds}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Stats data not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.4/team/by-summoner/{summonerIds}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Stats data not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param summonerIds List of summoner IDs to search. See {@link Summoner} to get valid
          *                    summoner IDs.
          * @return Map of stringified summonerIds to list of {@link TeamDto} objects that is the
          * collection of all teams of which that summoner is a member.
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, TeamDto[]> getTeamsBySummoners(long... summonerIds) throws IOException, HttpException;
 
         /**
-         * /api/lol/{region}/v2.4/team/{teamIds}<br/>
-         * <br/>
-         * 400	Bad request<br/>
-         * 401	Unauthorized<br/>
-         * 404	Team not found<br/>
-         * 429	Rate limit exceeded<br/>
-         * 500	Internal server error<br/>
+         * /api/lol/{region}/v2.4/team/{teamIds}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	Team not found<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
          * 503	Service unavailable
          *
          * @param teamIds List of team IDs.
          * @return Map of team ID to {@link TeamDto} objects.
-         * @throws HttpException 
-         * @throws IOException
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
          */
         Map<String, TeamDto> getTeams(String... teamIds) throws IOException, HttpException;
     }
