@@ -125,6 +125,10 @@ public interface RiotApi {
 	 */
 	public void setProxy(Proxy proxy);
 
+	public void setAutoRetry(boolean autoRetry);
+	
+	public void setRetryCount(int retryCount);
+
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
      * @author Dc
@@ -1098,4 +1102,5 @@ public interface RiotApi {
          */
         Map<String, TeamDto> getTeams(String... teamIds) throws IOException, HttpException;
     }
+
 }

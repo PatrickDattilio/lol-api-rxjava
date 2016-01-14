@@ -46,3 +46,4 @@ API_KEY
 PROXY
 build/
 /bin/
+gradle.properties

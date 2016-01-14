@@ -10,8 +10,9 @@ import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Base class for all RiotApi.* interface implementers
+ * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  */
 abstract class RiotApiBase implements RiotApi {
 	
@@ -20,15 +21,13 @@ abstract class RiotApiBase implements RiotApi {
 	protected final OkHttpClient client;
 	
 	private TicketedInterceptor ticketer = null;
+	private RetryInterceptor retry = null;
+	private int retryCount = 5;
 	
 	protected RiotApiBase(ApiKey apiKey, Region region, OkHttpClient client) {
 		this.apiKey = apiKey;
 		this.region = region;
 		this.client = client;
-		
-		if (client != null) {
-			client.interceptors().add(new RetryInterceptor(apiKey, region));
-		}
 	}
 	
 	RiotApiBase(ApiKey apiKey, Region region) {
@@ -48,6 +47,25 @@ abstract class RiotApiBase implements RiotApi {
 	@Override
 	public void setProxy(Proxy proxy) {
 		client.setProxy(proxy);
+	}
+	
+	@Override
+	public void setAutoRetry(boolean autoRetry) {
+		if (autoRetry && retry == null && client != null) {
+			client.interceptors().add(retry = new RetryInterceptor(apiKey, region));
+			retry.setRetryCount(retryCount);
+		} else if (!autoRetry && retry != null && client != null) {
+			client.interceptors().remove(retry);
+			retry = null;
+		}
+	}
+	
+	@Override
+	public void setRetryCount(int retryCount) {
+		this.retryCount = retryCount;
+		if (retry != null) {
+			retry.setRetryCount(retryCount);
+		}
 	}
 	
 	@Override

@@ -14,7 +14,8 @@ import java.util.Scanner;
  * be created to generate HTTP network accessors to the LoL API.
  * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
+ * @see <a href="https://developer.riotgames.com/">Your Dashboard to create an API key</a>
  */
 public class ApiKey {
 	// TODO add some kind of file encryption (RSA most likely, though symmetric encryption should be enough)
@@ -27,16 +28,34 @@ public class ApiKey {
     
     private EnumMap<Region, TicketBucket> buckets = new EnumMap<>(Region.class);
     
+    /**
+     * This constructor is exposed for convenience, but a better approach
+     * to creating {@link ApiKey} instances is to use {@link ApiKey#loadApiKeys()} or
+     * {@link ApiKey#loadApiKeys(File)}
+     * 
+     * @param key the key string from your developer dashboard
+     * @param rules the rate rules associated with your key, also on your developer dashboard
+     */
     public ApiKey(String key, RateRule... rules) {
     	this.key = key;
     	this.rules = rules;
     }
 
+    /**
+     * @return this {@link ApiKey}'s {@link RateRule}s
+     */
     public RateRule[] getRules() {
     	return rules;
     }
     
-    public TicketBucket getTicketBucket(Region region) {
+    /**
+     * Gets the {@link TicketBucket} for the given {@link Region}. Creates
+     * one if it does not exist.
+     * 
+     * @param region {@link Region} to retrieve
+     * @return a {@link TicketBucket} for this {@link Region}
+     */
+    public synchronized TicketBucket getTicketBucket(Region region) {
     	TicketBucket tb = buckets.get(region);
     	if (tb == null) {
     		tb = new TicketBucket(rules);
@@ -55,8 +74,8 @@ public class ApiKey {
      * Read API keys in the file ./API_KEY. This method exists as a convenience for
      * developers to load keys without command line or checking in API keys to
      * source control
-     * @return list of {@link ApiKey} found in the API_KEY file
-     * @throws FileNotFoundException 
+     * @return list of {@link ApiKey} found in the ./API_KEY file
+     * @throws FileNotFoundException if the ./API_KEY file cannot be found
      */
     public static ApiKey[] loadApiKeys() throws FileNotFoundException {
     	return loadApiKeys(new File("./API_KEY"));
@@ -68,7 +87,7 @@ public class ApiKey {
      * source control
      * @param file API key file to read
      * @return list of {@link ApiKey} found in the specified file
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException if the specified file cannot be found
      */
     public static ApiKey[] loadApiKeys(File file) throws FileNotFoundException {
         ArrayList<ApiKey> keys = new ArrayList<>();

@@ -12,6 +12,7 @@ import org.dc.riot.lol.rx.service.RiotApiExecutors;
 import org.dc.riot.lol.rx.service.TicketBucket;
 import org.dc.riot.lol.rx.service.TicketBucket.Ticket;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import rx.Observable;
@@ -26,6 +27,7 @@ public class ObservableTest {
 	private Scheduler scheduler;
 	private TicketBucket bucket;
 
+	@Ignore
 	@Before
 	public void setup() {
 		rules = RateRule.getDevelopmentRates();
@@ -33,6 +35,7 @@ public class ObservableTest {
 		bucket = new TicketBucket(rules);
 	}
 
+	@Ignore
 	@Test
 	public void testObservableMultipleSingleEmitters() throws InterruptedException {
 		final int trials = 501;
@@ -71,6 +74,7 @@ public class ObservableTest {
 		assertTrue(elapsedTime < TimeUnit.MINUTES.toMillis(10) + TimeUnit.SECONDS.toMillis(2));
 	}
 
+	@Ignore
 	@Test
 	public void testObservableMultiEmitter() throws InterruptedException {
 		final int trials = 501;

@@ -47,7 +47,6 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 		
 		if (INTER == null) {
 			OkHttpClient client = new OkHttpClient();
-//			client.interceptors().add(new TooFastRetryInterceptor());
 
 			Retrofit ra = new Retrofit.Builder()
 					.client(client)

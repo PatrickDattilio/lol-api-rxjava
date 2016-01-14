@@ -1,4 +1,14 @@
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+// maven coordinates
+group = 'dancarpenter21.github.com'
+version = '1.0.0'
+
+signing {
+    sign configurations.archives
+}
 
 repositories {
     mavenCentral()
@@ -12,6 +22,62 @@ dependencies {
     testCompile 'junit:junit:4.+'
 }
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+ 
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+              authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+ 
+            pom.project {
+               name 'lol-api-rxjava'
+               packaging 'jar'
+               description 'Service library for League of Legends API'
+               url 'https://github.com/dancarpenter21/lol-api-rxjava'
+ 
+               scm {
+                   url 'https://github.com/dancarpenter21/lol-api-rxjava.git'
+                   connection 'https://github.com/dancarpenter21/lol-api-rxjava.git'
+                   developerConnection 'https://github.com/dancarpenter21/lol-api-rxjava.git'
+               }
+ 
+               licenses {
+                   license {
+                       name 'The Apache Software License, Version 2.0'
+                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                       distribution 'repo'
+                   }
+               }
+ 
+               developers {
+                   developer {
+                       id 'dancarpenter21'
+                       name 'Dan Carpenter'
+                   }
+               }
+           }
+        }
+    }
+}
+
 task showCache << {
 	configurations.compile.each { println it }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+ 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
 }

@@ -3,6 +3,14 @@ package org.dc.riot.lol.rx.service.error;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Exception class wrapping HTTP error codes.
+ * 
+ * @author Dc
+ * @since 1.0
+ * @see {@link #getCode()}
+ * @see {@link #getHeaders()}
+ */
 public class HttpException extends Exception {
 	private static final long serialVersionUID = 9125763118458524121L;
 	private int code;
@@ -38,10 +46,18 @@ public class HttpException extends Exception {
 		this.headers = headers;
 	}
 
+	/**
+	 * @return the response code of the HTTP response that
+	 * caused this exception
+	 */
 	public int getCode() {
 		return code;
 	}
 
+	/**
+	 * @return the headers of the HTTP response that
+	 * caused this exception
+	 */
 	public Map<String, List<String>> getHeaders() {
 		return headers;
 	}

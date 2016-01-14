@@ -20,9 +20,11 @@ import com.google.gson.JsonParseException;
 
 /**
  * Use this class to generate instances of {@link RiotApi} interfaces. Use the associated {@link Builder}
- * to call into specific versions if needed.
+ * to call into specific versions if needed. {@link ApiFactory#newDefaultFactory(ApiKey)} is the easiest
+ * way to get {@link ApiFactory} and {@link RiotApi} instances.
+ * 
  * @author Dc
- * @since 1.0
+ * @since 1.0.0
  */
 public final class ApiFactory {
 
@@ -51,6 +53,9 @@ public final class ApiFactory {
         GSON = builder.create();
     }
     
+    /**
+     * @return the {@link Gson} to be used for all deserializations
+     */
     public static Gson getGson() {
     	return GSON;
     }
@@ -87,6 +92,8 @@ public final class ApiFactory {
      * Operating behind HTTP proxies
      */
     private Proxy proxy;
+    private boolean autoRetry;
+    private int retryCount;
     
     private final ApiKey apiKey;
 
@@ -267,6 +274,9 @@ public final class ApiFactory {
     		api.setRateControl(true);
     	}
     	
+		api.setAutoRetry(autoRetry);
+		api.setRetryCount(retryCount);
+    	
     	api.setProxy(proxy);
     }
 
@@ -286,6 +296,8 @@ public final class ApiFactory {
         private float matchlistVersion = 2.2f;      // baseline MatchListDto version
         private float summonerVersion = 1.4f;       // baseline Summoner version
         private float teamVersion = 2.4f;           // baseline Team version
+        private boolean autoRetry = true;
+        private int retryCount = 5;
         private Proxy proxy = null;
         
         private final ApiKey apiKey;
@@ -358,6 +370,16 @@ public final class ApiFactory {
         	this.proxy = proxy;
         	return this;
         }
+        
+        public Builder setAutoRetry(boolean autoRetry) {
+        	this.autoRetry = autoRetry;
+        	return this;
+        }
+        
+        public Builder setRetyCount(int retryCount) {
+        	this.retryCount = retryCount;
+        	return this;
+        }
 
         public ApiFactory build() {
             ApiFactory factory = new ApiFactory(apiKey);
@@ -374,6 +396,8 @@ public final class ApiFactory {
             factory.summonerVersion = summonerVersion;
             factory.teamVersion = teamVersion;
             factory.proxy = proxy;
+            factory.autoRetry = autoRetry;
+            factory.retryCount = retryCount;
             return factory;
         }
     }

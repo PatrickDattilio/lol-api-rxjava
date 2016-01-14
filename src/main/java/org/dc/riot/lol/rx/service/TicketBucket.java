@@ -22,9 +22,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class TicketBucket {
 
-	private int buffer = 750;
+	private long bufferMS = 750;
 	private ArrayList<Bucket> buckets;
 
+	/**
+	 * @param rules the set of {@link RateRule}s that this {@link TicketBucket}
+	 * should conform to
+	 */
 	TicketBucket(RateRule... rules) {
 		buckets = new ArrayList<>(rules.length);
 		for (int i=0; i<rules.length; i++) {
@@ -63,7 +67,7 @@ public class TicketBucket {
 	/**
 	 * Return a set of {@link Ticket} to the appropriate {@link Bucket}(s)
 	 * 
-	 * @param tickets
+	 * @param tickets set of {@link Ticket}s retrieved using {@link #take()}
 	 */
 	public void put(Ticket... tickets) throws InterruptedException {
 		for (Ticket t : tickets) {
@@ -75,14 +79,14 @@ public class TicketBucket {
 		}
 	}
 	
-	public void setBuffer(int buffer) {
+	public void setBuffer(int buffer, TimeUnit unit) {
 		if (buffer > -1) {
-			this.buffer = buffer;
+			this.bufferMS = unit.toMillis(buffer);
 		}
 	}
 	
-	public int getBuffer() {
-		return buffer;
+	public long getBuffer() {
+		return bufferMS;
 	}
 	
 	public void stall(long delay, TimeUnit timeUnit) {
@@ -99,9 +103,9 @@ public class TicketBucket {
 	 * Structured queue of {@link Ticket} objects
 	 * 
 	 * @author Dc
+	 * @since 1.0
 	 */
 	private class Bucket {
-		private static final int BUFFER_MS = 750;
 
 		private UUID name = UUID.randomUUID();
 		private ArrayBlockingQueue<Ticket> tickets;
@@ -130,7 +134,7 @@ public class TicketBucket {
 		/**
 		 * Generates the {@link Ticket} items contained in this {@link Bucket}
 		 * 
-		 * @param rule
+		 * @param rule {@link RateRule} that this {@link Bucket} will conform to
 		 */
 		Bucket(RateRule rule) {
 			this.rule = rule;
@@ -175,8 +179,7 @@ public class TicketBucket {
 		 * Handles necessary <code>Thread.sleep</code> calls to ensure rates are maintained
 		 * 
 		 * @param t {@link Ticket} to return
-		 * @param alreadySlept allows a single Thread to return {@link Ticket}s to multiple {@link Bucket}s
-		 * @return <code>true</code> if the supplied {@link Ticket} was returned, <code>false</code> otherwise
+		 * @return <code>true</code> if the supplied {@link Ticket} was scheduled for return, <code>false</code> otherwise
 		 * @throws InterruptedException
 		 */
 		boolean put(Ticket t) throws InterruptedException {
@@ -185,10 +188,9 @@ public class TicketBucket {
 						try {
 							tickets.put(t);
 						} catch (InterruptedException e) {
-							System.out.println("May have leaked a Ticket " + t.name);
 						}
 					},
-					rule.getMilliseconds() + BUFFER_MS,
+					rule.getMilliseconds() + bufferMS,
 					TimeUnit.MILLISECONDS);
 
 				return true;
@@ -197,6 +199,12 @@ public class TicketBucket {
 			}
 		}
 		
+		/**
+		 * Disables this {@link Bucket} for a certain amount of time.
+		 * Note: {@link Ticket}s may be returned during this time
+		 * @param delay
+		 * @param unit
+		 */
 		void stall(long delay, TimeUnit unit) {
 			stalled = true;
 			long validTime = getTime() + unit.toMillis(delay);
@@ -205,6 +213,9 @@ public class TicketBucket {
 			}
 		}
 
+		/**
+		 * @return the {@link RateRule} that this {@link Bucket} conforms to
+		 */
 		RateRule getRule() {
 			return rule;
 		}
@@ -217,11 +228,11 @@ public class TicketBucket {
 
 	/**
 	 * Rate control ticket. Client code need not create these directly, they
-	 * should be obtained from <code>TicketBucket.take();</code>
+	 * should be obtained from {@link TicketBucket#take()}
 	 * <br/>
 	 * <br/>
-	 * It is very important that tickets be returned to their parent {@link TicketBucket},
-	 * else the {@link TicketBucket} will have no Tickets to give and the application will deadlock.
+	 * It is very important that tickets be returned via {@link TicketBucket#put(Ticket[])}
+	 * else the {@link TicketBucket} will have no tickets to give and the application will deadlock.
 	 * <br/>
 	 * <br/>
 	 * Using {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory RiotApiFactory}'s
@@ -237,7 +248,7 @@ public class TicketBucket {
 		private int index = -1;
 		private UUID parentName;
 
-		Ticket(UUID parentName, int index) {
+		private Ticket(UUID parentName, int index) {
 			this.parentName = parentName;
 			this.index = index;
 		}

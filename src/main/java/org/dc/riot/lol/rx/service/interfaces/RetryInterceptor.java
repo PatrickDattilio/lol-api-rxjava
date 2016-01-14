@@ -23,18 +23,12 @@ class RetryInterceptor implements Interceptor {
 	
 	private ApiKey apiKey;
 	private Region region;
-	private long defaultWait;
-	private int retries;
+	private long wait = 2000;
+	private int retryCount = 5;
 	
 	RetryInterceptor(ApiKey apiKey, Region region) {
-		this(apiKey, region, 2000, 5);
-	}
-	
-	RetryInterceptor(ApiKey apiKey, Region region, long defaultWait, int retryCount) {
 		this.apiKey = apiKey;
 		this.region = region;
-		this.defaultWait = defaultWait;
-		this.retries = retryCount;
 	}
 
 	@Override
@@ -44,7 +38,7 @@ class RetryInterceptor implements Interceptor {
         boolean success = false;
         int tryCount = 0;
 
-        while (!success && tryCount < retries) {
+        while (!success && tryCount < retryCount) {
             try {
             	response = chain.proceed(request);
 
@@ -56,30 +50,35 @@ class RetryInterceptor implements Interceptor {
 					switch (rt) {
 					case PERSONAL:
 						if (waitSeconds == null) {
-							apiKey.getTicketBucket(region).stall(defaultWait, TimeUnit.MILLISECONDS);
+							apiKey.getTicketBucket(region).stall(wait, TimeUnit.MILLISECONDS);
+							try { Thread.sleep(wait); } catch (InterruptedException e) { }
 						} else {
 							try {
 								int wait = Integer.parseInt(waitSeconds);
 								apiKey.getTicketBucket(region).stall(wait, TimeUnit.SECONDS);
 								try { Thread.sleep(TimeUnit.SECONDS.toMillis(wait)); } catch (InterruptedException e) { }
 							} catch (NumberFormatException e) {
-								apiKey.getTicketBucket(region).stall(defaultWait, TimeUnit.MILLISECONDS);
+								apiKey.getTicketBucket(region).stall(wait, TimeUnit.MILLISECONDS);
+								try { Thread.sleep(wait); } catch (InterruptedException ex) { }
 							}
 						}
 						
 						break;
 					case SERVICE:
 						if (waitSeconds == null) {
-							try { Thread.sleep(defaultWait); } catch (InterruptedException e) { }
+							try { Thread.sleep(wait); } catch (InterruptedException e) { }
 						} else {
-							int seconds = Integer.parseInt(waitSeconds);
-							long sleep = TimeUnit.SECONDS.toMillis(seconds);
-							try { Thread.sleep(sleep); } catch (InterruptedException e) { }
+							try {
+								int wait = Integer.parseInt(waitSeconds);
+								try { Thread.sleep(TimeUnit.SECONDS.toMillis(wait)); } catch (InterruptedException e) { }
+							} catch (NumberFormatException e) {
+								try { Thread.sleep(wait); } catch (InterruptedException ex) { }
+							}
 						}
 						
 						break;
 					default:
-						try { Thread.sleep(defaultWait); } catch (InterruptedException e) { }
+						try { Thread.sleep(wait); } catch (InterruptedException e) { }
 					}
 				} else {
 					break;
@@ -94,6 +93,14 @@ class RetryInterceptor implements Interceptor {
         }
 
         return response;
+	}
+
+	void setRetryCount(int retryCount) {
+		this.retryCount = retryCount;
+	}
+	
+	void setWait(long wait) {
+		this.wait = wait;
 	}
 
 }

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.dc.riot.lol.rx.service.TicketBucket.Ticket;
 import org.dc.riot.lol.rx.service.Debug;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SemaphoreTest {
@@ -18,6 +19,8 @@ public class SemaphoreTest {
 	private Executor executor = Executors.newFixedThreadPool(10);
 	
 	private boolean testSemaphoreFailed = false;
+	
+	@Ignore
 	@Test
 	public void testSemaphore() throws InterruptedException {
 		int trials = 1001;
