@@ -143,11 +143,6 @@ public class ChampionSpellDto {
         this.name = name;
     }
 
-    /**
-     *
-     * @return
-     */
-
     public RangeDto getRange() {
         return range;
     }

@@ -17,9 +17,9 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author Dc
  * @since 1.0.0
- * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}
- * @see {@link Region}
- * @see {@link ApiKey#getTicketBucket(Region)}
+ * @see org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory
+ * @see Region
+ * @see ApiKey#getTicketBucket(Region)
  */
 public class TicketBucket {
 
@@ -55,6 +55,7 @@ public class TicketBucket {
 	 * Blocks until each {@link Bucket} yields a {@link Ticket}
 	 * 
 	 * @return a {@link Ticket} from each {@link Bucket}
+	 * @throws InterruptedException if cancelled
 	 */
 	public Ticket[] take() throws InterruptedException {
 		Ticket[] tickets = new Ticket[buckets.size()];
@@ -69,6 +70,7 @@ public class TicketBucket {
 	 * Return a set of {@link Ticket} to the appropriate {@link Bucket}(s)
 	 * 
 	 * @param tickets set of {@link Ticket}s retrieved using {@link #take()}
+	 * @throws InterruptedException if cancelled
 	 */
 	public void put(Ticket... tickets) throws InterruptedException {
 		for (Ticket t : tickets) {
@@ -261,7 +263,7 @@ public class TicketBucket {
 	 * 
 	 * @author Dc
 	 * @since 1.0.0
-	 * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}
+	 * @see org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory
 	 */
 	public static class Ticket {
 		private UUID name = UUID.randomUUID();

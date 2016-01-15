@@ -4,7 +4,8 @@ import java.util.Map;
 
 /**
  * This object contains item data. Almost exactly the
- * same as {@link BasicDataDto}.<br/>
+ * same as {@link BasicDataDto}<br>
+ * <br>
  * <a href="https://developer.riotgames.com/discussion/announcements/show/6OqJwp1E">Inheritance
  * Discussion</a>
  * 

@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.service.request;
 
 /**
- * {@link org.dc.riotapi.service.RiotApi.StaticData} parameter
+ * {@link org.dc.riot.lol.rx.service.RiotApi.StaticData RiotApi.StaticData} parameter
  * 
  * @author Dc
  * @since 1.0.0

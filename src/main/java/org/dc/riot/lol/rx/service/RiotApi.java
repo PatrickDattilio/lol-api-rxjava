@@ -55,7 +55,7 @@ import org.dc.riot.lol.rx.service.request.SpellDataTag;
  * 
  * @author Dc
  * @since 1.0.0
- * @see {@link org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory}
+ * @see org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory
  */
 public interface RiotApi {
 	
@@ -117,7 +117,7 @@ public interface RiotApi {
 
 	/**
 	 * Enable or disable rate throttling.
-	 * @param control
+	 * @param control turn on / off rate controlling
 	 */
 	public void setRateControl(boolean control);
 	
@@ -325,8 +325,8 @@ public interface RiotApi {
 
     /**
      * Retrieves data about players' leagues.
-     * @see {@link LeagueDto}
-     * @see {@link LeagueEntryDto}
+     * @see LeagueDto
+     * @see LeagueEntryDto
      * 
      * @author Dc
      * @since 1.0.0
@@ -649,6 +649,7 @@ public interface RiotApi {
          * 500	Internal server error<br>
          * 503	Service unavailable
          *
+         * @param id		  mastery id
          * @param version     patch to reference, <code>null</code> will use latest patch
          * @param locale      locale String (e.g. en_US) <code>null</code> will use default for region
          * @param masteryData Tags to return additional data. Only id, name, and description are
@@ -873,7 +874,7 @@ public interface RiotApi {
          * 500	Internal server error<br>
          * 503	Service unavailable
          *
-         * @param matchId         see {@link MatchList} interface to get valid match IDs
+         * @param matchId         {@link MatchList} interface to get valid match IDs
          * @param includeTimeline Attempt to include timeline data. Not all matches have timeline
          *                        data associated with them.
          * @return a {@link MatchDetail}

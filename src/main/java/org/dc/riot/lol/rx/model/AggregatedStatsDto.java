@@ -91,7 +91,7 @@ public class AggregatedStatsDto {
 
     /**
      * Dominion only
-     * @return
+     * @return average node capture
      */
     public int getAverageNodeCapture() {
         return averageNodeCapture;

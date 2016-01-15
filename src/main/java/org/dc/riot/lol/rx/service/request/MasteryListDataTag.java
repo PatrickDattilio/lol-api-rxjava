@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.service.request;
 
 /**
- * Used by {@link org.dc.riotapi.service.RiotApi.StaticData}
+ * Used by {@link org.dc.riot.lol.rx.service.RiotApi.StaticData RiotApi.StaticData}
  * @author Dc
  * @since 1.0.0
  */

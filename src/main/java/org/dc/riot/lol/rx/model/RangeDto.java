@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model;
 
 /**
- * This object is deserialized from either a String "Self" or a List&lt;Integer>
+ * This object is deserialized from either a String "Self" or a List of Integer
  * 
  * @author Dc
  * @since 1.0.0

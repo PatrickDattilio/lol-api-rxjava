@@ -8,8 +8,8 @@ import java.util.Map;
  * 
  * @author Dc
  * @since 1.0.0
- * @see {@link #getCode()}
- * @see {@link #getHeaders()}
+ * @see #getCode()
+ * @see #getHeaders()
  */
 public class HttpException extends Exception {
 	private static final long serialVersionUID = 9125763118458524121L;

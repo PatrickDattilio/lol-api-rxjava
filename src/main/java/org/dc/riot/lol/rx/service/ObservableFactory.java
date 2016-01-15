@@ -10,7 +10,7 @@ import rx.Subscriber;
  * Typical use case for this class is to help in creating the first
  * {@link Observable} in a chain.
  * <pre>
- * {@code}
+ * {@code
 	RiotApi.Champion champInterface = factory.newChampionInterface(region, true);
 	ObservableFactory.create(() -> {
 		return champInterface.getChampions(true);
@@ -23,13 +23,13 @@ import rx.Subscriber;
 	},
 	() -> {
 		System.out.println("Done");
-	});
+	});}
  * </pre>
  * 
  * @author Dc
  * @since 1.0.0
  *
- * @param <T>
+ * @param <T> generic type
  */
 public class ObservableFactory<T> {
 
@@ -40,6 +40,7 @@ public class ObservableFactory<T> {
 	 * @param callable {@link Callable} that should make a single API call
 	 * and return the result. We use {@link Callable} instead of {@link java.util.function.Supplier
 	 * Supplier} for the exception handling.
+	 * @param <T> generic type
 	 * @return an {@link Observable} that will emit the object returned by callable
 	 */
 	public static <T> Observable<T> create(final Callable<T> callable) {
