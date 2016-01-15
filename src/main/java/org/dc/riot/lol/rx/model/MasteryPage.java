@@ -1,8 +1,5 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Dc
  * @since 1.0.0
@@ -10,7 +7,7 @@ import java.util.List;
 public class MasteryPage {
 
 
-    private List<Mastery> masteries = new ArrayList<>();
+    private Mastery[] masteries;
     private long id;
     private String name;
     private boolean current;
@@ -18,14 +15,14 @@ public class MasteryPage {
     /**
      * @return The masteries
      */
-    public List<Mastery> getMasteries() {
+    public Mastery[] getMasteries() {
         return masteries;
     }
 
     /**
      * @param masteries The masteries
      */
-    public void setMasteries(List<Mastery> masteries) {
+    public void setMasteries(Mastery[] masteries) {
         this.masteries = masteries;
     }
 

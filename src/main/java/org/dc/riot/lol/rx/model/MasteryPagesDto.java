@@ -1,14 +1,12 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.List;
-
 /**
  * @author Dc
  * @since 1.0.0
  */
 public class MasteryPagesDto {
     private long summonerId;
-    private List<MasteryPage> pages;
+    private MasteryPage[] pages;
 
     public long getSummonerId() {
         return summonerId;
@@ -18,11 +16,11 @@ public class MasteryPagesDto {
         this.summonerId = summonerId;
     }
 
-    public List<MasteryPage> getPages() {
+    public MasteryPage[] getPages() {
         return pages;
     }
 
-    public void setPages(List<MasteryPage> pages) {
+    public void setPages(MasteryPage[] pages) {
         this.pages = pages;
     }
 }

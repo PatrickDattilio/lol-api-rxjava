@@ -31,6 +31,12 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
+/**
+ * Some basic HTTP tests that are consolidated into {@link EndpointTests}
+ * 
+ * @author Dc
+ * @deprecated
+ */
 public class RetrofitTests {
 	
 	private Scheduler scheduler;

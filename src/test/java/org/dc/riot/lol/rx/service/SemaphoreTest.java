@@ -13,6 +13,12 @@ import org.dc.riot.lol.rx.service.TicketBucket.Ticket;
 import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * Testing {@link TicketBucket} business logic
+ * 
+ * @author Dc
+ * @deprecated
+ */
 public class SemaphoreTest {
 
 	private RateRule[] rules = RateRule.getDevelopmentRates();

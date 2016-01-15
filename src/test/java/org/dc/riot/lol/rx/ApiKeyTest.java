@@ -7,6 +7,12 @@ import org.dc.riot.lol.rx.service.RateRule;
 import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * API key loading tests
+ * 
+ * @author Dc
+ * @deprecated
+ */
 public class ApiKeyTest {
 
 	@Ignore

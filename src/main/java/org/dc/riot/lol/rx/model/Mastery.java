@@ -8,7 +8,7 @@ package org.dc.riot.lol.rx.model;
  */
 public class Mastery {
     private int rank;
-    private long masterId;
+    private long masteryId;
 
     public Mastery() { }
 
@@ -21,10 +21,10 @@ public class Mastery {
     }
 
     public long getMasterId() {
-        return masterId;
+        return masteryId;
     }
 
-    public void setMasterId(long masterId) {
-        this.masterId = masterId;
+    public void setMasterId(long masteryId) {
+        this.masteryId = masteryId;
     }
 }

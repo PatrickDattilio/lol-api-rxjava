@@ -20,6 +20,12 @@ import rx.Scheduler;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
+/**
+ * Learning how to use {@link Observable}s
+ * 
+ * @author Dc
+ * @deprecated
+ */
 public class ObservableTest {
 
 	private TestPrints debug = TestPrints.getInstance();
