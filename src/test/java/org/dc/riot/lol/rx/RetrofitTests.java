@@ -17,7 +17,6 @@ import org.dc.riot.lol.rx.model.PlayerDto;
 import org.dc.riot.lol.rx.model.RecentGamesDto;
 import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
-import org.dc.riot.lol.rx.service.Debug;
 import org.dc.riot.lol.rx.service.ObservableFactory;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -25,6 +24,7 @@ import org.dc.riot.lol.rx.service.RiotApiExecutors;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import rx.Observable;
@@ -36,22 +36,24 @@ public class RetrofitTests {
 	private Scheduler scheduler;
 	private ApiKey apiKey;
 	private Region region;
-	private Debug debug;
+	private TestPrints debug;
 	private ApiFactory factory;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
 	
+	@Ignore
 	@Before
 	public void setup() throws FileNotFoundException {
 		apiKey = ApiKey.loadApiKeys()[0];
 		factory = ApiFactory.newDefaultFactory(apiKey);
 		region = Region.NORTH_AMERICA;
-		debug = Debug.getInstance();
+		debug = TestPrints.getInstance();
 		scheduler = Schedulers.from(RiotApiExecutors.newFixedThreadPool(apiKey.getRules()));
 	}
 	
 	private int testManualObservablesCount = 0;
 	private boolean testManualObservablesFailed = false;
+	@Ignore
 	@Test
 	public void testManualObservables() throws InterruptedException {
 		final int gets = 501;
@@ -92,6 +94,7 @@ public class RetrofitTests {
 		assertTrue(elapsedTime < TimeUnit.MINUTES.toMillis(10) + TimeUnit.SECONDS.toMillis(5));
 	}
 	
+	@Ignore
 	@Test
 	public void testRetrofitChainedObservables() throws InterruptedException, IOException, HttpException {
 		final int gets = 501;	// this test runs 2 API calls per loop, so this is 1002 calls total
@@ -157,6 +160,7 @@ public class RetrofitTests {
 		assertTrue(elapsedTime < TimeUnit.MINUTES.toMillis(20) + TimeUnit.SECONDS.toMillis(6));
 	}
 	
+	@Ignore
 	@Test
 	public void testRetries() throws IOException {
 		int gets = 100;
@@ -165,10 +169,10 @@ public class RetrofitTests {
 			try {
 				Map<String, SummonerDto> dto = summonerInterface.getByNames("HuskarDc","TheOddOne");
 				for (SummonerDto s : dto.values()) {
-					Debug.getInstance().println(s.getId() + " - " + s.getName());
+					TestPrints.getInstance().println(s.getId() + " - " + s.getName());
 				}
 			} catch (HttpException e) {
-				Debug.getInstance().println(e.getCode());
+				TestPrints.getInstance().println(e.getCode());
 			}
 		}
 	}

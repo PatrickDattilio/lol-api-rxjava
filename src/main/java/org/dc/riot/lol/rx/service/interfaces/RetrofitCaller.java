@@ -6,10 +6,9 @@ import org.dc.riot.lol.rx.service.error.HttpException;
 
 import retrofit.Call;
 import retrofit.Response;
-import rx.Observable;
 
 /**
- * {@link Observable} creator helper
+ * {@link Call} unpacking helper
  * 
  * @author Dc
  * @since 1.0.0
@@ -43,5 +42,18 @@ interface RetrofitCaller<T> {
 		default:
 			throw new HttpException(response.code(), response.headers().toMultimap());
 		}
+	}
+	
+	/**
+	 * @param caller caller to wrap
+	 * @param completer any custom processing that needs to happen on the received object
+	 * 			before returning to calling code 
+	 * @return json object
+	 * @throws IOException network issue
+	 * @throws HttpException - any non 2XX response code
+	 */
+	static <T> T processCall(final RetrofitCaller<T> caller, final Completer<T> completer) throws IOException, HttpException {
+		T t = processCall(caller);
+		return completer.fill(t);
 	}
 }

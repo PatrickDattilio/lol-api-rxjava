@@ -8,8 +8,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.dc.riot.lol.rx.TestPrints;
 import org.dc.riot.lol.rx.service.TicketBucket.Ticket;
-import org.dc.riot.lol.rx.service.Debug;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ public class SemaphoreTest {
 				try {
 					Ticket[] tickets = tb.take();
 					Thread.sleep(50);
-					Debug.getInstance().println("Task " + taskNumber);
+					TestPrints.getInstance().println("Task " + taskNumber);
 					tb.put(tickets);
 					
 				} catch (Exception e) {

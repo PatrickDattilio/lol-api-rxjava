@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.service;
+package org.dc.riot.lol.rx;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -9,11 +9,11 @@ import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-public class Debug implements Interceptor {
+public class TestPrints implements Interceptor {
 	
-	private static final Debug INSTANCE = new Debug();
+	private static final TestPrints INSTANCE = new TestPrints();
 	
-	public static Debug getInstance() {
+	public static TestPrints getInstance() {
 		return INSTANCE;
 	}
 
@@ -21,7 +21,7 @@ public class Debug implements Interceptor {
 	private PrintStream outputStream = System.out;
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.sss");
 	
-	private Debug() { }
+	private TestPrints() { }
 	
 	public void setDebug(boolean debug) {
 		this.debug = debug;
@@ -45,6 +45,10 @@ public class Debug implements Interceptor {
 		} else {
 			outputStream.println("[DEBUG " + sdf.format(new Date(System.currentTimeMillis())) + "] " + o);
 		}
+	}
+	
+	public void println(String tag, Object o) {
+			outputStream.println("[" + tag + " " + sdf.format(new Date(System.currentTimeMillis())) + "] " + o);
 	}
 
 	@Override

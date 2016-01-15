@@ -4,10 +4,12 @@ import java.io.FileNotFoundException;
 
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.RateRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ApiKeyTest {
 
+	@Ignore
 	@Test
 	public void testApiKeyLoading() throws FileNotFoundException {
 		ApiKey[] apiKeys = ApiKey.loadApiKeys();

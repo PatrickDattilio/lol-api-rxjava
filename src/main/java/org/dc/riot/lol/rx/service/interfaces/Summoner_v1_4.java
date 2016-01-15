@@ -47,6 +47,13 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	public Map<String, SummonerDto> getByNames(String... summonerNames) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getByNames(region, new CSA<String>(summonerNames), apiKey);
+		},
+		(Map<String,SummonerDto> dto) -> {
+			for (SummonerDto s : dto.values()) {
+				s.setRegion(region);
+			}
+			
+			return dto;
 		});
 	}
 

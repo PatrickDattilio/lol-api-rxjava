@@ -6,7 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.dc.riot.lol.rx.service.Debug;
+import org.dc.riot.lol.rx.TestPrints;
 import org.dc.riot.lol.rx.service.RateRule;
 import org.dc.riot.lol.rx.service.RiotApiExecutors;
 import org.dc.riot.lol.rx.service.TicketBucket;
@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
 
 public class ObservableTest {
 
-	private Debug debug = Debug.getInstance();
+	private TestPrints debug = TestPrints.getInstance();
 	private RateRule[] rules;
 	private Scheduler scheduler;
 	private TicketBucket bucket;
