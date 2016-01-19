@@ -46,7 +46,11 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	@Override
 	public Map<String, SummonerDto> getByNames(String... summonerNames) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getByNames(region, new CSA<String>(summonerNames), apiKey);
+			String[] encodedNames = new String[summonerNames.length];
+			for (int i=0; i<encodedNames.length; i++) {
+				encodedNames[i] = RiotApi.Summoner.encodeName(summonerNames[i]);
+			}
+			return inter.getByNames(region, new CSA<String>(encodedNames), apiKey);
 		},
 		(Map<String,SummonerDto> dto) -> {
 			for (SummonerDto s : dto.values()) {
@@ -61,6 +65,13 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	public Map<String, SummonerDto> getByIds(long... summonerIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getByIds(region, new CSA.Long(summonerIds), apiKey);
+		},
+		(Map<String,SummonerDto> dto) -> {
+			for (SummonerDto s : dto.values()) {
+				s.setRegion(region);
+			}
+			
+			return dto;
 		});
 	}
 

@@ -47,7 +47,7 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 			RankedQueue[] rankedQueues, Season[] seasons, long beginTime,
 			long endTime, int beginIndex, int endIndex) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getMatchList(region, summonerId, apiKey, new CSA.Long(championIds),
+			return inter.getMatchList(new LowercaseRegion(region), summonerId, apiKey, new CSA.Long(championIds),
 					new CSA<RankedQueue>(rankedQueues), new CSA<Season>(seasons),
 					beginTime, endTime, beginIndex, endIndex);
 		});
@@ -56,7 +56,7 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 	private interface Interface {
 		
 		@GET("/api/lol/{region}/v2.2/matchlist/by-summoner/{summonerId}")
-		Call<MatchListDto> getMatchList(@Path("region") Region region, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey,
+		Call<MatchListDto> getMatchList(@Path("region") LowercaseRegion region, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey,
 			 @Query("championIds") CSA.Long championIds, @Query("rankedQueues") CSA<RankedQueue> rankedQueues,
 			 @Query("seasons") CSA<Season> seasons, @Query("beginTime") long beginTime, @Query("endTime") long endTime,
 			 @Query("beginIndex") int beginIndex, @Query("endIndex") int endIndex);

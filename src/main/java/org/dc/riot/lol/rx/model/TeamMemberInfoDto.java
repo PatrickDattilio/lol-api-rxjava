@@ -10,7 +10,7 @@ public class TeamMemberInfoDto {
     private long joinDate;
     private long inviteDate;
     private String status;
-    private int playerId;
+    private long playerId;
 
     public long getJoinDate() {
         return joinDate;
@@ -36,11 +36,11 @@ public class TeamMemberInfoDto {
         this.status = status;
     }
 
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 }

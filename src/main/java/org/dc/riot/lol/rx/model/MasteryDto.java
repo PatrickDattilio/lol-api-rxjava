@@ -5,6 +5,8 @@ package org.dc.riot.lol.rx.model;
  * 
  * @author Dc
  * @since 1.0.0
+ * @see org.dc.riot.lol.rx.service.RiotApi.StaticData#getMastery(long, String, String, org.dc.riot.lol.rx.service.request.MasteryListDataTag...)
+ * RiotApi.StaticData#getMastery(long, String, String, MasteryListDataTag...)
  */
 public class MasteryDto {
     private String[] description;

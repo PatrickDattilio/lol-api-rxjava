@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.dc.riot.lol.rx.model.ChampionDto;
 import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.ChampionMetaDto;
+import org.dc.riot.lol.rx.model.ChampionMetaListDto;
 import org.dc.riot.lol.rx.model.CurrentGameInfo;
 import org.dc.riot.lol.rx.model.FeaturedGamesDto;
 import org.dc.riot.lol.rx.model.ItemDto;
@@ -137,12 +139,20 @@ public interface RiotApi {
 	 * {@link #setAutoRetry(boolean)} is false this this has no effect.
 	 */
 	public void setRetryCount(int retryCount);
+	
+	/**
+	 * @param print turn off/on URL printing. Mainly for debugging
+	 */
+	public void setPrintUrl(boolean print);
 
     /**
      * Not for stats. This API is more concerned with enabled, ranked, free to play, etc.
+     * For champion stats see the {@link RiotApi.StaticData} interface.
      * 
      * @author Dc
      * @since 1.0.0
+     * @see RiotApi.StaticData#getChampion(long, String, String, ChampDataTag...)
+     * @see RiotApi.StaticData#getChampions(boolean, String, String, ChampListDataTag...)
      */
     public interface Champion extends RiotApi {
 
@@ -180,11 +190,11 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param freeToPlay fetch only free to play champions
-         * @return {@link ChampionListDto}
+         * @return {@link ChampionMetaListDto}
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        ChampionListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
+        ChampionMetaListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v1.2/champion/{id}<br>
@@ -196,11 +206,11 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param championId the champ id
-         * @return {@link ChampionDto} single champion dto
+         * @return {@link ChampionMetaDto} single champion dto
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        ChampionDto getChampion(long championId) throws IOException, HttpException;
+        ChampionMetaDto getChampion(long championId) throws IOException, HttpException;
     }
 
     /**
@@ -432,7 +442,7 @@ public interface RiotApi {
         /**
          * /api/lol/{region}/v2.5/league/challenger<br>
          * <br>
-         * 400	Bad request<br>
+         * 400	Bad request, (e.g. you request Challenger data for an unranked queue type)<br>
          * 401	Unauthorized<br>
          * 404  League data not found<br>
          * 429	Rate limit exceeded<br>
@@ -699,6 +709,7 @@ public interface RiotApi {
          * <br>
          * 400	Bad request<br>
          * 401	Unauthorized<br>
+         * 403	Forbidden<br>
          * 404  Rune data not found<br>
          * 500	Internal server error<br>
          * 503	Service unavailable
@@ -1174,7 +1185,7 @@ public interface RiotApi {
         /**
          * /api/lol/{region}/v2.4/team/by-summoner/{summonerIds}<br>
          * <br>
-         * 400	Bad request<br>
+         * 400	Bad request, usually means too many IDs<br>
          * 401	Unauthorized<br>
          * 404	Stats data not found<br>
          * 429	Rate limit exceeded<br>
@@ -1182,7 +1193,7 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param summonerIds List of summoner IDs to search. See {@link Summoner} to get valid
-         *                    summoner IDs.
+         *                    summoner IDs. Max count in this method is 10.
          * @return Map of stringified summonerIds to list of {@link TeamDto} objects that is the
          * collection of all teams of which that summoner is a member.
          * @throws HttpException non 2XX response code returned
@@ -1193,14 +1204,14 @@ public interface RiotApi {
         /**
          * /api/lol/{region}/v2.4/team/{teamIds}<br>
          * <br>
-         * 400	Bad request<br>
+         * 400	Bad request, usually means too many IDs<br>
          * 401	Unauthorized<br>
          * 404	Team not found<br>
          * 429	Rate limit exceeded<br>
          * 500	Internal server error<br>
          * 503	Service unavailable
          *
-         * @param teamIds List of team IDs.
+         * @param teamIds List of team IDs. Max length of 10.
          * @return Map of team ID to {@link TeamDto} objects.
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)

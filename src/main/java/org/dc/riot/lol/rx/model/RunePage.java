@@ -1,15 +1,12 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Dc
  * @since 1.0.0
  */
 public class RunePage {
     private long id;
-    private List<Slot> slots = new ArrayList<>();
+    private Slot[] slots;
     private String name;
     private boolean current;
 
@@ -30,14 +27,18 @@ public class RunePage {
     /**
      * @return The slots
      */
-    public List<Slot> getSlots() {
+    public Slot[] getSlots() {
+    	if (slots == null) {
+    		return new Slot[0];
+    	}
+
         return slots;
     }
 
     /**
      * @param slots The slots
      */
-    public void setSlots(List<Slot> slots) {
+    public void setSlots(Slot[] slots) {
         this.slots = slots;
     }
 

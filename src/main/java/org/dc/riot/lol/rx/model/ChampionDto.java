@@ -3,7 +3,7 @@ package org.dc.riot.lol.rx.model;
 import java.util.List;
 
 /**
- * This objct contains champion data.
+ * This object contains champion data.
  * 
  * @author Dc
  * @since 1.0.0
@@ -27,13 +27,6 @@ public class ChampionDto {
     private StatsDto stats;
     private List<String> tags;
     private String title;
-
-    // fields below this line come from the Champion interface
-    private boolean botMmEnabled;
-    private boolean rankedPlayEnabled;
-    private boolean botEnabled;
-    private boolean active;
-    private boolean freeToPlay;
 
     public List<String> getAllytips() {
         return allytips;
@@ -173,45 +166,5 @@ public class ChampionDto {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public boolean isBotMmEnabled() {
-        return botMmEnabled;
-    }
-
-    public void setBotMmEnabled(boolean botMmEnabled) {
-        this.botMmEnabled = botMmEnabled;
-    }
-
-    public boolean isRankedPlayEnabled() {
-        return rankedPlayEnabled;
-    }
-
-    public void setRankedPlayEnabled(boolean rankedPlayEnabled) {
-        this.rankedPlayEnabled = rankedPlayEnabled;
-    }
-
-    public boolean isBotEnabled() {
-        return botEnabled;
-    }
-
-    public void setBotEnabled(boolean botEnabled) {
-        this.botEnabled = botEnabled;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean isFreeToPlay() {
-        return freeToPlay;
-    }
-
-    public void setFreeToPlay(boolean freeToPlay) {
-        this.freeToPlay = freeToPlay;
     }
 }

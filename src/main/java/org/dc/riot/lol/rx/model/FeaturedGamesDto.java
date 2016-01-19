@@ -1,7 +1,5 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.List;
-
 /**
  * Spectate featured games
  * 
@@ -10,7 +8,7 @@ import java.util.List;
  */
 public class FeaturedGamesDto {
     private long clientRefreshInterval;
-    private List<CurrentGameInfo> gameList;
+    private FeaturedGameInfo[] gameList;
 
     public long getClientRefreshInterval() {
         return clientRefreshInterval;
@@ -20,11 +18,15 @@ public class FeaturedGamesDto {
         this.clientRefreshInterval = clientRefreshInterval;
     }
 
-    public List<CurrentGameInfo> getGameList() {
+    public FeaturedGameInfo[] getGameList() {
+    	if (gameList == null) {
+    		return new FeaturedGameInfo[0];
+    	}
+
         return gameList;
     }
 
-    public void setGameList(List<CurrentGameInfo> gameList) {
+    public void setGameList(FeaturedGameInfo[] gameList) {
         this.gameList = gameList;
     }
 }

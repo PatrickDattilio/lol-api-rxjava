@@ -1,0 +1,816 @@
+package org.dc.riot.lol.rx;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+
+import org.dc.riot.lol.rx.model.BannedChampion;
+import org.dc.riot.lol.rx.model.BasicDataStatsDto;
+import org.dc.riot.lol.rx.model.ChampionDto;
+import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.ChampionMetaDto;
+import org.dc.riot.lol.rx.model.ChampionMetaListDto;
+import org.dc.riot.lol.rx.model.CurrentGameInfo;
+import org.dc.riot.lol.rx.model.CurrentGameParticipant;
+import org.dc.riot.lol.rx.model.FeaturedGameInfo;
+import org.dc.riot.lol.rx.model.FeaturedGamesDto;
+import org.dc.riot.lol.rx.model.GameMode;
+import org.dc.riot.lol.rx.model.GameType;
+import org.dc.riot.lol.rx.model.ImageDto;
+import org.dc.riot.lol.rx.model.LeagueDto;
+import org.dc.riot.lol.rx.model.LeagueEntryDto;
+import org.dc.riot.lol.rx.model.MasteryMetaDto;
+import org.dc.riot.lol.rx.model.MasteryPage;
+import org.dc.riot.lol.rx.model.MasteryPagesDto;
+import org.dc.riot.lol.rx.model.MatchDetail;
+import org.dc.riot.lol.rx.model.MatchHistorySummaryDto;
+import org.dc.riot.lol.rx.model.MatchListDto;
+import org.dc.riot.lol.rx.model.MatchReference;
+import org.dc.riot.lol.rx.model.MetaDataDto;
+import org.dc.riot.lol.rx.model.MiniSeriesDto;
+import org.dc.riot.lol.rx.model.Observer;
+import org.dc.riot.lol.rx.model.Participant;
+import org.dc.riot.lol.rx.model.PlatformId;
+import org.dc.riot.lol.rx.model.QueueType;
+import org.dc.riot.lol.rx.model.RankedQueue;
+import org.dc.riot.lol.rx.model.RosterDto;
+import org.dc.riot.lol.rx.model.Rune;
+import org.dc.riot.lol.rx.model.RuneDto;
+import org.dc.riot.lol.rx.model.RuneListDto;
+import org.dc.riot.lol.rx.model.RunePage;
+import org.dc.riot.lol.rx.model.RunePagesDto;
+import org.dc.riot.lol.rx.model.Season;
+import org.dc.riot.lol.rx.model.Service;
+import org.dc.riot.lol.rx.model.Shard;
+import org.dc.riot.lol.rx.model.ShardStatus;
+import org.dc.riot.lol.rx.model.Slot;
+import org.dc.riot.lol.rx.model.SummonerDto;
+import org.dc.riot.lol.rx.model.TeamDto;
+import org.dc.riot.lol.rx.model.TeamMemberInfoDto;
+import org.dc.riot.lol.rx.model.TeamStatDetailDto;
+import org.dc.riot.lol.rx.service.ApiKey;
+import org.dc.riot.lol.rx.service.Region;
+import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.error.HttpException;
+import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
+import org.dc.riot.lol.rx.service.request.RuneDataTag;
+import org.dc.riot.lol.rx.service.request.RuneListDataTag;
+import org.junit.Before;
+import org.junit.Test;
+
+public class IntegrationTests {
+
+	private final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+	private final String[] names = { "HuskarDc","Ctrl Alt Dc","Nightblue3","TheOddOne","C9 Meteos","C9 TOXIC MID","C9 TOXIC JUNGLE","C9 StealthBomber","Cheer X","6 xp"};
+	private final Region region = Region.NORTH_AMERICA;
+
+	private RiotApi.Summoner summonerInterface = null;
+	private RiotApi.StaticData staticInterface = null;
+	private RiotApi.LolStatus statusInterface = null;
+	private RiotApi.Champion championInterface = null;
+	private RiotApi.CurrentGame currentGameInterface = null;
+	private RiotApi.FeaturedGames featuredGameInterface = null;
+	private RiotApi.League leagueInterface = null;
+	private RiotApi.Match matchInterface = null;
+	private RiotApi.MatchList matchlistInterface = null;
+	private RiotApi.RecentGames recentGameInterface = null;
+	private RiotApi.Stats statsInterface = null;
+	private RiotApi.Team teamInterface = null;
+
+	private TestPrints prints = TestPrints.getInstance();
+	private ApiFactory factory = null;
+
+	@Before
+	public void setup() throws FileNotFoundException {
+		final ApiKey apiKey = ApiKey.loadApiKeys()[0];
+		factory = ApiFactory.newDefaultFactory(apiKey);
+
+		summonerInterface = factory.newSummonerInterface(region, true);
+		summonerInterface.setPrintUrl(true);
+		staticInterface = factory.newStaticDataInterface(region, true);
+		staticInterface.setPrintUrl(true);
+		statusInterface = factory.newStatusInterface(region, true);
+		statusInterface.setPrintUrl(true);
+		championInterface = factory.newChampionInterface(region, true);
+		championInterface.setPrintUrl(true);
+		currentGameInterface = factory.newCurrentGameInterface(region, true);
+		currentGameInterface.setPrintUrl(true);
+		featuredGameInterface = factory.newFeaturedGamesInterface(region, true);
+		featuredGameInterface.setPrintUrl(true);
+		leagueInterface = factory.newLeagueInterface(region, true);
+		leagueInterface.setPrintUrl(true);
+		teamInterface = factory.newTeamInterface(region, true);
+		teamInterface.setPrintUrl(true);
+		matchInterface = factory.newMatchInterface(region, true);
+		matchInterface.setPrintUrl(true);
+		matchlistInterface = factory.newMatchListInterface(region, true);
+		matchlistInterface.setPrintUrl(true);
+	}
+	
+	@Test
+	public void testMatchAndMatchlist() throws IOException, HttpException {
+		prints.println("Testing MATCH interface");
+		
+		Map<String,SummonerDto> summonerMapDto = summonerInterface.getByNames("HuskarDc");
+		SummonerDto summonerDto = summonerMapDto.get("huskardc");
+		long summonerId = summonerDto.getId();
+		MatchListDto matchListDto = matchlistInterface.getMatchList(summonerId, null, new RankedQueue[] {RankedQueue.RANKED_SOLO_5x5}, new Season[] {Season.PRESEASON2016}, -1, -1,  -1,  -1);
+		assertNotNull(matchListDto);
+		long matchId = testMatchListDto(matchListDto);
+
+		
+		MatchDetail matchDetail = matchInterface.getMatch(matchId, true);
+		assertNotNull(matchDetail);
+		testMatchDetail(matchDetail);
+		
+		System.out.println();
+		System.out.println();
+		fail();
+	}
+	
+	private void testMatchDetail(MatchDetail dto) {
+		
+	}
+	
+	private long testMatchListDto(MatchListDto dto) {
+		assertTrue(dto.getTotalGames() > 0);
+		MatchReference[] matchRefs = dto.getMatches();
+		long matchId = 0;
+		for (MatchReference mf : matchRefs) {
+			testMatchReference(mf);
+			matchId = mf.getMatchId();
+		}
+		
+		return matchId;
+	}
+	
+	private void testMatchReference(MatchReference dto) {
+		assertTrue(dto.getChampion() > 0);
+		assertTrue(dto.getMatchId() > 0);
+		assertTrue(dto.getTimestamp() > 0);
+		assertNotNull(dto.getLane());
+		assertNotNull(dto.getPlatformId());
+		assertNotNull(dto.getQueue());
+		assertNotNull(dto.getRegion());
+		assertNotNull(dto.getRole());
+		assertNotNull(dto.getSeason());
+	}
+	
+	@Test
+	public void testTeam() throws IOException, HttpException {
+		prints.println("Testing TEAM interface");
+
+		Map<String,SummonerDto> summonersDto = summonerInterface.getByNames(names);
+		long[] summonerIds = getSummonerIds(summonersDto);
+		Map<String,String> summonerNames = summonerInterface.getNames(summonerIds);
+		Map<String,TeamDto[]> summonerTeams = teamInterface.getTeamsBySummoners(summonerIds);
+		for (String key : summonerTeams.keySet()) {
+			prints.println("TEAMS for " + summonerNames.get(key));
+			TeamDto[] teamsDto = summonerTeams.get(key);
+			for (TeamDto teamDto : teamsDto) {
+				prints.println(teamDto.getName());
+				assertNotNull(teamDto);
+				testTeamDto(teamDto);
+			}
+		}
+		
+		System.out.println();
+		System.out.println();
+	}
+	
+	private void testTeamDto(TeamDto dto) {
+		assertTrue(dto.getCreateDate() > 0);
+		assertTrue(dto.getLastJoinDate() > 0);
+		assertTrue(dto.getLastGameDate() > 0);
+		assertTrue(dto.getLastJoinedRankedTeamQueueDate() > 0);
+		assertTrue(dto.getModifyDate() > 0);
+		assertTrue(dto.getSecondLastJoinDate() > 0);
+		assertNotNull(dto.getThirdLastJoinDate() > 0);
+		assertNotNull(dto.getStatus());
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getFullId());
+		
+		MatchHistorySummaryDto[] matchHistory = dto.getMatchHistory();
+		for (MatchHistorySummaryDto mhDto : matchHistory) {
+			testMatchHistorySummaryDto(mhDto);
+		}
+		
+		RosterDto rosterDto = dto.getRoster();
+		assertNotNull(rosterDto);
+		testRosterDto(rosterDto);
+		
+		TeamStatDetailDto[] teamStatDetails = dto.getTeamStatDetails();
+		for (TeamStatDetailDto teamStatDto : teamStatDetails) {
+			testTeamStatDetailDto(teamStatDto);
+		}
+	}
+	
+	private void testTeamStatDetailDto(TeamStatDetailDto dto) {
+		assertNotNull(dto.getTeamStatType());
+		
+		if (dto.getAverageGamesPlayed() == 0) {
+			prints.println("WARNING", "Team with no average games played");
+		}
+		
+		if (dto.getWins() == 0) {
+			prints.println("WARNING", "Team with no wins");
+		}
+		
+		if (dto.getLosses() == 0) {
+			prints.println("WARNING", "Team with no losses");
+		}
+	}
+	
+	private void testRosterDto(RosterDto dto) {
+		assertTrue(dto.getOwnerId() > 0);
+		TeamMemberInfoDto[] teamMembersDto = dto.getMemberList();
+		assertTrue(teamMembersDto.length > 0);
+		for (TeamMemberInfoDto teamMember : teamMembersDto) {
+			testTeamMemberInfoDto(teamMember);
+		}
+	}
+	
+	private void testTeamMemberInfoDto(TeamMemberInfoDto dto) {
+		assertTrue(dto.getInviteDate() > 0);
+		assertTrue(dto.getJoinDate() > 0);
+		assertTrue(dto.getPlayerId() > 0);
+		assertNotNull(dto.getStatus());
+	}
+	
+	private void testMatchHistorySummaryDto(MatchHistorySummaryDto dto) {
+		assertTrue(dto.getGameId() > 0);
+		assertTrue(dto.getMapId() > 0);
+		assertTrue(dto.getDate() > 0);
+		assertNotNull(dto.getGameMode());
+		assertNotNull(dto.getOpposingTeamName());
+		
+		if (dto.getKills() == 0 || dto.getAssists() == 0) {
+			prints.println("WARNING", "Found game with NO KILLS OR ASSISTS " + dto.getGameId());
+		}
+		
+		if (dto.getDate() == 0) {
+			prints.println("WARNING", "Found game with NO DEATHS " + dto.getGameId());
+		}
+		
+		if (dto.getOpposingTeamKills() == 0) {
+			prints.println("WARNING", "Found game with NO OPPOSING KILLS " + dto.getGameId());
+		}
+	}
+	
+	@Test
+	public void testLeague() throws IOException, HttpException {
+		for (QueueType qt : QueueType.values()) {
+			LeagueDto dto = leagueInterface.getChallenger(qt);
+			if (dto != null) {
+				testLeagueDto(dto);
+			}
+		}
+		
+		for (QueueType qt : QueueType.values()) {
+			LeagueDto dto = leagueInterface.getMaster(qt);
+			if (dto != null) {
+				testLeagueDto(dto);
+			}
+		}
+		
+		Map<String,SummonerDto> summonersDto = summonerInterface.getByNames(names);
+		long[] summonerIds = getSummonerIds(summonersDto);
+		
+		Map<String,LeagueDto[]> summonerLeagues = leagueInterface.getBySummoners(summonerIds);
+		Map<String,String> summonerNames = summonerInterface.getNames(summonerIds);
+		for (String key : summonerLeagues.keySet()) {
+			prints.println("League for " + summonerNames.get(key));
+			
+			LeagueDto[] dtoArray = summonerLeagues.get(key);
+			for (LeagueDto dto : dtoArray) {
+				testLeagueDto(dto);
+			}
+		}
+
+		Map<String,TeamDto[]> teamsDto = teamInterface.getTeamsBySummoners(summonerIds);
+		ArrayList<String> unboundedIds = new ArrayList<>();
+		for (TeamDto[] teamList : teamsDto.values()) {
+			for (TeamDto tDto : teamList) {
+				unboundedIds.add(tDto.getFullId());
+			}
+		}
+		
+		String[] teamIds = unboundedIds.toArray(new String[unboundedIds.size()]);
+		
+		Map<String,LeagueDto[]> teamLeagues = leagueInterface.getByTeams(teamIds);
+		assertNotNull(teamLeagues);
+		for (LeagueDto[] leagueList : teamLeagues.values()) {
+			for (LeagueDto dto : leagueList) {
+				testLeagueDto(dto);
+			}
+		}
+		
+		System.out.println();
+		System.out.println();
+	}
+	
+	private void testLeagueDto(LeagueDto dto) {
+		assertNotNull(dto.getQueue());
+		assertNotNull(dto.getTier());
+		assertNotNull(dto.getName());
+
+		LeagueEntryDto[] lDto = dto.getEntries();
+		assertNotNull(lDto);
+		
+		boolean foundWins = false;
+		boolean foundLosses = false;
+		boolean foundLP = false;
+		boolean foundFreshBlood = false;
+		boolean foundHotStreak = false;
+		boolean foundInactive = false;
+		boolean foundVeteran = false;
+		boolean foundMini = false;
+		for (LeagueEntryDto led : lDto) {
+			assertNotNull(led.getDivision());
+			assertNotNull(led.getPlayerOrTeamId());
+			assertNotNull(led.getPlayerOrTeamName());
+			
+			if (led.getWins() > 0) {
+				foundWins = true;
+			}
+			
+			if (led.getLosses() > 0) {
+				foundLosses = true;
+			}
+			
+			if (led.getLeaguePoints() > 0) {
+				foundLP = true;
+			}
+			
+			if (led.isIsFreshBlood()) {
+				foundFreshBlood = true;
+			}
+
+			if (led.isIsHotStreak()) {
+				foundHotStreak = true;
+			}
+			
+			if (led.isIsInactive()) {
+				foundInactive = true;
+			}
+
+			if (led.isIsVeteran()) {
+				foundVeteran = true;
+			}
+			
+			MiniSeriesDto miniDto = led.getMiniSeries();
+			if (miniDto != null) {
+				foundMini = true;
+				assertTrue(miniDto.getTarget() > 0);
+			}
+		}
+		
+		assertTrue(foundWins);
+		assertTrue(foundLosses);
+		assertTrue(foundLP);
+		assertTrue(foundWins);
+		assertTrue(foundWins);
+
+		if (!foundFreshBlood) {
+			prints.println("WARNING", "Found no FRESH BLOODS");
+		}
+		if (!foundHotStreak) {
+			prints.println("WARNING", "Found no HOT STREAKS");
+		}
+		if (!foundInactive) {
+			prints.println("WARNING", "Found no INACTIVES");
+		}
+		if (!foundVeteran) {
+			prints.println("WARNING", "Found no VETERANS");
+		}
+		if (!foundMini) {
+			prints.println("WARNING", "Found no MINI SERIES");
+		}
+	}
+	
+	@Test
+	public void testFeaturedGame() throws IOException, HttpException {
+		prints.println("Testing FEATURED GAMES interface");
+		
+		FeaturedGamesDto dto = featuredGameInterface.getFeaturedGames();
+		assertNotNull(dto);
+		assertTrue(dto.getClientRefreshInterval() > 0);
+		FeaturedGameInfo[] gameInfos = dto.getGameList();
+		assertTrue(gameInfos.length > 0);
+		for (FeaturedGameInfo gfo : gameInfos) {
+			assertTrue(gfo.getGameId() > 0);
+			assertTrue(gfo.getGameLength() > 0);
+			assertTrue(gfo.getGameQueueConfigId() > 0);
+			assertTrue(gfo.getGameStartTime() > 0);
+			assertTrue(gfo.getMapId() > 0);
+			assertNotNull(gfo.getGameType());
+			assertNotNull(gfo.getGameMode());
+			assertNotNull(gfo.getPlatformId());
+
+			BannedChampion[] bans = gfo.getBannedChampions();
+			for (BannedChampion bc : bans) {
+				assertTrue(bc.getChampionId() > 0);
+				assertTrue(bc.getPickTurn() > 0);
+				assertTrue(bc.getTeamId() > 0);
+			}
+
+			Observer obs = gfo.getObservers();
+			assertNotNull(obs);
+			assertNotNull(obs.getEncryptionKey());
+			
+			Participant[] participants = gfo.getParticipants();
+			assertTrue(participants.length > 0);
+			for (Participant p : participants) {
+				assertTrue(p.getChampionId() > 0);
+				assertTrue(p.getSpell1Id() > 0);
+				assertTrue(p.getSpell2Id() > 0);
+				assertTrue(p.getChampionId() > 0);
+				assertTrue(p.getTeamId() > 0);
+				assertNotNull(p.getSummonerName());
+			}
+		}
+		
+		System.out.println();
+		System.out.println();
+	}
+	
+	@Test
+	public void testCurrentGame() throws IOException, HttpException {
+		prints.println("Testing CURRENT GAME interface");
+
+		Map<String,SummonerDto> summonerDto = summonerInterface.getByNames(names);
+		boolean somebodyInGame = false;
+		for (SummonerDto dto : summonerDto.values()) {
+			CurrentGameInfo cgi = currentGameInterface.getSpectatorInfo(dto.getId());
+			assertNotNull(cgi);
+			if (!cgi.notInGame) {
+				somebodyInGame = true;
+			} else {
+				continue;
+			}
+			
+			assertTrue(cgi.getGameId() > 0);
+			assertTrue(cgi.getGameLength() > 0);
+			assertTrue(cgi.getMapId() > 0);
+			assertTrue(cgi.getGameQueueConfigId() > 0);
+			assertTrue(cgi.getGameStartTime() > 0);
+
+			GameMode gameMode = cgi.getGameMode();
+			assertNotNull(gameMode);
+			
+			GameType gameType = cgi.getGameType();
+			assertNotNull(gameType);
+
+			Observer observers = cgi.getObservers();
+			assertNotNull(observers);
+			assertNotNull(observers.getEncryptionKey());
+
+			CurrentGameParticipant[] cgp = cgi.getParticipants();
+			assertNotNull(cgp);
+			for (CurrentGameParticipant p : cgp) {
+				assertTrue(p.getChampionId() > 0);
+				assertTrue(p.getProfileIconId() > 0);
+				assertTrue(p.getSpell1Id() > 0);
+				assertTrue(p.getSpell2Id() > 0);
+				assertTrue(p.getSummonerId() > 0);
+				assertNotNull(p.getSummonerName());
+				
+				MasteryMetaDto[] masteries = p.getMasteries();
+				assertNotNull(masteries);
+				for (MasteryMetaDto m : masteries) {
+					assertTrue(m.getId() > 0);
+				}
+				
+				Rune[] runes = p.getRunes();
+				assertNotNull(runes);
+				for (Rune r : runes) {
+					assertTrue(r.getRuneId() > 0);
+				}
+			}
+
+			PlatformId pid = cgi.getPlatformId();
+			assertNotNull(pid);
+			Region r = pid.toRegion();
+			assertTrue(r == currentGameInterface.getRegion());
+
+			BannedChampion[] bans = cgi.getBannedChampions();
+			assertNotNull(bans);
+			for (BannedChampion b : bans) {
+				assertTrue(b.getTeamId() > 0);
+				assertTrue(b.getChampionId() > 0);
+				assertTrue(b.getPickTurn() > 0);
+			}
+		}
+		
+		if (!somebodyInGame) {
+			prints.println("WARNING", "Nobody in game to properly test current game");
+		}
+		
+		System.out.println();
+		System.out.println();
+	}
+	
+	@Test
+	public void testChampion() throws IOException, HttpException {
+		prints.println("Testing CHAMPION interface");
+		
+		ChampionMetaListDto freeChamps = championInterface.getChampions(true);
+		assertNotNull(freeChamps);
+		ChampionMetaDto[] metas = freeChamps.getChampions();
+		assertNotNull(metas);
+		for (ChampionMetaDto dto : metas) {
+			assertTrue(dto.getId() > 0);
+			assertTrue(dto.isFreeToPlay());
+		}
+		
+		ChampionMetaListDto allChamps = championInterface.getChampions(false);
+		assertNotNull(allChamps);
+		boolean foundBotEnabled = false;
+		boolean foundBotMmEnabled = false;
+		boolean foundRankedPlayEnabled = false;
+		boolean foundActive = false;
+		for (ChampionMetaDto dto : allChamps.getChampions()) {
+			if (dto.isBotEnabled()) {
+				foundBotEnabled = true;
+			}
+			
+			if (dto.isBotMmEnabled()) {
+				foundBotMmEnabled = true;
+			}
+			
+			if (dto.isActive()) {
+				foundActive = true;
+			}
+			
+			if (dto.isRankedPlayEnabled()) {
+				foundRankedPlayEnabled = true;
+			}
+		}
+		
+		assertTrue(foundBotEnabled);
+		assertTrue(foundBotMmEnabled);
+		assertTrue(foundRankedPlayEnabled);
+		assertTrue(foundActive);
+		
+		for (ChampionMetaDto dto : allChamps.getChampions()) {
+			long id = dto.getId();
+			ChampionMetaDto otherDto = championInterface.getChampion(id);
+			assertTrue(id == otherDto.getId());
+		}
+
+		System.out.println();
+		System.out.println();
+	}
+
+	@Test
+	public void testSummoners() {
+		try {
+			Map<String,SummonerDto> summonersDto = summonerInterface.getByNames(names);
+
+			assertNotNull("RiotApi.Summoner.getByNames(String[]) returned null", summonersDto);
+			assertTrue("No summoners found", summonersDto.values().size() > 0);
+
+			for (SummonerDto summonerDto : summonersDto.values()) {
+				long summonerId = testSummonerDatas(summonerDto);
+				testSummonerDatas(summonerId);
+				testSummonerMasteries(summonerId);
+				testSummonerRunes(summonerId);
+				testSummonerNames(summonerId);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+	private long testSummonerDatas(SummonerDto dto) {
+		prints.println("testSummonerDatas(SummonerDto)");
+
+		assertNotNull("Name is null", dto.getName());
+		prints.println(dto.getName());
+
+		assertNotNull("Region is null", dto.getRegion());
+		prints.println(dto.getRegion());
+
+		long iconId = dto.getProfileIconId();
+		assertTrue("No icon id", iconId > 0);
+
+		assertTrue("Revision date not set", dto.getRevisionDate() > 0);
+		Date date = new Date(dto.getRevisionDate());
+		prints.println(sdf.format(date));
+
+		long level = dto.getSummonerLevel();
+		assertTrue("Level not set", level > 0);
+
+		long summonerId = dto.getId();
+		assertTrue("No summonerId", summonerId > 0);
+
+		return summonerId;
+	}
+
+	private void testSummonerDatas(long summonerId) throws IOException, HttpException {
+		prints.println("testSummonerDatas(long)");
+
+		Map<String,SummonerDto> mapDto = summonerInterface.getByIds(summonerId);
+		assertNotNull(mapDto);
+
+		SummonerDto dto = mapDto.values().toArray(new SummonerDto[mapDto.values().size()])[0];
+		assertNotNull(dto);
+
+		assertNotNull("Name is null", dto.getName());
+		prints.println(dto.getName());
+
+		assertNotNull("Region is null", dto.getRegion());
+		prints.println(dto.getRegion());
+
+		long iconId = dto.getProfileIconId();
+		assertTrue("No icon id", iconId > 0);
+
+		assertTrue("Revision date not set", dto.getRevisionDate() > 0);
+		Date date = new Date(dto.getRevisionDate());
+		prints.println(sdf.format(date));
+
+		long level = dto.getSummonerLevel();
+		assertTrue("Level not set", level > 0);
+
+		long id = dto.getId();
+		assertTrue("No summonerId", id == summonerId);
+	}
+
+	private void testSummonerMasteries(long summonerId) throws IOException, HttpException {
+		prints.println("testSummonerMasteries(long)");
+
+		Map<String,MasteryPagesDto> mapDto = summonerInterface.getMasteries(summonerId);
+		assertNotNull("Map dto null", mapDto);
+
+		MasteryPagesDto dto = mapDto.values().toArray(new MasteryPagesDto[mapDto.values().size()])[0];
+		assertNotNull("Dto null", dto);
+
+		assertNotNull("Dto is null", dto);
+		assertTrue("Mismatch summoner ID", dto.getSummonerId() == summonerId);
+
+		for (MasteryPage mp : dto.getPages()) {
+			long pageId = mp.getId();
+			assertTrue("No mastery page ID", pageId > 0);
+
+			String pageName = mp.getName();
+			assertNotNull("Mastery page has no name", pageName);
+
+			MasteryMetaDto[] masteries = mp.getMasteries();
+			assertNotNull("Mastery page is null", masteries);
+			for (MasteryMetaDto m : masteries) {
+				assertTrue("No mastery rank", m.getRank() > 0);
+				assertTrue("No mastery id", m.getId() > 0);
+			}
+		}
+	}
+
+	private void testSummonerRunes(long summonerId) throws IOException, HttpException {
+		prints.println("testSummonerRunes(long)");
+
+		Map<String,RunePagesDto> mapDto = summonerInterface.getRunes(summonerId);
+		assertNotNull("Map dto null", mapDto);
+
+		RunePagesDto dto = mapDto.values().toArray(new RunePagesDto[mapDto.values().size()])[0];
+		assertNotNull("Dto null", dto);
+
+		long sid = dto.getSummonerId();
+		assertTrue(summonerId == sid);
+
+		RunePage[] pages = dto.getPages();
+		assertNotNull(pages);
+		assertTrue(pages.length > 0);
+
+		for (RunePage rp : pages) {
+			assertTrue(rp.getId() > 0);
+			assertNotNull(rp.getName());
+			Slot[] slots = rp.getSlots();
+			assertNotNull(slots);
+
+			for (Slot s : slots) {
+				long runeId = s.getRuneId();
+				assertTrue(runeId > 0);
+				assertTrue(s.getRuneSlotId() > 0);
+			}
+		}
+	}
+
+	private void testSummonerNames(long summonerId) throws IOException, HttpException {
+		prints.println("testSummonerNames(long)");
+
+		Map<String,String> mapDto = summonerInterface.getNames(summonerId);
+		assertNotNull("Map dto null", mapDto);
+
+		for (String key : mapDto.keySet()) {
+			String name = mapDto.get(key);
+			assertNotNull(name);
+
+			prints.println(key + " : " + name);
+		}
+	}
+	
+	@Test
+	public void testStaticRunes() throws IOException, HttpException {
+		RuneListDto listDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
+		for (RuneDto runeDto : listDto.getData().values()) {
+			long runeId = runeDto.getId();
+			RuneDto dto = staticInterface.getRune(runeId, null, null, RuneDataTag.ALL);
+			testRuneDto(dto);
+		}
+	}
+
+	private void testRuneDto(RuneDto dto) {
+		assertNotNull(dto.getDepth());
+		assertNotNull(dto.getDescription());
+		assertNotNull(dto.getSanitizedDescription());
+		assertNotNull(dto.getFrom());
+		assertNotNull(dto.getInto());
+		assertNotNull(dto.getMaps());
+		assertNotNull(dto.getName());
+		assertTrue(dto.getId() > 0);
+		assertNotNull(dto.getTags());
+		
+		ImageDto imageDto = dto.getImage();
+		assertNotNull(imageDto);
+		testImageDto(imageDto);
+		
+		MetaDataDto metaDto = dto.getRune();
+		assertNotNull(metaDto);
+		testMetaDataDto(metaDto);
+		
+		BasicDataStatsDto bdsDto = dto.getStats();
+		assertNotNull(bdsDto);
+	}
+	
+	private void testImageDto(ImageDto dto) {
+		assertNotNull(dto.getFull());
+		assertNotNull(dto.getGroup());
+		assertNotNull(dto.getSprite());
+		assertTrue(dto.getH() > 0);
+		assertTrue(dto.getW() > 0);
+	}
+	
+	private void testMetaDataDto(MetaDataDto dto) {
+		assertNotNull(dto.getTier());
+		assertNotNull(dto.getType());
+	}
+	
+	@Test
+	public void testStatus() throws IOException, HttpException {
+		prints.println("testStatus()");
+		boolean correctUnsupportedRegion = false;
+		try {
+			factory.newStatusInterface(Region.KOREA, false);
+		} catch (IllegalArgumentException e) {
+			correctUnsupportedRegion = true;
+		}
+		
+		assertTrue(correctUnsupportedRegion);
+		
+		Shard[] shards = statusInterface.getShards();
+		assertNotNull(shards);
+		for (Shard s : shards) {
+			assertNotNull(s.getHostname());
+			assertNotNull(s.getLocales());
+			assertNotNull(s.getName());
+			assertNotNull(s.getSlug());
+			if (s.getRegion_tag() == null) {
+				prints.println(s.getSlug() + " null region tag");
+			}
+		}
+		
+		ShardStatus statusDto = statusInterface.getShard();
+		assertNotNull(statusDto);
+		
+		assertNotNull(statusDto.getHostname());
+		assertNotNull(statusDto.getLocales());
+		assertNotNull(statusDto.getName());
+		assertNotNull(statusDto.getRegion_tag());
+		assertNotNull(statusDto.getSlug());
+		
+		Service[] services = statusDto.getServices();
+		assertNotNull(services);
+	}
+	
+	private long[] getSummonerIds(Map<String,SummonerDto> summonersDto) {
+		long[] ids = new long[summonersDto.values().size()];
+		int i = 0;
+		for (SummonerDto dto : summonersDto.values()) {
+			ids[i] = dto.getId();
+			i++;
+		}
+		
+		return ids;
+	}
+	
+}

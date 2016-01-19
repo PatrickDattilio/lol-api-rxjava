@@ -1,28 +1,25 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Dc
  * @since 1.0.0
  */
 public class RunePagesDto {
 
-    private List<RunePage> pages = new ArrayList<>();
+    private RunePage[] pages;
     private long summonerId;
 
     /**
      * @return The pages
      */
-    public List<RunePage> getPages() {
+    public RunePage[] getPages() {
         return pages;
     }
 
     /**
      * @param pages The pages
      */
-    public void setPages(List<RunePage> pages) {
+    public void setPages(RunePage[] pages) {
         this.pages = pages;
     }
 

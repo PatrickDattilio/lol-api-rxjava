@@ -6,8 +6,7 @@ package org.dc.riot.lol.rx.model;
  */
 public class MasteryPage {
 
-
-    private Mastery[] masteries;
+    private MasteryMetaDto[] masteries;
     private long id;
     private String name;
     private boolean current;
@@ -15,14 +14,18 @@ public class MasteryPage {
     /**
      * @return The masteries
      */
-    public Mastery[] getMasteries() {
+    public MasteryMetaDto[] getMasteries() {
+    	if (masteries == null) {
+    		return new MasteryMetaDto[0];
+    	}
+
         return masteries;
     }
 
     /**
      * @param masteries The masteries
      */
-    public void setMasteries(Mastery[] masteries) {
+    public void setMasteries(MasteryMetaDto[] masteries) {
         this.masteries = masteries;
     }
 

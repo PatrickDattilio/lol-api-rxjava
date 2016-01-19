@@ -43,14 +43,14 @@ class Match_v2_2 extends RiotApiBase implements RiotApi.Match {
 	@Override
 	public MatchDetail getMatch(long matchId, boolean includeTimeline) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getMatch(region, matchId, apiKey, includeTimeline);
+			return inter.getMatch(new LowercaseRegion(region), matchId, apiKey, includeTimeline);
 		});
 	}
 	
 	private interface Interface {
 		
 		@GET("/api/lol/{region}/v2.2/match/{matchId}")
-		Call<MatchDetail> getMatch(@Path("region") Region region, @Path("matchId") long matchId,
+		Call<MatchDetail> getMatch(@Path("region") LowercaseRegion region, @Path("matchId") long matchId,
 				@Query("api_key") ApiKey apiKey, @Query("includeTimeline") boolean includeTimeline);
 	}
 

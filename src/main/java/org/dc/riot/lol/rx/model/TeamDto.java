@@ -1,7 +1,5 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.List;
-
 /**
  * Used by the Team API
  * 
@@ -12,10 +10,10 @@ public class TeamDto {
     private long secondLastJoinDate;
     private long lastJoinDate;
     private String fullId;
-    private List<MatchHistorySummaryDto> matchHistory;
+    private MatchHistorySummaryDto[] matchHistory;
     private long lastJoinedRankedTeamQueueDate;
     private String status;
-    private List<TeamStatDetailDto> teamStatDetails;
+    private TeamStatDetailDto[] teamStatDetails;
     private String tag;
     private String name;
     private long thirdLastJoinDate;
@@ -48,11 +46,15 @@ public class TeamDto {
         this.fullId = fullId;
     }
 
-    public List<MatchHistorySummaryDto> getMatchHistory() {
+    public MatchHistorySummaryDto[] getMatchHistory() {
+    	if (matchHistory == null) {
+    		return new MatchHistorySummaryDto[0];
+    	}
+
         return matchHistory;
     }
 
-    public void setMatchHistory(List<MatchHistorySummaryDto> matchHistory) {
+    public void setMatchHistory(MatchHistorySummaryDto[] matchHistory) {
         this.matchHistory = matchHistory;
     }
 
@@ -72,11 +74,15 @@ public class TeamDto {
         this.status = status;
     }
 
-    public List<TeamStatDetailDto> getTeamStatDetails() {
+    public TeamStatDetailDto[] getTeamStatDetails() {
+    	if (teamStatDetails == null) {
+    		return new TeamStatDetailDto[0];
+    	}
+
         return teamStatDetails;
     }
 
-    public void setTeamStatDetails(List<TeamStatDetailDto> teamStatDetails) {
+    public void setTeamStatDetails(TeamStatDetailDto[] teamStatDetails) {
         this.teamStatDetails = teamStatDetails;
     }
 

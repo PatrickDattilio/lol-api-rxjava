@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.ChampionMetaListDto;
 import org.dc.riot.lol.rx.model.GameDto;
 import org.dc.riot.lol.rx.model.PlayerDto;
 import org.dc.riot.lol.rx.model.RecentGamesDto;
@@ -32,7 +32,7 @@ import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
 /**
- * Some basic HTTP tests that are consolidated into {@link EndpointTests}
+ * Some basic HTTP tests that are consolidated into {@link IntegrationTests}
  * 
  * @author Dc
  * @deprecated
@@ -74,7 +74,7 @@ public class RetrofitTests {
 				return champInterface.getChampions(true);
 			})
 			.subscribeOn(scheduler)
-			.subscribe((ChampionListDto dto) -> {
+			.subscribe((ChampionMetaListDto dto) -> {
 				synchronized (printLock) {
 					debug.println(++testManualObservablesCount);
 				}

@@ -1,5 +1,6 @@
 package org.dc.riot.lol.rx.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,6 +33,9 @@ public class RuneDto {
     private BasicDataStatsDto stats;
     private String[] tags;
 
+    /**
+     * @return colloquial or <code>null</code>
+     */
     public String getColloq() {
         return colloq;
     }
@@ -73,6 +77,10 @@ public class RuneDto {
     }
 
     public String[] getFrom() {
+    	if (from == null) {
+    		return new String[0];
+    	}
+
         return from;
     }
 
@@ -80,6 +88,9 @@ public class RuneDto {
         this.from = from;
     }
 
+    /**
+     * @return group string (e.g. 'rune') or <code>null</code>
+     */
     public String getGroup() {
         return group;
     }
@@ -121,7 +132,12 @@ public class RuneDto {
     }
 
     public String[] getInto() {
+    	if (into == null) {
+    		return new String[0];
+    	}
+
         return into;
+
     }
 
     public void setInto(String[] into) {
@@ -129,6 +145,10 @@ public class RuneDto {
     }
 
     public Map<String, Boolean> getMaps() {
+    	if (maps == null) {
+    		return new HashMap<String,Boolean>();
+    	}
+
         return maps;
     }
 
@@ -144,6 +164,9 @@ public class RuneDto {
         this.name = name;
     }
 
+    /**
+     * @return plain text or <code>null</code>
+     */
     public String getPlaintext() {
         return plaintext;
     }
@@ -152,6 +175,9 @@ public class RuneDto {
         this.plaintext = plaintext;
     }
 
+    /**
+     * @return required champion or <code>null</code>
+     */
     public String getRequiredChampion() {
         return requiredChampion;
     }
@@ -200,7 +226,14 @@ public class RuneDto {
         this.stats = stats;
     }
 
+    /**
+     * @return tags
+     */
     public String[] getTags() {
+    	if (tags == null) {
+    		return new String[0];
+    	}
+
         return tags;
     }
 

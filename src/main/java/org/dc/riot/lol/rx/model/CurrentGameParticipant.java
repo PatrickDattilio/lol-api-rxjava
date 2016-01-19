@@ -1,7 +1,5 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.List;
-
 /**
  * Current game participant
  * 
@@ -11,9 +9,9 @@ import java.util.List;
 public class CurrentGameParticipant {
     private boolean bot;
     private long championId;
-    private List<Mastery> masteries;
+    private MasteryMetaDto[] masteries;
     private long profileIconId;
-    private List<Rune> runes;
+    private Rune[] runes;
     private long spell1Id;
     private long spell2Id;
     private long summonerId;
@@ -36,11 +34,11 @@ public class CurrentGameParticipant {
         this.championId = championId;
     }
 
-    public List<Mastery> getMasteries() {
+    public MasteryMetaDto[] getMasteries() {
         return masteries;
     }
 
-    public void setMasteries(List<Mastery> masteries) {
+    public void setMasteries(MasteryMetaDto[] masteries) {
         this.masteries = masteries;
     }
 
@@ -52,11 +50,11 @@ public class CurrentGameParticipant {
         this.profileIconId = profileIconId;
     }
 
-    public List<Rune> getRunes() {
+    public Rune[] getRunes() {
         return runes;
     }
 
-    public void setRunes(List<Rune> runes) {
+    public void setRunes(Rune[] runes) {
         this.runes = runes;
     }
 

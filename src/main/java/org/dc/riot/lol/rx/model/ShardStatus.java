@@ -8,7 +8,7 @@ package org.dc.riot.lol.rx.model;
  */
 public class ShardStatus {
 
-    private String regionTag;
+    private String region_tag;
     private String[] locales;
     private String name;
     private String hostname;
@@ -16,70 +16,70 @@ public class ShardStatus {
     private Service[] services;
 
     /**
-     * @return The regionTag
+     * @return region tag (e.g. 'na1') or <code>null</code>
      */
-    public String getRegionTag() {
-        return regionTag;
+    public String getRegion_tag() {
+        return region_tag;
     }
 
     /**
-     * @param regionTag The region_tag
+     * @param regionTag the region_tag
      */
-    public void setRegionTag(String regionTag) {
-        this.regionTag = regionTag;
+    public void setRegion_tag(String region_tag) {
+        this.region_tag = region_tag;
     }
 
     /**
-     * @return The locales
+     * @return the locales
      */
     public String[] getLocales() {
         return locales;
     }
 
     /**
-     * @param locales The locales
+     * @param locales the locales
      */
     public void setLocales(String[] locales) {
         this.locales = locales;
     }
 
     /**
-     * @return The name
+     * @return the name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name The name
+     * @param name the name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return The hostname
+     * @return the hostname
      */
     public String getHostname() {
         return hostname;
     }
 
     /**
-     * @param hostname The hostname
+     * @param hostname the hostname
      */
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
     /**
-     * @return The slug
+     * @return the slug
      */
     public String getSlug() {
         return slug;
     }
 
     /**
-     * @param slug The slug
+     * @param slug the slug
      */
     public void setSlug(String slug) {
         this.slug = slug;

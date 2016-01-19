@@ -21,6 +21,10 @@ public class MatchListDto {
     }
 
     public MatchReference[] getMatches() {
+    	if (matches == null) {
+    		return new MatchReference[0];
+    	}
+
         return matches;
     }
 

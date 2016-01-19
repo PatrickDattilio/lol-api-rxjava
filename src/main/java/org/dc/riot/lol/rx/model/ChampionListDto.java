@@ -13,7 +13,7 @@ public class ChampionListDto {
     private Map<String, String> keys = new HashMap<>();
     private String type;
     private String version;
-
+    
     public Map<String, ChampionDto> getData() {
         return data;
     }

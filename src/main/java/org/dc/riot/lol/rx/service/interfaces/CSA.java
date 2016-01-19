@@ -27,19 +27,23 @@ class CSA<T> {
 			
 			return value;
 		} else {
-			return "";
+			return null;
 		}
 	}
 	
-	static class Long extends CSA<Long> {
-		Long(Long... ls) {
+	static class Long extends CSA<java.lang.Long> {
+		Long(java.lang.Long... ls) {
 			super(ls);
 		}
 
 		Long(long... primvs) {
-			array = new Long[primvs.length];
-			for (int i=0; i<primvs.length; i++) {
-				array[i] = new Long(primvs[i]);
+			if (primvs != null) {
+				array = new java.lang.Long[primvs.length];
+				for (int i=0; i<primvs.length; i++) {
+					array[i] = new java.lang.Long(primvs[i]);
+				}
+			} else {
+				array = null;
 			}
 		}
 	}

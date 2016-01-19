@@ -10,6 +10,16 @@ import org.dc.riot.lol.rx.service.Region;
  */
 public enum PlatformId {
     NA1, EUW1, EUNE1, LA1, LA2, BR1, KR, OC1, RU, TR1;
+	
+	public Region toRegion() {
+		for (Region r : Region.values()) {
+			if (this == from(r)) {
+				return r;
+			}
+		}
+		
+		return null;
+	}
 
     public static PlatformId from(Region region) {
         switch (region) {

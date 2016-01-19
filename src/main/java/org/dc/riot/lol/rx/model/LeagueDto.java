@@ -1,14 +1,12 @@
 package org.dc.riot.lol.rx.model;
 
-import java.util.List;
-
 /**
  * @author Dc
  * @since 1.0.0
  */
 public class LeagueDto {
     private String name;
-    private List<LeagueEntryDto> entries;
+    private LeagueEntryDto[] entries;
     private QueueType queue;
     private Tier tier;
     private String participantId;
@@ -21,11 +19,15 @@ public class LeagueDto {
         this.name = name;
     }
 
-    public List<LeagueEntryDto> getEntries() {
+    public LeagueEntryDto[] getEntries() {
+    	if (entries == null) {
+    		return new LeagueEntryDto[0];
+    	}
+
         return entries;
     }
 
-    public void setEntries(List<LeagueEntryDto> entries) {
+    public void setEntries(LeagueEntryDto[] entries) {
         this.entries = entries;
     }
 

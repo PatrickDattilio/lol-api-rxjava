@@ -44,24 +44,24 @@ class Team_v2_4 extends RiotApiBase implements RiotApi.Team {
 	@Override
 	public Map<String,TeamDto[]> getTeamsBySummoners(long... summonerIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getTeamsBySummoners(region, new CSA.Long(summonerIds), apiKey);
+			return inter.getTeamsBySummoners(new LowercaseRegion(region), new CSA.Long(summonerIds), apiKey);
 		});
 	}
 
 	@Override
 	public Map<String,TeamDto> getTeams(String... teamIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getTeams(region, new CSA<String>(teamIds), apiKey);
+			return inter.getTeams(new LowercaseRegion(region), new CSA<String>(teamIds), apiKey);
 		});
 	}
 	
 	private interface Interface {
 		
 		@GET("/api/lol/{region}/v2.4/team/by-summoner/{summonerIds}")
-		public Call<Map<String,TeamDto[]>> getTeamsBySummoners(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
+		public Call<Map<String,TeamDto[]>> getTeamsBySummoners(@Path("region") LowercaseRegion region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v2.4/team/by-summoner/{teamIds}")
-		public Call<Map<String,TeamDto>> getTeams(@Path("region") Region region, @Path("teamIds") CSA<String> teamIds, @Query("api_key") ApiKey apiKey);
+		public Call<Map<String,TeamDto>> getTeams(@Path("region") LowercaseRegion region, @Path("teamIds") CSA<String> teamIds, @Query("api_key") ApiKey apiKey);
 	}
 
 }

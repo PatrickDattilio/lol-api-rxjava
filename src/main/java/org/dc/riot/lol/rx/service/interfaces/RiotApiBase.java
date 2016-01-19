@@ -7,6 +7,8 @@ import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Interceptor.Chain;
 
 /**
  * Base class for all RiotApi.* interface implementers
@@ -23,11 +25,20 @@ abstract class RiotApiBase implements RiotApi {
 	private TicketedInterceptor ticketer = null;
 	private RetryInterceptor retry = null;
 	private int retryCount = 5;
+	private boolean printUrls = false;
 	
 	RiotApiBase(ApiKey apiKey, Region region) {
 		this.apiKey = apiKey;
 		this.region = region;
 		this.client = new OkHttpClient();
+		client.interceptors().add((Chain chain) -> {
+			Request request = chain.request();
+			if (printUrls) {
+				System.out.println(request.urlString());
+			}
+			
+			return chain.proceed(request);
+		});
 	}
 
 	@Override
@@ -43,6 +54,11 @@ abstract class RiotApiBase implements RiotApi {
 	@Override
 	public void setProxy(Proxy proxy) {
 		client.setProxy(proxy);
+	}
+	
+	@Override
+	public void setPrintUrl(boolean printUrls) {
+		this.printUrls = printUrls;
 	}
 	
 	@Override

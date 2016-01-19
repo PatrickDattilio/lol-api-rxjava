@@ -37,6 +37,9 @@ public class Shard {
         this.name = name;
     }
 
+    /**
+     * @return region tag (e.g. 'na1') or <code>null</code>
+     */
     public String getRegion_tag() {
         return region_tag;
     }

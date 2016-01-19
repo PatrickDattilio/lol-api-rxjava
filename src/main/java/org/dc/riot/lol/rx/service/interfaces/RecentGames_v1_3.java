@@ -27,7 +27,7 @@ class RecentGames_v1_3 extends RiotApiBase implements RiotApi.RecentGames {
 		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
-				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
+				.baseUrl("https://" + new LowercaseRegion(region) + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 				.client(client)
 				.build();

@@ -12,7 +12,6 @@ import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.http.GET;
-import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
@@ -43,14 +42,14 @@ class FeaturedGames_v1_0 extends RiotApiBase implements RiotApi.FeaturedGames {
 	@Override
 	public FeaturedGamesDto getFeaturedGames() throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getFeaturedGames(region, apiKey);
+			return inter.getFeaturedGames(apiKey);
 		});
 	}
 	
 	private interface Interface {
 		
 		@GET("/observer-mode/rest/featured")
-		Call<FeaturedGamesDto> getFeaturedGames(@Path("region") Region region, @Query("api_ley") ApiKey apiKey);
+		Call<FeaturedGamesDto> getFeaturedGames(@Query("api_key") ApiKey apiKey);
 	}
 
 }

@@ -40,6 +40,33 @@ interface RetrofitCaller<T> {
 		case 200:
 			return response.body();
 		default:
+			System.out.println(response.code());
+			throw new HttpException(response.code(), response.headers().toMultimap());
+		}
+	}
+
+	/**
+	 * @param caller caller to wrap
+	 * @param passCodes special error codes that callers may want to process
+	 * @return deserialized JSON object
+	 * @throws IOException network issue
+	 * @throws HttpException - any non 2XX response code
+	 */
+	static <T> T processCall(final RetrofitCaller<T> caller, T defaultValue, int... passCodes) throws IOException, HttpException {
+		Call<T> call = caller.call();
+		Response<T> response = call.execute();
+		switch (response.code()) {
+		case 200:
+			return response.body();
+		default:
+			if (passCodes != null) {
+				for (int code : passCodes) {
+					if (code == response.code()) {
+						return defaultValue;
+					}
+				}
+			}
+			System.out.println(response.code());
 			throw new HttpException(response.code(), response.headers().toMultimap());
 		}
 	}

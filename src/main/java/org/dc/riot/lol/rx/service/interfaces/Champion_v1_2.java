@@ -2,8 +2,8 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.io.IOException;
 
-import org.dc.riot.lol.rx.model.ChampionDto;
-import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.ChampionMetaDto;
+import org.dc.riot.lol.rx.model.ChampionMetaListDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -42,14 +42,14 @@ class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
 	}
 
 	@Override
-	public ChampionListDto getChampions(final boolean freeToPlay) throws IOException, HttpException {
+	public ChampionMetaListDto getChampions(final boolean freeToPlay) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getChampions(region, apiKey, freeToPlay);
 		});
 	}
 
 	@Override
-	public ChampionDto getChampion(long championId) throws IOException, HttpException {
+	public ChampionMetaDto getChampion(long championId) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getChampion(region, championId, apiKey);
 		});
@@ -58,13 +58,13 @@ class Champion_v1_2 extends RiotApiBase implements RiotApi.Champion {
 	private interface Interface {
 
 		@GET("/api/lol/{region}/v1.2/champion")
-		Call<ChampionListDto> getChampions(@Path("region") Region region, @Query("api_key") ApiKey apiKey);
+		Call<ChampionMetaListDto> getChampions(@Path("region") Region region, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.2/champion")
-		Call<ChampionListDto> getChampions(@Path("region") Region region, @Query("api_key") ApiKey apiKey, @Query("freeToPlay") boolean freeToPlay);
+		Call<ChampionMetaListDto> getChampions(@Path("region") Region region, @Query("api_key") ApiKey apiKey, @Query("freeToPlay") boolean freeToPlay);
 
 		@GET("/api/lol/{region}/v1.2/champion/{championId}")
-		Call<ChampionDto> getChampion(@Path("region") Region region, @Path("championId") long championId, @Query("api_key") ApiKey apiKey);
+		Call<ChampionMetaDto> getChampion(@Path("region") Region region, @Path("championId") long championId, @Query("api_key") ApiKey apiKey);
 	}
 
 }

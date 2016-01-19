@@ -3,6 +3,7 @@ package org.dc.riot.lol.rx.service.interfaces;
 import java.lang.reflect.Type;
 import java.net.Proxy;
 
+import org.dc.riot.lol.rx.model.MasteryMetaDto;
 import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
@@ -16,6 +17,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 /**
@@ -31,6 +33,10 @@ public final class ApiFactory {
     private static Gson GSON = null;
     static {
         GsonBuilder builder = new GsonBuilder();
+        
+        /*
+         * Deserialize weirdness with ranges
+         */
         builder.registerTypeAdapter(RangeDto.class, new JsonDeserializer<RangeDto>() {
             @Override
             public RangeDto deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -49,6 +55,27 @@ public final class ApiFactory {
                 return new RangeDto(ranges);
             }
         });
+        
+        /*
+         * Deserialize inconsistencies with Mastery objects returned from the LoL API
+         */
+        builder.registerTypeAdapter(MasteryMetaDto.class, new JsonDeserializer<MasteryMetaDto>() {
+
+			@Override
+			public MasteryMetaDto deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				MasteryMetaDto dto = new MasteryMetaDto();
+
+				JsonObject jsonObject = json.getAsJsonObject();
+				int rank = jsonObject.get("rank").getAsInt();
+				dto.setRank(rank);
+
+				long id = (jsonObject.get("id") != null) ? jsonObject.get("id").getAsLong() : jsonObject.get("masteryId").getAsLong();
+				dto.setId(id);
+				
+				return dto;
+			}
+		});
 
         GSON = builder.create();
     }

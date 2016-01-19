@@ -51,7 +51,7 @@ class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 	@Override
 	public ShardStatus getShard() throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getShard(region);
+			return inter.getShard(new LowercaseRegion(region));
 		});
 	}
 	
@@ -60,8 +60,8 @@ class LolStatus_v1_0 extends RiotApiBase implements RiotApi.LolStatus {
 		@GET("/shards")
 		Call<Shard[]> getShards();
 		
-		@GET("/shard/{region}")
-		Call<ShardStatus> getShard(@Path("region") Region region);
+		@GET("/shards/{region}")
+		Call<ShardStatus> getShard(@Path("region") LowercaseRegion region);
 	}
 
 }
