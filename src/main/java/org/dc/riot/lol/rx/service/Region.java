@@ -1,5 +1,9 @@
 package org.dc.riot.lol.rx.service;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * All Riot LoL API regions.
  * 
@@ -61,6 +65,8 @@ public enum Region {
     		return Region.values();
     	}
     	
+    	excludedRegions = removeDuplicates(excludedRegions);
+    	
     	int excludedLength = 0;
     	for (Region r : excludedRegions) {
     		if (r != null) {
@@ -77,14 +83,7 @@ public enum Region {
 
     	int i = 0;
     	for (Region r : Region.values()) {
-    		boolean excluded = false;
-    		for (Region er : excludedRegions) {
-    			if (er == r) {
-    				excluded = true;
-    				break;
-    			}
-    		}
-    		
+    		boolean excluded = r == null || contains(excludedRegions, r);  		
     		if (!excluded) {
     			outputRegions[i] = r;
     			i++;
@@ -92,5 +91,29 @@ public enum Region {
     	}
     	
     	return outputRegions;
+    }
+    
+    private static Region[] removeDuplicates(Region[] regions) {
+    	Set<Region> alreadyPresent = new HashSet<>();
+    	Region[] whitelist = new Region[regions.length];
+    	int i=0;
+    	
+    	for (Region r : regions) {
+    		if (alreadyPresent.add(r)) {
+    			whitelist[i++] = r;
+    		}
+    	}
+    	
+    	return Arrays.copyOf(whitelist, i);
+    }
+    
+    private static boolean contains(Region[] regions, Region r) {
+    	for (Region re : regions) {
+    		if (re == r) {
+    			return true;
+    		}
+    	}
+    	
+    	return false;
     }
 }

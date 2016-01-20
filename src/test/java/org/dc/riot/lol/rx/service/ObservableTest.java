@@ -32,6 +32,41 @@ public class ObservableTest {
 	private RateRule[] rules;
 	private Scheduler scheduler;
 	private TicketBucket bucket;
+	
+	@Ignore
+	@Test
+	public void regionTest() {
+		Region[] regions = Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+		debug.println(regions.length);
+		printRegions(regions);
+		debug.println("");
+		
+		regions = Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT, null);
+		debug.println(regions.length);
+		printRegions(regions);
+		debug.println("");
+		
+		regions = Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT, Region.PUBLIC_BETA_ENVIRONMENT);
+		debug.println(regions.length);
+		printRegions(regions);
+		debug.println("");
+
+		regions = Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT, Region.PUBLIC_BETA_ENVIRONMENT, null);
+		debug.println(regions.length);
+		printRegions(regions);
+		debug.println("");
+
+		regions = Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT, Region.PUBLIC_BETA_ENVIRONMENT, Region.BRAZIL, null);
+		debug.println(regions.length);
+		printRegions(regions);
+		debug.println("");
+	}
+	
+	private void printRegions(Region... regions) {
+		for (Region r : regions) {
+			debug.println(r);
+		}
+	}
 
 	@Ignore
 	@Before
