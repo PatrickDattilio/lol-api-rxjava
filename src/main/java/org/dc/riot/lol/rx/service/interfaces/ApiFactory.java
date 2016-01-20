@@ -105,6 +105,7 @@ public final class ApiFactory {
      * API versions
      */
     private float champVersion;
+    private float championMasteryVersion;
     private float currentGameVersion;
     private float featuredGamesVersion;
     private float recentGamesVersion;
@@ -141,6 +142,19 @@ public final class ApiFactory {
 
 		completeBuild(RiotApi.Champion.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
 		return api;
+    }
+    
+    public RiotApi.ChampionMastery newChampionMasteryInterface(Region region, boolean autoRateControl) {
+    	RiotApi.ChampionMastery api = null;
+    	
+    	if (championMasteryVersion >= 1.0) {
+    		api = new ChampionMastery_v1_0(apiKey, region);
+    	} else {
+    		throw new InvalidVersionException("Lowest supported ChampionMastery version is 1.0");
+    	}
+    	
+    	completeBuild(RiotApi.ChampionMastery.getSupportedRegions(api.getVersion()), region, api, autoRateControl);
+    	return api;
     }
 
     public RiotApi.CurrentGame newCurrentGameInterface(Region region, boolean autoRateControl) {

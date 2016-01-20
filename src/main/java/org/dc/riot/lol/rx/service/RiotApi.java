@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.dc.riot.lol.rx.model.ChampionDto;
 import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.ChampionMetaDto;
 import org.dc.riot.lol.rx.model.ChampionMetaListDto;
 import org.dc.riot.lol.rx.model.CurrentGameInfo;
@@ -159,22 +160,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.2f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -212,6 +202,84 @@ public interface RiotApi {
          */
         ChampionMetaDto getChampion(long championId) throws IOException, HttpException;
     }
+    
+    /**
+     * Champion mastery API to fetch player's champion mastery.
+     * 
+     * @author Dc
+     * @since 1.0.0
+     */
+    public interface ChampionMastery extends RiotApi {
+    	
+    	/**
+    	 * 
+    	 * @param version a positive value denoting the version (e.g. 1.0);
+    	 * @return the set of {@link Region}s this API supports
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
+    	 */
+    	public static Region[] getSupportedRegions(float version) {
+    		if (version >= 1.0) {
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+    		} else {
+    			throw new InvalidVersionException();
+    		}
+    	}
+    	
+    	/**
+    	 * /championmastery/location/{platformId}/player/{summonerId}/champion/{championId}<br>
+    	 * <br>
+    	 * 404	Not found<br>
+    	 * 500	Something bad happened
+    	 * 
+    	 * @param summonerId summoner ID associated with the player
+    	 * @param championId champion ID to retrieve champion mastery for
+    	 * @return {@link ChampionMasteryDto} mapping player to champion mastery
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
+    	 */
+    	ChampionMasteryDto getPlayerChampionMastery(long summonerId, long championId) throws IOException, HttpException;
+    	
+    	/**
+    	 * /championmastery/location/{platformId}/player/{summonerId}/champions<br>
+    	 * <br>
+    	 * 404	Not found<br>
+    	 * 500	Something bad happened
+    	 * 
+    	 * @param summonerId summoner ID associated with the player
+    	 * @return array of {@link ChampionMasteryDto} mapping player to champion mastery
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
+    	 */
+    	ChampionMasteryDto[] getPlayerAllMastery(long summonerId) throws IOException, HttpException;
+    	
+    	/**
+    	 * /championmastery/location/{platformId}/player/{summonerId}/score<br>
+    	 * <br>
+    	 * 404	Not found<br>
+    	 * 500	Something bad happened
+    	 * 
+    	 * @param summonerId summoner ID associated with the player
+    	 * @return total mastery score for the given player
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
+    	 */
+    	int getMasteryScore(long summonerId) throws IOException, HttpException;
+    	
+    	/**
+    	 * /championmastery/location/{platformId}/player/{summonerId}/topchampions<br>
+    	 * <br>
+    	 * 404	Not found<br>
+    	 * 500	Something bad happened
+    	 * 
+    	 * @param summonerId summonerId associated with the player
+    	 * @param count best N champions
+    	 * @return array of {@link ChampionMasteryDto} mapping player to champion mastery
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
+    	 */
+    	ChampionMasteryDto[] getTopChampions(long summonerId, int count) throws IOException, HttpException;
+    	
+    }
 
     /**
      * Spectator details
@@ -224,7 +292,7 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
@@ -259,7 +327,7 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
@@ -294,22 +362,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.3f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -346,22 +403,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.5f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -486,7 +532,7 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
     	public static Region[] getSupportedRegions(float version) {
     		if (version >= 1.2f) {
@@ -796,20 +842,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
-				Region[] ra = new Region[Region.values().length - 1];
-				int i = 0;
-				for (Region r : Region.values()) {
-					if (r != Region.KOREA) {
-						ra[i] = r;
-						i++;
-					}
-				}
-
-				return ra;
+				return Region.getExcluding(Region.KOREA);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -854,22 +891,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.2f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -907,22 +933,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.2f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -974,22 +989,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.3f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -1047,22 +1051,11 @@ public interface RiotApi {
     	/**
     	 * @param version a positive value denoting the version (e.g. 1.2)
     	 * @return the set of {@link Region}s this API supports
-    	 * @throws InvalidVersionException is the version number cannot be mapped to a valid version
+    	 * @throws InvalidVersionException if the version number cannot be mapped to a valid version
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.4f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -1165,18 +1158,7 @@ public interface RiotApi {
 
     	public static Region[] getSupportedRegions(float version) {
     		if (version >= 2.4f) {
-    			Region[] regions = new Region[Region.values().length - 1];
-    			int i = 0;
-    			for (Region r : Region.values()) {
-    				if (r == Region.PUBLIC_BETA_ENVIRONMENT) {
-    					continue;
-    				}
-
-    				regions[i] = r;
-    				i++;
-    			}
-
-    			return regions;
+    			return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
     		} else {
     			throw new InvalidVersionException();
     		}

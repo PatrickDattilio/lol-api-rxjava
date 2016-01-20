@@ -48,4 +48,49 @@ public enum Region {
 
         return null;
     }
+    
+    /**
+     * Gets a list of {@link Region}s excluding the given {@link Region}s.
+     * Tolerant of repeated inputs as well as <code>null</code> items.
+     * 
+     * @param excludedRegions {@link Region}s to exclude
+     * @return list of all {@link Region}s excluding the given list
+     */
+    public static Region[] getExcluding(Region... excludedRegions) {
+    	if (excludedRegions == null || excludedRegions.length == 0) {
+    		return Region.values();
+    	}
+    	
+    	int excludedLength = 0;
+    	for (Region r : excludedRegions) {
+    		if (r != null) {
+    			excludedLength++;
+    		}
+    	}
+
+    	int outputLength = Region.values().length - excludedLength;
+    	if (outputLength < 1) {
+    		return new Region[0];
+    	}
+    	
+    	Region[] outputRegions = new Region[outputLength];
+
+    	int i = 0;
+    	for (Region r : Region.values()) {
+    		boolean excluded = false;
+    		for (Region er : excludedRegions) {
+    			if (er == r) {
+    				excluded = true;
+    				break;
+    			}
+    		}
+    		
+    		if (!excluded) {
+    			outputRegions[i] = r;
+    			i++;
+    		}
+    	}
+    	
+    	return outputRegions;
+    }
 }
