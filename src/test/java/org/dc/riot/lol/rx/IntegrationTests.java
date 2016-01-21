@@ -17,6 +17,7 @@ import org.dc.riot.lol.rx.model.BannedChampion;
 import org.dc.riot.lol.rx.model.BasicDataStatsDto;
 import org.dc.riot.lol.rx.model.ChampionDto;
 import org.dc.riot.lol.rx.model.ChampionListDto;
+import org.dc.riot.lol.rx.model.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.ChampionMetaDto;
 import org.dc.riot.lol.rx.model.ChampionMetaListDto;
 import org.dc.riot.lol.rx.model.CurrentGameInfo;
@@ -34,11 +35,14 @@ import org.dc.riot.lol.rx.model.MasteryPagesDto;
 import org.dc.riot.lol.rx.model.MatchDetail;
 import org.dc.riot.lol.rx.model.MatchHistorySummaryDto;
 import org.dc.riot.lol.rx.model.MatchListDto;
+import org.dc.riot.lol.rx.model.MatchParticipant;
 import org.dc.riot.lol.rx.model.MatchReference;
+import org.dc.riot.lol.rx.model.MatchTeam;
 import org.dc.riot.lol.rx.model.MetaDataDto;
 import org.dc.riot.lol.rx.model.MiniSeriesDto;
 import org.dc.riot.lol.rx.model.Observer;
 import org.dc.riot.lol.rx.model.Participant;
+import org.dc.riot.lol.rx.model.ParticipantIdentity;
 import org.dc.riot.lol.rx.model.PlatformId;
 import org.dc.riot.lol.rx.model.QueueType;
 import org.dc.riot.lol.rx.model.RankedQueue;
@@ -60,6 +64,7 @@ import org.dc.riot.lol.rx.model.TeamStatDetailDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
+import org.dc.riot.lol.rx.service.RiotApi.ChampionMastery;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.dc.riot.lol.rx.service.request.RuneDataTag;
@@ -78,6 +83,7 @@ public class IntegrationTests {
 	private RiotApi.StaticData staticInterface = null;
 	private RiotApi.LolStatus statusInterface = null;
 	private RiotApi.Champion championInterface = null;
+	private RiotApi.ChampionMastery masteryInterface = null;
 	private RiotApi.CurrentGame currentGameInterface = null;
 	private RiotApi.FeaturedGames featuredGameInterface = null;
 	private RiotApi.League leagueInterface = null;
@@ -115,6 +121,47 @@ public class IntegrationTests {
 		matchInterface.setPrintUrl(true);
 		matchlistInterface = factory.newMatchListInterface(region, true);
 		matchlistInterface.setPrintUrl(true);
+		masteryInterface = factory.newChampionMasteryInterface(region, true);
+		masteryInterface.setPrintUrl(true);
+	}
+	
+	@Test
+	public void testChampionMastery() throws IOException, HttpException {
+		prints.println("Testing MASTERY interface");
+		
+		Map<String,SummonerDto> summonerMapDto = summonerInterface.getByNames(names);
+		for (SummonerDto summonerDto : summonerMapDto.values()) {
+			long summonerId = summonerDto.getId();
+			assertTrue(masteryInterface.getMasteryScore(summonerId) > 0);
+
+			// I expect that this returns only champions that have actually been played
+			ChampionMasteryDto[] allMastery = masteryInterface.getPlayerAllMastery(summonerId);
+			assertNotNull(allMastery);
+			for (ChampionMasteryDto cm : allMastery) {
+				testChampionMasteryDto(cm);
+			}
+			
+			ChampionMasteryDto[] topN = masteryInterface.getTopChampions(summonerId, 6);
+			assertNotNull(topN);
+			for (ChampionMasteryDto cm : topN) {
+				testChampionMasteryDto(cm);
+			}
+			
+			ChampionMasteryDto champDto = masteryInterface.getPlayerChampionMastery(summonerId, 5);	// 5 is Xin Zhao
+			assertNotNull(champDto);
+			testChampionMasteryDto(champDto);
+		}
+	}
+	
+	private void testChampionMasteryDto(ChampionMasteryDto dto) {
+		assertTrue(dto.getChampionId() > 0);
+		assertTrue(dto.getChampionLevel() > 0);
+		assertTrue(dto.getChampionPoints() > 0);
+		assertTrue(dto.getChampionPointsSinceLastLevel() > 0);
+		assertTrue(dto.getChampionPointsUntilNextLevel() > 0);
+		assertNotNull(dto.getHighestGrade());
+		assertTrue(dto.getLastPlayTime() > 0);
+		assertTrue(dto.getPlayerId() > 0);
 	}
 	
 	@Test
@@ -156,9 +203,43 @@ public class IntegrationTests {
 	}
 	
 	private void testMatchDetail(MatchDetail dto, boolean timeLine) {
-		fail("Not implemented");
+		assertTrue(dto.getMapId() > 0);
+		assertTrue(dto.getMatchCreation() > 0);
+		assertTrue(dto.getMatchDuration() > 0);
+		assertTrue(dto.getMatchId() > 0);
+		assertNotNull(dto.getMatchMode());
+		assertNotNull(dto.getMatchType());
+		assertNotNull(dto.getMatchVersion());
+		assertNotNull(dto.getParticipantIdentities());
+		testParticipantIdentity(dto.getParticipantIdentities());
+		
+		assertNotNull(dto.getParticipants());
+		testMatchParticipants(dto.getParticipants());
+
+		assertNotNull(dto.getPlatformId());
+		assertNotNull(dto.getQueueType());
+		assertNotNull(dto.getRegion());
+		assertNotNull(dto.getSeason());
+
+		assertNotNull(dto.getTeams());
+		testMatchTeams(dto.getTeams());
+		
+		assertNotNull(dto.getTimeline());
+		testMatchTeams(dto.getTeams());
 	}
 	
+	private void testMatchTeams(MatchTeam teams) {
+		fail();
+	}
+
+	private void testMatchParticipants(MatchParticipant participants) {
+		fail();
+	}
+
+	private void testParticipantIdentity(ParticipantIdentity participantIdentities) {
+		fail();
+	}
+
 	private long testMatchListDto(MatchListDto dto, boolean expectNullQueue) {
 		assertTrue(dto.getTotalGames() > 0);
 		MatchReference[] matchRefs = dto.getMatches();

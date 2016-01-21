@@ -77,7 +77,7 @@ interface RetrofitCaller<T> {
 	 * 			before returning to calling code 
 	 * @return json object
 	 * @throws IOException network issue
-	 * @throws HttpException - any non 2XX response code
+	 * @throws HttpException any non 2XX response code
 	 */
 	static <T> T processCall(final RetrofitCaller<T> caller, final Completer<T> completer) throws IOException, HttpException {
 		T t = processCall(caller);

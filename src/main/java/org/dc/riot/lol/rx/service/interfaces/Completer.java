@@ -10,6 +10,7 @@ package org.dc.riot.lol.rx.service.interfaces;
  *
  * @param <T>
  */
+@FunctionalInterface
 interface Completer<T> {
 	T fill(T t);
 }

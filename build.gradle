@@ -1,14 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
-
-// maven coordinates
-group = 'dancarpenter21.github.com'
-version = '1.0.0'
-
-signing {
-    sign configurations.archives
-}
 
 repositories {
     mavenCentral()
@@ -20,6 +10,17 @@ dependencies {
     compile 'io.reactivex:rxjava:1.+'
     compile 'com.squareup.retrofit:converter-gson:2.+'
     testCompile 'junit:junit:4.+'
+}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+// maven coordinates
+group = 'dancarpenter21.github.com'
+version = '1.0.0'
+
+signing {
+    sign configurations.archives
 }
 
 uploadArchives {
