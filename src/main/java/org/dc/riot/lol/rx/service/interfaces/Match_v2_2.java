@@ -27,7 +27,7 @@ class Match_v2_2 extends RiotApiBase implements RiotApi.Match {
 		super(apiKey, region);
 		
 		Retrofit ra = new Retrofit.Builder()
-				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
+				.baseUrl("https://" + new LowercaseRegion(region) + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 				.client(client)
 				.build();

@@ -3,6 +3,7 @@ package org.dc.riot.lol.rx.service.interfaces;
 import java.io.IOException;
 
 import org.dc.riot.lol.rx.model.MatchListDto;
+import org.dc.riot.lol.rx.model.MatchReference;
 import org.dc.riot.lol.rx.model.RankedQueue;
 import org.dc.riot.lol.rx.model.Season;
 import org.dc.riot.lol.rx.service.ApiKey;
@@ -46,10 +47,24 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 	public MatchListDto getMatchList(long summonerId, long[] championIds,
 			RankedQueue[] rankedQueues, Season[] seasons, long beginTime,
 			long endTime, int beginIndex, int endIndex) throws IOException, HttpException {
+
+		final CSA.Long champIdParam = (championIds != null && championIds.length > 0) ? new CSA.Long(championIds) : null;
+		final Long beginTimeParam = (beginTime > -1) ? new Long(beginTime) : null;
+		final Long endTimeParam = (endTime > -1) ? new Long(endTime) : null;
+		final Integer beginIndexParam = (beginIndex > -1) ? new Integer(beginIndex) : null;
+		final Integer endIndexParam = (endTime > -1) ? new Integer(endIndex) : null;
+		
 		return RetrofitCaller.processCall(() -> {
-			return inter.getMatchList(new LowercaseRegion(region), summonerId, apiKey, new CSA.Long(championIds),
+			return inter.getMatchList(new LowercaseRegion(region), summonerId, apiKey, champIdParam,
 					new CSA<RankedQueue>(rankedQueues), new CSA<Season>(seasons),
-					beginTime, endTime, beginIndex, endIndex);
+					beginTimeParam, endTimeParam, beginIndexParam, endIndexParam);
+		},
+		(MatchListDto dto) -> {
+			for (MatchReference mr : dto.getMatches()) {
+				mr.setRegion(region);
+			}
+
+			return dto;
 		});
 	}
 	
@@ -58,7 +73,7 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 		@GET("/api/lol/{region}/v2.2/matchlist/by-summoner/{summonerId}")
 		Call<MatchListDto> getMatchList(@Path("region") LowercaseRegion region, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey,
 			 @Query("championIds") CSA.Long championIds, @Query("rankedQueues") CSA<RankedQueue> rankedQueues,
-			 @Query("seasons") CSA<Season> seasons, @Query("beginTime") long beginTime, @Query("endTime") long endTime,
-			 @Query("beginIndex") int beginIndex, @Query("endIndex") int endIndex);
+			 @Query("seasons") CSA<Season> seasons, @Query("beginTime") Long beginTime, @Query("endTime") Long endTime,
+			 @Query("beginIndex") Integer beginIndex, @Query("endIndex") Integer endIndex);
 	}
 }

@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -125,41 +126,62 @@ public class IntegrationTests {
 		long summonerId = summonerDto.getId();
 		MatchListDto matchListDto = matchlistInterface.getMatchList(summonerId, null, new RankedQueue[] {RankedQueue.RANKED_SOLO_5x5}, new Season[] {Season.PRESEASON2016}, -1, -1,  -1,  -1);
 		assertNotNull(matchListDto);
-		long matchId = testMatchListDto(matchListDto);
+		long matchId = testMatchListDto(matchListDto, false);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, 2016);
+		cal.set(Calendar.MONTH, Calendar.JANUARY);
 
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		long beginTime = cal.getTimeInMillis();
+		
+		cal.set(Calendar.DAY_OF_MONTH, 19);
+		long endTime = cal.getTimeInMillis();
+
+		long[] championIds = new long[] { 5, 245 };	// Xin Zhao, Ekko
+		MatchListDto boundedListDto = matchlistInterface.getMatchList(summonerId, championIds, null, null, beginTime, endTime, 0, 5);
+		assertNotNull(boundedListDto);
+		testMatchListDto(boundedListDto, true);
 		
 		MatchDetail matchDetail = matchInterface.getMatch(matchId, true);
 		assertNotNull(matchDetail);
-		testMatchDetail(matchDetail);
+		testMatchDetail(matchDetail, true);
+		
+		MatchDetail noTimelineDetail = matchInterface.getMatch(matchId, false);
+		assertNotNull(noTimelineDetail);
+		testMatchDetail(noTimelineDetail, false);
 		
 		System.out.println();
 		System.out.println();
-		fail();
 	}
 	
-	private void testMatchDetail(MatchDetail dto) {
-		
+	private void testMatchDetail(MatchDetail dto, boolean timeLine) {
+		fail("Not implemented");
 	}
 	
-	private long testMatchListDto(MatchListDto dto) {
+	private long testMatchListDto(MatchListDto dto, boolean expectNullQueue) {
 		assertTrue(dto.getTotalGames() > 0);
 		MatchReference[] matchRefs = dto.getMatches();
 		long matchId = 0;
 		for (MatchReference mf : matchRefs) {
-			testMatchReference(mf);
+			testMatchReference(mf, expectNullQueue);
 			matchId = mf.getMatchId();
 		}
 		
 		return matchId;
 	}
 	
-	private void testMatchReference(MatchReference dto) {
+	private void testMatchReference(MatchReference dto, boolean expectNullQueue) {
 		assertTrue(dto.getChampion() > 0);
 		assertTrue(dto.getMatchId() > 0);
 		assertTrue(dto.getTimestamp() > 0);
 		assertNotNull(dto.getLane());
 		assertNotNull(dto.getPlatformId());
-		assertNotNull(dto.getQueue());
+		if (expectNullQueue) {
+			assertNull(dto.getQueue());
+		} else {
+			assertNotNull(dto.getQueue());
+		}
 		assertNotNull(dto.getRegion());
 		assertNotNull(dto.getRole());
 		assertNotNull(dto.getSeason());
