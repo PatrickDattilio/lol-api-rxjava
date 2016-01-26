@@ -14,6 +14,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.http.GET;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 class ChampionMastery_v1_0 extends RiotApiBase implements ChampionMastery {
 	
@@ -39,44 +40,44 @@ class ChampionMastery_v1_0 extends RiotApiBase implements ChampionMastery {
 	@Override
 	public ChampionMasteryDto getPlayerChampionMastery(long summonerId, long championId) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getPlayerChampionMastery(PlatformId.from(region), summonerId, championId);
+			return inter.getPlayerChampionMastery(PlatformId.from(region), summonerId, championId, apiKey);
 		});
 	}
 
 	@Override
 	public ChampionMasteryDto[] getPlayerAllMastery(long summonerId) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getPlayerAllMastery(PlatformId.from(region), summonerId);
+			return inter.getPlayerAllMastery(PlatformId.from(region), summonerId, apiKey);
 		});
 	}
 
 	@Override
 	public int getMasteryScore(long summonerId) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getMasteryScore(PlatformId.from(region), summonerId);
+			return inter.getMasteryScore(PlatformId.from(region), summonerId, apiKey);
 		});
 	}
 
 	@Override
 	public ChampionMasteryDto[] getTopChampions(long summonerId, int count) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getTopChampions(PlatformId.from(region), summonerId);
+			return inter.getTopChampions(PlatformId.from(region), summonerId, apiKey);
 		});
 	}
 	
 	private interface Interface {
 		
 		@GET("/championmastery/location/{platformId}/player/{summonerId}/champion/{championId}")
-		Call<ChampionMasteryDto> getPlayerChampionMastery(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId, @Path("championId") long championId);
+		Call<ChampionMasteryDto> getPlayerChampionMastery(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId, @Path("championId") long championId, @Query("api_key") ApiKey apiKey);
 
 		@GET("/championmastery/location/{platformId}/player/{summonerId}/champions")
-		Call<ChampionMasteryDto[]> getPlayerAllMastery(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId);
+		Call<ChampionMasteryDto[]> getPlayerAllMastery(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey);
 		
 		@GET("/championmastery/location/{platformId}/player/{summonerId}/score")
-		Call<Integer> getMasteryScore(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId);
+		Call<Integer> getMasteryScore(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey);
 		
 		@GET("/championmastery/location/{platformId}/player/{summonerId}/topchampions")
-		Call<ChampionMasteryDto[]> getTopChampions(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId);
+		Call<ChampionMasteryDto[]> getTopChampions(@Path("platformId") PlatformId platformId, @Path("summonerId") long summonerId, @Query("api_key") ApiKey apiKey);
 		
 	}
 

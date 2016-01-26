@@ -17,7 +17,7 @@ public class FeaturedGameInfo {
 	private GameType gameType;	// The game type (Legal values: CUSTOM_GAME, MATCHED_GAME, TUTORIAL_GAME)
 	private long mapId;	// The ID of the map
 	private Observer observers;	// The observer information
-	private Participant[] participants;	// The participant information
+	private FeaturedGameParticipant[] participants;	// The participant information
 	private PlatformId platformId;	// The ID of the platform on which the game is being played
 
 	public BannedChampion[] getBannedChampions() {
@@ -96,15 +96,15 @@ public class FeaturedGameInfo {
 		this.observers = observers;
 	}
 	
-	public Participant[] getParticipants() {
+	public FeaturedGameParticipant[] getParticipants() {
 		if (participants == null) {
-			return new Participant[0];
+			return new FeaturedGameParticipant[0];
 		}
 
 		return participants;
 	}
 	
-	public void setParticipants(Participant[] participants) {
+	public void setParticipants(FeaturedGameParticipant[] participants) {
 		this.participants = participants;
 	}
 	

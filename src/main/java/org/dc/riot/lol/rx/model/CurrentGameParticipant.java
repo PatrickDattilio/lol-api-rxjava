@@ -11,7 +11,7 @@ public class CurrentGameParticipant {
     private long championId;
     private MasteryMetaDto[] masteries;
     private long profileIconId;
-    private Rune[] runes;
+    private RuneMetaDto[] runes;
     private long spell1Id;
     private long spell2Id;
     private long summonerId;
@@ -50,11 +50,11 @@ public class CurrentGameParticipant {
         this.profileIconId = profileIconId;
     }
 
-    public Rune[] getRunes() {
+    public RuneMetaDto[] getRunes() {
         return runes;
     }
 
-    public void setRunes(Rune[] runes) {
+    public void setRunes(RuneMetaDto[] runes) {
         this.runes = runes;
     }
 

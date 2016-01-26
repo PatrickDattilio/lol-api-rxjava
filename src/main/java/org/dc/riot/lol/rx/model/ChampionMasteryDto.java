@@ -88,7 +88,8 @@ public class ChampionMasteryDto {
 	}
 
 	/**
-	 * @return highest grade received on this champion this season (e.g. S+, A-, etc.)
+	 * @return Highest grade received on this champion this season (e.g. S+, A-, etc.).
+	 * May return <code>null</code> if no grades have been received (e.g. start of new season).
 	 */
 	public String getHighestGrade() {
 		return highestGrade;

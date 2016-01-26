@@ -5,6 +5,7 @@ import java.net.Proxy;
 
 import org.dc.riot.lol.rx.model.MasteryMetaDto;
 import org.dc.riot.lol.rx.model.RangeDto;
+import org.dc.riot.lol.rx.model.RuneMetaDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -72,6 +73,26 @@ public final class ApiFactory {
 
 				long id = (jsonObject.get("id") != null) ? jsonObject.get("id").getAsLong() : jsonObject.get("masteryId").getAsLong();
 				dto.setId(id);
+				
+				return dto;
+			}
+		});
+        
+        /*
+         * Deserialize inconsistencies with Rune objects returned from the LoL API
+         */
+        builder.registerTypeAdapter(RuneMetaDto.class, new JsonDeserializer<RuneMetaDto>() {
+			@Override
+			public RuneMetaDto deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				RuneMetaDto dto = new RuneMetaDto();
+				
+				JsonObject jsonObject = json.getAsJsonObject();
+				long runeId = jsonObject.get("runeId").getAsLong();
+				dto.setRuneId(runeId);
+				
+				int rank = (jsonObject.get("count") != null) ? jsonObject.get("count").getAsInt() : jsonObject.get("rank").getAsInt();
+				dto.setCount(rank);
 				
 				return dto;
 			}
@@ -328,6 +349,7 @@ public final class ApiFactory {
      */
     public static class Builder {
         private float champVersion = 1.2f;          // baseline Champion version
+        private float championMasteryVersion = 1.0f;	// baseline ChampionMastery version
         private float currentGameVersion = 1.0f;    // baseline CurrentGame version
         private float featuredGamesVersion = 1.0f;  // baseline FeaturedGame version
         private float recentGamesVersion = 1.3f;    // baseline FeaturedGame version
@@ -352,6 +374,11 @@ public final class ApiFactory {
         public Builder setChampionVersion(float champVersion) {
             this.champVersion = champVersion;
             return this;
+        }
+        
+        public Builder setChampionMasteryVersion(float championMasteryVersion) {
+        	this.championMasteryVersion = championMasteryVersion;
+        	return this;
         }
 
         public Builder setCurrentGameVersion(float currentGameVersion) {
@@ -427,6 +454,7 @@ public final class ApiFactory {
         public ApiFactory build() {
             ApiFactory factory = new ApiFactory(apiKey);
             factory.champVersion = champVersion;
+            factory.championMasteryVersion = championMasteryVersion;
             factory.currentGameVersion = currentGameVersion;
             factory.featuredGamesVersion = featuredGamesVersion;
             factory.recentGamesVersion = recentGamesVersion;

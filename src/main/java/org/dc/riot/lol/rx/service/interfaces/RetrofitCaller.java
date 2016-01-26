@@ -39,8 +39,10 @@ interface RetrofitCaller<T> {
 		switch (response.code()) {
 		case 200:
 			return response.body();
+		case 204:
+			// a code 204 means that the request was good, the server has no response
+			return response.body();		// should be null
 		default:
-			System.out.println(response.code());
 			throw new HttpException(response.code(), response.headers().toMultimap());
 		}
 	}
@@ -58,6 +60,8 @@ interface RetrofitCaller<T> {
 		switch (response.code()) {
 		case 200:
 			return response.body();
+		case 204:
+			return null;
 		default:
 			if (passCodes != null) {
 				for (int code : passCodes) {
@@ -66,7 +70,7 @@ interface RetrofitCaller<T> {
 					}
 				}
 			}
-			System.out.println(response.code());
+
 			throw new HttpException(response.code(), response.headers().toMultimap());
 		}
 	}

@@ -7,7 +7,8 @@ package org.dc.riot.lol.rx.model;
  * @since 1.0.0
  * @see org.dc.riot.lol.rx.service.RiotApi.FeaturedGames RiotApi.FeaturedGames
  */
-public class Participant {
+public class FeaturedGameParticipant {
+	// these fields are returned by the Featued Games API
 	private boolean bot;	// Flag indicating whether or not this participant is a bot
 	private long championId;	// The ID of the champion played by this participant
 	private long profileIconId;	// The ID of the profile icon used by this participant

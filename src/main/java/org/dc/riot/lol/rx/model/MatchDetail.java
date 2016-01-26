@@ -17,14 +17,14 @@ public class MatchDetail {
 	private MatchMode matchMode;
 	private MatchType matchType;
 	private String matchVersion;
-	private ParticipantIdentity participantIdentities;
-	private MatchParticipant participants;
+	private MatchParticipantIdentity[] participantIdentities;
+	private MatchParticipant[] participants;
 	private PlatformId platformId;
 	private QueueType queueType;
 	private Region region;
 	private Season season;
-	private MatchTeam teams;
-	private Timeline timeline;
+	private MatchTeam[] teams;
+	private MatchTimeline timeline;
 
 	/**
 	 * @return the map ID
@@ -106,24 +106,24 @@ public class MatchDetail {
 	}
 
 	/**
-	 * @return {@link ParticipantIdentity} information object
+	 * @return {@link MatchParticipantIdentity} information object
 	 */
-	public ParticipantIdentity getParticipantIdentities() {
+	public MatchParticipantIdentity[] getParticipantIdentities() {
 		return participantIdentities;
 	}
 
-	public void setParticipantIdentities(ParticipantIdentity participantIdentities) {
+	public void setParticipantIdentities(MatchParticipantIdentity[] participantIdentities) {
 		this.participantIdentities = participantIdentities;
 	}
 
 	/**
 	 * @return {@link MatchParticipant} information
 	 */
-	public MatchParticipant getParticipants() {
+	public MatchParticipant[] getParticipants() {
 		return participants;
 	}
 
-	public void setParticipants(MatchParticipant participants) {
+	public void setParticipants(MatchParticipant[] participants) {
 		this.participants = participants;
 	}
 
@@ -175,23 +175,23 @@ public class MatchDetail {
 	/**
 	 * @return The {@link MatchTeam} information
 	 */
-	public MatchTeam getTeams() {
+	public MatchTeam[] getTeams() {
 		return teams;
 	}
 
-	public void setTeams(MatchTeam teams) {
+	public void setTeams(MatchTeam[] teams) {
 		this.teams = teams;
 	}
 
 	/**
-	 * @return The {@link Timeline}. Will be <code>null</code> unless
+	 * @return The {@link MatchTimeline}. Will be <code>null</code> unless
 	 * explicitly asked for.
 	 */
-	public Timeline getTimeline() {
+	public MatchTimeline getTimeline() {
 		return timeline;
 	}
 
-	public void setTimeline(Timeline timeline) {
+	public void setTimeline(MatchTimeline timeline) {
 		this.timeline = timeline;
 	}
 }

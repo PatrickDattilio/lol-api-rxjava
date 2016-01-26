@@ -1,5 +1,5 @@
 package org.dc.riot.lol.rx.model;
 
-public class ParticipantIdentity {
+public class MatchTimeline {
 
 }

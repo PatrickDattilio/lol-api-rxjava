@@ -6,11 +6,11 @@ package org.dc.riot.lol.rx.model;
  * @author Dc
  * @since 1.0.0
  */
-public class Rune {
+public class RuneMetaDto {
     private int count;
     private long runeId;
 
-    public Rune() { }
+    public RuneMetaDto() { }
 
     public long getRuneId() {
         return runeId;

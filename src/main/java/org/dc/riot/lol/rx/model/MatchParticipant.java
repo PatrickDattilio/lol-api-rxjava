@@ -1,19 +1,135 @@
 package org.dc.riot.lol.rx.model;
 
+/**
+ * @author Dc
+ * @since 1.0.0
+ */
 public class MatchParticipant {
-	private int mapId;	// Match map ID
-	private long matchCreation;	// Match creation time. Designates when the team select lobby is created and/or the match is made through match making, not when the game actually starts.
-	private long matchDuration;	// Match duration
-	private long matchId;	// ID of the match
-	private String matchMode;	// Match mode (Legal values: CLASSIC, ODIN, ARAM, TUTORIAL, ONEFORALL, ASCENSION, FIRSTBLOOD, KINGPORO)
-	private String matchType;	// Match type (Legal values: CUSTOM_GAME, MATCHED_GAME, TUTORIAL_GAME)
-	private String matchVersion;	// Match version
-	private ParticipantIdentity participantIdentities;	// ParticipantIdentity]	Participant identity information
-	private Participant participants;	// Participant]	Participant information
-	private String platformId;	// Platform ID of the match
-	private String queueType;	// Match queue type (Legal values: CUSTOM, NORMAL_5x5_BLIND, RANKED_SOLO_5x5, RANKED_PREMADE_5x5, BOT_5x5, NORMAL_3x3, RANKED_PREMADE_3x3, NORMAL_5x5_DRAFT, ODIN_5x5_BLIND, ODIN_5x5_DRAFT, BOT_ODIN_5x5, BOT_5x5_INTRO, BOT_5x5_BEGINNER, BOT_5x5_INTERMEDIATE, RANKED_TEAM_3x3, RANKED_TEAM_5x5, BOT_TT_3x3, GROUP_FINDER_5x5, ARAM_5x5, ONEFORALL_5x5, FIRSTBLOOD_1x1, FIRSTBLOOD_2x2, SR_6x6, URF_5x5, ONEFORALL_MIRRORMODE_5x5, BOT_URF_5x5, NIGHTMARE_BOT_5x5_RANK1, NIGHTMARE_BOT_5x5_RANK2, NIGHTMARE_BOT_5x5_RANK5, ASCENSION_5x5, HEXAKILL, BILGEWATER_ARAM_5x5, KING_PORO_5x5, COUNTER_PICK, BILGEWATER_5x5)
-	private String region;	// Region where the match was played
-	private String season;	// Season match was played (Legal values: PRESEASON3, SEASON3, PRESEASON2014, SEASON2014, PRESEASON2015, SEASON2015, PRESEASON2016, SEASON2016)
-	private MatchTeam teams;	// Team]	Team information
-	private Timeline timeline;	// Match timeline data (not included by default)
+	private int championId;
+	private Tier highestAchievedSeasonTier;
+	private MasteryMetaDto masteries;
+	private int participantId;
+	private RuneMetaDto[] runes;
+	private long spell1Id;
+	private long spell2Id;
+	private MatchParticipantStats stats;
+	private int teamId;
+	private MatchParticipantTimeline timeline;
+
+	/**
+	 * @return Champion ID.
+	 */
+	public int getChampionId() {
+		return championId;
+	}
+
+	public void setChampionId(int championId) {
+		this.championId = championId;
+	}
+
+	/**
+	 * @return Highest ranked tier achieved for the previous season,
+	 * if any, otherwise null. Used to display border in game
+	 * loading screen.
+	 */
+	public Tier getHighestAchievedSeasonTier() {
+		return highestAchievedSeasonTier;
+	}
+
+	public void setHighestAchievedSeasonTier(Tier highestAchievedSeasonTier) {
+		this.highestAchievedSeasonTier = highestAchievedSeasonTier;
+	}
+
+	/**
+	 * @return List of mastery information.
+	 */
+	public MasteryMetaDto getMasteries() {
+		return masteries;
+	}
+
+	public void setMasteries(MasteryMetaDto masteries) {
+		this.masteries = masteries;
+	}
+
+	/**
+	 * @return Participant ID.
+	 */
+	public int getParticipantId() {
+		return participantId;
+	}
+
+	public void setParticipantId(int participantId) {
+		this.participantId = participantId;
+	}
+
+	/**
+	 * @return List of rune information.
+	 */
+	public RuneMetaDto[] getRunes() {
+		return runes;
+	}
+
+	public void setRunes(RuneMetaDto[] runes) {
+		this.runes = runes;
+	}
+
+	/**
+	 * @return First summoner spell ID.
+	 */
+	public long getSpell1Id() {
+		return spell1Id;
+	}
+
+	public void setSpell1Id(long spell1Id) {
+		this.spell1Id = spell1Id;
+	}
+
+	/**
+	 * @return Second summoner spell ID.
+	 */
+	public long getSpell2Id() {
+		return spell2Id;
+	}
+
+	public void setSpell2Id(long spell2Id) {
+		this.spell2Id = spell2Id;
+	}
+
+	/**
+	 * @return Participant statistics.
+	 */
+	public MatchParticipantStats getStats() {
+		return stats;
+	}
+
+	public void setStats(MatchParticipantStats stats) {
+		this.stats = stats;
+	}
+
+	/**
+	 * @return Team ID.
+	 */
+	public int getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
+	}
+
+	/**
+	 * @return Timeline data. Delta fields refer to values for
+	 * the specified period (e.g., the gold per minute over
+	 * the first 10 minutes of the game versus the second 20
+	 * minutes of the game. Diffs fields refer to the deltas
+	 * versus the calculated lane opponent(s).
+	 */
+	public MatchParticipantTimeline getTimeline() {
+		return timeline;
+	}
+
+	public void setTimeline(MatchParticipantTimeline timeline) {
+		this.timeline = timeline;
+	}
 }
+

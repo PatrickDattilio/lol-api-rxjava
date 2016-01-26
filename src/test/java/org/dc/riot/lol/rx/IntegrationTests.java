@@ -38,16 +38,19 @@ import org.dc.riot.lol.rx.model.MatchListDto;
 import org.dc.riot.lol.rx.model.MatchParticipant;
 import org.dc.riot.lol.rx.model.MatchReference;
 import org.dc.riot.lol.rx.model.MatchTeam;
+import org.dc.riot.lol.rx.model.MatchTimeline;
 import org.dc.riot.lol.rx.model.MetaDataDto;
 import org.dc.riot.lol.rx.model.MiniSeriesDto;
 import org.dc.riot.lol.rx.model.Observer;
-import org.dc.riot.lol.rx.model.Participant;
-import org.dc.riot.lol.rx.model.ParticipantIdentity;
+import org.dc.riot.lol.rx.model.FeaturedGameParticipant;
+import org.dc.riot.lol.rx.model.MatchParticipantIdentity;
+import org.dc.riot.lol.rx.model.MatchParticipantStats;
+import org.dc.riot.lol.rx.model.MatchParticipantTimeline;
 import org.dc.riot.lol.rx.model.PlatformId;
 import org.dc.riot.lol.rx.model.QueueType;
 import org.dc.riot.lol.rx.model.RankedQueue;
 import org.dc.riot.lol.rx.model.RosterDto;
-import org.dc.riot.lol.rx.model.Rune;
+import org.dc.riot.lol.rx.model.RuneMetaDto;
 import org.dc.riot.lol.rx.model.RuneDto;
 import org.dc.riot.lol.rx.model.RuneListDto;
 import org.dc.riot.lol.rx.model.RunePage;
@@ -64,7 +67,6 @@ import org.dc.riot.lol.rx.model.TeamStatDetailDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
-import org.dc.riot.lol.rx.service.RiotApi.ChampionMastery;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.dc.riot.lol.rx.service.request.RuneDataTag;
@@ -130,9 +132,13 @@ public class IntegrationTests {
 		prints.println("Testing MASTERY interface");
 		
 		Map<String,SummonerDto> summonerMapDto = summonerInterface.getByNames(names);
+		int highestMasteryScore = 0;
 		for (SummonerDto summonerDto : summonerMapDto.values()) {
 			long summonerId = summonerDto.getId();
-			assertTrue(masteryInterface.getMasteryScore(summonerId) > 0);
+			int masteryScore = 0;
+			if ((masteryScore = masteryInterface.getMasteryScore(summonerId)) > highestMasteryScore) {
+				highestMasteryScore = masteryScore;
+			}
 
 			// I expect that this returns only champions that have actually been played
 			ChampionMasteryDto[] allMastery = masteryInterface.getPlayerAllMastery(summonerId);
@@ -148,8 +154,9 @@ public class IntegrationTests {
 			}
 			
 			ChampionMasteryDto champDto = masteryInterface.getPlayerChampionMastery(summonerId, 5);	// 5 is Xin Zhao
-			assertNotNull(champDto);
-			testChampionMasteryDto(champDto);
+			if (champDto != null) {
+				testChampionMasteryDto(champDto);
+			}
 		}
 	}
 	
@@ -157,9 +164,6 @@ public class IntegrationTests {
 		assertTrue(dto.getChampionId() > 0);
 		assertTrue(dto.getChampionLevel() > 0);
 		assertTrue(dto.getChampionPoints() > 0);
-		assertTrue(dto.getChampionPointsSinceLastLevel() > 0);
-		assertTrue(dto.getChampionPointsUntilNextLevel() > 0);
-		assertNotNull(dto.getHighestGrade());
 		assertTrue(dto.getLastPlayTime() > 0);
 		assertTrue(dto.getPlayerId() > 0);
 	}
@@ -211,10 +215,17 @@ public class IntegrationTests {
 		assertNotNull(dto.getMatchType());
 		assertNotNull(dto.getMatchVersion());
 		assertNotNull(dto.getParticipantIdentities());
-		testParticipantIdentity(dto.getParticipantIdentities());
+		MatchParticipantIdentity[] identities = dto.getParticipantIdentities();
+		assertNotNull(identities);
+		for (MatchParticipantIdentity mpi : identities) {
+			testParticipantIdentity(mpi);
+		}
 		
-		assertNotNull(dto.getParticipants());
-		testMatchParticipants(dto.getParticipants());
+		MatchParticipant[] participants = dto.getParticipants();
+		assertNotNull(participants);
+		for (MatchParticipant mp : participants) {
+			testMatchParticipant(mp, timeLine);
+		}
 
 		assertNotNull(dto.getPlatformId());
 		assertNotNull(dto.getQueueType());
@@ -222,21 +233,44 @@ public class IntegrationTests {
 		assertNotNull(dto.getSeason());
 
 		assertNotNull(dto.getTeams());
-		testMatchTeams(dto.getTeams());
+		for (MatchTeam mt : dto.getTeams()) {
+			testMatchTeams(mt);
+		}
 		
 		assertNotNull(dto.getTimeline());
-		testMatchTeams(dto.getTeams());
+		testMatchTimeline(dto.getTimeline());
 	}
 	
 	private void testMatchTeams(MatchTeam teams) {
 		fail();
 	}
 
-	private void testMatchParticipants(MatchParticipant participants) {
-		fail();
+	private void testMatchParticipant(MatchParticipant dto, boolean expectTimeline) {
+		assertTrue(dto.getChampionId() > 0);
+		assertNotNull(dto.getHighestAchievedSeasonTier());
+		assertTrue(dto.getParticipantId() > 0);
+		assertNotNull(dto.getRunes());
+		assertTrue(dto.getSpell1Id() > 0);
+		assertTrue(dto.getSpell2Id() > 0);
+
+		MatchParticipantStats matchParticipantStats = dto.getStats();
+		assertNotNull(matchParticipantStats);
+		testMatchParticipantStats(matchParticipantStats);
+		
+		assertTrue(dto.getTeamId() > 0);
+		
+		if (expectTimeline) {
+			MatchParticipantTimeline timeline = dto.getTimeline();
+			assertNotNull(timeline);
+			testMatchParticipantTimeline(timeline);
+		}
 	}
 
-	private void testParticipantIdentity(ParticipantIdentity participantIdentities) {
+	private void testParticipantIdentity(MatchParticipantIdentity dto) {
+		fail();
+	}
+	
+	private void testMatchTimeline(MatchTimeline dto) {
 		fail();
 	}
 
@@ -266,6 +300,14 @@ public class IntegrationTests {
 		assertNotNull(dto.getRegion());
 		assertNotNull(dto.getRole());
 		assertNotNull(dto.getSeason());
+	}
+	
+	private void testMatchParticipantStats(MatchParticipantStats dto) {
+		fail();
+	}
+	
+	private void testMatchParticipantTimeline(MatchParticipantTimeline dto) {
+		fail();
 	}
 	
 	@Test
@@ -372,16 +414,20 @@ public class IntegrationTests {
 	@Test
 	public void testLeague() throws IOException, HttpException {
 		for (QueueType qt : QueueType.values()) {
-			LeagueDto dto = leagueInterface.getChallenger(qt);
-			if (dto != null) {
-				testLeagueDto(dto);
+			if (qt.isRanked()) {
+				LeagueDto dto = leagueInterface.getChallenger(qt);
+				if (dto != null) {
+					testLeagueDto(dto);
+				}
 			}
 		}
 		
 		for (QueueType qt : QueueType.values()) {
-			LeagueDto dto = leagueInterface.getMaster(qt);
-			if (dto != null) {
-				testLeagueDto(dto);
+			if (qt.isRanked()) {
+				LeagueDto dto = leagueInterface.getMaster(qt);
+				if (dto != null) {
+					testLeagueDto(dto);
+				}
 			}
 		}
 		
@@ -530,9 +576,9 @@ public class IntegrationTests {
 			assertNotNull(obs);
 			assertNotNull(obs.getEncryptionKey());
 			
-			Participant[] participants = gfo.getParticipants();
+			FeaturedGameParticipant[] participants = gfo.getParticipants();
 			assertTrue(participants.length > 0);
-			for (Participant p : participants) {
+			for (FeaturedGameParticipant p : participants) {
 				assertTrue(p.getChampionId() > 0);
 				assertTrue(p.getSpell1Id() > 0);
 				assertTrue(p.getSpell2Id() > 0);
@@ -593,9 +639,9 @@ public class IntegrationTests {
 					assertTrue(m.getId() > 0);
 				}
 				
-				Rune[] runes = p.getRunes();
+				RuneMetaDto[] runes = p.getRunes();
 				assertNotNull(runes);
-				for (Rune r : runes) {
+				for (RuneMetaDto r : runes) {
 					assertTrue(r.getRuneId() > 0);
 				}
 			}
