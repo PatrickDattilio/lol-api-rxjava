@@ -33,7 +33,7 @@ public class MasteryMetaDto {
      * Mastery ID. For static information correlating to masteries, please refer to the LoL Static Data API.
      * 
      * @return the id for this mastery
-     * @see org.dc.riot.ol.rx.service.RiotApi.StaticData RiotApi.StaticData
+     * @see org.dc.riot.lol.rx.service.RiotApi.StaticData RiotApi.StaticData
      */
     public long getId() {
         return id;

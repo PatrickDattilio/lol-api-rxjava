@@ -51,7 +51,7 @@ public class MatchDetail {
 	}
 
 	/**
-	 * @param matchCreation Match duration
+	 * @return matchCreation Match duration
 	 */
 	public long getMatchDuration() {
 		return matchDuration;

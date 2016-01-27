@@ -25,8 +25,8 @@ public class ShardStatus {
     /**
      * @param regionTag the region_tag
      */
-    public void setRegion_tag(String region_tag) {
-        this.region_tag = region_tag;
+    public void setRegion_tag(String regionTag) {
+        this.region_tag = regionTag;
     }
 
     /**
