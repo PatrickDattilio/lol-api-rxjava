@@ -1,6 +1,6 @@
 package org.dc.riot.lol.rx.model.match;
 
-import org.dc.riot.lol.rx.model.BannedChampion;
+import org.dc.riot.lol.rx.model.common.BannedChampion;
 
 /**
  * MatchTeam DTO used by the {@link org.dc.riot.lol.rx.service.RiotApi.Match

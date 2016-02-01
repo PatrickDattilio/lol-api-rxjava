@@ -1,8 +1,8 @@
 package org.dc.riot.lol.rx.model.match;
 
-import org.dc.riot.lol.rx.model.PlatformId;
-import org.dc.riot.lol.rx.model.RankedQueue;
-import org.dc.riot.lol.rx.model.Season;
+import org.dc.riot.lol.rx.model.common.PlatformId;
+import org.dc.riot.lol.rx.model.common.RankedQueue;
+import org.dc.riot.lol.rx.model.common.Season;
 import org.dc.riot.lol.rx.service.Region;
 
 /**

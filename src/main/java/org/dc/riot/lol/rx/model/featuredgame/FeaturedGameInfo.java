@@ -1,10 +1,10 @@
 package org.dc.riot.lol.rx.model.featuredgame;
 
-import org.dc.riot.lol.rx.model.BannedChampion;
-import org.dc.riot.lol.rx.model.GameMode;
-import org.dc.riot.lol.rx.model.GameType;
-import org.dc.riot.lol.rx.model.Observer;
-import org.dc.riot.lol.rx.model.PlatformId;
+import org.dc.riot.lol.rx.model.common.BannedChampion;
+import org.dc.riot.lol.rx.model.common.GameMode;
+import org.dc.riot.lol.rx.model.common.GameType;
+import org.dc.riot.lol.rx.model.common.Observer;
+import org.dc.riot.lol.rx.model.common.PlatformId;
 
 /**
  * Featured game information.
@@ -23,7 +23,7 @@ public class FeaturedGameInfo {
 	private GameType gameType;
 	private long mapId;
 	private Observer observers;
-	private Participant[] participants;
+	private FeaturedParticipant[] participants;
 	private PlatformId platformId;
 
 	/**
@@ -101,9 +101,9 @@ public class FeaturedGameInfo {
 	/**
 	 * @return The participant information.
 	 */
-	public Participant[] getParticipants() {
+	public FeaturedParticipant[] getParticipants() {
 		if (participants == null) {
-			return new Participant[0];
+			return new FeaturedParticipant[0];
 		}
 
 		return participants;

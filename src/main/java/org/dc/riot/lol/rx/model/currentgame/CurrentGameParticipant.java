@@ -1,5 +1,8 @@
 package org.dc.riot.lol.rx.model.currentgame;
 
+import org.dc.riot.lol.rx.model.common.Mastery;
+import org.dc.riot.lol.rx.model.common.Rune;
+
 /**
  * Current game participant
  * 

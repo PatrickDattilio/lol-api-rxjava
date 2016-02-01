@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.league;
 
-import org.dc.riot.lol.rx.model.QueueType;
-import org.dc.riot.lol.rx.model.Tier;
+import org.dc.riot.lol.rx.model.common.QueueType;
+import org.dc.riot.lol.rx.model.common.Tier;
 
 /**
  * This object contains league information.

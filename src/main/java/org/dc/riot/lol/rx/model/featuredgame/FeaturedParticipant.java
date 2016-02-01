@@ -6,7 +6,7 @@ package org.dc.riot.lol.rx.model.featuredgame;
  * @author Dc
  * @since 1.0.0
  */
-public class Participant {
+public class FeaturedParticipant {
 	private boolean bot;	// Flag indicating whether or not this participant is a bot
 	private long championId;	// The ID of the champion played by this participant
 	private long profileIconId;	// The ID of the profile icon used by this participant

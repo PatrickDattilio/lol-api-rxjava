@@ -2,9 +2,8 @@ package org.dc.riot.lol.rx.model.match;
 
 import org.dc.riot.lol.rx.model.MasteryMetaDto;
 import org.dc.riot.lol.rx.model.MatchParticipantStats;
-import org.dc.riot.lol.rx.model.MatchParticipantTimeline;
 import org.dc.riot.lol.rx.model.RuneMetaDto;
-import org.dc.riot.lol.rx.model.Tier;
+import org.dc.riot.lol.rx.model.common.Tier;
 
 /**
  * Participant information.
@@ -22,7 +21,7 @@ public class Participant {
 	private long spell2Id;
 	private MatchParticipantStats stats;
 	private int teamId;
-	private MatchParticipantTimeline timeline;
+	private ParticipantTimeline timeline;
 
 	/**
 	 * @return Champion ID.
@@ -96,7 +95,7 @@ public class Participant {
 	 * minutes of the game. Diffs fields refer to the deltas
 	 * versus the calculated lane opponent(s).
 	 */
-	public MatchParticipantTimeline getTimeline() {
+	public ParticipantTimeline getTimeline() {
 		return timeline;
 	}
 }

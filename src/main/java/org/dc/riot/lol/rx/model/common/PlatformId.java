@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.common;
 
 import org.dc.riot.lol.rx.service.Region;
 

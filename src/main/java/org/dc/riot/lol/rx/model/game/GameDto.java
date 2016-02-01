@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.game;
 
-import org.dc.riot.lol.rx.model.GameMode;
-import org.dc.riot.lol.rx.model.GameType;
+import org.dc.riot.lol.rx.model.common.GameMode;
+import org.dc.riot.lol.rx.model.common.GameType;
 
 /**
  * @author Dc

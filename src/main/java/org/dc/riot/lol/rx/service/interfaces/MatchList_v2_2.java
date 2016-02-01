@@ -2,8 +2,8 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.io.IOException;
 
-import org.dc.riot.lol.rx.model.RankedQueue;
-import org.dc.riot.lol.rx.model.Season;
+import org.dc.riot.lol.rx.model.common.RankedQueue;
+import org.dc.riot.lol.rx.model.common.Season;
 import org.dc.riot.lol.rx.model.match.MatchListDto;
 import org.dc.riot.lol.rx.model.match.MatchReference;
 import org.dc.riot.lol.rx.service.ApiKey;

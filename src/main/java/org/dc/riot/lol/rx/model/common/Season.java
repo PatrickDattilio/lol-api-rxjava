@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.common;
 
 /**
  * Seasons enumerated since season 3

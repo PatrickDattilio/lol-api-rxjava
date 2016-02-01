@@ -1,6 +1,6 @@
 package org.dc.riot.lol.rx.model.team;
 
-import org.dc.riot.lol.rx.model.GameMode;
+import org.dc.riot.lol.rx.model.common.GameMode;
 
 /**
  * This object contains match history summary information.

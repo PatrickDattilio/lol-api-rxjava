@@ -1,10 +1,10 @@
 package org.dc.riot.lol.rx.model.currentgame;
 
-import org.dc.riot.lol.rx.model.BannedChampion;
-import org.dc.riot.lol.rx.model.GameMode;
-import org.dc.riot.lol.rx.model.GameType;
-import org.dc.riot.lol.rx.model.Observer;
-import org.dc.riot.lol.rx.model.PlatformId;
+import org.dc.riot.lol.rx.model.common.BannedChampion;
+import org.dc.riot.lol.rx.model.common.GameMode;
+import org.dc.riot.lol.rx.model.common.GameType;
+import org.dc.riot.lol.rx.model.common.Observer;
+import org.dc.riot.lol.rx.model.common.PlatformId;
 
 /**
  * Current game data object.

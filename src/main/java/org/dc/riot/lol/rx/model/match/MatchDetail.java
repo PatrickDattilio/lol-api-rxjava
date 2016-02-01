@@ -1,10 +1,10 @@
 package org.dc.riot.lol.rx.model.match;
 
-import org.dc.riot.lol.rx.model.MatchMode;
-import org.dc.riot.lol.rx.model.MatchType;
-import org.dc.riot.lol.rx.model.PlatformId;
-import org.dc.riot.lol.rx.model.QueueType;
-import org.dc.riot.lol.rx.model.Season;
+import org.dc.riot.lol.rx.model.common.MatchMode;
+import org.dc.riot.lol.rx.model.common.MatchType;
+import org.dc.riot.lol.rx.model.common.PlatformId;
+import org.dc.riot.lol.rx.model.common.QueueType;
+import org.dc.riot.lol.rx.model.common.Season;
 import org.dc.riot.lol.rx.service.Region;
 
 /**

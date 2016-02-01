@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model.currentgame;
+package org.dc.riot.lol.rx.model.common;
 
 /**
  * Current game participant mastery data.
