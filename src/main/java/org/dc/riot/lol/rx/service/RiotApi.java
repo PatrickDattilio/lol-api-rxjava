@@ -4,40 +4,40 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.ChampionDto;
-import org.dc.riot.lol.rx.model.ChampionListDto;
-import org.dc.riot.lol.rx.model.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.ChampionMetaDto;
 import org.dc.riot.lol.rx.model.ChampionMetaListDto;
-import org.dc.riot.lol.rx.model.CurrentGameInfo;
-import org.dc.riot.lol.rx.model.FeaturedGamesDto;
 import org.dc.riot.lol.rx.model.ItemDto;
 import org.dc.riot.lol.rx.model.ItemListDto;
 import org.dc.riot.lol.rx.model.LanguageStringsDto;
-import org.dc.riot.lol.rx.model.LeagueDto;
-import org.dc.riot.lol.rx.model.LeagueEntryDto;
 import org.dc.riot.lol.rx.model.MapDataDto;
-import org.dc.riot.lol.rx.model.MasteryDto;
 import org.dc.riot.lol.rx.model.MasteryListDto;
-import org.dc.riot.lol.rx.model.MasteryPagesDto;
-import org.dc.riot.lol.rx.model.MatchDetail;
-import org.dc.riot.lol.rx.model.MatchListDto;
 import org.dc.riot.lol.rx.model.PlayerStatsSummaryListDto;
 import org.dc.riot.lol.rx.model.QueueType;
 import org.dc.riot.lol.rx.model.RankedQueue;
 import org.dc.riot.lol.rx.model.RankedStatsDto;
 import org.dc.riot.lol.rx.model.RealmDto;
-import org.dc.riot.lol.rx.model.RecentGamesDto;
 import org.dc.riot.lol.rx.model.RuneDto;
 import org.dc.riot.lol.rx.model.RuneListDto;
-import org.dc.riot.lol.rx.model.RunePagesDto;
 import org.dc.riot.lol.rx.model.Season;
-import org.dc.riot.lol.rx.model.Shard;
-import org.dc.riot.lol.rx.model.ShardStatus;
-import org.dc.riot.lol.rx.model.SummonerDto;
 import org.dc.riot.lol.rx.model.SummonerSpellDto;
 import org.dc.riot.lol.rx.model.SummonerSpellListDto;
-import org.dc.riot.lol.rx.model.TeamDto;
+import org.dc.riot.lol.rx.model.champion.ChampionDto;
+import org.dc.riot.lol.rx.model.champion.ChampionListDto;
+import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
+import org.dc.riot.lol.rx.model.currentgame.CurrentGameInfo;
+import org.dc.riot.lol.rx.model.featuredgame.FeaturedGamesDto;
+import org.dc.riot.lol.rx.model.game.RecentGamesDto;
+import org.dc.riot.lol.rx.model.league.LeagueDto;
+import org.dc.riot.lol.rx.model.league.LeagueEntryDto;
+import org.dc.riot.lol.rx.model.match.MatchDetail;
+import org.dc.riot.lol.rx.model.match.MatchListDto;
+import org.dc.riot.lol.rx.model.status.Shard;
+import org.dc.riot.lol.rx.model.status.ShardStatus;
+import org.dc.riot.lol.rx.model.summoner.MasteryDto;
+import org.dc.riot.lol.rx.model.summoner.MasteryPagesDto;
+import org.dc.riot.lol.rx.model.summoner.RunePagesDto;
+import org.dc.riot.lol.rx.model.summoner.SummonerDto;
+import org.dc.riot.lol.rx.model.team.TeamDto;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.error.InvalidVersionException;
 import org.dc.riot.lol.rx.service.request.ChampDataTag;
@@ -1078,6 +1078,24 @@ public interface RiotApi {
          * @throws IOException some connection error (e.g. server down)
          */
         Map<String, SummonerDto> getByNames(String... summonerNames) throws IOException, HttpException;
+        
+        /**
+         * /api/lol/{region}/v1.4/summoner/by-account/{accountIds}<br>
+         * <br>
+         * 400	Bad request<br>
+         * 401	Unauthorized<br>
+         * 404	No summoner data found for any specified inputs<br>
+         * 429	Rate limit exceeded<br>
+         * 500	Internal server error<br>
+         * 503	Service unavailable 
+         * 
+         * @param accountIds Comma-separated list of account IDs associated with summoners to retrieve.
+         * Maximum allowed at once is 40.
+         * @return Map of summoner data mapped from long Strings to {@link SummonerDto}
+         * @throws HttpException non 2XX response code returned
+         * @throws IOException some connection error (e.g. server down)
+         */
+        Map<String, SummonerDto> getByAccounts(long... accountIds) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v1.4/summoner/{summonerIds}<br>

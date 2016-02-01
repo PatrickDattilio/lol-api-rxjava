@@ -3,9 +3,9 @@ package org.dc.riot.lol.rx.service.interfaces;
 import java.io.IOException;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.MasteryPagesDto;
-import org.dc.riot.lol.rx.model.RunePagesDto;
-import org.dc.riot.lol.rx.model.SummonerDto;
+import org.dc.riot.lol.rx.model.summoner.MasteryPagesDto;
+import org.dc.riot.lol.rx.model.summoner.RunePagesDto;
+import org.dc.riot.lol.rx.model.summoner.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -76,6 +76,20 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 	}
 
 	@Override
+	public Map<String, SummonerDto> getByAccounts(long... accountIds) throws IOException, HttpException {
+		return RetrofitCaller.processCall(() -> {
+			return inter.getByAccounts(region, new CSA.Long(accountIds), apiKey);
+		},
+		(Map<String,SummonerDto> dto) -> {
+			for (SummonerDto s : dto.values()) {
+				s.setRegion(region);
+			}
+			
+			return dto;
+		});
+	}
+
+	@Override
 	public Map<String, MasteryPagesDto> getMasteries(long... summonerIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getMasteries(region, new CSA.Long(summonerIds), apiKey);
@@ -95,7 +109,7 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 			return inter.getRunes(region, new CSA.Long(summonerIds), apiKey);
 		});
 	}
-
+	
 	private interface Interface {
 
 		@GET("/api/lol/{region}/v1.4/summoner/by-name/{summonerNames}")
@@ -103,6 +117,9 @@ class Summoner_v1_4 extends RiotApiBase implements RiotApi.Summoner {
 
 		@GET("/api/lol/{region}/v1.4/summoner/{summonerIds}")
 		Call<Map<String, SummonerDto>> getByIds(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
+
+		@GET("/api/lol/{region}/v1.4/summoner/by-account/{accountIds}")
+		Call<Map<String, SummonerDto>> getByAccounts(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.4/summoner/{summonerIds}/masteries")
 		Call<Map<String, MasteryPagesDto>> getMasteries(@Path("region") Region region, @Path("summonerIds") CSA.Long summonerIds, @Query("api_key") ApiKey apiKey);

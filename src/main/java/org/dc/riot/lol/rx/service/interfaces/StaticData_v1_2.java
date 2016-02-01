@@ -2,19 +2,19 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.io.IOException;
 
-import org.dc.riot.lol.rx.model.ChampionDto;
-import org.dc.riot.lol.rx.model.ChampionListDto;
 import org.dc.riot.lol.rx.model.ItemDto;
 import org.dc.riot.lol.rx.model.ItemListDto;
 import org.dc.riot.lol.rx.model.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.MapDataDto;
-import org.dc.riot.lol.rx.model.MasteryDto;
 import org.dc.riot.lol.rx.model.MasteryListDto;
 import org.dc.riot.lol.rx.model.RealmDto;
 import org.dc.riot.lol.rx.model.RuneDto;
 import org.dc.riot.lol.rx.model.RuneListDto;
 import org.dc.riot.lol.rx.model.SummonerSpellDto;
 import org.dc.riot.lol.rx.model.SummonerSpellListDto;
+import org.dc.riot.lol.rx.model.champion.ChampionDto;
+import org.dc.riot.lol.rx.model.champion.ChampionListDto;
+import org.dc.riot.lol.rx.model.summoner.MasteryDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;

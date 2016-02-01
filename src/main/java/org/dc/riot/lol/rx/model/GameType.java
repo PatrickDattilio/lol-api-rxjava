@@ -7,5 +7,18 @@ package org.dc.riot.lol.rx.model;
  * @since 1.0.0
  */
 public enum GameType {
-    CUSTOM_GAME, MATCHED_GAME, TUTORIAL_GAME;
+	/**
+	 * Custom game
+	 */
+    CUSTOM_GAME,
+    
+    /**
+     * Matched game (e.g. normals, ranked, bots)
+     */
+    MATCHED_GAME,
+    
+    /**
+     * Tutorial
+     */
+    TUTORIAL_GAME;
 }

@@ -15,55 +15,55 @@ import java.util.Map;
 
 import org.dc.riot.lol.rx.model.BannedChampion;
 import org.dc.riot.lol.rx.model.BasicDataStatsDto;
-import org.dc.riot.lol.rx.model.ChampionDto;
-import org.dc.riot.lol.rx.model.ChampionListDto;
-import org.dc.riot.lol.rx.model.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.ChampionMetaDto;
 import org.dc.riot.lol.rx.model.ChampionMetaListDto;
-import org.dc.riot.lol.rx.model.CurrentGameInfo;
-import org.dc.riot.lol.rx.model.CurrentGameParticipant;
-import org.dc.riot.lol.rx.model.FeaturedGameInfo;
-import org.dc.riot.lol.rx.model.FeaturedGamesDto;
 import org.dc.riot.lol.rx.model.GameMode;
 import org.dc.riot.lol.rx.model.GameType;
 import org.dc.riot.lol.rx.model.ImageDto;
-import org.dc.riot.lol.rx.model.LeagueDto;
-import org.dc.riot.lol.rx.model.LeagueEntryDto;
 import org.dc.riot.lol.rx.model.MasteryMetaDto;
-import org.dc.riot.lol.rx.model.MasteryPage;
-import org.dc.riot.lol.rx.model.MasteryPagesDto;
-import org.dc.riot.lol.rx.model.MatchDetail;
-import org.dc.riot.lol.rx.model.MatchHistorySummaryDto;
-import org.dc.riot.lol.rx.model.MatchListDto;
-import org.dc.riot.lol.rx.model.MatchParticipant;
-import org.dc.riot.lol.rx.model.MatchReference;
-import org.dc.riot.lol.rx.model.MatchTeam;
-import org.dc.riot.lol.rx.model.MatchTimeline;
 import org.dc.riot.lol.rx.model.MetaDataDto;
-import org.dc.riot.lol.rx.model.MiniSeriesDto;
 import org.dc.riot.lol.rx.model.Observer;
-import org.dc.riot.lol.rx.model.FeaturedGameParticipant;
-import org.dc.riot.lol.rx.model.MatchParticipantIdentity;
 import org.dc.riot.lol.rx.model.MatchParticipantStats;
 import org.dc.riot.lol.rx.model.MatchParticipantTimeline;
 import org.dc.riot.lol.rx.model.PlatformId;
 import org.dc.riot.lol.rx.model.QueueType;
 import org.dc.riot.lol.rx.model.RankedQueue;
-import org.dc.riot.lol.rx.model.RosterDto;
 import org.dc.riot.lol.rx.model.RuneMetaDto;
 import org.dc.riot.lol.rx.model.RuneDto;
 import org.dc.riot.lol.rx.model.RuneListDto;
-import org.dc.riot.lol.rx.model.RunePage;
-import org.dc.riot.lol.rx.model.RunePagesDto;
 import org.dc.riot.lol.rx.model.Season;
-import org.dc.riot.lol.rx.model.Service;
-import org.dc.riot.lol.rx.model.Shard;
-import org.dc.riot.lol.rx.model.ShardStatus;
-import org.dc.riot.lol.rx.model.Slot;
-import org.dc.riot.lol.rx.model.SummonerDto;
-import org.dc.riot.lol.rx.model.TeamDto;
-import org.dc.riot.lol.rx.model.TeamMemberInfoDto;
-import org.dc.riot.lol.rx.model.TeamStatDetailDto;
+import org.dc.riot.lol.rx.model.champion.ChampionDto;
+import org.dc.riot.lol.rx.model.champion.ChampionListDto;
+import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
+import org.dc.riot.lol.rx.model.currentgame.CurrentGameInfo;
+import org.dc.riot.lol.rx.model.currentgame.CurrentGameParticipant;
+import org.dc.riot.lol.rx.model.featuredgame.FeaturedGameInfo;
+import org.dc.riot.lol.rx.model.featuredgame.Participant;
+import org.dc.riot.lol.rx.model.league.LeagueDto;
+import org.dc.riot.lol.rx.model.league.LeagueEntryDto;
+import org.dc.riot.lol.rx.model.league.MiniSeriesDto;
+import org.dc.riot.lol.rx.model.match.MatchDetail;
+import org.dc.riot.lol.rx.model.match.MatchListDto;
+import org.dc.riot.lol.rx.model.match.Participant;
+import org.dc.riot.lol.rx.model.match.ParticipantIdentity;
+import org.dc.riot.lol.rx.model.match.MatchReference;
+import org.dc.riot.lol.rx.model.match.Timeline;
+import org.dc.riot.lol.rx.model.match.Team;
+import org.dc.riot.lol.rx.model.status.Service;
+import org.dc.riot.lol.rx.model.status.Shard;
+import org.dc.riot.lol.rx.model.status.ShardStatus;
+import org.dc.riot.lol.rx.model.featuredgame.FeaturedGamesDto;
+import org.dc.riot.lol.rx.model.summoner.MasteryPageDto;
+import org.dc.riot.lol.rx.model.summoner.MasteryPagesDto;
+import org.dc.riot.lol.rx.model.summoner.RunePageDto;
+import org.dc.riot.lol.rx.model.summoner.RunePagesDto;
+import org.dc.riot.lol.rx.model.summoner.RuneSlotDto;
+import org.dc.riot.lol.rx.model.summoner.SummonerDto;
+import org.dc.riot.lol.rx.model.team.MatchHistorySummaryDto;
+import org.dc.riot.lol.rx.model.team.RosterDto;
+import org.dc.riot.lol.rx.model.team.TeamDto;
+import org.dc.riot.lol.rx.model.team.TeamMemberInfoDto;
+import org.dc.riot.lol.rx.model.team.TeamStatDetailDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -215,15 +215,15 @@ public class IntegrationTests {
 		assertNotNull(dto.getMatchType());
 		assertNotNull(dto.getMatchVersion());
 		assertNotNull(dto.getParticipantIdentities());
-		MatchParticipantIdentity[] identities = dto.getParticipantIdentities();
+		ParticipantIdentity[] identities = dto.getParticipantIdentities();
 		assertNotNull(identities);
-		for (MatchParticipantIdentity mpi : identities) {
+		for (ParticipantIdentity mpi : identities) {
 			testParticipantIdentity(mpi);
 		}
 		
-		MatchParticipant[] participants = dto.getParticipants();
+		Participant[] participants = dto.getParticipants();
 		assertNotNull(participants);
-		for (MatchParticipant mp : participants) {
+		for (Participant mp : participants) {
 			testMatchParticipant(mp, timeLine);
 		}
 
@@ -233,7 +233,7 @@ public class IntegrationTests {
 		assertNotNull(dto.getSeason());
 
 		assertNotNull(dto.getTeams());
-		for (MatchTeam mt : dto.getTeams()) {
+		for (Team mt : dto.getTeams()) {
 			testMatchTeams(mt);
 		}
 		
@@ -241,11 +241,11 @@ public class IntegrationTests {
 		testMatchTimeline(dto.getTimeline());
 	}
 	
-	private void testMatchTeams(MatchTeam teams) {
+	private void testMatchTeams(Team teams) {
 		fail();
 	}
 
-	private void testMatchParticipant(MatchParticipant dto, boolean expectTimeline) {
+	private void testMatchParticipant(Participant dto, boolean expectTimeline) {
 		assertTrue(dto.getChampionId() > 0);
 		assertNotNull(dto.getHighestAchievedSeasonTier());
 		assertTrue(dto.getParticipantId() > 0);
@@ -266,11 +266,11 @@ public class IntegrationTests {
 		}
 	}
 
-	private void testParticipantIdentity(MatchParticipantIdentity dto) {
+	private void testParticipantIdentity(ParticipantIdentity dto) {
 		fail();
 	}
 	
-	private void testMatchTimeline(MatchTimeline dto) {
+	private void testMatchTimeline(Timeline dto) {
 		fail();
 	}
 
@@ -576,9 +576,9 @@ public class IntegrationTests {
 			assertNotNull(obs);
 			assertNotNull(obs.getEncryptionKey());
 			
-			FeaturedGameParticipant[] participants = gfo.getParticipants();
+			Participant[] participants = gfo.getParticipants();
 			assertTrue(participants.length > 0);
-			for (FeaturedGameParticipant p : participants) {
+			for (Participant p : participants) {
 				assertTrue(p.getChampionId() > 0);
 				assertTrue(p.getSpell1Id() > 0);
 				assertTrue(p.getSpell2Id() > 0);
@@ -779,7 +779,7 @@ public class IntegrationTests {
 		assertNotNull("Name is null", dto.getName());
 		prints.println(dto.getName());
 
-		assertNotNull("Region is null", dto.getRegion());
+		assertNotNull("Region is null " + dto.getName(), dto.getRegion());
 		prints.println(dto.getRegion());
 
 		long iconId = dto.getProfileIconId();
@@ -808,7 +808,7 @@ public class IntegrationTests {
 		assertNotNull("Dto is null", dto);
 		assertTrue("Mismatch summoner ID", dto.getSummonerId() == summonerId);
 
-		for (MasteryPage mp : dto.getPages()) {
+		for (MasteryPageDto mp : dto.getPages()) {
 			long pageId = mp.getId();
 			assertTrue("No mastery page ID", pageId > 0);
 
@@ -836,17 +836,17 @@ public class IntegrationTests {
 		long sid = dto.getSummonerId();
 		assertTrue(summonerId == sid);
 
-		RunePage[] pages = dto.getPages();
+		RunePageDto[] pages = dto.getPages();
 		assertNotNull(pages);
 		assertTrue(pages.length > 0);
 
-		for (RunePage rp : pages) {
+		for (RunePageDto rp : pages) {
 			assertTrue(rp.getId() > 0);
 			assertNotNull(rp.getName());
-			Slot[] slots = rp.getSlots();
+			RuneSlotDto[] slots = rp.getSlots();
 			assertNotNull(slots);
 
-			for (Slot s : slots) {
+			for (RuneSlotDto s : slots) {
 				long runeId = s.getRuneId();
 				assertTrue(runeId > 0);
 				assertTrue(s.getRuneSlotId() > 0);

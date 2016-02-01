@@ -1,5 +1,8 @@
 package org.dc.riot.lol.rx.model;
 
+import org.dc.riot.lol.rx.model.currentgame.CurrentGameInfo;
+import org.dc.riot.lol.rx.model.summoner.MasteryDto;
+
 /**
  * Basic mastery meta data class. This class is referred to as
  * a 'Mastery' object on the official Riot API documentation.

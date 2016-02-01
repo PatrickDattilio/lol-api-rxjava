@@ -1,22 +1,20 @@
 package org.dc.riot.lol.rx.model;
 
 /**
- * Current game observers
+ * Featured game observers
  * 
  * @author Dc
  * @since 1.0.0
  */
 public class Observer {
+
     private String encryptionKey;
 
-    public Observer() { }
-
+    /**
+     * @return Key used to decrypt the spectator grid game data for playback 
+     */
     public String getEncryptionKey() {
         return encryptionKey;
-    }
-
-    public void setEncryptionKey(String encryptionKey) {
-        this.encryptionKey = encryptionKey;
     }
 
 }

@@ -12,10 +12,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.dc.riot.lol.rx.model.ChampionMetaListDto;
-import org.dc.riot.lol.rx.model.GameDto;
-import org.dc.riot.lol.rx.model.PlayerDto;
-import org.dc.riot.lol.rx.model.RecentGamesDto;
-import org.dc.riot.lol.rx.model.SummonerDto;
+import org.dc.riot.lol.rx.model.game.GameDto;
+import org.dc.riot.lol.rx.model.game.PlayerDto;
+import org.dc.riot.lol.rx.model.game.RecentGamesDto;
+import org.dc.riot.lol.rx.model.summoner.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.ObservableFactory;
 import org.dc.riot.lol.rx.service.Region;

@@ -2,6 +2,7 @@ package org.dc.riot.lol.rx.model;
 
 /**
  * Banned champion
+ *  // TODO clean this POJO up
  * 
  * @author Dc
  * @since 1.0.0
@@ -27,6 +28,12 @@ public class BannedChampion {
         this.pickTurn = pickTurn;
     }
 
+    /**
+     * Implementation note: the {@link org.dc.riot.lol.rx.service.RiotApi.Match
+     * RiotApi.Match} interface will not set this field.
+     * 
+     * @return
+     */
     public long getTeamId() {
         return teamId;
     }

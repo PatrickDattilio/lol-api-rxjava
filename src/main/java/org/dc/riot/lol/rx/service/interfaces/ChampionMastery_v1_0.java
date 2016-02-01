@@ -2,8 +2,8 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.io.IOException;
 
-import org.dc.riot.lol.rx.model.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.PlatformId;
+import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi.ChampionMastery;
