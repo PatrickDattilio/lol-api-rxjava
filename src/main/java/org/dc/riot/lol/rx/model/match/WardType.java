@@ -1,0 +1,5 @@
+package org.dc.riot.lol.rx.model.match;
+
+public enum WardType {
+	BLUE_TRINKET, SIGHT_WARD, TEEMO_MUSHROOM, UNDEFINED, VISION_WARD, YELLOW_TRINKET, YELLOW_TRINKET_UPGRADE
+}
