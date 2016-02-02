@@ -24,7 +24,7 @@ public class SummonerDto {
     }
 
 	public void setRegion(Region region) {
-		if (region == null) {
+		if (this.region == null) {
 			this.region = region;
 		}
 	}

@@ -71,14 +71,14 @@ class League_v2_5 extends RiotApiBase implements RiotApi.League {
 	}
 
 	@Override
-	public LeagueDto getChallenger(QueueType queue) throws IOException, HttpException {
+	public LeagueDto getChallenger(QueueType.ChallengerMaster queue) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getChallenger(new LowercaseRegion(region), apiKey, queue);
 		});
 	}
 
 	@Override
-	public LeagueDto getMaster(QueueType queue) throws IOException, HttpException {
+	public LeagueDto getMaster(QueueType.ChallengerMaster queue) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getMaster(new LowercaseRegion(region), apiKey, queue);
 		});
@@ -99,9 +99,9 @@ class League_v2_5 extends RiotApiBase implements RiotApi.League {
 		Call<Map<String,LeagueDto[]>> getByTeamEntries(@Path("region") LowercaseRegion region, @Path("teamIds") CSA<String> teamIds, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v2.5/league/challenger")
-		Call<LeagueDto> getChallenger(@Path("region") LowercaseRegion region, @Query("api_key") ApiKey apiKey, @Query("type") QueueType type);
+		Call<LeagueDto> getChallenger(@Path("region") LowercaseRegion region, @Query("api_key") ApiKey apiKey, @Query("type") QueueType.ChallengerMaster type);
 
 		@GET("/api/lol/{region}/v2.5/league/master")
-		Call<LeagueDto> getMaster(@Path("region") LowercaseRegion region, @Query("api_key") ApiKey apiKey, @Query("type") QueueType type);
+		Call<LeagueDto> getMaster(@Path("region") LowercaseRegion region, @Query("api_key") ApiKey apiKey, @Query("type") QueueType.ChallengerMaster type);
 	}
 }

@@ -25,16 +25,16 @@ public class TestPrints {
 		println(new Long(l));
 	}
 	
-	public void println(long l, String tag) {
-		println(new Long(l), tag);
+	public void println(String tag, long l) {
+		println(tag, new Long(l));
 	}
 	
 	public void println(int i) {
 		println(new Integer(i));
 	}
 
-	public void println(int i, String tag) {
-		println(new Integer(i), tag);
+	public void println(String tag, int i) {
+		println(tag, new Integer(i));
 	}
 	
 	public void println(Object o) {

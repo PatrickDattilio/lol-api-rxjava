@@ -459,8 +459,8 @@ public interface RiotApi {
          * 500	Internal server error<br>
          * 503	Service unavailable
          *
-         * @param teamIds set of teams to look up
-         * @return a Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
+         * @param teamIds set of teams to look up, max length of <code>10</code>
+         * @return Map of teamId Strings to List of {@link LeagueDto} objects or <code>null</code>
          * if nothing found
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
@@ -500,7 +500,7 @@ public interface RiotApi {
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        LeagueDto getChallenger(QueueType queue) throws IOException, HttpException;
+        LeagueDto getChallenger(QueueType.ChallengerMaster queue) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v2.5/league/master<br>
@@ -517,7 +517,7 @@ public interface RiotApi {
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        LeagueDto getMaster(QueueType queue) throws IOException, HttpException;
+        LeagueDto getMaster(QueueType.ChallengerMaster queue) throws IOException, HttpException;
     }
 
     /**

@@ -13,6 +13,9 @@ public class TeamMemberInfoDto {
     private long playerId;
 
     /**
+     * Implementation note: this value may not be set by the
+     * server resulting in <code>0</code>.
+     * 
      * @return Date that team member joined team
      * specified as epoch milliseconds.
      */
