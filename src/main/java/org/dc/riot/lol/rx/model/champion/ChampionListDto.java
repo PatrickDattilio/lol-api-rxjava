@@ -6,7 +6,7 @@ package org.dc.riot.lol.rx.model.champion;
  */
 public class ChampionListDto {
 	private static long COUNT = 0;
-	public static long getCount() {
+	public static long getInstanceCount() {
 		return COUNT;
 	}
 	

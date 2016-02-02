@@ -1,6 +1,6 @@
 package org.dc.riot.lol.rx.model.summoner;
 
-import org.dc.riot.lol.rx.model.MasteryMetaDto;
+import org.dc.riot.lol.rx.model.common.Mastery;
 
 /**
  * This object contains mastery page information.
@@ -9,18 +9,26 @@ import org.dc.riot.lol.rx.model.MasteryMetaDto;
  * @since 1.0.0
  */
 public class MasteryPageDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
 
-    private MasteryMetaDto[] masteries;
+    private Mastery[] masteries;
     private long id;
     private String name;
     private boolean current;
+    
+    public MasteryPageDto() {
+    	COUNT++;
+    }
 
     /**
      * @return Collection of masteries associated with the mastery page.
      */
-    public MasteryMetaDto[] getMasteries() {
+    public Mastery[] getMasteries() {
     	if (masteries == null) {
-    		return new MasteryMetaDto[0];
+    		return new Mastery[0];
     	}
 
         return masteries;

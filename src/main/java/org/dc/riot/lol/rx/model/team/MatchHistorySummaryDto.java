@@ -9,6 +9,11 @@ import org.dc.riot.lol.rx.model.common.GameMode;
  * @since 1.0.0
  */
 public class MatchHistorySummaryDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private GameMode gameMode;
     private int mapId;
     private int assists;
@@ -20,6 +25,10 @@ public class MatchHistorySummaryDto {
     private boolean win;
     private long date;
     private int opposingTeamKills;
+    
+    public MatchHistorySummaryDto() {
+    	COUNT++;
+    }
 
     /**
      * @return Game mode.

@@ -7,6 +7,11 @@ package org.dc.riot.lol.rx.model.game;
  * @since 1.0.0
  */
 public class RawStatsDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private int assists;
     private int barracksKilled;
     private int championsKilled;
@@ -85,6 +90,10 @@ public class RawStatsDto {
     private int wardKilled;
     private int wardPlaced;
     private boolean win;
+    
+    public RawStatsDto() {
+    	COUNT++;
+    }
 
     public int getAssists() {
         return assists;

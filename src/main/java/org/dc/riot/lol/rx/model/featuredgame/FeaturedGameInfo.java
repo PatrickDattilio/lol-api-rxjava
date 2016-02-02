@@ -13,6 +13,10 @@ import org.dc.riot.lol.rx.model.common.PlatformId;
  * @since 1.0.0
  */
 public class FeaturedGameInfo {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
 
 	private BannedChampion[] bannedChampions;
 	private long gameId;
@@ -25,6 +29,10 @@ public class FeaturedGameInfo {
 	private Observer observers;
 	private FeaturedParticipant[] participants;
 	private PlatformId platformId;
+	
+	public FeaturedGameInfo() {
+		COUNT++;
+	}
 
 	/**
 	 * @return Banned champion information. 

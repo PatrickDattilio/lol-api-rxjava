@@ -3,9 +3,9 @@ package org.dc.riot.lol.rx.service.interfaces;
 import java.lang.reflect.Type;
 import java.net.Proxy;
 
-import org.dc.riot.lol.rx.model.MasteryMetaDto;
 import org.dc.riot.lol.rx.model.RangeDto;
-import org.dc.riot.lol.rx.model.RuneMetaDto;
+import org.dc.riot.lol.rx.model.common.Mastery;
+import org.dc.riot.lol.rx.model.common.Rune;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -60,19 +60,19 @@ public final class ApiFactory {
         /*
          * Deserialize inconsistencies with Mastery objects returned from the LoL API
          */
-        builder.registerTypeAdapter(MasteryMetaDto.class, new JsonDeserializer<MasteryMetaDto>() {
+        builder.registerTypeAdapter(Mastery.class, new JsonDeserializer<Mastery>() {
 
 			@Override
-			public MasteryMetaDto deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+			public Mastery deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 					throws JsonParseException {
-				MasteryMetaDto dto = new MasteryMetaDto();
+				Mastery dto = new Mastery();
 
 				JsonObject jsonObject = json.getAsJsonObject();
 				int rank = jsonObject.get("rank").getAsInt();
 				dto.setRank(rank);
 
 				long id = (jsonObject.get("id") != null) ? jsonObject.get("id").getAsLong() : jsonObject.get("masteryId").getAsLong();
-				dto.setId(id);
+				dto.setMasteryId(id);
 				
 				return dto;
 			}
@@ -81,11 +81,11 @@ public final class ApiFactory {
         /*
          * Deserialize inconsistencies with Rune objects returned from the LoL API
          */
-        builder.registerTypeAdapter(RuneMetaDto.class, new JsonDeserializer<RuneMetaDto>() {
+        builder.registerTypeAdapter(Rune.class, new JsonDeserializer<Rune>() {
 			@Override
-			public RuneMetaDto deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+			public Rune deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 					throws JsonParseException {
-				RuneMetaDto dto = new RuneMetaDto();
+				Rune dto = new Rune();
 				
 				JsonObject jsonObject = json.getAsJsonObject();
 				long runeId = jsonObject.get("runeId").getAsLong();

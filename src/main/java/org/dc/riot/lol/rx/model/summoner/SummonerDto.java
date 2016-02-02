@@ -9,12 +9,21 @@ import org.dc.riot.lol.rx.service.Region;
  * @since 1.0.0
  */
 public class SummonerDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private long id;
     private String name;
     private long profileIconId;
     private int summonerLevel;
     private long revisionDate;
     private Region region;
+    
+    public SummonerDto() {
+    	COUNT++;
+    }
 
     /**
      * @return Region summoner is registered in.
@@ -30,7 +39,7 @@ public class SummonerDto {
 	}
 
     /**
-     * @return 	Summoner ID.
+     * @return Summoner ID.
      */
     public long getId() {
         return id;

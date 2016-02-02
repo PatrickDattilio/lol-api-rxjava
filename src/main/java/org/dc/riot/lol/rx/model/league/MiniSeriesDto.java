@@ -7,10 +7,19 @@ package org.dc.riot.lol.rx.model.league;
  * @since 1.0.0
  */
 public class MiniSeriesDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private String progress;
     private int target;
     private int losses;
     private int wins;
+    
+    public MiniSeriesDto() {
+    	COUNT++;
+    }
 
     /**
      * @return String showing the current, sequential

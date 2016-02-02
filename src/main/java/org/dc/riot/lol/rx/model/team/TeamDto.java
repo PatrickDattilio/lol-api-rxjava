@@ -7,6 +7,11 @@ package org.dc.riot.lol.rx.model.team;
  * @since 1.0.0
  */
 public class TeamDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private long secondLastJoinDate;
     private long lastJoinDate;
     private String fullId;
@@ -21,6 +26,10 @@ public class TeamDto {
     private long lastGameDate;
     private long modifyDate;
     private long createDate;
+    
+    public TeamDto() {
+    	COUNT++;
+    }
 
     /**
      * @return Date that second to last member

@@ -7,8 +7,17 @@ package org.dc.riot.lol.rx.model.summoner;
  * @since 1.0.0
  */
 public class MasteryPagesDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private long summonerId;
     private MasteryPageDto[] pages;
+    
+    public MasteryPagesDto() {
+    	COUNT++;
+    }
 
     /**
      * @return Summoner ID.

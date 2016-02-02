@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.game;
 
 /**
- * Player roles, not sure this is really used much
+ * Player roles, not sure this is really used much.
  * 
  * @author Dc
  * @since 1.0.0

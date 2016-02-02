@@ -7,34 +7,43 @@ package org.dc.riot.lol.rx.model.status;
  * @since 1.0.0
  */
 public class Incident {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private boolean active;
     private String createdAt;
     private long id;
     private Message[] updates;
 
+    public Incident() {
+    	COUNT++;
+    }
+    
     /**
-     * @return The updates
+     * @return The updates.
      */
     public Message[] getUpdates() {
         return updates;
     }
 
     /**
-     * @return The ID
+     * @return The ID.
      */
     public long getId() {
         return id;
     }
 
     /**
-     * @return The creation time
+     * @return The creation time.
      */
     public String getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * @return Is active
+     * @return Is active.
      */
     public boolean isActive() {
         return active;

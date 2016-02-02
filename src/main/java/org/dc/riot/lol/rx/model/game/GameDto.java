@@ -4,10 +4,17 @@ import org.dc.riot.lol.rx.model.common.GameMode;
 import org.dc.riot.lol.rx.model.common.GameType;
 
 /**
+ * This object contains game information.
+ * 
  * @author Dc
  * @since 1.0.0
  */
 public class GameDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private PlayerDto[] fellowPlayers;
     private GameType gameType;
     private RawStatsDto stats;
@@ -23,6 +30,10 @@ public class GameDto {
     private GameSubType subType;
     private long createDate;
     private int championId;
+
+    public GameDto() {
+    	COUNT++;
+    }
 
     /**
      * @return Other players associated with the game.

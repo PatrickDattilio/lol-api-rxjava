@@ -7,13 +7,22 @@ package org.dc.riot.lol.rx.model.featuredgame;
  * @since 1.0.0
  */
 public class FeaturedGameParticipant {
-	private boolean bot;	// Flag indicating whether or not this participant is a bot
-	private long championId;	// The ID of the champion played by this participant
-	private long profileIconId;	// The ID of the profile icon used by this participant
-	private long spell1Id;	// The ID of the first summoner spell used by this participant
-	private long spell2Id;	// The ID of the second summoner spell used by this participant
-	private String summonerName;	// The summoner name of this participant
-	private long teamId;	// The team ID of this participant, indicating the participant's team
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
+	private boolean bot;
+	private long championId;
+	private long profileIconId;
+	private long spell1Id;
+	private long spell2Id;
+	private String summonerName;
+	private long teamId;
+	
+	public FeaturedGameParticipant() {
+		COUNT++;
+	}
 
 	/**
 	 * @return Flag indicating whether or not this

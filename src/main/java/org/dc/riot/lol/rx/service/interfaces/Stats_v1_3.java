@@ -2,9 +2,9 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.io.IOException;
 
-import org.dc.riot.lol.rx.model.PlayerStatsSummaryListDto;
-import org.dc.riot.lol.rx.model.RankedStatsDto;
 import org.dc.riot.lol.rx.model.common.Season;
+import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryListDto;
+import org.dc.riot.lol.rx.model.stats.RankedStatsDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;

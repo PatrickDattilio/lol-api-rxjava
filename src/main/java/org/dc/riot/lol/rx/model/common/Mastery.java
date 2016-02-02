@@ -25,11 +25,33 @@ public class Mastery {
 	public long getMasteryId() {
 		return masteryId;
 	}
+	
+	/**
+	 * One time setting for custom deserialize.
+	 * 
+	 * @param masteryId The mastery ID.
+	 */
+	public void setMasteryId(long masteryId) {
+		if (this.masteryId == 0) {
+			this.masteryId = masteryId;
+		}
+	}
 
 	/**
 	 * @return The number of points put into this mastery by the user.
 	 */
 	public int getRank() {
 		return rank;
+	}
+
+	/**
+	 * One time setting for custom deserialize.
+	 * 
+	 * @param rank The rank.
+	 */
+	public void setRank(int rank) {
+		if (this.rank == 0) {
+			this.rank = rank;
+		}
 	} 
 }

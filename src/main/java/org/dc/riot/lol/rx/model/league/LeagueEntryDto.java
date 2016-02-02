@@ -8,6 +8,11 @@ package org.dc.riot.lol.rx.model.league;
  * @since 1.0.0
  */
 public class LeagueEntryDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private int leaguePoints;
     private boolean isFreshBlood;
     private boolean isHotStreak;
@@ -19,6 +24,10 @@ public class LeagueEntryDto {
     private String playerOrTeamId;
     private int wins;
     private MiniSeriesDto miniSeries;
+    
+    public LeagueEntryDto() {
+    	COUNT++;
+    }
 
     /**
      * @return The league points of the participant.

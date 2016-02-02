@@ -1,6 +1,8 @@
 package org.dc.riot.lol.rx.model.game;
 
 /**
+ * Game sub types.
+ * 
  * @author Dc
  * @since 1.0.0
  */

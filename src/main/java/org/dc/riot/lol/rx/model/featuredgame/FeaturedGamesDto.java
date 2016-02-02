@@ -7,8 +7,17 @@ package org.dc.riot.lol.rx.model.featuredgame;
  * @since 1.0.0
  */
 public class FeaturedGamesDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private long clientRefreshInterval;
     private FeaturedGameInfo[] gameList;
+    
+    public FeaturedGamesDto() {
+    	COUNT++;
+    }
 
     /**
      * @return The suggested interval to wait before

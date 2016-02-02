@@ -10,11 +10,20 @@ import org.dc.riot.lol.rx.model.common.Tier;
  * @since 1.0.0
  */
 public class LeagueDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private String name;
     private LeagueEntryDto[] entries;
     private QueueType queue;
     private Tier tier;
     private String participantId;
+    
+    public LeagueDto() {
+    	COUNT++;
+    }
 
     /**
      * @return This name is an internal place-holder name only. Display and

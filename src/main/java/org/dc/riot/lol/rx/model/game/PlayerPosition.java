@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.game;
 
 /**
- * Player position used by the {@link RawStatsDto}
+ * Player position used by the {@link RawStatsDto}.
  * 
  * @author Dc
  * @since 1.0.0

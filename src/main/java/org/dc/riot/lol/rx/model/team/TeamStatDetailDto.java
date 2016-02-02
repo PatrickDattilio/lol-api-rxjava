@@ -7,10 +7,19 @@ package org.dc.riot.lol.rx.model.team;
  * @since 1.0.0
  */
 public class TeamStatDetailDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private int wins;
     private int losses;
     private int averageGamesPlayed;
     private String teamStatType;
+
+    public TeamStatDetailDto() {
+    	COUNT++;
+    }
 
     /**
      * @return This team's wins.

@@ -4,15 +4,11 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.ChampionMetaDto;
-import org.dc.riot.lol.rx.model.ChampionMetaListDto;
 import org.dc.riot.lol.rx.model.ItemDto;
 import org.dc.riot.lol.rx.model.ItemListDto;
 import org.dc.riot.lol.rx.model.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.MapDataDto;
 import org.dc.riot.lol.rx.model.MasteryListDto;
-import org.dc.riot.lol.rx.model.PlayerStatsSummaryListDto;
-import org.dc.riot.lol.rx.model.RankedStatsDto;
 import org.dc.riot.lol.rx.model.RealmDto;
 import org.dc.riot.lol.rx.model.RuneDto;
 import org.dc.riot.lol.rx.model.RuneListDto;
@@ -21,6 +17,7 @@ import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.champion.ChampionDto;
 import org.dc.riot.lol.rx.model.champion.ChampionListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
+import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.model.common.QueueType;
 import org.dc.riot.lol.rx.model.common.RankedQueue;
 import org.dc.riot.lol.rx.model.common.Season;
@@ -31,9 +28,10 @@ import org.dc.riot.lol.rx.model.league.LeagueDto;
 import org.dc.riot.lol.rx.model.league.LeagueEntryDto;
 import org.dc.riot.lol.rx.model.match.MatchDetail;
 import org.dc.riot.lol.rx.model.match.MatchListDto;
+import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryListDto;
+import org.dc.riot.lol.rx.model.stats.RankedStatsDto;
 import org.dc.riot.lol.rx.model.status.Shard;
 import org.dc.riot.lol.rx.model.status.ShardStatus;
-import org.dc.riot.lol.rx.model.summoner.MasteryDto;
 import org.dc.riot.lol.rx.model.summoner.MasteryPagesDto;
 import org.dc.riot.lol.rx.model.summoner.RunePagesDto;
 import org.dc.riot.lol.rx.model.summoner.SummonerDto;
@@ -180,11 +178,11 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param freeToPlay fetch only free to play champions
-         * @return {@link ChampionMetaListDto}
+         * @return {@link ChampionListDto}
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        ChampionMetaListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
+        ChampionListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v1.2/champion/{id}<br>
@@ -196,11 +194,11 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param championId the champ id
-         * @return {@link ChampionMetaDto} single champion dto
+         * @return {@link ChampionDto} single champion dto
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        ChampionMetaDto getChampion(long championId) throws IOException, HttpException;
+        ChampionDto getChampion(long championId) throws IOException, HttpException;
     }
     
     /**
@@ -711,11 +709,11 @@ public interface RiotApi {
          * @param masteryData Tags to return additional data. Only id, name, and description are
          *                    returned by default if this parameter isn't specified. To return all
          *                    additional data, use the tag 'all'.
-         * @return {@link MasteryListDto} filled in according to tags
+         * @return {@link Mastery} filled in according to tags
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        MasteryDto getMastery(long id, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException;
+        Mastery getMastery(long id, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/realm<br>

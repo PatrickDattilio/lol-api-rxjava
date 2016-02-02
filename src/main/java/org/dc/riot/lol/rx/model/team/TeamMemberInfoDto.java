@@ -7,10 +7,19 @@ package org.dc.riot.lol.rx.model.team;
  * @since 1.0.0
  */
 public class TeamMemberInfoDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private long joinDate;
     private long inviteDate;
     private String status;
     private long playerId;
+    
+    public TeamMemberInfoDto() {
+    	COUNT++;
+    }
 
     /**
      * Implementation note: this value may not be set by the

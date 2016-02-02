@@ -1,13 +1,17 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.stats;
 
 /**
  * Used by the Stats API.
- * Null values indicated by -1.
  * 
  * @author Dc
  * @since 1.0.0
  */
 public class AggregatedStatsDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private int averageAssists; // Dominion only.
     private int averageChampionsKilled; // Dominion only.
     private int averageCombatPlayerScore;   // Dominion only.
@@ -64,6 +68,10 @@ public class AggregatedStatsDto {
     private int totalTripleKills = -1;
     private int totalTurretsKilled = -1;
     private int totalUnrealKills = -1;
+
+    public AggregatedStatsDto() {
+    	COUNT++;
+    }
 
     public int getAverageAssists() {
         return averageAssists;

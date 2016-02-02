@@ -14,7 +14,7 @@ import org.dc.riot.lol.rx.model.SummonerSpellDto;
 import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.champion.ChampionDto;
 import org.dc.riot.lol.rx.model.champion.ChampionListDto;
-import org.dc.riot.lol.rx.model.summoner.MasteryDto;
+import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
@@ -136,7 +136,7 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 	}
 
 	@Override
-	public MasteryDto getMastery(long masteryId, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException {
+	public Mastery getMastery(long masteryId, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getMastery(new LowercaseRegion(region), masteryId, apiKey, locale, version, new CSA<MasteryDataTag>(masteryData));
 		});
@@ -229,7 +229,7 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 				@Query("masteryListData") CSA<MasteryListDataTag> masteryListData);
 		
 		@GET("/api/lol/static-data/{region}/v1.2/mastery/{id}")
-		Call<MasteryDto> getMastery(@Path("region") LowercaseRegion region, @Path("id") long masteryId,
+		Call<Mastery> getMastery(@Path("region") LowercaseRegion region, @Path("id") long masteryId,
 				@Query("api_key") ApiKey apiKey,
 				@Query("locale") String locale, @Query("version") String version,
 				@Query("masteryData") CSA<MasteryDataTag> masteryData);
