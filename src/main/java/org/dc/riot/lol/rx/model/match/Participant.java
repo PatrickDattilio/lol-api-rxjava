@@ -11,6 +11,11 @@ import org.dc.riot.lol.rx.model.common.Tier;
  * @since 1.0.0
  */
 public class Participant {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private int championId;
 	private Tier highestAchievedSeasonTier;
 	private Mastery[] masteries;
@@ -21,6 +26,10 @@ public class Participant {
 	private ParticipantStats stats;
 	private int teamId;
 	private ParticipantTimeline timeline;
+	
+	public Participant() {
+		COUNT++;
+	}
 
 	/**
 	 * @return Champion ID.

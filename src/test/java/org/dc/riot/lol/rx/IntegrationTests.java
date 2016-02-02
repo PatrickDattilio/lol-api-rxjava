@@ -50,6 +50,9 @@ import org.dc.riot.lol.rx.model.match.ParticipantFrame;
 import org.dc.riot.lol.rx.model.match.ParticipantIdentity;
 import org.dc.riot.lol.rx.model.match.ParticipantStats;
 import org.dc.riot.lol.rx.model.match.ParticipantTimeline;
+import org.dc.riot.lol.rx.model.match.ParticipantTimelineData;
+import org.dc.riot.lol.rx.model.match.Player;
+import org.dc.riot.lol.rx.model.match.Position;
 import org.dc.riot.lol.rx.model.match.Team;
 import org.dc.riot.lol.rx.model.match.Timeline;
 import org.dc.riot.lol.rx.model.status.Service;
@@ -73,6 +76,7 @@ import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -213,9 +217,26 @@ public class IntegrationTests {
 			assertNotNull(matchDetail);
 			testMatchDetail(matchDetail, true);
 
-			MatchDetail noTimelineDetail = matchInterface.getMatch(matchId, false);
+			boolean includeTimeline = true;
+			MatchDetail noTimelineDetail = matchInterface.getMatch(matchId, includeTimeline);
 			assertNotNull(noTimelineDetail);
-			testMatchDetail(noTimelineDetail, false);
+			testMatchDetail(noTimelineDetail, includeTimeline);
+
+			assertTrue(Event.getCount() > 0);
+			assertTrue(Frame.getCount() > 0);
+			assertTrue(MatchDetail.getCount() > 0);
+			assertTrue(MatchListDto.getCount() > 0);
+			assertTrue(MatchReference.getCount() > 0);
+			assertTrue(Participant.getCount() > 0);
+			assertTrue(ParticipantFrame.getCount() > 0);
+			assertTrue(ParticipantIdentity.getCount() > 0);
+			assertTrue(ParticipantStats.getCount() > 0);
+			assertTrue(ParticipantTimeline.getCount() > 0);
+			assertTrue(ParticipantTimelineData.getCount() > 0);
+			assertTrue(Player.getCount() > 0);
+			assertTrue(Position.getCount() > 0);
+			assertTrue(Team.getCount() > 0);
+			assertTrue(Timeline.getCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -260,8 +281,10 @@ public class IntegrationTests {
 			testTeams(mt);
 		}
 
-		assertNotNull(dto.getTimeline());
-		testTimeline(dto.getTimeline());
+		if (timeLine) {
+			assertNotNull(dto.getTimeline());
+			testTimeline(dto.getTimeline());
+		}
 	}
 
 	private void testTeams(Team dto) {
@@ -334,7 +357,7 @@ public class IntegrationTests {
 //		assertTrue(dto.getCurrentGold() > 0);
 		assertTrue(dto.getLevel() > 0);
 		assertTrue(dto.getParticipantId() > 0);
-		assertNotNull(dto.getPosition());
+//		assertNotNull(dto.getPosition());
 //		assertTrue(dto.getTotalGold() > 0);
 	}
 
@@ -1142,6 +1165,13 @@ public class IntegrationTests {
 		}
 
 		return ids;
+	}
+	
+	@After
+	public void testPojoCounts() {
+		// enumerate pojos and see if one of everything got built
+		// Match and MatchList POJOs
+		
 	}
 
 }
