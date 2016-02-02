@@ -59,7 +59,11 @@ import org.dc.riot.lol.rx.model.match.Player;
 import org.dc.riot.lol.rx.model.match.Position;
 import org.dc.riot.lol.rx.model.match.Team;
 import org.dc.riot.lol.rx.model.match.Timeline;
+import org.dc.riot.lol.rx.model.stats.AggregatedStatsDto;
+import org.dc.riot.lol.rx.model.stats.ChampionStatsDto;
+import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryListDto;
+import org.dc.riot.lol.rx.model.stats.PlayerStatsType;
 import org.dc.riot.lol.rx.model.stats.RankedStatsDto;
 import org.dc.riot.lol.rx.model.status.Incident;
 import org.dc.riot.lol.rx.model.status.Message;
@@ -166,10 +170,16 @@ public class IntegrationTests {
 				assertNotNull(summaryDto);
 				testSummaryDto(summaryDto);
 				
-				summaryDto = statsInterface.getSummary(summonerId, Season.PRESEASON2016);
+				summaryDto = statsInterface.getSummary(summonerId, Season.SEASON2015);
 				assertNotNull(summaryDto);
 				testSummaryDto(summaryDto);
 			}
+			
+			assertTrue(AggregatedStatsDto.getInstanceCount() > 0);
+			assertTrue(ChampionStatsDto.getInstanceCount() > 0);
+			assertTrue(PlayerStatsSummaryDto.getInstanceCount() > 0);
+			assertTrue(PlayerStatsSummaryListDto.getInstanceCount() > 0);
+			assertTrue(RankedStatsDto.getInstanceCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -184,11 +194,75 @@ public class IntegrationTests {
 	}
 	
 	private void testSummaryDto(PlayerStatsSummaryListDto dto) {
-		fail();
+		assertTrue(dto.getSummonerId() > 0);
+		PlayerStatsSummaryDto[] listDto = dto.getPlayerStatSummaries();
+		if (listDto.length == 0) {
+			prints.println("WARNING", "Empty player stats summaries");
+		}
+
+		for (PlayerStatsSummaryDto statDto : listDto) {
+			testPlayerStatSummaryDto(statDto);
+		}
+	}
+	
+	private void testPlayerStatSummaryDto(PlayerStatsSummaryDto dto) {
+		assertNotNull(dto.getPlayerStatSummaryType());
+		AggregatedStatsDto aggDto = dto.getAggregatedStats();
+		assertNotNull(aggDto);
+		testAggregatedStatsDto(aggDto, dto.getPlayerStatSummaryType());
+	}
+	
+	private void testAggregatedStatsDto(AggregatedStatsDto dto, PlayerStatsType playerStatsType) {
+//		assertTrue(dto.getMaxTimePlayed() > 0);
+//		assertTrue(dto.getTotalSessionsPlayed() > 0);
+//		assertTrue(dto.getTotalGoldEarned() > 0);
+//		assertTrue(dto.getMostChampionKillsPerSession() > 0);
+
+		if (playerStatsType == PlayerStatsType.OdinUnranked) {
+			prints.println("Dominion scores");
+			prints.println(dto.getAverageAssists());
+			prints.println(dto.getAverageChampionsKilled());
+			prints.println(dto.getAverageCombatPlayerScore());
+			prints.println(dto.getAverageNodeCapture());
+			prints.println(dto.getAverageNodeCaptureAssist());
+			prints.println(dto.getAverageNodeNeutralize());
+			prints.println(dto.getAverageNodeNeutralizeAssist());
+			prints.println(dto.getAverageNumDeaths());
+			prints.println(dto.getAverageObjectivePlayerScore());
+			prints.println(dto.getAverageTeamObjective());
+			prints.println(dto.getAverageTotalPlayerScore());
+			prints.println(dto.getMaxAssists());
+			prints.println(dto.getMaxChampionsKilled());
+			prints.println(dto.getMaxCombatPlayerScore());
+			prints.println(dto.getMaxNodeCapture());
+			prints.println(dto.getMaxNodeCaptureAssist());
+			prints.println(dto.getMaxNodeNeutralize());
+			prints.println(dto.getMaxNodeNeutralizeAssist());
+			prints.println(dto.getMaxObjectivePlayerScore());
+			prints.println(dto.getMaxTeamObjective());
+		}
 	}
 	
 	private void testRankedStatsDto(RankedStatsDto dto) {
-		fail();
+		if (!dto.isValid) {
+			prints.println("WARNING", "Invalid ranked stats DTO");
+			return;
+		}
+
+		assertTrue(dto.getModifyDate() > 0);
+		assertTrue(dto.getSummonerId() > 0);
+
+		ChampionStatsDto[] champDto = dto.getChampions();
+		assertTrue(champDto.length > 0);
+		for (ChampionStatsDto championDto : champDto) {
+			testChampionStatsDto(championDto);
+		}
+	}
+	
+	private void testChampionStatsDto(ChampionStatsDto dto) {
+		AggregatedStatsDto aggDto = dto.getStats();
+		assertNotNull(aggDto);
+		testAggregatedStatsDto(aggDto, null);
 	}
 	
 	@Test
@@ -331,7 +405,7 @@ public class IntegrationTests {
 			Map<String,SummonerDto> summonerMapDto = summonerInterface.getByNames("HuskarDc");
 			SummonerDto summonerDto = summonerMapDto.get("huskardc");
 			long summonerId = summonerDto.getId();
-			MatchListDto matchListDto = matchlistInterface.getMatchList(summonerId, null, new RankedQueue[] {RankedQueue.RANKED_SOLO_5x5}, new Season[] {Season.PRESEASON2016}, -1, -1,  -1,  -1);
+			MatchListDto matchListDto = matchlistInterface.getMatchList(summonerId, null, new RankedQueue[] {RankedQueue.RANKED_SOLO_5x5}, new Season[] {Season.SEASON2016}, -1, -1,  -1,  -1);
 			assertNotNull(matchListDto);
 			long matchId = testMatchListDto(matchListDto, false);
 

@@ -246,10 +246,10 @@ public final class ApiFactory {
     public RiotApi.Stats newStatsInterface(Region region, boolean autoRateControl) {
 		RiotApi.Stats api = null;
 	
-    	if (statsVersion >= 1.3) {
+    	if (statsVersion >= 1.3f) {
     		api = new Stats_v1_3(apiKey, region);
     	} else {
-    		throw new InvalidVersionException("Lowest supported StaticData version is 1.2");
+    		throw new InvalidVersionException("Lowest supported StaticData version is 1.3");
     	}
     	
 		completeBuild(RiotApi.Stats.getSupportedRegions(api.getVersion()), region, api, autoRateControl);

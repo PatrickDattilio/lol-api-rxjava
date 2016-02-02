@@ -29,7 +29,7 @@ class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 		super(apiKey, region);
 
 		Retrofit ra = new Retrofit.Builder()
-				.baseUrl("https://" + region.toString().toLowerCase() + ".api.pvp.net")
+				.baseUrl("https://" + new LowercaseRegion(region) + ".api.pvp.net")
 				.addConverterFactory(GsonConverterFactory.create(ApiFactory.getGson()))
 				.client(client)
 				.build();
@@ -44,25 +44,27 @@ class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 
 	@Override
 	public RankedStatsDto getRanked(long summonerId, Season season) throws IOException, HttpException {
+		RankedStatsDto noRanked = new RankedStatsDto();
+		noRanked.isValid = false;
 		return RetrofitCaller.processCall(() -> {
-			return inter.getRanked(region, summonerId, season, apiKey);
-		});
+			return inter.getRanked(new LowercaseRegion(region), summonerId, season, apiKey);
+		}, noRanked, 404);
 	}
 
 	@Override
 	public PlayerStatsSummaryListDto getSummary(long summonerId, Season season) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
-			return inter.getSummary(region, summonerId, season, apiKey);
+			return inter.getSummary(new LowercaseRegion(region), summonerId, season, apiKey);
 		});
 	}
 	
 	private interface Interface {
 
 		@GET("/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked")
-		public Call<RankedStatsDto> getRanked(@Path("region") Region region, @Path("summonerId") long summonerId, Season season, @Query("api_key") ApiKey apiKey);
+		public Call<RankedStatsDto> getRanked(@Path("region") LowercaseRegion region, @Path("summonerId") long summonerId, @Query("season") Season season, @Query("api_key") ApiKey apiKey);
 
 		@GET("/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary")
-		public Call<PlayerStatsSummaryListDto> getSummary(@Path("region") Region region, @Path("summonerId") long summonerId, Season season, @Query("api_key") ApiKey apiKey);
+		public Call<PlayerStatsSummaryListDto> getSummary(@Path("region") LowercaseRegion region, @Path("summonerId") long summonerId, @Query("season") Season season, @Query("api_key") ApiKey apiKey);
 	}
 
 }

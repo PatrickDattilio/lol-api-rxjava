@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.stats;
 
 /**
- * Used by the Stats API.
+ * This object contains aggregated stat information.
  * 
  * @author Dc
  * @since 1.0.0
@@ -12,516 +12,408 @@ public class AggregatedStatsDto {
 		return COUNT;
 	}
 
-    private int averageAssists; // Dominion only.
-    private int averageChampionsKilled; // Dominion only.
-    private int averageCombatPlayerScore;   // Dominion only.
-    private int averageNodeCapture; // Dominion only.
-    private int averageNodeCaptureAssist;   // Dominion only.
-    private int averageNodeNeutralize;  // Dominion only.
-    private int averageNodeNeutralizeAssist;    // Dominion only.
-    private int averageNumDeaths;    //	Dominion only.
-    private int averageObjectivePlayerScore;    // Dominion only.
-    private int averageTeamObjective;   // Dominion only.
-    private int averageTotalPlayerScore;    //	int	Dominion only.
+    private int averageAssists;
+    private int averageChampionsKilled;
+    private int averageCombatPlayerScore;
+    private int averageNodeCapture;
+    private int averageNodeCaptureAssist;
+    private int averageNodeNeutralize;
+    private int averageNodeNeutralizeAssist;
+    private int averageNumDeaths;
+    private int averageObjectivePlayerScore;
+    private int averageTeamObjective;
+    private int averageTotalPlayerScore;
     private int botGamesPlayed;
     private int killingSpree;
-    private int maxAssists;     // Dominion only.
+    private int maxAssists;
     private int maxChampionsKilled;
-    private int maxCombatPlayerScore;   // Dominion only.
+    private int maxCombatPlayerScore;
     private int maxLargestCriticalStrike;
-    private int maxLargestKillingSpree = -1;
-    private int maxNodeCapture = -1;    // Dominion only.
-    private int maxNodeCaptureAssist = -1;  // Dominion only.
-    private int maxNodeNeutralize = -1; // Dominion only.
-    private int maxNodeNeutralizeAssist = -1;   // Dominion only.
-    private int maxNumDeaths = -1;  // Only returned for ranked statistics.
-    private int maxObjectivePlayerScore = -1;   // Dominion only.
-    private int maxTeamObjective = -1;  // Dominion only.
-    private int maxTimePlayed = -1;
-    private int maxTimeSpentLiving = -1;
-    private int maxTotalPlayerScore = -1;   // Dominion only.
-    private int mostChampionKillsPerSession = -1;
-    private int mostSpellsCast = -1;
-    private int normalGamesPlayed = -1;
-    private int rankedPremadeGamesPlayed = -1;
-    private int rankedSoloGamesPlayed = -1;
-    private int totalAssists = -1;
-    private int totalChampionKills = -1;
-    private int totalDamageDealt = -1;
-    private int totalDamageTaken = -1;
-    private int totalDeathsPerSession = -1; // Only returned for ranked statistics.
-    private int totalDoubleKills = -1;
-    private int totalFirstBlood = -1;
-    private int totalGoldEarned = -1;
-    private int totalHeal = -1;
-    private int totalMagicDamageDealt = -1;
-    private int totalMinionKills = -1;
-    private int totalNeutralMinionsKilled = -1;
-    private int totalNodeCapture = -1;  // Dominion only.
-    private int totalNodeNeutralize = -1;   // Dominion only.
-    private int totalPentaKills = -1;
-    private int totalPhysicalDamageDealt = -1;
-    private int totalQuadraKills = -1;
-    private int totalSessionsLost = -1;
-    private int totalSessionsPlayed = -1;
-    private int totalSessionsWon = -1;
-    private int totalTripleKills = -1;
-    private int totalTurretsKilled = -1;
-    private int totalUnrealKills = -1;
+    private int maxLargestKillingSpree;
+    private int maxNodeCapture;
+    private int maxNodeCaptureAssist;
+    private int maxNodeNeutralize;
+    private int maxNodeNeutralizeAssist;
+    private int maxNumDeaths;
+    private int maxObjectivePlayerScore;
+    private int maxTeamObjective;
+    private int maxTimePlayed;
+    private int maxTimeSpentLiving;
+    private int maxTotalPlayerScore;
+    private int mostChampionKillsPerSession;
+    private int mostSpellsCast;
+    private int normalGamesPlayed;
+    private int rankedPremadeGamesPlayed;
+    private int rankedSoloGamesPlayed;
+    private int totalAssists;
+    private int totalChampionKills;
+    private int totalDamageDealt;
+    private int totalDamageTaken;
+    private int totalDeathsPerSession;
+    private int totalDoubleKills;
+    private int totalFirstBlood;
+    private int totalGoldEarned;
+    private int totalHeal;
+    private int totalMagicDamageDealt;
+    private int totalMinionKills;
+    private int totalNeutralMinionsKilled;
+    private int totalNodeCapture;  // Dominion only.
+    private int totalNodeNeutralize;   // Dominion only.
+    private int totalPentaKills;
+    private int totalPhysicalDamageDealt;
+    private int totalQuadraKills;
+    private int totalSessionsLost;
+    private int totalSessionsPlayed;
+    private int totalSessionsWon;
+    private int totalTripleKills;
+    private int totalTurretsKilled;
+    private int totalUnrealKills;
 
     public AggregatedStatsDto() {
     	COUNT++;
     }
 
+    /**
+     * Dominion only.
+     * 
+     * @return Average assists.
+     */
     public int getAverageAssists() {
         return averageAssists;
     }
 
-    public void setAverageAssists(int averageAssists) {
-        this.averageAssists = averageAssists;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average champions killed.
+     */
     public int getAverageChampionsKilled() {
         return averageChampionsKilled;
     }
 
-    public void setAverageChampionsKilled(int averageChampionsKilled) {
-        this.averageChampionsKilled = averageChampionsKilled;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average combat player score.
+     */
     public int getAverageCombatPlayerScore() {
         return averageCombatPlayerScore;
     }
 
-    public void setAverageCombatPlayerScore(int averageCombatPlayerScore) {
-        this.averageCombatPlayerScore = averageCombatPlayerScore;
-    }
-
     /**
-     * Dominion only
-     * @return average node capture
+     * Dominion only.
+     * 
+     * @return Average node captures.
      */
     public int getAverageNodeCapture() {
         return averageNodeCapture;
     }
 
-    public void setAverageNodeCapture(int averageNodeCapture) {
-        this.averageNodeCapture = averageNodeCapture;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average node capture assists.
+     */
     public int getAverageNodeCaptureAssist() {
         return averageNodeCaptureAssist;
     }
 
-    public void setAverageNodeCaptureAssist(int averageNodeCaptureAssist) {
-        this.averageNodeCaptureAssist = averageNodeCaptureAssist;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average nodes neutralized.
+     */
     public int getAverageNodeNeutralize() {
         return averageNodeNeutralize;
     }
 
-    public void setAverageNodeNeutralize(int averageNodeNeutralize) {
-        this.averageNodeNeutralize = averageNodeNeutralize;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average node neutralize assists.
+     */
     public int getAverageNodeNeutralizeAssist() {
         return averageNodeNeutralizeAssist;
     }
 
-    public void setAverageNodeNeutralizeAssist(int averageNodeNeutralizeAssist) {
-        this.averageNodeNeutralizeAssist = averageNodeNeutralizeAssist;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average deaths.
+     */
     public int getAverageNumDeaths() {
         return averageNumDeaths;
     }
 
-    public void setAverageNumDeaths(int averageNumDeaths) {
-        this.averageNumDeaths = averageNumDeaths;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average objective player score.
+     */
     public int getAverageObjectivePlayerScore() {
         return averageObjectivePlayerScore;
     }
 
-    public void setAverageObjectivePlayerScore(int averageObjectivePlayerScore) {
-        this.averageObjectivePlayerScore = averageObjectivePlayerScore;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average team objective.
+     */
     public int getAverageTeamObjective() {
         return averageTeamObjective;
     }
 
-    public void setAverageTeamObjective(int averageTeamObjective) {
-        this.averageTeamObjective = averageTeamObjective;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Average total player score.
+     */
     public int getAverageTotalPlayerScore() {
         return averageTotalPlayerScore;
-    }
-
-    public void setAverageTotalPlayerScore(int averageTotalPlayerScore) {
-        this.averageTotalPlayerScore = averageTotalPlayerScore;
     }
 
     public int getBotGamesPlayed() {
         return botGamesPlayed;
     }
 
-    public void setBotGamesPlayed(int botGamesPlayed) {
-        this.botGamesPlayed = botGamesPlayed;
-    }
-
     public int getKillingSpree() {
         return killingSpree;
     }
 
-    public void setKillingSpree(int killingSpree) {
-        this.killingSpree = killingSpree;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max assists.
+     */
     public int getMaxAssists() {
         return maxAssists;
-    }
-
-    public void setMaxAssists(int maxAssists) {
-        this.maxAssists = maxAssists;
     }
 
     public int getMaxChampionsKilled() {
         return maxChampionsKilled;
     }
 
-    public void setMaxChampionsKilled(int maxChampionsKilled) {
-        this.maxChampionsKilled = maxChampionsKilled;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max combat player score.
+     */
     public int getMaxCombatPlayerScore() {
         return maxCombatPlayerScore;
-    }
-
-    public void setMaxCombatPlayerScore(int maxCombatPlayerScore) {
-        this.maxCombatPlayerScore = maxCombatPlayerScore;
     }
 
     public int getMaxLargestCriticalStrike() {
         return maxLargestCriticalStrike;
     }
 
-    public void setMaxLargestCriticalStrike(int maxLargestCriticalStrike) {
-        this.maxLargestCriticalStrike = maxLargestCriticalStrike;
-    }
-
     public int getMaxLargestKillingSpree() {
         return maxLargestKillingSpree;
     }
 
-    public void setMaxLargestKillingSpree(int maxLargestKillingSpree) {
-        this.maxLargestKillingSpree = maxLargestKillingSpree;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max node captures.
+     */
     public int getMaxNodeCapture() {
         return maxNodeCapture;
     }
 
-    public void setMaxNodeCapture(int maxNodeCapture) {
-        this.maxNodeCapture = maxNodeCapture;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max node capture assists.
+     */
     public int getMaxNodeCaptureAssist() {
         return maxNodeCaptureAssist;
     }
 
-    public void setMaxNodeCaptureAssist(int maxNodeCaptureAssist) {
-        this.maxNodeCaptureAssist = maxNodeCaptureAssist;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max nodes neutralized.
+     */
     public int getMaxNodeNeutralize() {
         return maxNodeNeutralize;
     }
 
-    public void setMaxNodeNeutralize(int maxNodeNeutralize) {
-        this.maxNodeNeutralize = maxNodeNeutralize;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max node neutralize assists.
+     */
     public int getMaxNodeNeutralizeAssist() {
         return maxNodeNeutralizeAssist;
     }
 
-    public void setMaxNodeNeutralizeAssist(int maxNodeNeutralizeAssist) {
-        this.maxNodeNeutralizeAssist = maxNodeNeutralizeAssist;
-    }
-
+    /**
+     * Only returned for ranked statistics.
+     * 
+     * @return Max deaths.
+     */
     public int getMaxNumDeaths() {
         return maxNumDeaths;
     }
 
-    public void setMaxNumDeaths(int maxNumDeaths) {
-        this.maxNumDeaths = maxNumDeaths;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max objective player score.
+     */
     public int getMaxObjectivePlayerScore() {
         return maxObjectivePlayerScore;
     }
 
-    public void setMaxObjectivePlayerScore(int maxObjectivePlayerScore) {
-        this.maxObjectivePlayerScore = maxObjectivePlayerScore;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max team objective.
+     */
     public int getMaxTeamObjective() {
         return maxTeamObjective;
-    }
-
-    public void setMaxTeamObjective(int maxTeamObjective) {
-        this.maxTeamObjective = maxTeamObjective;
     }
 
     public int getMaxTimePlayed() {
         return maxTimePlayed;
     }
 
-    public void setMaxTimePlayed(int maxTimePlayed) {
-        this.maxTimePlayed = maxTimePlayed;
-    }
-
     public int getMaxTimeSpentLiving() {
         return maxTimeSpentLiving;
     }
 
-    public void setMaxTimeSpentLiving(int maxTimeSpentLiving) {
-        this.maxTimeSpentLiving = maxTimeSpentLiving;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Max total player score.
+     */
     public int getMaxTotalPlayerScore() {
         return maxTotalPlayerScore;
-    }
-
-    public void setMaxTotalPlayerScore(int maxTotalPlayerScore) {
-        this.maxTotalPlayerScore = maxTotalPlayerScore;
     }
 
     public int getMostChampionKillsPerSession() {
         return mostChampionKillsPerSession;
     }
 
-    public void setMostChampionKillsPerSession(int mostChampionKillsPerSession) {
-        this.mostChampionKillsPerSession = mostChampionKillsPerSession;
-    }
-
     public int getMostSpellsCast() {
         return mostSpellsCast;
-    }
-
-    public void setMostSpellsCast(int mostSpellsCast) {
-        this.mostSpellsCast = mostSpellsCast;
     }
 
     public int getNormalGamesPlayed() {
         return normalGamesPlayed;
     }
 
-    public void setNormalGamesPlayed(int normalGamesPlayed) {
-        this.normalGamesPlayed = normalGamesPlayed;
-    }
-
     public int getRankedPremadeGamesPlayed() {
         return rankedPremadeGamesPlayed;
-    }
-
-    public void setRankedPremadeGamesPlayed(int rankedPremadeGamesPlayed) {
-        this.rankedPremadeGamesPlayed = rankedPremadeGamesPlayed;
     }
 
     public int getRankedSoloGamesPlayed() {
         return rankedSoloGamesPlayed;
     }
 
-    public void setRankedSoloGamesPlayed(int rankedSoloGamesPlayed) {
-        this.rankedSoloGamesPlayed = rankedSoloGamesPlayed;
-    }
-
     public int getTotalAssists() {
         return totalAssists;
-    }
-
-    public void setTotalAssists(int totalAssists) {
-        this.totalAssists = totalAssists;
     }
 
     public int getTotalChampionKills() {
         return totalChampionKills;
     }
 
-    public void setTotalChampionKills(int totalChampionKills) {
-        this.totalChampionKills = totalChampionKills;
-    }
-
     public int getTotalDamageDealt() {
         return totalDamageDealt;
-    }
-
-    public void setTotalDamageDealt(int totalDamageDealt) {
-        this.totalDamageDealt = totalDamageDealt;
     }
 
     public int getTotalDamageTaken() {
         return totalDamageTaken;
     }
 
-    public void setTotalDamageTaken(int totalDamageTaken) {
-        this.totalDamageTaken = totalDamageTaken;
-    }
-
+    /**
+     * Only returned for ranked statistics.
+     * 
+     * @return Total deaths per session.
+     */
     public int getTotalDeathsPerSession() {
         return totalDeathsPerSession;
-    }
-
-    public void setTotalDeathsPerSession(int totalDeathsPerSession) {
-        this.totalDeathsPerSession = totalDeathsPerSession;
     }
 
     public int getTotalDoubleKills() {
         return totalDoubleKills;
     }
 
-    public void setTotalDoubleKills(int totalDoubleKills) {
-        this.totalDoubleKills = totalDoubleKills;
-    }
-
     public int getTotalFirstBlood() {
         return totalFirstBlood;
-    }
-
-    public void setTotalFirstBlood(int totalFirstBlood) {
-        this.totalFirstBlood = totalFirstBlood;
     }
 
     public int getTotalGoldEarned() {
         return totalGoldEarned;
     }
 
-    public void setTotalGoldEarned(int totalGoldEarned) {
-        this.totalGoldEarned = totalGoldEarned;
-    }
-
     public int getTotalHeal() {
         return totalHeal;
-    }
-
-    public void setTotalHeal(int totalHeal) {
-        this.totalHeal = totalHeal;
     }
 
     public int getTotalMagicDamageDealt() {
         return totalMagicDamageDealt;
     }
 
-    public void setTotalMagicDamageDealt(int totalMagicDamageDealt) {
-        this.totalMagicDamageDealt = totalMagicDamageDealt;
-    }
-
     public int getTotalMinionKills() {
         return totalMinionKills;
-    }
-
-    public void setTotalMinionKills(int totalMinionKills) {
-        this.totalMinionKills = totalMinionKills;
     }
 
     public int getTotalNeutralMinionsKilled() {
         return totalNeutralMinionsKilled;
     }
 
-    public void setTotalNeutralMinionsKilled(int totalNeutralMinionsKilled) {
-        this.totalNeutralMinionsKilled = totalNeutralMinionsKilled;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Total nodes captured.
+     */
     public int getTotalNodeCapture() {
         return totalNodeCapture;
     }
 
-    public void setTotalNodeCapture(int totalNodeCapture) {
-        this.totalNodeCapture = totalNodeCapture;
-    }
-
+    /**
+     * Dominion only.
+     * 
+     * @return Total nodes neutralized.
+     */
     public int getTotalNodeNeutralize() {
         return totalNodeNeutralize;
-    }
-
-    public void setTotalNodeNeutralize(int totalNodeNeutralize) {
-        this.totalNodeNeutralize = totalNodeNeutralize;
     }
 
     public int getTotalPentaKills() {
         return totalPentaKills;
     }
 
-    public void setTotalPentaKills(int totalPentaKills) {
-        this.totalPentaKills = totalPentaKills;
-    }
-
     public int getTotalPhysicalDamageDealt() {
         return totalPhysicalDamageDealt;
-    }
-
-    public void setTotalPhysicalDamageDealt(int totalPhysicalDamageDealt) {
-        this.totalPhysicalDamageDealt = totalPhysicalDamageDealt;
     }
 
     public int getTotalQuadraKills() {
         return totalQuadraKills;
     }
 
-    public void setTotalQuadraKills(int totalQuadraKills) {
-        this.totalQuadraKills = totalQuadraKills;
-    }
-
     public int getTotalSessionsLost() {
         return totalSessionsLost;
-    }
-
-    public void setTotalSessionsLost(int totalSessionsLost) {
-        this.totalSessionsLost = totalSessionsLost;
     }
 
     public int getTotalSessionsPlayed() {
         return totalSessionsPlayed;
     }
 
-    public void setTotalSessionsPlayed(int totalSessionsPlayed) {
-        this.totalSessionsPlayed = totalSessionsPlayed;
-    }
-
     public int getTotalSessionsWon() {
         return totalSessionsWon;
-    }
-
-    public void setTotalSessionsWon(int totalSessionsWon) {
-        this.totalSessionsWon = totalSessionsWon;
     }
 
     public int getTotalTripleKills() {
         return totalTripleKills;
     }
 
-    public void setTotalTripleKills(int totalTripleKills) {
-        this.totalTripleKills = totalTripleKills;
-    }
-
     public int getTotalTurretsKilled() {
         return totalTurretsKilled;
     }
-
-    public void setTotalTurretsKilled(int totalTurretsKilled) {
-        this.totalTurretsKilled = totalTurretsKilled;
-    }
-
+    
     public int getTotalUnrealKills() {
-        return totalUnrealKills;
-    }
-
-    public void setTotalUnrealKills(int totalUnrealKills) {
-        this.totalUnrealKills = totalUnrealKills;
+    	return totalUnrealKills;
     }
 }

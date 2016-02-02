@@ -16,6 +16,13 @@ public class RankedStatsDto {
     private long modifyDate;
     private long summonerId;
     
+    /**
+     * If <code>false</code> all fields in this object will be useless.
+     * This flag is typically set when a code 404 is returned by the
+     * Riot API endpoint.
+     */
+    public boolean isValid = true;
+    
     public RankedStatsDto() {
     	COUNT++;
     }

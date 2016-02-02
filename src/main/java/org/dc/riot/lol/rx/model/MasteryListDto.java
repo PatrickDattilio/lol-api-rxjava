@@ -2,8 +2,6 @@ package org.dc.riot.lol.rx.model;
 
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.summoner.MasteryDto;
-
 /**
  * This object contains mastery list data.
  * 
