@@ -7,12 +7,21 @@ package org.dc.riot.lol.rx.model.champion;
  * @since 1.0.0
  */
 public class ChampionDto {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private boolean active;
 	private boolean botEnabled;
 	private boolean botMmEnabled;
 	private boolean freeToPlay;
 	private long id;
 	private boolean	rankedPlayEnabled;
+	
+	public ChampionDto() {
+		COUNT++;
+	}
 
 	/**
 	 * @return Indicates if the champion is active.

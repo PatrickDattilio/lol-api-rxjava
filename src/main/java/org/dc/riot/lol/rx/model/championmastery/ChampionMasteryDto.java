@@ -8,6 +8,11 @@ package org.dc.riot.lol.rx.model.championmastery;
  * @since 1.0.0
  */
 public class ChampionMasteryDto {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private long championId;
 	private int championLevel;
 	private int championPoints;
@@ -17,6 +22,10 @@ public class ChampionMasteryDto {
 	private String highestGrade;
 	private long lastPlayTime;
 	private long playerId;
+
+	public ChampionMasteryDto() {
+		COUNT++;
+	}
 
 	/**
 	 * @return champion ID

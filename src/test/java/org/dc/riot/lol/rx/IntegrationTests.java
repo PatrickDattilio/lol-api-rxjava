@@ -21,6 +21,8 @@ import org.dc.riot.lol.rx.model.MasteryMetaDto;
 import org.dc.riot.lol.rx.model.MetaDataDto;
 import org.dc.riot.lol.rx.model.RuneDto;
 import org.dc.riot.lol.rx.model.RuneListDto;
+import org.dc.riot.lol.rx.model.champion.ChampionDto;
+import org.dc.riot.lol.rx.model.champion.ChampionListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.common.BannedChampion;
 import org.dc.riot.lol.rx.model.common.GameMode;
@@ -165,6 +167,8 @@ public class IntegrationTests {
 					testChampionMasteryDto(champDto);
 				}
 			}
+			
+			assertTrue(ChampionMasteryDto.getCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -820,6 +824,9 @@ public class IntegrationTests {
 
 			if (!somebodyInGame) {
 				prints.println("WARNING", "Nobody in game to properly test current game");
+			} else {
+				assertTrue(CurrentGameInfo.getInstanceCount() > 0);
+				assertTrue(CurrentGameParticipant.getInstanceCount() > 0);
 			}
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
@@ -882,6 +889,9 @@ public class IntegrationTests {
 				ChampionMetaDto otherDto = championInterface.getChampion(id);
 				assertTrue(id == otherDto.getId());
 			}
+			
+			assertTrue(ChampionDto.getCount() > 0);
+			assertTrue(ChampionListDto.getCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {

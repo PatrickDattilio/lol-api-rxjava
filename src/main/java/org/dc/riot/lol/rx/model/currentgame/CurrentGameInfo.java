@@ -13,6 +13,11 @@ import org.dc.riot.lol.rx.model.common.PlatformId;
  * @since 1.0.0
  */
 public class CurrentGameInfo {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private long gameId;
     private long gameLength;
     private GameMode gameMode;
@@ -26,6 +31,10 @@ public class CurrentGameInfo {
     private PlatformId platformId;
 
     public boolean notInGame = false;
+    
+    public CurrentGameInfo() {
+    	COUNT++;
+    }
 
     /**
      * @return The ID of the game.

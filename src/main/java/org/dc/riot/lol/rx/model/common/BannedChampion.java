@@ -1,44 +1,46 @@
 package org.dc.riot.lol.rx.model.common;
 
 /**
- * Banned champion
- *  // TODO clean this POJO up
+ * Banned champion information.
  * 
  * @author Dc
  * @since 1.0.0
  */
 public class BannedChampion {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private long championId;
     private int pickTurn;
     private long teamId;
+    
+    public BannedChampion() {
+    	COUNT++;
+    }
 
+    /**
+     * @return Banned champion ID.
+     */
     public long getChampionId() {
         return championId;
     }
 
-    public void setChampionId(long championId) {
-        this.championId = championId;
-    }
-
+    /**
+     * @return Turn during which the champion was banned.
+     */
     public int getPickTurn() {
         return pickTurn;
     }
 
-    public void setPickTurn(int pickTurn) {
-        this.pickTurn = pickTurn;
-    }
-
     /**
      * Implementation note: the {@link org.dc.riot.lol.rx.service.RiotApi.Match
-     * RiotApi.Match} interface will not set this field.
+     * RiotApi.Match} interface may not set this field.
      * 
-     * @return
+     * @return Banning team ID.
      */
     public long getTeamId() {
         return teamId;
-    }
-
-    public void setTeamId(long teamId) {
-        this.teamId = teamId;
     }
 }

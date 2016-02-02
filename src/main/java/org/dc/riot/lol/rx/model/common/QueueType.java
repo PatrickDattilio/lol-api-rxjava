@@ -1,6 +1,8 @@
 package org.dc.riot.lol.rx.model.common;
 
 /**
+ * Queue types.
+ * 
  * @author Dc
  * @since 1.0.0
  */
@@ -8,9 +10,11 @@ public enum QueueType {
 	CUSTOM,
 	NORMAL_5x5_BLIND,
 	RANKED_SOLO_5x5,
+	@Deprecated
 	RANKED_PREMADE_5x5,
 	BOT_5x5,
 	NORMAL_3x3,
+	@Deprecated
 	RANKED_PREMADE_3x3,
 	NORMAL_5x5_DRAFT,
 	ODIN_5x5_BLIND,

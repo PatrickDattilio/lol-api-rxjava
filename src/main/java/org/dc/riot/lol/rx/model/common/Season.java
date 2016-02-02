@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.common;
 
 /**
- * Seasons enumerated since season 3
+ * Seasons enumerated since season 3.
  * 
  * @author Dc
  * @since 1.0.0

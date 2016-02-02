@@ -7,8 +7,17 @@ package org.dc.riot.lol.rx.model.common;
  * @since 1.0.0
  */
 public class Rune {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
 	private int count;
 	private long runeId; 
+	
+	public Rune() {
+		COUNT++;
+	}
 
 	/**
 	 * The count of this rune used by the participant.

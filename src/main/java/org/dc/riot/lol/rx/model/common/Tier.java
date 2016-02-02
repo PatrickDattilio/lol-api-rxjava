@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.common;
 
 /**
- * Ranked tiers
+ * Ranked tiers.
  * 
  * @author Dc
  * @since 1.0.0

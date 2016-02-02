@@ -4,12 +4,17 @@ import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.model.common.Rune;
 
 /**
- * Current game participant
+ * Current game participant.
  * 
  * @author Dc
  * @since 1.0.0
  */
 public class CurrentGameParticipant {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private boolean bot;
     private long championId;
     private Mastery[] masteries;
@@ -20,6 +25,10 @@ public class CurrentGameParticipant {
     private long summonerId;
     private String summonerName;
     private long teamId;
+    
+    public CurrentGameParticipant() {
+    	COUNT++;
+    }
 
     /**
      * @return Flag indicating whether or not

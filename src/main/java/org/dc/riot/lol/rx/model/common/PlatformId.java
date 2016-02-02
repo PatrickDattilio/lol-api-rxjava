@@ -3,7 +3,7 @@ package org.dc.riot.lol.rx.model.common;
 import org.dc.riot.lol.rx.service.Region;
 
 /**
- * Old platform ID used by some of the older APIs
+ * Platform IDs.
  * 
  * @author Dc
  * @since 1.0.0

@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.common;
 
 /**
- * Ranked queues
+ * Ranked queues.
  * 
  * @author Dc
  * @since 1.0.0
