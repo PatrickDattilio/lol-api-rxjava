@@ -14,6 +14,10 @@ import org.dc.riot.lol.rx.service.Region;
  * @since 1.0.0
  */
 public class MatchDetail {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
 
 	private int mapId;
 	private long matchCreation;
@@ -30,6 +34,10 @@ public class MatchDetail {
 	private Season season;
 	private Team[] teams;
 	private Timeline timeline;
+	
+	public MatchDetail() {
+		COUNT++;
+	}
 
 	/**
 	 * @return Match map ID.
@@ -115,6 +123,10 @@ public class MatchDetail {
 	 * @return The {@link Region}.
 	 */
 	public Region getRegion() {
+		if (region == null && platformId != null) {
+			return platformId.toRegion();
+		}
+
 		return region;
 	}
 

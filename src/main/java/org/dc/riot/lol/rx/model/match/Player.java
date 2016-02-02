@@ -7,10 +7,19 @@ package org.dc.riot.lol.rx.model.match;
  * @since 1.0.0
  */
 public class Player {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private String matchHistoryUri;
 	private int profileIcon;
 	private long summonerId;
 	private String summonerName;
+	
+	public Player() {
+		COUNT++;
+	}
 
 	/**
 	 * @return Match history URI.

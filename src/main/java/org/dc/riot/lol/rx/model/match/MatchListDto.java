@@ -7,10 +7,19 @@ package org.dc.riot.lol.rx.model.match;
  * @since 1.0.0
  */
 public class MatchListDto {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
     private int endIndex;
     private MatchReference[] matches;
     private int startIndex;
     private int totalGames;
+    
+    public MatchListDto() {
+    	COUNT++;
+    }
 
     /**
      * @return The end index

@@ -1,8 +1,7 @@
 package org.dc.riot.lol.rx.model.match;
 
-import org.dc.riot.lol.rx.model.MasteryMetaDto;
-import org.dc.riot.lol.rx.model.MatchParticipantStats;
-import org.dc.riot.lol.rx.model.RuneMetaDto;
+import org.dc.riot.lol.rx.model.common.Mastery;
+import org.dc.riot.lol.rx.model.common.Rune;
 import org.dc.riot.lol.rx.model.common.Tier;
 
 /**
@@ -14,12 +13,12 @@ import org.dc.riot.lol.rx.model.common.Tier;
 public class Participant {
 	private int championId;
 	private Tier highestAchievedSeasonTier;
-	private MasteryMetaDto masteries;
+	private Mastery[] masteries;
 	private int participantId;
-	private RuneMetaDto[] runes;
+	private Rune[] runes;
 	private long spell1Id;
 	private long spell2Id;
-	private MatchParticipantStats stats;
+	private ParticipantStats stats;
 	private int teamId;
 	private ParticipantTimeline timeline;
 
@@ -42,7 +41,7 @@ public class Participant {
 	/**
 	 * @return List of mastery information.
 	 */
-	public MasteryMetaDto getMasteries() {
+	public Mastery[] getMasteries() {
 		return masteries;
 	}
 
@@ -56,7 +55,7 @@ public class Participant {
 	/**
 	 * @return List of rune information.
 	 */
-	public RuneMetaDto[] getRunes() {
+	public Rune[] getRunes() {
 		return runes;
 	}
 
@@ -77,7 +76,7 @@ public class Participant {
 	/**
 	 * @return Participant statistics.
 	 */
-	public MatchParticipantStats getStats() {
+	public ParticipantStats getStats() {
 		return stats;
 	}
 

@@ -11,6 +11,11 @@ import org.dc.riot.lol.rx.model.common.BannedChampion;
  * @see org.dc.riot.lol.rx.service.RiotApi.MatchList RiotApi.MatchList
  */
 public class Team {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private BannedChampion[] bans;	// BannedChampion]	If game was draft mode, contains banned champion data, otherwise null
 	private int baronKills;	// Number of times the team killed baron
 	private long dominionVictoryScore;	// If game was a dominion game, specifies the points the team had at game end, otherwise null
@@ -27,6 +32,10 @@ public class Team {
 	private int towerKills;	// Number of towers the team destroyed
 	private int vilemawKills;	// Number of times the team killed vilemaw
 	private boolean winner;	// Flag indicating whether or not the team won
+	
+	public Team() {
+		COUNT++;
+	}
 
 	public BannedChampion[] getBans() {
 		if (bans == null) {

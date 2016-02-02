@@ -1,7 +1,7 @@
 package org.dc.riot.lol.rx.model.match;
 
 /**
- * Players lane
+ * Players lane.
  * 
  * @author Dc
  * @since 1.0.0

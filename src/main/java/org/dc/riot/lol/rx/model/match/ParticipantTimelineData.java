@@ -7,10 +7,19 @@ package org.dc.riot.lol.rx.model.match;
  * @since 1.0.0
  */
 public class ParticipantTimelineData {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private double tenToTwenty;
 	private double thirtyToEnd;
 	private double twentyToThirty;
 	private double zeroToTen;
+	
+	public ParticipantTimelineData() {
+		COUNT++;
+	}
 	
 	/**
 	 * @return Value per minute from 10 min to 20 min.

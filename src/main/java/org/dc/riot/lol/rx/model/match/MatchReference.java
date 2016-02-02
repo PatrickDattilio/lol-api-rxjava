@@ -12,6 +12,11 @@ import org.dc.riot.lol.rx.service.Region;
  * @since 1.0.0
  */
 public class MatchReference {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
     private long champion;
     private Lane lane;
     private long matchId;
@@ -21,6 +26,10 @@ public class MatchReference {
     private Role role;
     private Season season;
     private long timestamp;
+    
+    public MatchReference() {
+    	COUNT++;
+    }
 
     /**
      * @return Champion ID.

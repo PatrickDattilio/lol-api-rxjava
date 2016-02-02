@@ -10,9 +10,18 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class Frame {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private Event[] events;
 	private Map<String, ParticipantFrame> participantFrames;
 	private long timestamp;
+	
+	public Frame() {
+		COUNT++;
+	}
 			
 	/**
 	 * @return List of events for this frame.

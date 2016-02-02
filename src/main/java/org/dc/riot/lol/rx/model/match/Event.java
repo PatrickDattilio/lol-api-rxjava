@@ -1,6 +1,11 @@
 package org.dc.riot.lol.rx.model.match;
 
 public class Event {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+
 	private AscendedType ascendedType;
 	private long[] assistingParticipantIds;
 	private BuildingType buildingType;
@@ -22,6 +27,10 @@ public class Event {
 	private TowerType towerType;
 	private long victimId;
 	private WardType wardType;
+	
+	public Event() {
+		COUNT++;
+	}
 
 	/**
 	 * @return The ascended type of the event.

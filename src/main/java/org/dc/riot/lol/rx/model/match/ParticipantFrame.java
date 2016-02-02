@@ -7,6 +7,11 @@ package org.dc.riot.lol.rx.model.match;
  * @since 1.0.0
  */
 public class ParticipantFrame {
+	private static long COUNT = 0;
+	public static long getCount() {
+		return COUNT;
+	}
+	
 	private int currentGold;	// 
 	private int dominionScore;	// Dominion score of the participant
 	private int jungleMinionsKilled;	// Number of jungle minions killed by participant
@@ -17,6 +22,10 @@ public class ParticipantFrame {
 	private int teamScore;	// Team score of the participant
 	private int totalGold;	// Participant's total gold
 	private int xp;	// Experience earned by participant
+	
+	public ParticipantFrame() {
+		COUNT++;
+	}
 
 	/**
 	 * @return Participant's current gold.
@@ -62,6 +71,7 @@ public class ParticipantFrame {
 
 	/**
 	 * @return Participant's position.
+	 * Could be <code>null</code> if not relevant.
 	 */
 	public Position getPosition() {
 		return position;
