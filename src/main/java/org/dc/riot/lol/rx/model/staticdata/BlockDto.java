@@ -1,6 +1,8 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 import java.util.List;
+
+import org.dc.riot.lol.rx.model.BlockItemDto;
 
 /**
  * This object contains champion recommended block data.

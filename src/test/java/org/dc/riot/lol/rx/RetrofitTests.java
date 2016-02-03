@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.dc.riot.lol.rx.model.champion.ChampionListDto;
+import org.dc.riot.lol.rx.model.champion.ChampListDto;
 import org.dc.riot.lol.rx.model.game.GameDto;
 import org.dc.riot.lol.rx.model.game.PlayerDto;
 import org.dc.riot.lol.rx.model.game.RecentGamesDto;
@@ -74,7 +74,7 @@ public class RetrofitTests {
 				return champInterface.getChampions(true);
 			})
 			.subscribeOn(scheduler)
-			.subscribe((ChampionListDto dto) -> {
+			.subscribe((ChampListDto dto) -> {
 				synchronized (printLock) {
 					debug.println(++testManualObservablesCount);
 				}

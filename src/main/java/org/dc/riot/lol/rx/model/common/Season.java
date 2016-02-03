@@ -7,24 +7,28 @@ package org.dc.riot.lol.rx.model.common;
  * @since 1.0.0
  */
 public enum Season {
-	@Deprecated
+	/**
+	 * Cannot be used in requests.
+	 */
 	PRESEASON3,
-
 	SEASON3,
 
-	@Deprecated
+	/**
+	 * Cannot be used in requests.
+	 */
 	PRESEASON2014,
-
     SEASON2014,
     
-    @Deprecated
+    /**
+	 * Cannot be used in requests.
+	 */
     PRESEASON2015,
-    
     SEASON2015,
     
-    @Deprecated
+    /**
+     * Cannot be used in requests.
+     */
     PRESEASON2016,
-    
     SEASON2016
 }
 

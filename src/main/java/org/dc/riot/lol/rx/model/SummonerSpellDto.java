@@ -1,5 +1,6 @@
 package org.dc.riot.lol.rx.model;
 
+import org.dc.riot.lol.rx.model.staticdata.ChampionSpellDto;
 import org.dc.riot.lol.rx.model.staticdata.ImageDto;
 
 /**

@@ -6,7 +6,7 @@ package org.dc.riot.lol.rx.model.champion;
  * @author Dc
  * @since 1.0.0
  */
-public class ChampionDto {
+public class ChampDto {
 	private static long COUNT = 0;
 	public static long getInstanceCount() {
 		return COUNT;
@@ -19,7 +19,7 @@ public class ChampionDto {
 	private long id;
 	private boolean	rankedPlayEnabled;
 	
-	public ChampionDto() {
+	public ChampDto() {
 		COUNT++;
 	}
 

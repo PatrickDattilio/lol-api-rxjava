@@ -12,8 +12,8 @@ import org.dc.riot.lol.rx.model.MasteryListDto;
 import org.dc.riot.lol.rx.model.RealmDto;
 import org.dc.riot.lol.rx.model.SummonerSpellDto;
 import org.dc.riot.lol.rx.model.SummonerSpellListDto;
-import org.dc.riot.lol.rx.model.champion.ChampionDto;
-import org.dc.riot.lol.rx.model.champion.ChampionListDto;
+import org.dc.riot.lol.rx.model.champion.ChampDto;
+import org.dc.riot.lol.rx.model.champion.ChampListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.model.common.QueueType;
@@ -26,6 +26,8 @@ import org.dc.riot.lol.rx.model.league.LeagueDto;
 import org.dc.riot.lol.rx.model.league.LeagueEntryDto;
 import org.dc.riot.lol.rx.model.match.MatchDetail;
 import org.dc.riot.lol.rx.model.match.MatchListDto;
+import org.dc.riot.lol.rx.model.staticdata.ChampionListDto;
+import org.dc.riot.lol.rx.model.staticdata.ChampionDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryListDto;
@@ -178,11 +180,11 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param freeToPlay fetch only free to play champions
-         * @return {@link ChampionListDto}
+         * @return {@link ChampListDto}
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        ChampionListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
+        ChampListDto getChampions(boolean freeToPlay) throws IOException, HttpException;
 
         /**
          * /api/lol/{region}/v1.2/champion/{id}<br>
@@ -194,11 +196,11 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param championId the champ id
-         * @return {@link ChampionDto} single champion dto
+         * @return {@link ChampDto} single champion dto
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        ChampionDto getChampion(long championId) throws IOException, HttpException;
+        ChampDto getChampion(long championId) throws IOException, HttpException;
     }
     
     /**

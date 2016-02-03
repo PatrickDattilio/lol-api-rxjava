@@ -13,8 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.champion.ChampionDto;
-import org.dc.riot.lol.rx.model.champion.ChampionListDto;
+import org.dc.riot.lol.rx.model.champion.ChampDto;
+import org.dc.riot.lol.rx.model.champion.ChampListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.common.BannedChampion;
 import org.dc.riot.lol.rx.model.common.GameMode;
@@ -55,11 +55,20 @@ import org.dc.riot.lol.rx.model.match.Position;
 import org.dc.riot.lol.rx.model.match.Team;
 import org.dc.riot.lol.rx.model.match.Timeline;
 import org.dc.riot.lol.rx.model.staticdata.BasicDataStatsDto;
+import org.dc.riot.lol.rx.model.staticdata.BlockDto;
+import org.dc.riot.lol.rx.model.staticdata.ChampionListDto;
+import org.dc.riot.lol.rx.model.staticdata.ChampionSpellDto;
+import org.dc.riot.lol.rx.model.staticdata.ChampionDto;
 import org.dc.riot.lol.rx.model.staticdata.GoldDto;
 import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+import org.dc.riot.lol.rx.model.staticdata.InfoDto;
 import org.dc.riot.lol.rx.model.staticdata.MetaDataDto;
+import org.dc.riot.lol.rx.model.staticdata.PassiveDto;
+import org.dc.riot.lol.rx.model.staticdata.RecommendedDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
+import org.dc.riot.lol.rx.model.staticdata.SkinDto;
+import org.dc.riot.lol.rx.model.staticdata.StatsDto;
 import org.dc.riot.lol.rx.model.stats.AggregatedStatsDto;
 import org.dc.riot.lol.rx.model.stats.ChampionStatsDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryDto;
@@ -87,6 +96,7 @@ import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
+import org.dc.riot.lol.rx.service.request.ChampDataTag;
 import org.dc.riot.lol.rx.service.request.ChampListDataTag;
 import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
@@ -1070,22 +1080,22 @@ public class IntegrationTests {
 		try {
 			prints.println("Testing CHAMPION interface");
 
-			ChampionListDto freeChamps = championInterface.getChampions(true);
+			ChampListDto freeChamps = championInterface.getChampions(true);
 			assertNotNull(freeChamps);
-			ChampionDto[] metas = freeChamps.getChampions();
+			ChampDto[] metas = freeChamps.getChampions();
 			assertNotNull(metas);
-			for (ChampionDto dto : metas) {
+			for (ChampDto dto : metas) {
 				assertTrue(dto.getId() > 0);
 				assertTrue(dto.isFreeToPlay());
 			}
 
-			ChampionListDto allChamps = championInterface.getChampions(false);
+			ChampListDto allChamps = championInterface.getChampions(false);
 			assertNotNull(allChamps);
 			boolean foundBotEnabled = false;
 			boolean foundBotMmEnabled = false;
 			boolean foundRankedPlayEnabled = false;
 			boolean foundActive = false;
-			for (ChampionDto dto : allChamps.getChampions()) {
+			for (ChampDto dto : allChamps.getChampions()) {
 				if (dto.isBotEnabled()) {
 					foundBotEnabled = true;
 				}
@@ -1108,14 +1118,14 @@ public class IntegrationTests {
 			assertTrue(foundRankedPlayEnabled);
 			assertTrue(foundActive);
 
-			for (ChampionDto dto : allChamps.getChampions()) {
+			for (ChampDto dto : allChamps.getChampions()) {
 				long id = dto.getId();
-				ChampionDto otherDto = championInterface.getChampion(id);
+				ChampDto otherDto = championInterface.getChampion(id);
 				assertTrue(id == otherDto.getId());
 			}
 			
-			assertTrue(ChampionDto.getInstanceCount() > 0);
-			assertTrue(ChampionListDto.getInstanceCount() > 0);
+			assertTrue(ChampDto.getInstanceCount() > 0);
+			assertTrue(ChampListDto.getInstanceCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -1293,22 +1303,22 @@ public class IntegrationTests {
 	@Test
 	public void testStaticData() throws IOException {
 		try {
-			RuneListDto listDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
-			for (RuneDto runeDto : listDto.getData().values()) {
-				long runeId = runeDto.getId();
-				RuneDto dto = staticInterface.getRune(runeId, null, null, RuneDataTag.ALL);
-				testRuneDto(dto);
+			ChampionListDto champListDto = staticInterface.getChampions(true, null, null, ChampListDataTag.ALL);
+			assertNotNull(champListDto);
+			testChampionListStaticDto(champListDto);
+			
+			for (ChampionDto championDto : champListDto.getData().values()) {
+				long champId = championDto.getId();
+				ChampionDto champDto = staticInterface.getChampion(champId, null, null, ChampDataTag.ALL);
+				assertNotNull(champDto);
+				testChampionDto(champDto);
 			}
 			
-			ChampionListDto champListDto = staticInterface.getChampions(true, null, null, ChampListDataTag.ALL);
+			RuneListDto listDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
+			assertNotNull(listDto);
+			testRuneListDto(listDto);
 			
 			
-			assertTrue(RuneListDto.getInstanceCount() > 0);
-			assertTrue(RuneDto.getInstanceCount() > 0);
-			assertTrue(ImageDto.getInstanceCount() > 0);
-			assertTrue(MetaDataDto.getInstanceCount() > 0);
-			assertTrue(BasicDataStatsDto.getInstanceCount() > 0);
-			assertTrue(GoldDto.getInstanceCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -1320,6 +1330,93 @@ public class IntegrationTests {
 			System.out.println();
 			System.out.println();
 		}
+	}
+	
+	private void testChampionListStaticDto(ChampionListDto dto) {
+		assertNotNull(dto.getFormat());
+		prints.println("STATIC format " + dto.getFormat());
+		assertNotNull(dto.getVersion());
+		prints.println("STATIC version " + dto.getVersion());
+		assertNotNull(dto.getType());
+		prints.println("STATIC type " + dto.getType());
+		
+		Map<String,String> keys = dto.getKeys();
+		assertTrue(keys.keySet().size() > 0);
+		for (String key : keys.keySet()) {
+			prints.println("STATIC key " + key + " -> " + keys.get(key));
+		}
+
+		Map<String,ChampionDto> dataMapDto = dto.getData();
+		assertTrue(dataMapDto.keySet().size() > 0);
+		for (String key : dataMapDto.keySet()) {
+			prints.println("STATIC champ key " + key);
+			ChampionDto champDto = dataMapDto.get(key);
+			assertNotNull(champDto);
+			testChampionDto(champDto);
+		}
+	}
+	
+	private void testChampionDto(ChampionDto dto) {
+		assertTrue(dto.getAllytips().length > 0);
+		assertNotNull(dto.getBlurb());
+		assertTrue(dto.getEnemytips().length > 0);
+		assertNotNull(dto.getId());
+		assertNotNull(dto.getKey());
+		assertNotNull(dto.getLore());
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getPartype());
+		assertTrue(dto.getTags().length > 0);
+		assertNotNull(dto.getTitle());
+		
+		ImageDto imageDto = dto.getImage();
+		assertNotNull(imageDto);
+		testImageDto(imageDto);
+		
+		InfoDto infoDto = dto.getInfo();
+		assertNotNull(infoDto);
+		testInfoDto(infoDto);
+		
+		PassiveDto passiveDto = dto.getPassive();
+		assertNotNull(passiveDto);
+		testPassiveDto(passiveDto);
+		
+		RecommendedDto[] recommendedListDto = dto.getRecommended();
+		assertTrue(recommendedListDto.length > 0);
+		for (RecommendedDto rDto : recommendedListDto) {
+			testRecommendedDto(rDto);
+		}
+		
+		SkinDto[] skinListDto = dto.getSkins();
+		assertTrue(skinListDto.length > 0);
+		for (SkinDto skinDto : skinListDto) {
+			testSkinDto(skinDto);
+		}
+		
+		ChampionSpellDto[] spellListDto = dto.getSpells();
+		assertTrue(spellListDto.length > 0);
+		for (ChampionSpellDto spellDto : spellListDto) {
+			testChampionSpellDto(spellDto);
+		}
+		
+		StatsDto statsDto = dto.getStats();
+		assertNotNull(statsDto);
+		testStatsDto(statsDto);
+	}
+	
+	private void testStatsDto(StatsDto dto) {
+		assertTrue(dto.sum() > 0);
+	}
+	
+	private void testChampionSpellDto(ChampionSpellDto dto) {
+		fail();
+	}
+	
+	private void testSkinDto(SkinDto dto) {
+		fail();
+	}
+	
+	private void testRuneListDto(RuneListDto dto) {
+		fail();
 	}
 	
 	private void testGoldDto(GoldDto dto) {
@@ -1355,6 +1452,15 @@ public class IntegrationTests {
 
 		BasicDataStatsDto bdsDto = dto.getStats();
 		assertNotNull(bdsDto);
+		testBasicDataStatsDto(bdsDto);
+	}
+	
+	private void testBasicDataStatsDto(BasicDataStatsDto dto) {
+		fail();
+	}
+	
+	private void testPassiveDto(PassiveDto dto) {
+		fail();
 	}
 
 	private void testImageDto(ImageDto dto) {
@@ -1363,6 +1469,28 @@ public class IntegrationTests {
 		assertNotNull(dto.getSprite());
 		assertTrue(dto.getH() > 0);
 		assertTrue(dto.getW() > 0);
+	}
+	
+	private void testInfoDto(InfoDto dto) {
+		assertTrue(dto.sum() > 0);
+	}
+	
+	private void testRecommendedDto(RecommendedDto dto) {
+		assertNotNull(dto.getChampion());
+		assertNotNull(dto.getMap());
+		assertNotNull(dto.getMode());
+		assertNotNull(dto.getTitle());
+		assertNotNull(dto.getType());
+		
+		BlockDto[] blockListDto = dto.getBlocks();
+		assertTrue(blockListDto.length > 0);
+		for (BlockDto blockDto : blockListDto) {
+			testBlockDto(blockDto);
+		}
+	}
+	
+	private void testBlockDto(BlockDto dto) {
+		fail();
 	}
 
 	private void testMetaDataDto(MetaDataDto dto) {

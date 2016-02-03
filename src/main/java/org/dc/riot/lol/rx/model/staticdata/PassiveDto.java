@@ -1,9 +1,7 @@
-package org.dc.riot.lol.rx.model;
-
-import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+package org.dc.riot.lol.rx.model.staticdata;
 
 /**
- * Describes passive abilities.
+ * This object contains champion passive data.
  * 
  * @author Dc
  * @since 1.0.0

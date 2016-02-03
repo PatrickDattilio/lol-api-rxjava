@@ -16,6 +16,8 @@ import java.util.Scanner;
  * @author Dc
  * @since 1.0.0
  * @see <a href="https://developer.riotgames.com/">Your Dashboard to create an API key</a>
+ * @see RiotApi
+ * @see org.dc.riot.lol.rx.service.interfaces.ApiFactory ApiFactory
  */
 public class ApiKey {
 	

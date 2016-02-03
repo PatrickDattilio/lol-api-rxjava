@@ -1,11 +1,13 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 import java.util.List;
 
-import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+import org.dc.riot.lol.rx.model.LevelTipDto;
+import org.dc.riot.lol.rx.model.RangeDto;
+import org.dc.riot.lol.rx.model.SpellVarsDto;
 
 /**
- * Used by the Static interface
+ * This object contains champion spell data.
  * 
  * @author Dc
  * @since 1.0.0
