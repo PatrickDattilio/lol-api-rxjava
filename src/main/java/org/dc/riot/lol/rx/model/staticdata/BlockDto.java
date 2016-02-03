@@ -1,9 +1,5 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
-import java.util.List;
-
-import org.dc.riot.lol.rx.model.BlockItemDto;
-
 /**
  * This object contains champion recommended block data.
  * 
@@ -11,31 +7,44 @@ import org.dc.riot.lol.rx.model.BlockItemDto;
  * @since 1.0.0
  */
 public class BlockDto {
-    private List<BlockItemDto> items;
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
+    private BlockItemDto[] items;
     private boolean recMath;
     private String type;
+    
+    public BlockDto() {
+    	COUNT++;
+    }
 
-    public List<BlockItemDto> getItems() {
+    /**
+     * @return Items.
+     */
+    public BlockItemDto[] getItems() {
+    	if (items == null) {
+    		return new BlockItemDto[0];
+    	}
+
         return items;
     }
 
-    public void setItems(List<BlockItemDto> items) {
-        this.items = items;
-    }
-
+    /**
+     * @return Is rec math.
+     */
     public boolean isRecMath() {
         return recMath;
     }
 
-    public void setRecMath(boolean recMath) {
-        this.recMath = recMath;
-    }
-
+    /**
+     * Implementation note: it is OK for this value
+     * to be <code>null</code>.
+     * 
+     * @return Type.
+     */
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

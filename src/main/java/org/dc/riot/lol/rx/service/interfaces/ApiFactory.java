@@ -3,9 +3,9 @@ package org.dc.riot.lol.rx.service.interfaces;
 import java.lang.reflect.Type;
 import java.net.Proxy;
 
-import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.model.common.Rune;
+import org.dc.riot.lol.rx.model.staticdata.RangeDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;

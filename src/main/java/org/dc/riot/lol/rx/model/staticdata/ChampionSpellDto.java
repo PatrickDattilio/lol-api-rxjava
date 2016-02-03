@@ -1,9 +1,8 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.dc.riot.lol.rx.model.LevelTipDto;
-import org.dc.riot.lol.rx.model.RangeDto;
 import org.dc.riot.lol.rx.model.SpellVarsDto;
 
 /**
@@ -13,7 +12,12 @@ import org.dc.riot.lol.rx.model.SpellVarsDto;
  * @since 1.0.0
  */
 public class ChampionSpellDto {
-    private List<ImageDto> altimages;
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
+    private ImageDto[] altimages;
     private double[] cooldown;
     private String cooldownBurn;
     private int[] cost;
@@ -33,173 +37,194 @@ public class ChampionSpellDto {
     private String sanitizedDescription;
     private String sanitizedTooltip;
     private String tooltip;
-    private List<SpellVarsDto> vars;
+    private SpellVarsDto[] vars;
+    
+    public ChampionSpellDto() {
+    	COUNT++;
+    }
 
-    public List<ImageDto> getAltimages() {
+    /**
+     * @return Alt images.
+     */
+    public ImageDto[] getAltimages() {
+    	if (altimages == null) {
+    		return new ImageDto[0];
+    	}
+
         return altimages;
     }
 
-    public void setAltimages(List<ImageDto> altimages) {
-        this.altimages = altimages;
-    }
-
+    /**
+     * @return Cooldowns.
+     */
     public double[] getCooldown() {
+    	if (cooldown == null) {
+    		return new double[0];
+    	}
+
         return cooldown;
     }
 
-    public void setCooldown(double[] cooldown) {
-        this.cooldown = cooldown;
-    }
-
+    /**
+     * Cooldown reduction for leveling up a skill, or
+     * cooldown at each subsequent skill level.
+     * E.g. 2 or 16/15/14/13/12 or 120/110/100.
+     * 
+     * @return Cooldown burn.
+     */
     public String getCooldownBurn() {
         return cooldownBurn;
     }
 
-    public void setCooldownBurn(String cooldownBurn) {
-        this.cooldownBurn = cooldownBurn;
-    }
-
+    /**
+     * @return Costs.
+     */
     public int[] getCost() {
+    	if (cost == null) {
+    		return new int[0];
+    	}
+
         return cost;
     }
 
-    public void setCost(int[] cost) {
-        this.cost = cost;
-    }
-
+    /**
+     * @return Cost burn.
+     */
     public String getCostBurn() {
         return costBurn;
     }
 
-    public void setCostBurn(String costBurn) {
-        this.costBurn = costBurn;
-    }
-
+    /**
+     * @return Cost type.
+     */
     public String getCostType() {
         return costType;
     }
 
-    public void setCostType(String costType) {
-        this.costType = costType;
-    }
-
+    /**
+     * @return Description.
+     */
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * Implementation note: it is OK for this value to
+     * return empty.
+     * 
+     * @return Effects.
+     */
     public List<double[]> getEffect() {
+    	if (effect == null) {
+    		return new ArrayList<double[]>();
+    	}
+
         return effect;
     }
 
-    public void setEffect(List<double[]> effect) {
-        this.effect = effect;
-    }
-
+    /**
+     * @return Effect burns.
+     */
     public String[] getEffectBurn() {
+    	if (effectBurn == null) {
+    		return new String[0];
+    	}
+    	
         return effectBurn;
     }
 
-    public void setEffectBurn(String[] effectBurn) {
-        this.effectBurn = effectBurn;
-    }
-
+    /**
+     * @return Image data.
+     */
     public ImageDto getImage() {
         return image;
     }
 
-    public void setImage(ImageDto image) {
-        this.image = image;
-    }
-
+    /**
+     * @return Key.
+     */
     public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
+    /**
+     * @return Level tip data.
+     */
     public LevelTipDto getLeveltip() {
         return leveltip;
     }
 
-    public void setLeveltip(LevelTipDto leveltip) {
-        this.leveltip = leveltip;
-    }
-
+    /**
+     * @return Max rank.
+     */
     public int getMaxrank() {
         return maxrank;
     }
 
-    public void setMaxrank(int maxrank) {
-        this.maxrank = maxrank;
-    }
-
+    /**
+     * @return Name.
+     */
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**
+     * @return Range data.
+     */
     public RangeDto getRange() {
         return range;
     }
 
-    public void setRange(RangeDto range) {
-        this.range = range;
-    }
-
+    /**
+     * @return Range burn.
+     */
     public String getRangeBurn() {
         return rangeBurn;
     }
 
-    public void setRangeBurn(String rangeBurn) {
-        this.rangeBurn = rangeBurn;
-    }
-
+    /**
+     * Some sort of resource type description.
+     * E.g. No cost, {{ cost }} Mana, {{ cost }} Mana Per Second,
+     * {{ e2 }}% of Current Health, etc. Looks like they're expecting
+     * pages to be using Angular JS.
+     * @return Resource.
+     */
     public String getResource() {
         return resource;
     }
 
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
-
+    /**
+     * @return Sanitized description.
+     */
     public String getSanitizedDescription() {
         return sanitizedDescription;
     }
 
-    public void setSanitizedDescription(String sanitizedDescription) {
-        this.sanitizedDescription = sanitizedDescription;
-    }
-
+    /**
+     * @return Sanitized tooltip.
+     */
     public String getSanitizedTooltip() {
         return sanitizedTooltip;
     }
 
-    public void setSanitizedTooltip(String sanitizedTooltip) {
-        this.sanitizedTooltip = sanitizedTooltip;
-    }
-
+    /**
+     * @return Tooltip.
+     */
     public String getTooltip() {
         return tooltip;
     }
 
-    public void setTooltip(String tooltip) {
-        this.tooltip = tooltip;
-    }
+    /**
+     * May or may not exist. It is perfectly OK for this
+     * list to be empty.
+     * 
+     * @return Spell vars.
+     */
+    public SpellVarsDto[] getVars() {
+    	if (vars == null) {
+    		return new SpellVarsDto[0];
+    	}
 
-    public List<SpellVarsDto> getVars() {
         return vars;
-    }
-
-    public void setVars(List<SpellVarsDto> vars) {
-        this.vars = vars;
     }
 }

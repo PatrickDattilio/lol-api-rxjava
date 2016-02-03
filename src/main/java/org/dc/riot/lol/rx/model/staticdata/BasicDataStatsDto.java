@@ -341,4 +341,77 @@ public class BasicDataStatsDto {
     public double getrPercentTimeDeadModPerLevel() {
         return rPercentTimeDeadModPerLevel;
     }
+    
+    /**
+     * Reasonable integration testing.
+     * 
+     * @return Sum of all fields.
+     */
+    public double sum() {
+    	return FlatArmorMod +
+    			FlatAttackSpeedMod +
+    			FlatBlockMod +
+    			FlatCritChanceMod +
+    			FlatCritDamageMod +
+    			FlatEXPBonus +
+    			FlatEnergyPoolMod +
+    			FlatEnergyRegenMod +
+    			FlatHPPoolMod +
+    			FlatHPRegenMod +
+    			FlatMPPoolMod +
+    			FlatMPRegenMod +
+    			FlatMagicDamageMod +
+    			FlatMovementSpeedMod +
+    			FlatPhysicalDamageMod +
+    			FlatSpellBlockMod +
+    			PercentArmorMod +
+    			PercentAttackSpeedMod +
+    			PercentBlockMod +
+    			PercentCritChanceMod +
+    			PercentCritDamageMod +
+    			PercentDodgeMod +
+    			PercentEXPBonus +
+    			PercentHPPoolMod +
+    			PercentHPRegenMod +
+    			PercentLifeStealMod +
+    			PercentMPPoolMod +
+    			PercentMPRegenMod +
+    			PercentMagicDamageMod +
+    			PercentMovementSpeedMod +
+    			PercentPhysicalDamageMod +
+    			PercentSpellBlockMod +
+    			PercentSpellVampMod +
+    			rFlatArmorModPerLevel +
+    			rFlatArmorPenetrationMod +
+    			rFlatArmorPenetrationModPerLevel +
+    			rFlatCritChanceModPerLevel +
+    			rFlatCritDamageModPerLevel +
+    			rFlatDodgeMod +
+    			rFlatDodgeModPerLevel +
+    			rFlatEnergyModPerLevel +
+    			rFlatEnergyRegenModPerLevel +
+    			rFlatGoldPer10Mod +
+    			rFlatHPModPerLevel +
+    			rFlatHPRegenModPerLevel +
+    			rFlatMPModPerLevel +
+    			rFlatMPRegenModPerLevel +
+    			rFlatMagicDamageModPerLevel +
+    			rFlatMagicPenetrationMod +
+    			rFlatMagicPenetrationModPerLevel +
+    			rFlatMovementSpeedModPerLevel +
+    			rFlatPhysicalDamageModPerLevel +
+    			rFlatSpellBlockModPerLevel +
+    			rFlatTimeDeadMod +
+    			rFlatTimeDeadModPerLevel +
+    			rPercentArmorPenetrationMod +
+    			rPercentArmorPenetrationModPerLevel +
+    			rPercentAttackSpeedModPerLevel +
+    			rPercentCooldownMod +
+    			rPercentCooldownModPerLevel +
+    			rPercentMagicPenetrationMod +
+    			rPercentMagicPenetrationModPerLevel +
+    			rPercentMovementSpeedModPerLevel +
+    			rPercentTimeDeadMod +
+    			rPercentTimeDeadModPerLevel;
+    }
 }

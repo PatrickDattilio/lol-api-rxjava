@@ -7,31 +7,37 @@ package org.dc.riot.lol.rx.model.staticdata;
  * @since 1.0.0
  */
 public class SkinDto {
-    private int id;
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
+    private long id;
     private String name;
     private int num;
+    
+    public SkinDto() {
+    	COUNT++;
+    }
 
-    public int getId() {
+    /**
+     * @return ID.
+     */
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    /**
+     * @return Name.
+     */
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**
+     * @return Number (i.e. skin index).
+     */
     public int getNum() {
         return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
     }
 }

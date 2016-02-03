@@ -37,6 +37,8 @@ public class ChampionListDto {
 	}
 	
 	/**
+	 * Format data is delivered in (e.g. 'full').
+	 * 
 	 * @return Format.
 	 */
 	public String getFormat() {
@@ -55,6 +57,8 @@ public class ChampionListDto {
 	}
 	
 	/**
+	 * Type of data (e.g. 'champion').
+	 * 
 	 * @return Type.
 	 */
 	public String getType() {
@@ -62,6 +66,8 @@ public class ChampionListDto {
 	}
 	
 	/**
+	 * Patch in use (e.g. '6.2.1').
+	 * 
 	 * @return Version.
 	 */
 	public String getVersion() {

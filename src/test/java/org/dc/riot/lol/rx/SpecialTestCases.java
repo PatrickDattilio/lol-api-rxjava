@@ -12,12 +12,14 @@ import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SpecialTestCases {
 	
 	private RiotApi.StaticData staticData = null;
 	
+	@Ignore
 	@Before
 	public void setup() throws FileNotFoundException {
 		ApiKey apiKey = ApiKey.loadApiKeys()[0];
@@ -25,6 +27,7 @@ public class SpecialTestCases {
 		staticData = factory.newStaticDataInterface(Region.NORTH_AMERICA, true);
 	}
 
+	@Ignore
 	@Test
 	public void testSpecialCase() {
 		try {

@@ -1,16 +1,24 @@
 package org.dc.riot.lol.rx.model;
 
-import org.dc.riot.lol.rx.model.staticdata.ChampionSpellDto;
 import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+import org.dc.riot.lol.rx.model.staticdata.LevelTipDto;
+import org.dc.riot.lol.rx.model.staticdata.RangeDto;
 
 /**
- * This object contains summoner spell data. Shares many fields with {@link ChampionSpellDto} but
- * the classes look different enough to preclude inheritance.
+ * This object contains summoner spell data. Shares many fields with {@link
+ * org.dc.riot.lol.rx.model.staticdata.ChampionSpellDto
+ * ChampionSpellDto} butthe classes look different enough
+ * to preclude inheritance.
  * 
  * @author Dc
  * @since 1.0.0
  */
 public class SummonerSpellDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private double[] cooldown;
     private String cooldownBurn;
     private int[] cost;
@@ -34,6 +42,10 @@ public class SummonerSpellDto {
     private int summonerLevel;
     private String tooltip;
     private SpellVarsDto[] vars;
+    
+    public SummonerSpellDto() {
+    	COUNT++;
+    }
 
     public double[] getCooldown() {
         return cooldown;
