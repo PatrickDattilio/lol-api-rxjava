@@ -1,5 +1,7 @@
 package org.dc.riot.lol.rx.model;
 
+import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+
 /**
  * This object contains summoner spell data. Shares many fields with {@link ChampionSpellDto} but
  * the classes look different enough to preclude inheritance.

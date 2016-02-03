@@ -13,11 +13,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.BasicDataStatsDto;
-import org.dc.riot.lol.rx.model.ImageDto;
-import org.dc.riot.lol.rx.model.MetaDataDto;
-import org.dc.riot.lol.rx.model.RuneDto;
-import org.dc.riot.lol.rx.model.RuneListDto;
 import org.dc.riot.lol.rx.model.champion.ChampionDto;
 import org.dc.riot.lol.rx.model.champion.ChampionListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
@@ -59,6 +54,12 @@ import org.dc.riot.lol.rx.model.match.Player;
 import org.dc.riot.lol.rx.model.match.Position;
 import org.dc.riot.lol.rx.model.match.Team;
 import org.dc.riot.lol.rx.model.match.Timeline;
+import org.dc.riot.lol.rx.model.staticdata.BasicDataStatsDto;
+import org.dc.riot.lol.rx.model.staticdata.GoldDto;
+import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+import org.dc.riot.lol.rx.model.staticdata.MetaDataDto;
+import org.dc.riot.lol.rx.model.staticdata.RuneDto;
+import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
 import org.dc.riot.lol.rx.model.stats.AggregatedStatsDto;
 import org.dc.riot.lol.rx.model.stats.ChampionStatsDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryDto;
@@ -86,6 +87,7 @@ import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
+import org.dc.riot.lol.rx.service.request.ChampListDataTag;
 import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.junit.After;
@@ -1289,7 +1291,7 @@ public class IntegrationTests {
 	}
 
 	@Test
-	public void testStaticRunes() throws IOException {
+	public void testStaticData() throws IOException {
 		try {
 			RuneListDto listDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
 			for (RuneDto runeDto : listDto.getData().values()) {
@@ -1297,6 +1299,16 @@ public class IntegrationTests {
 				RuneDto dto = staticInterface.getRune(runeId, null, null, RuneDataTag.ALL);
 				testRuneDto(dto);
 			}
+			
+			ChampionListDto champListDto = staticInterface.getChampions(true, null, null, ChampListDataTag.ALL);
+			
+			
+			assertTrue(RuneListDto.getInstanceCount() > 0);
+			assertTrue(RuneDto.getInstanceCount() > 0);
+			assertTrue(ImageDto.getInstanceCount() > 0);
+			assertTrue(MetaDataDto.getInstanceCount() > 0);
+			assertTrue(BasicDataStatsDto.getInstanceCount() > 0);
+			assertTrue(GoldDto.getInstanceCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -1307,6 +1319,18 @@ public class IntegrationTests {
 		} finally {
 			System.out.println();
 			System.out.println();
+		}
+	}
+	
+	private void testGoldDto(GoldDto dto) {
+		if (dto.isPurchasable()) {
+			assertTrue(dto.getBase() > 0);
+			assertTrue(dto.getSell() > 0);
+			assertTrue(dto.getTotal() > 0);
+		} else {
+			assertTrue(dto.getBase() == 0);
+			assertTrue(dto.getSell() == 0);
+			assertTrue(dto.getTotal() == 0);
 		}
 	}
 

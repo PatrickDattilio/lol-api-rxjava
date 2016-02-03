@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,11 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class RuneDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private String colloq;
     private boolean consumeOnFull;
     private boolean consumed;
@@ -32,6 +37,10 @@ public class RuneDto {
     private int stacks;
     private BasicDataStatsDto stats;
     private String[] tags;
+    
+    public RuneDto() {
+    	COUNT++;
+    }
 
     /**
      * @return colloquial or <code>null</code>

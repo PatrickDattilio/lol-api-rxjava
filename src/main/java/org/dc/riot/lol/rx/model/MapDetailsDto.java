@@ -1,5 +1,7 @@
 package org.dc.riot.lol.rx.model;
 
+import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+
 /**
  * This object contains map detail data.
  * 

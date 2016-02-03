@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 /**
  * This object contains meta data.
@@ -7,31 +7,37 @@ package org.dc.riot.lol.rx.model;
  * @since 1.0.0
  */
 public class MetaDataDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private boolean isRune;
     private String tier;
     private String type;
+    
+    public MetaDataDto() {
+    	COUNT++;
+    }
 
+    /**
+     * @return Is rune.
+     */
     public boolean isRune() {
         return isRune;
     }
 
-    public void setIsRune(boolean isRune) {
-        this.isRune = isRune;
-    }
-
+    /**
+     * @return Item tier.
+     */
     public String getTier() {
         return tier;
     }
 
-    public void setTier(String tier) {
-        this.tier = tier;
-    }
-
+    /**
+     * @return Type.
+     */
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

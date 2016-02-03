@@ -5,7 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 
-import org.dc.riot.lol.rx.model.RuneListDto;
+import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;

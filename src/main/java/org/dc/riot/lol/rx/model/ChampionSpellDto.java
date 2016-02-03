@@ -2,6 +2,8 @@ package org.dc.riot.lol.rx.model;
 
 import java.util.List;
 
+import org.dc.riot.lol.rx.model.staticdata.ImageDto;
+
 /**
  * Used by the Static interface
  * 

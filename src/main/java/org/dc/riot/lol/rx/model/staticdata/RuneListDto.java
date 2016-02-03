@@ -1,6 +1,8 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 import java.util.Map;
+
+import org.dc.riot.lol.rx.model.BasicDataDto;
 
 /**
  * This object contains rune list data.
@@ -9,40 +11,45 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class RuneListDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private BasicDataDto basic;
     private Map<String, RuneDto> data;
     private String type;
     private String version;
+    
+    public RuneListDto() {
+    	COUNT++;
+    }
 
+    /**
+     * @return Basic data.
+     */
     public BasicDataDto getBasic() {
         return basic;
     }
 
-    public void setBasic(BasicDataDto basic) {
-        this.basic = basic;
-    }
-
+    /**
+     * @return Map of rune data.
+     */
     public Map<String, RuneDto> getData() {
         return data;
     }
 
-    public void setData(Map<String, RuneDto> data) {
-        this.data = data;
-    }
-
+    /**
+     * @return Rune type.
+     */
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    /**
+     * @return Version.
+     */
     public String getVersion() {
         return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 }
