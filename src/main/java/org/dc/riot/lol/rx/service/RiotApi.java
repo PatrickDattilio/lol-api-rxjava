@@ -5,7 +5,6 @@ import java.net.Proxy;
 import java.util.Map;
 
 import org.dc.riot.lol.rx.model.ItemDto;
-import org.dc.riot.lol.rx.model.ItemListDto;
 import org.dc.riot.lol.rx.model.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.MapDataDto;
 import org.dc.riot.lol.rx.model.MasteryListDto;
@@ -27,6 +26,7 @@ import org.dc.riot.lol.rx.model.league.LeagueEntryDto;
 import org.dc.riot.lol.rx.model.match.MatchDetail;
 import org.dc.riot.lol.rx.model.match.MatchListDto;
 import org.dc.riot.lol.rx.model.staticdata.ChampionListDto;
+import org.dc.riot.lol.rx.model.staticdata.ItemListDto;
 import org.dc.riot.lol.rx.model.staticdata.ChampionDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;

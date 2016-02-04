@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.dc.riot.lol.rx.model.ItemDto;
 import org.dc.riot.lol.rx.model.SpellVarsDto;
 import org.dc.riot.lol.rx.model.champion.ChampDto;
 import org.dc.riot.lol.rx.model.champion.ChampListDto;
@@ -64,6 +65,7 @@ import org.dc.riot.lol.rx.model.staticdata.ChampionSpellDto;
 import org.dc.riot.lol.rx.model.staticdata.GoldDto;
 import org.dc.riot.lol.rx.model.staticdata.ImageDto;
 import org.dc.riot.lol.rx.model.staticdata.InfoDto;
+import org.dc.riot.lol.rx.model.staticdata.ItemListDto;
 import org.dc.riot.lol.rx.model.staticdata.LevelTipDto;
 import org.dc.riot.lol.rx.model.staticdata.MetaDataDto;
 import org.dc.riot.lol.rx.model.staticdata.PassiveDto;
@@ -102,6 +104,8 @@ import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.dc.riot.lol.rx.service.request.ChampDataTag;
 import org.dc.riot.lol.rx.service.request.ChampListDataTag;
+import org.dc.riot.lol.rx.service.request.ItemDataTag;
+import org.dc.riot.lol.rx.service.request.ItemListDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.junit.After;
 import org.junit.Before;
@@ -1308,14 +1312,26 @@ public class IntegrationTests {
 		try {
 			ChampionListDto champListDto = staticInterface.getChampions(true, null, null, ChampListDataTag.ALL);
 			assertNotNull(champListDto);
-			testChampionListStaticDto(champListDto);
+			testChampionListDto(champListDto);
 			
 			for (ChampionDto championDto : champListDto.getData().values()) {
 				long champId = championDto.getId();
 				ChampionDto champDto = staticInterface.getChampion(champId, null, null, ChampDataTag.ALL);
-				prints.println(champDto.getName());
 				assertNotNull(champDto);
+				prints.println(champDto.getName());
 				testChampionDto(champDto);
+			}
+			
+			ItemListDto itemListDto = staticInterface.getItems(null, null, ItemListDataTag.ALL);
+			assertNotNull(itemListDto);
+			testItemListDto(itemListDto);
+			
+			for (ItemDto itemDto : itemListDto.getData().values()) {
+				long itemId = itemDto.getId();
+				ItemDto itDto = staticInterface.getItem(itemId, null, null, ItemDataTag.ALL);
+				assertNotNull(itDto);
+				prints.println(itDto.getName());
+				testItemDto(itDto);
 			}
 			
 			RuneListDto listDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
@@ -1356,7 +1372,21 @@ public class IntegrationTests {
 		}
 	}
 	
-	private void testChampionListStaticDto(ChampionListDto dto) {
+	private void testItemListDto(ItemListDto dto) {
+		assertNotNull(dto.getType());
+		assertNotNull(dto.getVersion());
+//		dto.getBasic()
+//		dto.getData()
+//		dto.getGroups()
+//		dto.getTree()
+		fail();
+	}
+	
+	private void testItemDto(ItemDto dto) {
+		fail();
+	}
+	
+	private void testChampionListDto(ChampionListDto dto) {
 		assertNotNull(dto.getFormat());
 		assertNotNull(dto.getVersion());
 		assertNotNull(dto.getType());
