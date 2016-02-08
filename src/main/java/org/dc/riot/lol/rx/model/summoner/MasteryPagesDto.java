@@ -32,6 +32,9 @@ public class MasteryPagesDto {
     }
 
     /**
+     * Implementation note: could be empty if the player has no mastery
+     * pages. Likely to happen in the event of a mastery overhaul.
+     * 
      * @return Collection of mastery pages associated with the summoner.
      */
     public MasteryPageDto[] getPages() {

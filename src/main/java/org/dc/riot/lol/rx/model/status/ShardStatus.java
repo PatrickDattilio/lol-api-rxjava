@@ -31,37 +31,45 @@ public class ShardStatus {
     }
 
     /**
-     * @return The locales.
+     * @return Locales.
      */
     public String[] getLocales() {
+    	if (locales == null) {
+    		return new String[0];
+    	}
+
         return locales;
     }
 
     /**
-     * @return The name.
+     * @return Name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return The hostname.
+     * @return Host name.
      */
     public String getHostname() {
         return hostname;
     }
 
     /**
-     * @return The slug.
+     * @return Slug.
      */
     public String getSlug() {
         return slug;
     }
 
     /**
-     * @return The services.
+     * @return Services.
      */
     public Service[] getServices() {
+    	if (services == null) {
+    		return new Service[0];
+    	}
+
         return services;
     }
 }

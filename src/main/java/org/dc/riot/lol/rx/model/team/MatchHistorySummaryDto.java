@@ -15,16 +15,16 @@ public class MatchHistorySummaryDto {
 	}
 
     private GameMode gameMode;
-    private int mapId;
-    private int assists;
+    private Integer mapId;
+    private Integer assists;
     private String opposingTeamName;
-    private boolean invalid;
-    private int deaths;
-    private long gameId;
-    private int kills;
-    private boolean win;
-    private long date;
-    private int opposingTeamKills;
+    private Boolean invalid;
+    private Integer deaths;
+    private Long gameId;
+    private Integer kills;
+    private Boolean win;
+    private Long date;
+    private Integer opposingTeamKills;
     
     public MatchHistorySummaryDto() {
     	COUNT++;

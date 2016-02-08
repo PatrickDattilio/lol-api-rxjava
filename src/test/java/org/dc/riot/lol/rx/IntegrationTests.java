@@ -1,5 +1,6 @@
 package org.dc.riot.lol.rx;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -7,10 +8,8 @@ import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 import org.dc.riot.lol.rx.model.GroupDto;
@@ -92,6 +91,7 @@ import org.dc.riot.lol.rx.model.status.Message;
 import org.dc.riot.lol.rx.model.status.Service;
 import org.dc.riot.lol.rx.model.status.Shard;
 import org.dc.riot.lol.rx.model.status.ShardStatus;
+import org.dc.riot.lol.rx.model.status.Translation;
 import org.dc.riot.lol.rx.model.summoner.MasteryPageDto;
 import org.dc.riot.lol.rx.model.summoner.MasteryPagesDto;
 import org.dc.riot.lol.rx.model.summoner.RunePageDto;
@@ -119,7 +119,7 @@ import org.junit.Test;
 
 public class IntegrationTests {
 
-	private final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+	private final RESTFieldRegister register = new RESTFieldRegister();
 
 	private final String[] names = { "HuskarDc","Ctrl Alt Dc","Nightblue3","TheOddOne","C9 Meteos","C9 TOXIC MID","C9 TOXIC JUNGLE","C9 StealthBomber","Cheer X","6 xp"};
 	private final Region region = Region.NORTH_AMERICA;
@@ -140,9 +140,14 @@ public class IntegrationTests {
 
 	private TestPrints prints = TestPrints.getInstance();
 	private ApiFactory factory = null;
+	
+	private boolean testSummonerRan = false;
+	private boolean testTeamRan = false;
+	private boolean testStatusRan = false;
 
 	@Before
 	public void setup() throws FileNotFoundException {
+
 		final ApiKey apiKey = ApiKey.loadApiKeys()[0];
 		factory = ApiFactory.newDefaultFactory(apiKey);
 
@@ -172,6 +177,40 @@ public class IntegrationTests {
 		recentGameInterface.setPrintUrl(true);
 		statsInterface = factory.newStatsInterface(region, true);
 		statsInterface.setPrintUrl(true);
+	}
+	
+	@Test
+	public void testRegister() throws IllegalArgumentException, IllegalAccessException {
+		prints.println("Testing TEST REGISTER");
+		RESTFieldRegister testRegister = new RESTFieldRegister();
+		TestPojo p1 = new TestPojo().withDouble(new Double(3.14));
+		testRegister.registerInstance(p1);
+		prints.println(testRegister);
+		assertFalse(testRegister.testClass(TestPojo.class));
+		
+		p1.withInteger(new Integer(42));
+		testRegister.registerInstance(p1);
+		prints.println(testRegister);
+		assertFalse(testRegister.testClass(TestPojo.class));
+		
+		TestPojo p2 = new TestPojo()
+				.withDouble(new Double(Math.E))
+				.withLong(new Long(5))
+				.withString("Some string");
+		
+		testRegister.registerInstance(p2);
+		prints.println(testRegister);
+		assertFalse(testRegister.testClass(TestPojo.class));
+		
+		TestPojo p3 = new TestPojo()
+				.withObject(new Object());
+		
+		testRegister.registerInstance(p3);
+		prints.println(testRegister);
+		assertTrue(testRegister.testClass(TestPojo.class));
+		
+		System.out.println();
+		System.out.println();
 	}
 	
 	@Test
@@ -661,28 +700,19 @@ public class IntegrationTests {
 
 	@Test
 	public void testTeam() throws IOException {
+		testTeamRan = true;
 		try {
 			prints.println("Testing TEAM interface");
-
 			Map<String,SummonerDto> summonersDto = summonerInterface.getByNames(names);
 			long[] summonerIds = getSummonerIds(summonersDto);
-			Map<String,String> summonerNames = summonerInterface.getNames(summonerIds);
 			Map<String,TeamDto[]> summonerTeams = teamInterface.getTeamsBySummoners(summonerIds);
 			for (String key : summonerTeams.keySet()) {
-				prints.println("TEAMS for " + summonerNames.get(key));
 				TeamDto[] teamsDto = summonerTeams.get(key);
 				for (TeamDto teamDto : teamsDto) {
-					prints.println(teamDto.getName());
 					assertNotNull(teamDto);
 					testTeamDto(teamDto);
 				}
 			}
-			
-			assertTrue(MatchHistorySummaryDto.getInstanceCount() > 0);
-			assertTrue(RosterDto.getInstanceCount() > 0);
-			assertTrue(TeamDto.getInstanceCount() > 0);
-			assertTrue(TeamMemberInfoDto.getInstanceCount() > 0);
-			assertTrue(TeamStatDetailDto.getInstanceCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -697,6 +727,12 @@ public class IntegrationTests {
 	}
 
 	private void testTeamDto(TeamDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getCreateDate() > 0);
 		assertTrue(dto.getLastJoinDate() > 0);
 		assertTrue(dto.getLastGameDate() > 0);
@@ -724,22 +760,22 @@ public class IntegrationTests {
 	}
 
 	private void testTeamStatDetailDto(TeamStatDetailDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getTeamStatType());
-
-		if (dto.getAverageGamesPlayed() == 0) {
-			prints.println("WARNING", "Team with no average games played");
-		}
-
-		if (dto.getWins() == 0) {
-			prints.println("WARNING", "Team with no wins");
-		}
-
-		if (dto.getLosses() == 0) {
-			prints.println("WARNING", "Team with no losses");
-		}
 	}
 
 	private void testRosterDto(RosterDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getOwnerId() > 0);
 		TeamMemberInfoDto[] teamMembersDto = dto.getMemberList();
 		assertTrue(teamMembersDto.length > 0);
@@ -749,33 +785,29 @@ public class IntegrationTests {
 	}
 
 	private void testTeamMemberInfoDto(TeamMemberInfoDto dto) {
-		assertTrue(dto.getInviteDate() > 0);
-		if (dto.getJoinDate() <= 0) {
-			prints.println("WARNING", "TEAM player " + dto.getPlayerId() + " no JOIN DATE");
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 
+		assertTrue(dto.getInviteDate() > 0);
 		assertTrue(dto.getPlayerId() > 0);
 		assertNotNull(dto.getStatus());
 	}
 
 	private void testMatchHistorySummaryDto(MatchHistorySummaryDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getGameId() > 0);
 		assertTrue(dto.getMapId() > 0);
 		assertTrue(dto.getDate() > 0);
 		assertNotNull(dto.getGameMode());
 		assertNotNull(dto.getOpposingTeamName());
-
-		if (dto.getKills() == 0 || dto.getAssists() == 0) {
-			prints.println("WARNING", "Found game with NO KILLS OR ASSISTS " + dto.getGameId());
-		}
-
-		if (dto.getDate() == 0) {
-			prints.println("WARNING", "Found game with NO DEATHS " + dto.getGameId());
-		}
-
-		if (dto.getOpposingTeamKills() == 0) {
-			prints.println("WARNING", "Found game with NO OPPOSING KILLS " + dto.getGameId());
-		}
 	}
 
 	@Test
@@ -1154,6 +1186,7 @@ public class IntegrationTests {
 
 	@Test
 	public void testSummoners() throws IOException {
+		testSummonerRan = true;
 		try {
 			Map<String,SummonerDto> summonersDto = summonerInterface.getByNames(names);
 
@@ -1161,19 +1194,29 @@ public class IntegrationTests {
 			assertTrue("No summoners found", summonersDto.values().size() > 0);
 
 			for (SummonerDto summonerDto : summonersDto.values()) {
-				long summonerId = testSummonerDatas(summonerDto);
-				testSummonerDatas(summonerId);
-				testSummonerMasteries(summonerId);
-				testSummonerRunes(summonerId);
-				testSummonerNames(summonerId);
+				testSummonerDto(summonerDto);
+				
+				long summonerId = summonerDto.getId();
+				Map<String,SummonerDto> idMapDto = summonerInterface.getByIds(summonerId);	// will be only 1 KvP
+				for (SummonerDto idDto : idMapDto.values()) {
+					assertNotNull(idMapDto);
+					testSummonerDto(idDto);
+				}
+
+				Map<String,MasteryPagesDto> masteryPagesMapDto = summonerInterface.getMasteries(summonerId);	
+				assertNotNull(masteryPagesMapDto);
+				for (MasteryPagesDto masteryPagesDto : masteryPagesMapDto.values()) {
+					assertNotNull(masteryPagesDto);
+					testMasteryPagesDto(masteryPagesDto);
+				}
+				
+				Map<String,RunePagesDto> runePagesMapDto = summonerInterface.getRunes(summonerId);
+				assertNotNull(runePagesMapDto);
+				for (RunePagesDto runePagesDto : runePagesMapDto.values()) {
+					assertNotNull(runePagesDto);
+					testRunePagesDto(runePagesDto);
+				}
 			}
-			
-			assertTrue(MasteryPageDto.getInstanceCount() > 0);
-			assertTrue(MasteryPagesDto.getInstanceCount() > 0);
-			assertTrue(RunePageDto.getInstanceCount() > 0);
-			assertTrue(RunePagesDto.getInstanceCount() > 0);
-			assertTrue(RuneSlotDto.getInstanceCount() > 0);
-			assertTrue(SummonerDto.getInstanceCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -1187,82 +1230,98 @@ public class IntegrationTests {
 		}
 	}
 
-	private long testSummonerDatas(SummonerDto dto) {
-		prints.println("testSummonerDatas(SummonerDto)");
-
-		assertNotNull("Name is null", dto.getName());
-		prints.println(dto.getName());
-
-		assertNotNull("Region is null", dto.getRegion());
-		prints.println(dto.getRegion());
-
-		long iconId = dto.getProfileIconId();
-		assertTrue("No icon id", iconId > 0);
-
-		assertTrue("Revision date not set", dto.getRevisionDate() > 0);
-		Date date = new Date(dto.getRevisionDate());
-		prints.println(sdf.format(date));
-
-		long level = dto.getSummonerLevel();
-		assertTrue("Level not set", level > 0);
-
-		long summonerId = dto.getId();
-		assertTrue("No summonerId", summonerId > 0);
-
-		return summonerId;
-	}
-
-	private void testSummonerDatas(long summonerId) throws IOException, HttpException {
-		Map<String,SummonerDto> mapDto = summonerInterface.getByIds(summonerId);
-		assertNotNull(mapDto);
-
-		SummonerDto dto = mapDto.values().toArray(new SummonerDto[mapDto.values().size()])[0];
-		assertNotNull(dto);
-
-		assertNotNull("Name is null", dto.getName());
-		prints.println(dto.getName());
-
-		assertNotNull("Region is null " + dto.getName(), dto.getRegion());
-		prints.println(dto.getRegion());
-
-		long iconId = dto.getProfileIconId();
-		assertTrue("No icon id", iconId > 0);
-
-		assertTrue("Revision date not set", dto.getRevisionDate() > 0);
-		Date date = new Date(dto.getRevisionDate());
-		prints.println(sdf.format(date));
-
-		long level = dto.getSummonerLevel();
-		assertTrue("Level not set", level > 0);
-
-		long id = dto.getId();
-		assertTrue("No summonerId", id == summonerId);
-	}
-
-	private void testSummonerMasteries(long summonerId) throws IOException, HttpException {
-		Map<String,MasteryPagesDto> mapDto = summonerInterface.getMasteries(summonerId);
-		assertNotNull("Map dto null", mapDto);
-
-		MasteryPagesDto dto = mapDto.values().toArray(new MasteryPagesDto[mapDto.values().size()])[0];
-		assertNotNull("Dto null", dto);
-
-		assertNotNull("Dto is null", dto);
-		assertTrue("Mismatch summoner ID", dto.getSummonerId() == summonerId);
-
-		for (MasteryPageDto mp : dto.getPages()) {
-			long pageId = mp.getId();
-			assertTrue("No mastery page ID", pageId > 0);
-
-			String pageName = mp.getName();
-			assertNotNull("Mastery page has no name", pageName);
-
-			Mastery[] masteries = mp.getMasteries();
-			assertNotNull("Mastery page is null", masteries);
-			for (Mastery m : masteries) {
-				assertTrue("No mastery rank", m.getRank() > 0);
-				assertTrue("No mastery id", m.getMasteryId() > 0);
-			}
+	private void testRunePagesDto(RunePagesDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
+		
+		assertTrue(dto.getSummonerId() > 0);
+		
+		for (RunePageDto runePageDto : dto.getPages()) {
+			assertNotNull(runePageDto);
+			testRunePageDto(runePageDto);
+		}
+	}
+	
+	private void testRunePageDto(RunePageDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getId() > 0);
+		
+		for (RuneSlotDto runeSlotDto : dto.getSlots()) {
+			assertNotNull(runeSlotDto);
+			testRuneSlotDto(runeSlotDto);
+		}
+	}
+	
+	private void testRuneSlotDto(RuneSlotDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getRuneSlotId() > 0);
+	}
+
+	private void testSummonerDto(SummonerDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertNotNull("Name is null", dto.getName());
+		assertNotNull("Region is null", dto.getRegion());
+		assertTrue("No icon id", dto.getProfileIconId() > 0);
+		assertTrue("Revision date not set", dto.getRevisionDate() > 0);
+		assertTrue("Level not set", dto.getSummonerLevel() > 0);
+		assertTrue("No summonerId", dto.getId() > 0);
+	}
+	
+	private void testMasteryPagesDto(MasteryPagesDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(dto.getSummonerId() > 0);
+
+		MasteryPageDto[] masteryPageListDto = dto.getPages();
+		for (MasteryPageDto masteryPageDto : masteryPageListDto) {
+			testMasteryPageDto(masteryPageDto);
+		}
+	}
+	
+	private void testMasteryPageDto(MasteryPageDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getId() > 0);
+		
+		for (Mastery mastery : dto.getMasteries()) {
+			testMastery(mastery);
+		}
+	}
+	
+	private void testMastery(Mastery dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getMasteryId() > 0);
 	}
 
 	private void testSummonerRunes(long summonerId) throws IOException, HttpException {
@@ -1751,8 +1810,9 @@ public class IntegrationTests {
 	
 	@Test
 	public void testStatus() throws IOException {
+		testStatusRan = true;
 		try {
-			prints.println("testStatus()");
+			prints.println("INFO", "Testing STATUS");
 			boolean correctUnsupportedRegion = false;
 			try {
 				factory.newStatusInterface(Region.KOREA, false);
@@ -1765,33 +1825,12 @@ public class IntegrationTests {
 			Shard[] shards = statusInterface.getShards();
 			assertNotNull(shards);
 			for (Shard s : shards) {
-				assertNotNull(s.getHostname());
-				assertNotNull(s.getLocales());
-				assertNotNull(s.getName());
-				assertNotNull(s.getSlug());
-				if (s.getRegionTag() == null) {
-					prints.println(s.getSlug() + " null region tag");
-				}
+				testShard(s);
 			}
 
 			ShardStatus statusDto = statusInterface.getShard();
 			assertNotNull(statusDto);
-
-			assertNotNull(statusDto.getHostname());
-			assertNotNull(statusDto.getLocales());
-			assertNotNull(statusDto.getName());
-			assertNotNull(statusDto.getRegionTag());
-			assertNotNull(statusDto.getSlug());
-
-			Service[] services = statusDto.getServices();
-			assertNotNull(services);
-			
-			assertTrue(Incident.getInstanceCount() > 0);
-			assertTrue(Message.getInstanceCount() > 0);
-			assertTrue(Service.getInstanceCount() > 0);
-			assertTrue(Shard.getInstanceCount() > 0);
-			assertTrue(ShardStatus.getInstanceCount() > 0);
-//			assertTrue(Translation.getInstanceCount() > 0);
+			testShardStatus(statusDto);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -1802,6 +1841,31 @@ public class IntegrationTests {
 		} finally {
 			System.out.println();
 			System.out.println();
+		}
+	}
+	
+	private void testShardStatus(ShardStatus dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertNotNull(dto.getHostname());
+		assertNotNull(dto.getLocales());
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getRegionTag());
+		assertNotNull(dto.getSlug());
+
+		Service[] services = dto.getServices();
+		assertNotNull(services);
+	}
+	
+	private void testShard(Shard dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -1817,10 +1881,58 @@ public class IntegrationTests {
 	}
 	
 	@After
-	public void testPojoCounts() {
-		// enumerate pojos and see if one of everything got built
-		// Match and MatchList POJOs
+	public void testPojos() {
+		prints.println("INFO", "Testing POJOs");
 		
+		// status POJOs
+		if (testStatusRan) {
+			assertTrue(Incident.getInstanceCount() > 0);
+			assertTrue(Message.getInstanceCount() > 0);
+			assertTrue(Service.getInstanceCount() > 0);
+			assertTrue(Shard.getInstanceCount() > 0);
+			assertTrue(ShardStatus.getInstanceCount() > 0);
+			assertTrue(Translation.getInstanceCount() > 0);
+			assertTrue(register.testClass(Incident.class));
+			assertTrue(register.testClass(Message.class));
+			assertTrue(register.testClass(Service.class));
+			assertTrue(register.testClass(Shard.class));
+			assertTrue(register.testClass(ShardStatus.class));
+			assertTrue(register.testClass(Translation.class));
+		}
+
+		// summoner POJOs
+		if (testSummonerRan) {
+			assertTrue(MasteryPageDto.getInstanceCount() > 0);
+			assertTrue(MasteryPagesDto.getInstanceCount() > 0);
+			assertTrue(RunePageDto.getInstanceCount() > 0);
+			assertTrue(RunePagesDto.getInstanceCount() > 0);
+			assertTrue(RuneSlotDto.getInstanceCount() > 0);
+			assertTrue(SummonerDto.getInstanceCount() > 0);
+			assertTrue(register.testClass(MasteryPageDto.class));
+			assertTrue(register.testClass(MasteryPagesDto.class));
+			assertTrue(register.testClass(RunePageDto.class));
+			assertTrue(register.testClass(RunePagesDto.class));
+			assertTrue(register.testClass(RuneSlotDto.class));
+			assertTrue(register.testClass(SummonerDto.class));
+		}
+		
+		// team POJOs
+		if (testTeamRan) {
+			assertTrue(MatchHistorySummaryDto.getInstanceCount() > 0);
+			assertTrue(RosterDto.getInstanceCount() > 0);
+			assertTrue(TeamDto.getInstanceCount() > 0);
+			assertTrue(TeamMemberInfoDto.getInstanceCount() > 0);
+			assertTrue(TeamStatDetailDto.getInstanceCount() > 0);
+			assertTrue(register.testClass(MatchHistorySummaryDto.class));
+			assertTrue(register.testClass(RosterDto.class));
+			assertTrue(register.testClass(TeamDto.class));
+			assertTrue(register.testClass(TeamMemberInfoDto.class));
+			assertTrue(register.testClass(TeamStatDetailDto.class));
+		}
+		
+		
+		System.out.println();
+		prints.println(register);
 	}
 
 }

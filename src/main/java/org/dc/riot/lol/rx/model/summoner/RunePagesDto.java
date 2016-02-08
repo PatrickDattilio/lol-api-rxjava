@@ -21,7 +21,7 @@ public class RunePagesDto {
 
     /**
      * @return Collection of rune pages associated with the summoner
-     * or <code>-1</code> if not defined.
+     * or empty if not defined.
      */
     public RunePageDto[] getPages() {
         return pages;
