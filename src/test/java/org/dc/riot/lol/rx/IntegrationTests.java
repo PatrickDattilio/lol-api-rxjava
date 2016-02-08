@@ -1810,6 +1810,7 @@ public class IntegrationTests {
 	
 	@Test
 	public void testStatus() throws IOException {
+		// TODO UPDATE POJOS TO BE ALL REFERENCE BASED
 		testStatusRan = true;
 		try {
 			prints.println("INFO", "Testing STATUS");
