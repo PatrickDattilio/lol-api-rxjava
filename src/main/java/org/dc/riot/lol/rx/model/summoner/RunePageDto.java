@@ -12,20 +12,25 @@ public class RunePageDto {
 		return COUNT;
 	}
 
-    private long id;
+    private Long id;
     private RuneSlotDto[] slots;
     private String name;
-    private boolean current;
+    private Boolean current;
     
     public RunePageDto() {
     	COUNT++;
     }
 
     /**
-     * @return Rune page ID.
+     * @return Rune page ID or <code>-1</code>
+     * if not defined.
      */
     public long getId() {
-        return id;
+    	if (id == null) {
+    		return -1;
+    	}
+
+        return id.longValue();
     }
 
     /**
@@ -47,9 +52,14 @@ public class RunePageDto {
     }
 
     /**
-     * @return Indicates if the page is the current page.
+     * @return Indicates if the page is the current page
+     * or <code>false</code> if not defined.
      */
     public boolean isCurrent() {
-        return current;
+    	if (current == null) {
+    		return false;
+    	}
+
+        return current.booleanValue();
     }
 }

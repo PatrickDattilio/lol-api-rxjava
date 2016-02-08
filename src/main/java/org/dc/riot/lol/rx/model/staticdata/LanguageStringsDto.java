@@ -1,51 +1,49 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This object contains rune list data.
+ * This object contains language strings data.
+ * Various language data (insert 26 languages meme here).
  * 
  * @author Dc
  * @since 1.0.0
  */
-public class RuneListDto {
+public class LanguageStringsDto {
 	private static long COUNT = 0;
 	public static long getInstanceCount() {
 		return COUNT;
 	}
 
-    private BasicDataDto basic;
-    private Map<String, RuneDto> data;
+    private Map<String, String> data;
     private String type;
     private String version;
     
-    public RuneListDto() {
+    public LanguageStringsDto() {
     	COUNT++;
     }
 
     /**
-     * @return Basic data.
+     * @return Data.
      */
-    public BasicDataDto getBasic() {
-        return basic;
-    }
+    public Map<String, String> getData() {
+    	if (data == null) {
+    		return new HashMap<>();
+    	}
 
-    /**
-     * @return Map of rune data.
-     */
-    public Map<String, RuneDto> getData() {
         return data;
     }
 
     /**
-     * @return Rune type.
+     * @return Type of data.
      */
     public String getType() {
         return type;
     }
 
     /**
-     * @return Version.
+     * @return Version (patch).
      */
     public String getVersion() {
         return version;

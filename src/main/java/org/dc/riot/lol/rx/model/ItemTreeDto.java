@@ -7,22 +7,29 @@ package org.dc.riot.lol.rx.model;
  * @since 1.0.0
  */
 public class ItemTreeDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private String header;
     private String[] tags;
 
+    /**
+     * @return Header.
+     */
     public String getHeader() {
         return header;
     }
 
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
+    /**
+     * @return Tags.
+     */
     public String[] getTags() {
-        return tags;
-    }
+    	if (tags == null) {
+    		return new String[0];
+    	}
 
-    public void setTags(String[] tags) {
-        this.tags = tags;
+        return tags;
     }
 }

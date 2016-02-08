@@ -13,23 +13,28 @@ public class RunePagesDto {
 	}
 
     private RunePageDto[] pages;
-    private long summonerId;
+    private Long summonerId;
     
     public RunePagesDto() {
     	COUNT++;
     }
 
     /**
-     * @return Collection of rune pages associated with the summoner.
+     * @return Collection of rune pages associated with the summoner
+     * or <code>-1</code> if not defined.
      */
     public RunePageDto[] getPages() {
         return pages;
     }
 
     /**
-     * @return Summoner ID.
+     * @return Summoner ID or <code>-1</code> if not defined.
      */
     public long getSummonerId() {
-        return summonerId;
+    	if (summonerId == null) {
+    		return -1;
+    	}
+
+        return summonerId.longValue();
     }
 }

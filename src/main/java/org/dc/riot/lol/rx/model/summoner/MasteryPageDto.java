@@ -15,16 +15,17 @@ public class MasteryPageDto {
 	}
 
     private Mastery[] masteries;
-    private long id;
+    private Long id;
     private String name;
-    private boolean current;
+    private Boolean current;
     
     public MasteryPageDto() {
     	COUNT++;
     }
 
     /**
-     * @return Collection of masteries associated with the mastery page.
+     * @return Collection of masteries associated with the
+     * mastery page.
      */
     public Mastery[] getMasteries() {
     	if (masteries == null) {
@@ -35,10 +36,15 @@ public class MasteryPageDto {
     }
 
     /**
-     * @return Mastery page ID.
+     * @return Mastery page ID or <code>-1</code>
+     * if not defined.
      */
     public long getId() {
-        return id;
+    	if (id == null) {
+    		return -1;
+    	}
+
+        return id.longValue();
     }
 
     /**
@@ -49,9 +55,14 @@ public class MasteryPageDto {
     }
 
     /**
-     * @return Indicates if the mastery page is the current mastery page.
+     * @return Indicates if the mastery page is the current mastery
+     * page, <code>false</code> if not defined.
      */
     public boolean isCurrent() {
-        return current;
+    	if (current == null) {
+    		return false;
+    	}
+
+        return current.booleanValue();
     }
 }

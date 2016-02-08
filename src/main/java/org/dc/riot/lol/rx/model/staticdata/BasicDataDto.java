@@ -1,12 +1,7 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.dc.riot.lol.rx.model.staticdata.BasicDataStatsDto;
-import org.dc.riot.lol.rx.model.staticdata.GoldDto;
-import org.dc.riot.lol.rx.model.staticdata.ImageDto;
-import org.dc.riot.lol.rx.model.staticdata.MetaDataDto;
 
 /**
  * This object contains basic data.
@@ -29,7 +24,7 @@ public class BasicDataDto {
     private GoldDto gold;
     private String group;
     private boolean hideFromAll;
-    private int id;
+    private long id;
     private ImageDto image;
     private boolean inStore;
     private String[] into;
@@ -48,7 +43,19 @@ public class BasicDataDto {
     	COUNT++;
     }
 
-    public String getColloq() {
+    protected BasicDataDto(boolean alreadyCounted) {
+    	if (!alreadyCounted) {
+    		COUNT++;
+    	}
+	}
+
+    /**
+     * Implementation note: may be <code>null</code> (e.g.
+     * Devourer enchant is has no colloq string.
+     * 
+     * @return Colloq.
+     */
+	public String getColloq() {
         return colloq;
     }
 
@@ -89,6 +96,12 @@ public class BasicDataDto {
         return gold;
     }
 
+    /**
+     * Implementation note: might be <code>null</code> (e.g.
+     * Total Biscuit of Rejuvenation has no group).
+     * 
+     * @return Group.
+     */
     public String getGroup() {
         return group;
     }
@@ -97,7 +110,7 @@ public class BasicDataDto {
         return hideFromAll;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -129,6 +142,12 @@ public class BasicDataDto {
         return name;
     }
 
+    /**
+     * Implementation note: might be <code>null</code>
+     * (e.g. Devourer enchant has no sanitized description).
+     * 
+     * @return Plain text.
+     */
     public String getPlaintext() {
         return plaintext;
     }
@@ -141,6 +160,12 @@ public class BasicDataDto {
         return rune;
     }
 
+    /**
+     * Implementation note: might be <code>null</code>
+     * (e.g. Devourer enchant has no sanitized description).
+     * 
+     * @return Sanitized description.
+     */
     public String getSanitizedDescription() {
         return sanitizedDescription;
     }
@@ -150,18 +175,56 @@ public class BasicDataDto {
     }
 
     public int getStacks() {
-        return stacks;
+    	return stacks;
     }
 
+    /**
+     * Implementation note: might be <code>null</code>.
+     * 
+     * @return Stats.
+     */
     public BasicDataStatsDto getStats() {
-        return stats;
+    	return stats;
     }
 
+    /**
+     * Implementation note: might be empty (e.g. Devourer enchant
+     * has no tags).
+     * 
+     * @return Tags.
+     */
     public String[] getTags() {
     	if (tags == null) {
     		return new String[0];
     	}
 
-        return tags;
+    	return tags;
+    }
+
+    @Override
+    public String toString() {
+    	return colloq + " " +
+    			consumeOnFull + " " +
+    			consumed + " " +
+    			depth + " " +
+    			description + " " +
+    			from + " " +
+    			gold + " " +
+    			group + " " +
+    			hideFromAll + " " +
+    			id + " " +
+    			image + " " +
+    			inStore + " " +
+    			into + " " +
+    			maps + " " +
+    			name + " " +
+    			plaintext + " " +
+    			requiredChampion + " " +
+    			rune + " " +
+    			sanitizedDescription + " " +
+    			specialRecipe + " " +
+    			stacks + " " +
+    			stats + " " +
+    			tags;
     }
 }

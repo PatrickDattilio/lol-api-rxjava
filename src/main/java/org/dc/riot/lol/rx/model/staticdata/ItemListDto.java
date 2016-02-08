@@ -1,10 +1,9 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.BasicDataDto;
 import org.dc.riot.lol.rx.model.GroupDto;
-import org.dc.riot.lol.rx.model.ItemDto;
 import org.dc.riot.lol.rx.model.ItemTreeDto;
 
 /**
@@ -41,6 +40,10 @@ public class ItemListDto {
      * @return Data.
      */
     public Map<String, ItemDto> getData() {
+    	if (data == null) {
+    		return new HashMap<String,ItemDto>();
+    	}
+
         return data;
     }
 
@@ -48,6 +51,10 @@ public class ItemListDto {
      * @return Item groups.
      */
     public GroupDto[] getGroups() {
+    	if (groups == null) {
+    		return new GroupDto[0];
+    	}
+
         return groups;
     }
 

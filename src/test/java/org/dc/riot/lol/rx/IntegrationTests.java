@@ -13,7 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.ItemDto;
+import org.dc.riot.lol.rx.model.GroupDto;
+import org.dc.riot.lol.rx.model.ItemTreeDto;
 import org.dc.riot.lol.rx.model.SpellVarsDto;
 import org.dc.riot.lol.rx.model.champion.ChampDto;
 import org.dc.riot.lol.rx.model.champion.ChampListDto;
@@ -56,6 +57,7 @@ import org.dc.riot.lol.rx.model.match.Player;
 import org.dc.riot.lol.rx.model.match.Position;
 import org.dc.riot.lol.rx.model.match.Team;
 import org.dc.riot.lol.rx.model.match.Timeline;
+import org.dc.riot.lol.rx.model.staticdata.BasicDataDto;
 import org.dc.riot.lol.rx.model.staticdata.BasicDataStatsDto;
 import org.dc.riot.lol.rx.model.staticdata.BlockDto;
 import org.dc.riot.lol.rx.model.staticdata.BlockItemDto;
@@ -65,8 +67,12 @@ import org.dc.riot.lol.rx.model.staticdata.ChampionSpellDto;
 import org.dc.riot.lol.rx.model.staticdata.GoldDto;
 import org.dc.riot.lol.rx.model.staticdata.ImageDto;
 import org.dc.riot.lol.rx.model.staticdata.InfoDto;
+import org.dc.riot.lol.rx.model.staticdata.ItemDto;
 import org.dc.riot.lol.rx.model.staticdata.ItemListDto;
+import org.dc.riot.lol.rx.model.staticdata.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.staticdata.LevelTipDto;
+import org.dc.riot.lol.rx.model.staticdata.MapDataDto;
+import org.dc.riot.lol.rx.model.staticdata.MapDetailsDto;
 import org.dc.riot.lol.rx.model.staticdata.MetaDataDto;
 import org.dc.riot.lol.rx.model.staticdata.PassiveDto;
 import org.dc.riot.lol.rx.model.staticdata.RangeDto;
@@ -143,7 +149,7 @@ public class IntegrationTests {
 		summonerInterface = factory.newSummonerInterface(region, true);
 		summonerInterface.setPrintUrl(true);
 		staticInterface = factory.newStaticDataInterface(region, true);
-		staticInterface.setPrintUrl(true);
+		staticInterface.setPrintUrl(false);
 		statusInterface = factory.newStatusInterface(region, true);
 		statusInterface.setPrintUrl(true);
 		championInterface = factory.newChampionInterface(region, true);
@@ -1207,8 +1213,6 @@ public class IntegrationTests {
 	}
 
 	private void testSummonerDatas(long summonerId) throws IOException, HttpException {
-		prints.println("testSummonerDatas(long)");
-
 		Map<String,SummonerDto> mapDto = summonerInterface.getByIds(summonerId);
 		assertNotNull(mapDto);
 
@@ -1236,8 +1240,6 @@ public class IntegrationTests {
 	}
 
 	private void testSummonerMasteries(long summonerId) throws IOException, HttpException {
-		prints.println("testSummonerMasteries(long)");
-
 		Map<String,MasteryPagesDto> mapDto = summonerInterface.getMasteries(summonerId);
 		assertNotNull("Map dto null", mapDto);
 
@@ -1264,8 +1266,6 @@ public class IntegrationTests {
 	}
 
 	private void testSummonerRunes(long summonerId) throws IOException, HttpException {
-		prints.println("testSummonerRunes(long)");
-
 		Map<String,RunePagesDto> mapDto = summonerInterface.getRunes(summonerId);
 		assertNotNull("Map dto null", mapDto);
 
@@ -1294,8 +1294,6 @@ public class IntegrationTests {
 	}
 
 	private void testSummonerNames(long summonerId) throws IOException, HttpException {
-		prints.println("testSummonerNames(long)");
-
 		Map<String,String> mapDto = summonerInterface.getNames(summonerId);
 		assertNotNull("Map dto null", mapDto);
 
@@ -1310,6 +1308,7 @@ public class IntegrationTests {
 	@Test
 	public void testStaticData() throws IOException {
 		try {
+			// CHAMPION DATA
 			ChampionListDto champListDto = staticInterface.getChampions(true, null, null, ChampListDataTag.ALL);
 			assertNotNull(champListDto);
 			testChampionListDto(champListDto);
@@ -1322,6 +1321,7 @@ public class IntegrationTests {
 				testChampionDto(champDto);
 			}
 			
+			// ITEM DATA
 			ItemListDto itemListDto = staticInterface.getItems(null, null, ItemListDataTag.ALL);
 			assertNotNull(itemListDto);
 			testItemListDto(itemListDto);
@@ -1333,6 +1333,21 @@ public class IntegrationTests {
 				prints.println(itDto.getName());
 				testItemDto(itDto);
 			}
+			
+			// LANGUAGE STRINGS
+			LanguageStringsDto languageStringsDto = staticInterface.getLanguageStrings(null, null);
+			assertNotNull(languageStringsDto);
+			testLanguageStringsDto(languageStringsDto);
+			
+			// LANGUAGES
+			String[] languageDto = staticInterface.getLocales();
+			assertNotNull(languageDto);
+			assertTrue(languageDto.length > 0);
+			
+			// MAP DATA
+			MapDataDto mapDataDto = staticInterface.getMap(null, null);
+			assertNotNull(mapDataDto);
+			testMapDataDto(mapDataDto);
 			
 			RuneListDto listDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
 			assertNotNull(listDto);
@@ -1372,18 +1387,130 @@ public class IntegrationTests {
 		}
 	}
 	
+	private void testMapDataDto(MapDataDto dto) {
+		assertNotNull(dto.getVersion());
+		prints.println("STATIC mapData version " + dto.getVersion());
+		assertNotNull(dto.getType());
+		prints.println("STATIC mapData type " + dto.getType());
+		assertNotNull(dto.getData());
+		for (String key : dto.getData().keySet()) {
+			prints.println("STATIC mapData key " + key);
+			MapDetailsDto mapDetailsDto = dto.getData().get(key);
+			assertNotNull(mapDetailsDto);
+			testMapDetailsDto(mapDetailsDto);
+		}
+	}
+	
+	private void testMapDetailsDto(MapDetailsDto dto) {
+		assertTrue(dto.getMapId() > 0);
+		assertNotNull(dto.getMapName());
+		assertTrue(dto.getUnpurchaseableItemList().length > 0);
+		
+		ImageDto imageDto = dto.getImage();
+		assertNotNull(imageDto);
+		testImageDto(imageDto);
+	}
+	
+	private void testLanguageStringsDto(LanguageStringsDto dto) {
+		assertNotNull(dto.getVersion());
+		prints.println("STATIC languageString version " + dto.getVersion());
+		assertNotNull(dto.getType());
+		prints.println("STATIC languageString type " + dto.getType());
+		assertNotNull(dto.getData());
+		for (String key : dto.getData().keySet()) {
+			prints.println("STATIC languageString data " + key + " -> " + dto.getData().get(key));
+		}
+	}
+	
 	private void testItemListDto(ItemListDto dto) {
 		assertNotNull(dto.getType());
 		assertNotNull(dto.getVersion());
-//		dto.getBasic()
-//		dto.getData()
-//		dto.getGroups()
-//		dto.getTree()
-		fail();
+
+		BasicDataDto basicDataDto = dto.getBasic();
+		assertNotNull(basicDataDto);
+		testBasicDataDto(basicDataDto);
+
+		Map<String, ItemDto> itemMapDto = dto.getData();
+		for (ItemDto itemDto : itemMapDto.values()) {
+			testItemDto(itemDto);
+		}
+
+		GroupDto[] groupListDto = dto.getGroups();
+		for (GroupDto groupDto : groupListDto) {
+			testGroupDto(groupDto);
+		}
+
+		ItemTreeDto[] itemTreeDto = dto.getTree();
+		for (ItemTreeDto itDto : itemTreeDto) {
+			testItemTreeDto(itDto);
+		}
+	}
+	
+	private void testItemTreeDto(ItemTreeDto dto) {
+		assertNotNull(dto.getHeader());
+		assertTrue(dto.getTags().length > 0);
+	}
+	
+	private void testGroupDto(GroupDto dto) {
+		assertNotNull(dto.getMaxGroupOwnable());
+		assertNotNull(dto.getKey());
+	}
+	
+	private void testBasicDataDto(BasicDataDto dto) {
+		prints.println("STATIC basicDataDto " + dto.getName());
+		if (dto.getId() == 0) {
+			prints.println("WARNING", dto);
+			return;
+		}
+
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getDescription());
+		
+		String plainText = dto.getPlaintext();
+		if (plainText == null) {
+			prints.println("WARNING", "Plain text null");
+		}
+
+		String group = dto.getGroup();
+		if (group == null) {
+			prints.println("WARNING", "Group null");
+		}
+		
+		String sanDesc = dto.getSanitizedDescription();
+		if (sanDesc == null) {
+			prints.println("WARNING", "Sanitized description null");
+		}
+
+		String[] tags = dto.getTags();
+		if (tags.length == 0) {
+			prints.println("WARNING", "No tags");
+		}
+
+		String colloq = dto.getColloq();
+		if (colloq == null) {
+			prints.println("WARNING", "Colloq null");
+		}
+
+		BasicDataStatsDto basicDataDto = dto.getStats();
+		if (basicDataDto != null) {
+			testBasicDataStatsDto(basicDataDto);
+		} else {
+			prints.println("WARNING", "Stats null");
+		}
+		
+		ImageDto imageDto = dto.getImage();
+		if (imageDto != null) {
+			testImageDto(imageDto);
+		} else {
+			prints.println("WARNING", "Image data null");
+		}
 	}
 	
 	private void testItemDto(ItemDto dto) {
-		fail();
+		testBasicDataDto(dto);
+		if (dto.getEffect().values().size() == 0) {
+			prints.println("WARNING", "No effects");
+		}
 	}
 	
 	private void testChampionListDto(ChampionListDto dto) {

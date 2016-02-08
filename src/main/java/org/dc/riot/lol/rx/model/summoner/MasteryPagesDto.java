@@ -12,7 +12,7 @@ public class MasteryPagesDto {
 		return COUNT;
 	}
 
-    private long summonerId;
+    private Long summonerId;
     private MasteryPageDto[] pages;
     
     public MasteryPagesDto() {
@@ -20,10 +20,15 @@ public class MasteryPagesDto {
     }
 
     /**
-     * @return Summoner ID.
+     * @return Summoner ID or <code>-1</code> if not
+     * defined.
      */
     public long getSummonerId() {
-        return summonerId;
+    	if (summonerId == null) {
+    		return -1;
+    	}
+
+        return summonerId.longValue();
     }
 
     /**

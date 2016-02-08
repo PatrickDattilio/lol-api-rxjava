@@ -12,28 +12,38 @@ public class RuneSlotDto {
 		return COUNT;
 	}
 
-    private long runeId;
-    private int runeSlotId;
+    private Long runeId;
+    private Integer runeSlotId;
     
     public RuneSlotDto() {
     	COUNT++;
     }
 
     /**
-     * @return Rune ID associated with the rune slot.
      * For static information correlating to rune IDs,
      * please refer to the LoL Static Data API.
+     * 
+     * @return Rune ID associated with the rune slot
+     * or <code>-1</code> if not defined.
      */
     public long getRuneId() {
-        return runeId;
+    	if (runeId == null) {
+    		return -1;
+    	}
+
+        return runeId.longValue();
     }
 
     /**
      * <img src="https://s3-us-west-1.amazonaws.com/riot-api/img/rune-slot-ids.png"></img>
      * 
-     * @return Rune slot ID.
+     * @return Rune slot ID or <code>-1</code> if not defined.
      */
     public int getRuneSlotId() {
-        return runeSlotId;
+    	if (runeSlotId == null) {
+    		return -1;
+    	}
+
+        return runeSlotId.intValue();
     }
 }

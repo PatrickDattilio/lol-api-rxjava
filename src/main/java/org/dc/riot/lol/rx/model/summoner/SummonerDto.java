@@ -14,11 +14,11 @@ public class SummonerDto {
 		return COUNT;
 	}
 
-    private long id;
+    private Long id;
     private String name;
-    private long profileIconId;
-    private int summonerLevel;
-    private long revisionDate;
+    private Long profileIconId;
+    private Integer summonerLevel;
+    private Long revisionDate;
     private Region region;
     
     public SummonerDto() {
@@ -39,10 +39,14 @@ public class SummonerDto {
 	}
 
     /**
-     * @return Summoner ID.
+     * @return Summoner ID or <code>-1</code> if not defined.
      */
     public long getId() {
-        return id;
+    	if (id == null) {
+    		return -1;
+    	}
+
+        return id.longValue();
     }
 
     /**
@@ -53,26 +57,42 @@ public class SummonerDto {
     }
 
     /**
-     * @return ID of the summoner icon associated with the summoner.
+     * @return ID of the summoner icon associated with the summoner
+     * or <code>-1</code> if not defined.
      */
     public long getProfileIconId() {
-        return profileIconId;
+    	if (profileIconId == null) {
+    		return -1;
+    	}
+
+        return profileIconId.longValue();
     }
 
     /**
-     * @return Summoner level associated with the summoner.
+     * @return Summoner level associated with the summoner
+     * or <code>-1</code> if not defined.
      */
     public int getSummonerLevel() {
-        return summonerLevel;
+    	if (summonerLevel == null) {
+    		return -1;
+    	}
+
+        return summonerLevel.intValue();
     }
 
     /**
-     * @return Date summoner was last modified specified as epoch milliseconds.
      * The following events will update this timestamp:
      * profile icon change, playing the tutorial or advanced tutorial,
      * finishing a game, summoner name change.
+     * 
+     * @return Date summoner was last modified specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getRevisionDate() {
-        return revisionDate;
+    	if (revisionDate == null) {
+    		return -1;
+    	}
+
+        return revisionDate.longValue();
     }
 }
