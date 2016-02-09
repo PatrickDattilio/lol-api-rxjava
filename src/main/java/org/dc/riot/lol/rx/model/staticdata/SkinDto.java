@@ -12,19 +12,23 @@ public class SkinDto {
 		return COUNT;
 	}
 
-    private long id;
+    private Long id;
     private String name;
-    private int num;
+    private Integer num;
     
     public SkinDto() {
     	COUNT++;
     }
 
     /**
-     * @return ID.
+     * @return ID or <code>-1</code> if not defined.
      */
     public long getId() {
-        return id;
+    	if (id == null) {
+    		return -1;
+    	}
+
+        return id.longValue();
     }
 
     /**
@@ -35,9 +39,14 @@ public class SkinDto {
     }
 
     /**
-     * @return Number (i.e. skin index).
+     * @return Number (i.e. skin index) or
+     * <code>-1</code> if not defined.
      */
     public int getNum() {
-        return num;
+    	if (num == null) {
+    		return -1;
+    	}
+
+        return num.intValue();
     }
 }

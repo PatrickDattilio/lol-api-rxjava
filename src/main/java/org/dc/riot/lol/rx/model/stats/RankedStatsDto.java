@@ -41,6 +41,10 @@ public class RankedStatsDto {
     }
 
     /**
+     * A summoner ID of <code>-1</code> usually means that
+     * the request returned a <code>404</code> error code.
+     * This means that the player has no ranked stats.
+     * 
      * @return Summoner ID or <code>-1</code> if
      * not defined.
      */

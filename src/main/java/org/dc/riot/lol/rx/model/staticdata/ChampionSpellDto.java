@@ -29,7 +29,7 @@ public class ChampionSpellDto {
     private ImageDto image;
     private String key;
     private LevelTipDto leveltip;
-    private int maxrank;
+    private Integer maxrank;
     private String name;
     private RangeDto range;
     private String rangeBurn;
@@ -155,10 +155,14 @@ public class ChampionSpellDto {
     }
 
     /**
-     * @return Max rank.
+     * @return Max rank or <code>-1</code> if not defined.
      */
     public int getMaxrank() {
-        return maxrank;
+    	if (maxrank == null) {
+    		return -1;
+    	}
+
+        return maxrank.intValue();
     }
 
     /**

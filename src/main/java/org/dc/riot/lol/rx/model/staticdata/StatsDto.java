@@ -1,7 +1,10 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
 /**
- * This object contains champion stats data.
+ * This object contains champion stats data.<br>
+ * <br>
+ * Getters of this class will return <code>-1</code>
+ * for undefined values.
  * 
  * @author Dc
  * @since 1.0.0
@@ -12,26 +15,26 @@ public class StatsDto {
 		return COUNT;
 	}
 
-    private double armor;
-    private double armorperlevel;
-    private double attackdamage;
-    private double attackdamageperlevel;
-    private double attackrange;
-    private double attackspeedoffset;
-    private double attackspeedperlevel;
-    private double crit;
-    private double critperlevel;
-    private double hp;
-    private double hpperlevel;
-    private double hpregen;
-    private double hpregenperlevel;
-    private double movespeed;
-    private double mp;
-    private double mpperlevel;
-    private double mpregen;
-    private double mpregenperlevel;
-    private double spellblock;
-    private double spellblockperlevel;
+    private Double armor;
+    private Double armorperlevel;
+    private Double attackdamage;
+    private Double attackdamageperlevel;
+    private Double attackrange;
+    private Double attackspeedoffset;
+    private Double attackspeedperlevel;
+    private Double crit;
+    private Double critperlevel;
+    private Double hp;
+    private Double hpperlevel;
+    private Double hpregen;
+    private Double hpregenperlevel;
+    private Double movespeed;
+    private Double mp;
+    private Double mpperlevel;
+    private Double mpregen;
+    private Double mpregenperlevel;
+    private Double spellblock;
+    private Double spellblockperlevel;
     
     public StatsDto() {
     	COUNT++;
@@ -41,6 +44,10 @@ public class StatsDto {
      * @return Armor.
      */
     public double getArmor() {
+    	if (armor == null) {
+    		return -1;
+    	}
+
         return armor;
     }
 
@@ -48,6 +55,10 @@ public class StatsDto {
      * @return Armor per level.
      */
     public double getArmorperlevel() {
+    	if (armorperlevel == null) {
+    		return -1;
+    	}
+
         return armorperlevel;
     }
 
@@ -55,6 +66,10 @@ public class StatsDto {
      * @return Attack damage.
      */
     public double getAttackdamage() {
+    	if (attackdamage == null) {
+    		return -1;
+    	}
+
         return attackdamage;
     }
 
@@ -62,6 +77,10 @@ public class StatsDto {
      * @return Attack damage per level.
      */
     public double getAttackdamageperlevel() {
+    	if (attackdamageperlevel == null) {
+    		return -1;
+    	}
+
         return attackdamageperlevel;
     }
 
@@ -69,13 +88,34 @@ public class StatsDto {
      * @return Attack range.
      */
     public double getAttackrange() {
+    	if (attackrange == null) {
+    		return -1;
+    	}
+
         return attackrange;
+    }
+    
+    /**
+     * What is AS offset?
+     * 
+     * @return Attack speed offset.
+     */
+    public double getAttackspeedoffset() {
+    	if (attackspeedoffset == null) {
+    		return -1;
+    	}
+    	
+    	return attackspeedoffset.doubleValue();
     }
 
     /**
      * @return Attack speed per level.
      */
     public double getAttackspeedperlevel() {
+    	if (attackspeedperlevel == null) {
+    		return -1;
+    	}
+
         return attackspeedperlevel;
     }
 
@@ -83,6 +123,10 @@ public class StatsDto {
      * @return Critical chance.
      */
     public double getCrit() {
+    	if (crit == null) {
+    		return -1;
+    	}
+
         return crit;
     }
 
@@ -90,6 +134,10 @@ public class StatsDto {
      * @return Critical chance per level.
      */
     public double getCritperlevel() {
+    	if (critperlevel == null) {
+    		return -1;
+    	}
+
         return critperlevel;
     }
 
@@ -97,6 +145,10 @@ public class StatsDto {
      * @return HP.
      */
     public double getHp() {
+    	if (hp == null) {
+    		return -1;
+    	}
+
         return hp;
     }
 
@@ -104,6 +156,10 @@ public class StatsDto {
      * @return HP per level.
      */
     public double getHpperlevel() {
+    	if (hpperlevel == null) {
+    		return -1;
+    	}
+
         return hpperlevel;
     }
 
@@ -111,6 +167,10 @@ public class StatsDto {
      * @return HP regen.
      */
     public double getHpregen() {
+    	if (hpregen == null) {
+    		return -1;
+    	}
+
         return hpregen;
     }
 
@@ -118,6 +178,10 @@ public class StatsDto {
      * @return HP regen per level.
      */
     public double getHpregenperlevel() {
+    	if (hpregenperlevel == null) {
+    		return -1;
+    	}
+
         return hpregenperlevel;
     }
 
@@ -125,6 +189,10 @@ public class StatsDto {
      * @return Move speed.
      */
     public double getMovespeed() {
+    	if (movespeed == null) {
+    		return -1;
+    	}
+
         return movespeed;
     }
 
@@ -132,6 +200,10 @@ public class StatsDto {
      * @return MP.
      */
     public double getMp() {
+    	if (mp == null) {
+    		return -1;
+    	}
+
         return mp;
     }
 
@@ -139,6 +211,10 @@ public class StatsDto {
      * @return MP per level.
      */
     public double getMpperlevel() {
+    	if (mpperlevel == null) {
+    		return -1;
+    	}
+
         return mpperlevel;
     }
 
@@ -146,6 +222,10 @@ public class StatsDto {
      * @return MP regen.
      */
     public double getMpregen() {
+    	if (mpregen == null) {
+    		return -1;
+    	}
+
         return mpregen;
     }
 
@@ -153,6 +233,10 @@ public class StatsDto {
      * @return MP regen per level.
      */
     public double getMpregenperlevel() {
+    	if (mpregenperlevel == null) {
+    		return -1;
+    	}
+
         return mpregenperlevel;
     }
 
@@ -160,6 +244,10 @@ public class StatsDto {
      * @return Spell block.
      */
     public double getSpellblock() {
+    	if (spellblock == null) {
+    		return -1;
+    	}
+
         return spellblock;
     }
 
@@ -167,33 +255,10 @@ public class StatsDto {
      * @return Spell block per level.
      */
     public double getSpellblockperlevel() {
+    	if (spellblockperlevel == null) {
+    		return -1;
+    	}
+
         return spellblockperlevel;
-    }
-    
-    /**
-     * @return The sum of all fields. Intended
-     * to make this class reasonably unit testable.
-     */
-    public double sum() {
-    	return armor +
-    			armorperlevel +
-    			attackdamage +
-    			attackdamageperlevel +
-    			attackrange +
-    			attackspeedoffset +
-    			attackspeedperlevel +
-    			crit +
-    			critperlevel +
-    			hp +
-    			hpperlevel +
-    			hpregen +
-    			hpregenperlevel +
-    			movespeed +
-    			mp +
-    			mpperlevel +
-    			mpregen +
-    			mpregenperlevel +
-    			spellblock +
-    			spellblockperlevel;	
     }
 }

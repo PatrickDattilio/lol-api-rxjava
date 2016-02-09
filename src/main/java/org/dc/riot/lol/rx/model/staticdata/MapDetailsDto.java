@@ -13,7 +13,7 @@ public class MapDetailsDto {
 	}
 
     private ImageDto image;
-    private long mapId;
+    private Long mapId;
     private String mapName;
     private long[] unpurchaseableItemList;
     
@@ -29,10 +29,14 @@ public class MapDetailsDto {
     }
 
     /**
-     * @return Map ID.
+     * @return Map ID or <code>-1</code> if not defined.
      */
     public long getMapId() {
-        return mapId;
+    	if (mapId == null) {
+    		return -1;
+    	}
+
+        return mapId.longValue();
     }
 
     /**
@@ -47,6 +51,10 @@ public class MapDetailsDto {
      * purchased on this map.
      */
     public long[] getUnpurchaseableItemList() {
+    	if (unpurchaseableItemList == null) {
+    		return new long[0];
+    	}
+
         return unpurchaseableItemList;
     }
 }

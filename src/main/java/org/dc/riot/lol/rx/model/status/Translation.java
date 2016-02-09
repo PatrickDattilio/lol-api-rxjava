@@ -13,7 +13,7 @@ public class Translation {
 	}
 
     private String content;
-    private String updatedAt;
+    private String updated_at;
     private String locale;
     
     public Translation() {
@@ -28,10 +28,11 @@ public class Translation {
     }
 
     /**
-     * @return Last update time.
+     * @return Last update time or <code>null</code>
+     * if not defined.
      */
     public String getUpdatedAt() {
-        return updatedAt;
+        return updated_at;
     }
 
     /**

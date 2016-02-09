@@ -15,10 +15,10 @@ public class ImageDto {
     private String full;
     private String group;
     private String sprite;
-    private int h;
-    private int w;
-    private int x;
-    private int y;
+    private Integer h;
+    private Integer w;
+    private Integer x;
+    private Integer y;
     
     public ImageDto() {
     	COUNT++;
@@ -46,30 +46,46 @@ public class ImageDto {
     }
 
     /**
-     * @return Height.
+     * @return Height or <code>-1</code> if not defined.
      */
     public int getH() {
-        return h;
+    	if (h == null) {
+    		return -1;
+    	}
+
+        return h.intValue();
     }
 
     /**
-     * @return Width.
+     * @return Width or <code>-1</code> if not defined.
      */
     public int getW() {
-        return w;
+    	if (w == null) {
+    		return -1;
+    	}
+
+        return w.intValue();
     }
 
     /**
-     * @return X coordinate.
+     * @return X coordinate or <code>-1</code> if not defined.
      */
     public int getX() {
-        return x;
+    	if (x == null) {
+    		return -1;
+    	}
+
+        return x.intValue();
     }
 
     /**
-     * @return Y coordinate.
+     * @return Y coordinate or <code>-1</code> if not defined.
      */
     public int getY() {
-        return y;
+    	if (y == null) {
+    		return -1;
+    	}
+
+        return y.intValue();
     }
 }

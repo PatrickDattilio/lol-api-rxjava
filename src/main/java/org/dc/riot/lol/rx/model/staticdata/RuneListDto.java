@@ -1,5 +1,6 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,11 +35,15 @@ public class RuneListDto {
      * @return Map of rune data.
      */
     public Map<String, RuneDto> getData() {
+    	if (data == null) {
+    		return new HashMap<>();
+    	}
+
         return data;
     }
 
     /**
-     * @return Rune type.
+     * @return Type.
      */
     public String getType() {
         return type;

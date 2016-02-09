@@ -12,7 +12,7 @@ public class MetaDataDto {
 		return COUNT;
 	}
 
-    private boolean isRune;
+    private Boolean isRune;
     private String tier;
     private String type;
     
@@ -21,10 +21,14 @@ public class MetaDataDto {
     }
 
     /**
-     * @return Is rune.
+     * @return Is rune or <code>false</code> if not defined.
      */
     public boolean isRune() {
-        return isRune;
+    	if (isRune == null) {
+    		return false;
+    	}
+
+        return isRune.booleanValue();
     }
 
     /**

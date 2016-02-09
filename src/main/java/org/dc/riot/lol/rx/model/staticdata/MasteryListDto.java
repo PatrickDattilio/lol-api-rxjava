@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 import java.util.Map;
 
@@ -9,43 +9,45 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class MasteryListDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private Map<String, MasteryDto> data;
     private MasteryTreeDto tree;
     private String type;
     private String version;
+    
+    public MasteryListDto() {
+    	COUNT++;
+    }
 
     /**
-     * @return Map with keys being the Mastery ID values
+     * @return Map with keys being the Mastery ID values.
      */
     public Map<String, MasteryDto> getData() {
         return data;
     }
 
-    public void setData(Map<String, MasteryDto> data) {
-        this.data = data;
-    }
-
+    /**
+     * @return Mastery tree data.
+     */
     public MasteryTreeDto getTree() {
         return tree;
     }
 
-    public void setTree(MasteryTreeDto tree) {
-        this.tree = tree;
-    }
-
+    /**
+     * @return Type.
+     */
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    /**
+     * @return Version (i.e. patch).
+     */
     public String getVersion() {
         return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 }

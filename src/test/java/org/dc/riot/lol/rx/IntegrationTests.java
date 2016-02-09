@@ -72,9 +72,15 @@ import org.dc.riot.lol.rx.model.staticdata.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.staticdata.LevelTipDto;
 import org.dc.riot.lol.rx.model.staticdata.MapDataDto;
 import org.dc.riot.lol.rx.model.staticdata.MapDetailsDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryListDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryTreeDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryTreeItemDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryTreeListDto;
 import org.dc.riot.lol.rx.model.staticdata.MetaDataDto;
 import org.dc.riot.lol.rx.model.staticdata.PassiveDto;
 import org.dc.riot.lol.rx.model.staticdata.RangeDto;
+import org.dc.riot.lol.rx.model.staticdata.RealmDto;
 import org.dc.riot.lol.rx.model.staticdata.RecommendedDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
@@ -112,6 +118,9 @@ import org.dc.riot.lol.rx.service.request.ChampDataTag;
 import org.dc.riot.lol.rx.service.request.ChampListDataTag;
 import org.dc.riot.lol.rx.service.request.ItemDataTag;
 import org.dc.riot.lol.rx.service.request.ItemListDataTag;
+import org.dc.riot.lol.rx.service.request.MasteryDataTag;
+import org.dc.riot.lol.rx.service.request.MasteryListDataTag;
+import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.junit.After;
 import org.junit.Before;
@@ -157,7 +166,7 @@ public class IntegrationTests {
 		summonerInterface.setPrintUrl(true);
 		staticInterface = factory.newStaticDataInterface(region, true);
 		staticInterface.setPrintUrl(false);
-		statusInterface = factory.newStatusInterface(region, true);
+		statusInterface = factory.newStatusInterface(Region.EUROPE_WEST, true);	// EUW has more incidents and languages and stuff
 		statusInterface.setPrintUrl(true);
 		championInterface = factory.newChampionInterface(region, true);
 		championInterface.setPrintUrl(true);
@@ -188,12 +197,12 @@ public class IntegrationTests {
 		TestPojo p1 = new TestPojo().withDouble(new Double(3.14));
 		testRegister.registerInstance(p1);
 		prints.println(testRegister);
-		assertFalse(testRegister.testClass(TestPojo.class));
+		assertNotNull(testRegister.testClass(TestPojo.class));
 		
 		p1.withInteger(new Integer(42));
 		testRegister.registerInstance(p1);
 		prints.println(testRegister);
-		assertFalse(testRegister.testClass(TestPojo.class));
+		assertNotNull(testRegister.testClass(TestPojo.class));
 		
 		TestPojo p2 = new TestPojo()
 				.withDouble(new Double(Math.E))
@@ -202,14 +211,14 @@ public class IntegrationTests {
 		
 		testRegister.registerInstance(p2);
 		prints.println(testRegister);
-		assertFalse(testRegister.testClass(TestPojo.class));
+		assertNotNull(testRegister.testClass(TestPojo.class));
 		
 		TestPojo p3 = new TestPojo()
 				.withObject(new Object());
 		
 		testRegister.registerInstance(p3);
 		prints.println(testRegister);
-		assertTrue(testRegister.testClass(TestPojo.class));
+		assertNull(testRegister.testClass(TestPojo.class));
 		
 		System.out.println();
 		System.out.println();
@@ -241,12 +250,6 @@ public class IntegrationTests {
 				assertNotNull(summaryDto);
 				testSummaryDto(summaryDto);
 			}
-			
-			assertTrue(AggregatedStatsDto.getInstanceCount() > 0);
-			assertTrue(ChampionStatsDto.getInstanceCount() > 0);
-			assertTrue(PlayerStatsSummaryDto.getInstanceCount() > 0);
-			assertTrue(PlayerStatsSummaryListDto.getInstanceCount() > 0);
-			assertTrue(RankedStatsDto.getInstanceCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -300,18 +303,19 @@ public class IntegrationTests {
 	}
 	
 	private void testRankedStatsDto(RankedStatsDto dto) {
-		try {
-			register.registerInstance(dto);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		if (dto.getSummonerId() > 0) {	// avoid checking on our unranked friends
+			try {
+				register.registerInstance(dto);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
 
-		assertTrue(dto.getModifyDate() > 0);
-		assertTrue(dto.getSummonerId() > 0);
+			assertTrue(dto.getModifyDate() > 0);
 
-		ChampionStatsDto[] champDto = dto.getChampions();
-		for (ChampionStatsDto championDto : champDto) {
-			testChampionStatsDto(championDto);
+			ChampionStatsDto[] champDto = dto.getChampions();
+			for (ChampionStatsDto championDto : champDto) {
+				testChampionStatsDto(championDto);
+			}
 		}
 	}
 	
@@ -358,6 +362,12 @@ public class IntegrationTests {
 	}
 	
 	private void testRecentDto(RecentGamesDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getSummonerId() > 0);
 		GameDto[] gamesDto = dto.getGames();
 		assertTrue(gamesDto.length > 0);
@@ -367,6 +377,12 @@ public class IntegrationTests {
 	}
 	
 	private void testGameDto(GameDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getChampionId() > 0);
 		assertTrue(dto.getCreateDate() > 0);
 		assertTrue(dto.getGameId() > 0);
@@ -395,12 +411,24 @@ public class IntegrationTests {
 	}
 	
 	private void testPlayerDto(PlayerDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getChampionId() > 0);
 		assertTrue(dto.getSummonerId() > 0);
 		assertTrue(dto.getTeamId() > 0);
 	}
 	
 	private void testRawStatsDto(RawStatsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getLevel() > 0);
 	}
 
@@ -452,6 +480,12 @@ public class IntegrationTests {
 	}
 
 	private void testChampionMasteryDto(ChampionMasteryDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getChampionId() > 0);
 		assertTrue(dto.getChampionLevel() > 0);
 		assertTrue(dto.getChampionPoints() > 0);
@@ -524,6 +558,12 @@ public class IntegrationTests {
 	}
 
 	private void testMatchDetail(MatchDetail dto, boolean timeLine) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getMapId() > 0);
 		assertTrue(dto.getMatchCreation() > 0);
 		assertTrue(dto.getMatchDuration() > 0);
@@ -561,10 +601,22 @@ public class IntegrationTests {
 	}
 
 	private void testTeams(Team dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getTeamId() > 0);
 	}
 
 	private void testMatchParticipant(Participant dto, boolean expectTimeline) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getChampionId() > 0);
 		assertNotNull(dto.getHighestAchievedSeasonTier());
 		assertTrue(dto.getParticipantId() > 0);
@@ -586,11 +638,23 @@ public class IntegrationTests {
 	}
 
 	private void testParticipantIdentity(ParticipantIdentity dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getParticipantId() > 0);
 		assertNotNull(dto.getPlayer());
 	}
 
 	private void testTimeline(Timeline dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getFrameInterval() > 0);
 		Frame[] frames = dto.getFrames();
 		assertNotNull(frames);
@@ -602,6 +666,12 @@ public class IntegrationTests {
 	}
 	
 	private void testFrame(Frame dto, boolean firstFrame) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		if (!firstFrame) {
 			assertTrue(dto.getTimestamp() > 0);
 		}
@@ -622,11 +692,23 @@ public class IntegrationTests {
 	}
 	
 	private void testEvent(Event dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getEventType());
 		assertTrue(	dto.getTimestamp() > 0);
 	}
 	
 	private void testParticipantFrame(ParticipantFrame dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 //		assertTrue(dto.getCurrentGold() > 0);
 		assertTrue(dto.getLevel() > 0);
 		assertTrue(dto.getParticipantId() > 0);
@@ -647,6 +729,12 @@ public class IntegrationTests {
 	}
 
 	private void testMatchReference(MatchReference dto, boolean expectNullQueue) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getChampion() > 0);
 		assertTrue(dto.getMatchId() > 0);
 		assertTrue(dto.getTimestamp() > 0);
@@ -663,10 +751,22 @@ public class IntegrationTests {
 	}
 
 	private void testParticipantStats(ParticipantStats dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getTotalDamageDealt() > 0);
 	}
 
 	private void testParticipantTimeline(ParticipantTimeline dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 //		assertNotNull(dto.getAncientGolemAssistsPerMinCounts());
 //		assertNotNull(dto.getAncientGolemKillsPerMinCounts());
 //		assertNotNull(dto.getAssistedLaneDeathsPerMinDeltas());
@@ -889,6 +989,12 @@ public class IntegrationTests {
 	}
 
 	private void testLeagueDto(LeagueDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getQueue());
 		assertNotNull(dto.getTier());
 		assertNotNull(dto.getName());
@@ -1338,7 +1444,7 @@ public class IntegrationTests {
 				long champId = championDto.getId();
 				ChampionDto champDto = staticInterface.getChampion(champId, null, null, ChampDataTag.ALL);
 				assertNotNull(champDto);
-				prints.println(champDto.getName());
+				prints.println(champDto.getName() + " : " + champDto.getId());
 				testChampionDto(champDto);
 			}
 			
@@ -1348,10 +1454,9 @@ public class IntegrationTests {
 			testItemListDto(itemListDto);
 			
 			for (ItemDto itemDto : itemListDto.getData().values()) {
-				long itemId = itemDto.getId();
-				ItemDto itDto = staticInterface.getItem(itemId, null, null, ItemDataTag.ALL);
+				ItemDto itDto = staticInterface.getItem(itemDto.getId(), null, null, ItemDataTag.ALL);
 				assertNotNull(itDto);
-				prints.println(itDto.getName());
+				prints.println(itDto.getName() + " : " + itDto.getId());
 				testItemDto(itDto);
 			}
 			
@@ -1370,28 +1475,36 @@ public class IntegrationTests {
 			assertNotNull(mapDataDto);
 			testMapDataDto(mapDataDto);
 			
-			RuneListDto listDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
-			assertNotNull(listDto);
-//			testRuneListDto(listDto);
+			// MASTERY DATA
+			MasteryListDto masteryListDto = staticInterface.getMasteries(null, null, MasteryListDataTag.ALL);
+			assertNotNull(masteryListDto);
+			testMasteryListDto(masteryListDto);
 			
-			assertTrue(BasicDataStatsDto.getInstanceCount() > 0);
-			assertTrue(BlockDto.getInstanceCount() > 0);
-			assertTrue(BlockItemDto.getInstanceCount() > 0);
-			assertTrue(ChampionDto.getInstanceCount() > 0);
-			assertTrue(ChampionListDto.getInstanceCount() > 0);
-			assertTrue(ChampionSpellDto.getInstanceCount() > 0);
-			assertTrue(GoldDto.getInstanceCount() > 0);
-			assertTrue(ImageDto.getInstanceCount() > 0);
-			assertTrue(InfoDto.getInstanceCount() > 0);
-			assertTrue(LevelTipDto.getInstanceCount() > 0);
-			assertTrue(MetaDataDto.getInstanceCount() > 0);
-			assertTrue(PassiveDto.getInstanceCount() > 0);
-			assertTrue(RangeDto.getInstanceCount() > 0);
-			assertTrue(RecommendedDto.getInstanceCount() > 0);
-			assertTrue(RuneDto.getInstanceCount() > 0);
-			assertTrue(RuneListDto.getInstanceCount() > 0);
-			assertTrue(SkinDto.getInstanceCount() > 0);
-			assertTrue(StatsDto.getInstanceCount() > 0);
+			for (MasteryDto masteryDto : masteryListDto.getData().values()) {
+				MasteryDto mastDto = staticInterface.getMastery(masteryDto.getId(), null, null, MasteryDataTag.ALL);
+				assertNotNull(mastDto);
+				prints.println(mastDto.getName() + " : " + mastDto.getId());
+				testMasteryDto(mastDto);
+			}
+			
+			// REALM DATA
+			RealmDto realmDto = staticInterface.getRealm();
+			assertNotNull(realmDto);
+			testRealmDto(realmDto);
+			
+			// RUNE DATA
+			RuneListDto runeListDto = staticInterface.getRunes(null, null, RuneListDataTag.ALL);
+			assertNotNull(runeListDto);
+			testRuneListDto(runeListDto);
+			
+			for (RuneDto runeDto : runeListDto.getData().values()) {
+				assertNotNull(runeDto);
+				RuneDto rDto = staticInterface.getRune(runeDto.getId(), null, null, RuneDataTag.ALL);
+				assertNotNull(rDto);
+				prints.println(rDto.getName() + " : " + rDto.getId());
+				testRuneDto(rDto);
+			}
+			
 			
 			fail("Not all endpoints exercised");
 			
@@ -1408,7 +1521,126 @@ public class IntegrationTests {
 		}
 	}
 	
+	private void testRealmDto(RealmDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertNotNull(dto.getCdn());
+		assertNotNull(dto.getCss());
+		assertNotNull(dto.getDd());
+		assertNotNull(dto.getL());
+		assertNotNull(dto.getLg());
+		assertTrue(dto.getN().size() > 0);
+		assertTrue(dto.getProfileiconmax() < 500);
+		assertNotNull(dto.getV());
+	}
+	
+	private void testMasteryListDto(MasteryListDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertNotNull(dto.getVersion());
+		assertNotNull(dto.getType());
+
+		MasteryTreeDto masteryTreeDto = dto.getTree();
+		assertNotNull(masteryTreeDto);
+		testMasteryTreeDto(masteryTreeDto);
+		
+		Map<String,MasteryDto> masteryMapDto = dto.getData();
+		assertNotNull(masteryMapDto);
+		for (MasteryDto masteryDto : masteryMapDto.values()) {
+			assertNotNull(masteryDto);
+			testMasteryDto(masteryDto);
+		}
+	}
+	
+	private void testMasteryDto(MasteryDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(dto.getId() > 0);
+		assertTrue(dto.getDescription().length > 0);
+		assertTrue(dto.getSanitizedDescription().length > 0);
+		assertTrue(dto.getRanks() > 0);
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getMasteryTree());
+		assertNotNull(dto.getPrereq());
+		
+		ImageDto imageDto = dto.getImage();
+		assertNotNull(imageDto);
+		testImageDto(imageDto);
+	}
+	
+	private void testMasteryTreeDto(MasteryTreeDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		MasteryTreeListDto[] cunningListDto = dto.getCunning();
+		for (MasteryTreeListDto masteryTreeListDto : cunningListDto) {
+			assertNotNull(masteryTreeListDto);
+			testMasteryTreeListDto(masteryTreeListDto);
+		}
+
+		MasteryTreeListDto[] ferocityListDto = dto.getFerocity();
+		for (MasteryTreeListDto masteryTreeListDto : ferocityListDto) {
+			assertNotNull(masteryTreeListDto);
+			testMasteryTreeListDto(masteryTreeListDto);
+		}
+
+		MasteryTreeListDto[] resolveListDto = dto.getResolve();
+		for (MasteryTreeListDto masteryTreeListDto : resolveListDto) {
+			assertNotNull(masteryTreeListDto);
+			testMasteryTreeListDto(masteryTreeListDto);
+		}
+	}
+	
+	private void testMasteryTreeListDto(MasteryTreeListDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		MasteryTreeItemDto[] masteryTreeItemListDto = dto.getMasteryTreeItems();
+		for (int i=0; i<masteryTreeItemListDto.length; i++) {
+			MasteryTreeItemDto masteryTreeItemDto = masteryTreeItemListDto[i];
+			if (!(masteryTreeItemDto == null && i == 1)) {	// sometimes the second item in the list will be null
+				assertNotNull(masteryTreeItemDto);
+				testMasteryTreeItemDto(masteryTreeItemDto);
+			}
+		}
+	}
+	
+	private void testMasteryTreeItemDto(MasteryTreeItemDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(dto.getMasteryId() > 0);
+		assertNotNull(dto.getPrereq());
+	}
+	
 	private void testMapDataDto(MapDataDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getVersion());
 		prints.println("STATIC mapData version " + dto.getVersion());
 		assertNotNull(dto.getType());
@@ -1423,9 +1655,14 @@ public class IntegrationTests {
 	}
 	
 	private void testMapDetailsDto(MapDetailsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getMapId() > 0);
 		assertNotNull(dto.getMapName());
-		assertTrue(dto.getUnpurchaseableItemList().length > 0);
 		
 		ImageDto imageDto = dto.getImage();
 		assertNotNull(imageDto);
@@ -1433,6 +1670,12 @@ public class IntegrationTests {
 	}
 	
 	private void testLanguageStringsDto(LanguageStringsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getVersion());
 		prints.println("STATIC languageString version " + dto.getVersion());
 		assertNotNull(dto.getType());
@@ -1444,6 +1687,12 @@ public class IntegrationTests {
 	}
 	
 	private void testItemListDto(ItemListDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getType());
 		assertNotNull(dto.getVersion());
 
@@ -1468,17 +1717,54 @@ public class IntegrationTests {
 	}
 	
 	private void testItemTreeDto(ItemTreeDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getHeader());
 		assertTrue(dto.getTags().length > 0);
 	}
 	
 	private void testGroupDto(GroupDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getMaxGroupOwnable());
 		assertNotNull(dto.getKey());
 	}
 	
 	private void testBasicDataDto(BasicDataDto dto) {
-		prints.println("STATIC basicDataDto " + dto.getName());
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		MetaDataDto metaDataDto = dto.getRune();
+		if (metaDataDto != null) {
+			testMetaDataDto(metaDataDto);
+		}
+
+		ImageDto imageDto = dto.getImage();
+		if (imageDto != null) {
+			testImageDto(imageDto);
+		}
+
+		GoldDto goldDto = dto.getGold();
+		if (goldDto != null) {
+			testGoldDto(goldDto);
+		}
+
+		BasicDataStatsDto basicDataStatsDto = dto.getStats();
+		if (basicDataStatsDto != null) {
+			testBasicDataStatsDto(basicDataStatsDto);
+		}
+
 		if (dto.getId() == 0) {
 			prints.println("WARNING", dto);
 			return;
@@ -1486,55 +1772,27 @@ public class IntegrationTests {
 
 		assertNotNull(dto.getName());
 		assertNotNull(dto.getDescription());
-		
-		String plainText = dto.getPlaintext();
-		if (plainText == null) {
-			prints.println("WARNING", "Plain text null");
-		}
-
-		String group = dto.getGroup();
-		if (group == null) {
-			prints.println("WARNING", "Group null");
-		}
-		
-		String sanDesc = dto.getSanitizedDescription();
-		if (sanDesc == null) {
-			prints.println("WARNING", "Sanitized description null");
-		}
-
-		String[] tags = dto.getTags();
-		if (tags.length == 0) {
-			prints.println("WARNING", "No tags");
-		}
-
-		String colloq = dto.getColloq();
-		if (colloq == null) {
-			prints.println("WARNING", "Colloq null");
-		}
-
-		BasicDataStatsDto basicDataDto = dto.getStats();
-		if (basicDataDto != null) {
-			testBasicDataStatsDto(basicDataDto);
-		} else {
-			prints.println("WARNING", "Stats null");
-		}
-		
-		ImageDto imageDto = dto.getImage();
-		if (imageDto != null) {
-			testImageDto(imageDto);
-		} else {
-			prints.println("WARNING", "Image data null");
-		}
+		assertNotNull(dto.getDescription());
+		assertTrue(dto.getId() > 0);
 	}
 	
 	private void testItemDto(ItemDto dto) {
-		testBasicDataDto(dto);
-		if (dto.getEffect().values().size() == 0) {
-			prints.println("WARNING", "No effects");
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
+		
+		testBasicDataDto(dto);
 	}
 	
 	private void testChampionListDto(ChampionListDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getFormat());
 		assertNotNull(dto.getVersion());
 		assertNotNull(dto.getType());
@@ -1552,6 +1810,12 @@ public class IntegrationTests {
 	}
 	
 	private void testChampionDto(ChampionDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getAllytips().length > 0);
 		assertNotNull(dto.getBlurb());
 		assertTrue(dto.getEnemytips().length > 0);
@@ -1599,30 +1863,35 @@ public class IntegrationTests {
 	}
 	
 	private void testStatsDto(StatsDto dto) {
-		assertTrue(dto.sum() > 0);
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void testChampionSpellDto(ChampionSpellDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getCooldown().length > 0);
 		assertNotNull(dto.getCooldownBurn());
 		assertTrue(dto.getCost().length > 0);
 		assertNotNull(dto.getCostBurn());
 		assertNotNull(dto.getCostType());
 		assertNotNull(dto.getDescription());
-//		assertTrue(dto.getEffectBurn().length > 0);
 		assertNotNull(dto.getKey());
 		assertNotNull(dto.getTooltip());
 		assertNotNull(dto.getSanitizedTooltip());
 		assertNotNull(dto.getSanitizedDescription());
-		if (dto.getResource() == null) {
-			prints.println("WARNING", "RESOURCE NULL");
-		}
 
 		assertNotNull(dto.getRangeBurn());
 		assertNotNull(dto.getName());
 		
 		ImageDto[] altImageDto = dto.getAltimages();
-//		assertTrue(altImageDto.length > 0);
 		for (ImageDto imageDto : altImageDto) {
 			assertNotNull(imageDto);
 			testImageDto(imageDto);
@@ -1648,11 +1917,23 @@ public class IntegrationTests {
 	}
 	
 	private void testSpellVarsDto(SpellVarsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getLink());
 		assertNotNull(dto.getKey());
 	}
 	
 	private void testRangeDto(RangeDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		if (dto.isSelf()) {
 			assertTrue(dto.getRanges().length == 0);
 		} else {
@@ -1661,92 +1942,52 @@ public class IntegrationTests {
 	}
 	
 	private void testLevelTipDto(LevelTipDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getEffect().length > 0);
 		assertTrue(dto.getLabel().length > 0);
 	}
 	
 	private void testSkinDto(SkinDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getId() > 0);
-//		assertTrue(dto.getNum() > 0);
 		assertNotNull(dto.getName());
 	}
 	
 	private void testRuneListDto(RuneListDto dto) {
-		fail();
-	}
-	
-	private void testBasicDataStatsDto(BasicDataStatsDto dto) {
-		assertTrue(dto.sum() > 0);
-	}
-	
-	private void testPassiveDto(PassiveDto dto) {
-		assertNotNull(dto.getDescription());
-		assertNotNull(dto.getName());
-		assertNotNull(dto.getSanitizedDescription());
-		
-		ImageDto imageDto = dto.getImage();
-		assertNotNull(imageDto);
-		testImageDto(imageDto);
-	}
-
-	private void testImageDto(ImageDto dto) {
-		assertNotNull(dto.getFull());
-		assertNotNull(dto.getGroup());
-		assertNotNull(dto.getSprite());
-		assertTrue(dto.getH() > 0);
-		assertTrue(dto.getW() > 0);
-	}
-	
-	private void testInfoDto(InfoDto dto) {
-		assertTrue(dto.sum() > 0);
-	}
-	
-	private void testRecommendedDto(RecommendedDto dto) {
-		assertNotNull(dto.getChampion());
-		assertNotNull(dto.getMap());
-		assertNotNull(dto.getMode());
-		assertNotNull(dto.getTitle());
-		assertNotNull(dto.getType());
-		
-		BlockDto[] blockListDto = dto.getBlocks();
-		assertTrue(blockListDto.length > 0);
-		for (BlockDto blockDto : blockListDto) {
-			testBlockDto(blockDto);
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
-	}
-	
-	private void testBlockDto(BlockDto dto) {
-//		assertNotNull(dto.getType());
-		BlockItemDto[] blockItemListDto = dto.getItems();
-		assertTrue(blockItemListDto.length > 0);
-		for (BlockItemDto blockItemDto : blockItemListDto) {
-			testBlockItemDto(blockItemDto);
-		}
-	}
-	
-	private void testBlockItemDto(BlockItemDto dto) {
-		assertTrue(dto.getId() > 0);
-		assertTrue(dto.getCount() > 0);
-	}
 
-	private void testMetaDataDto(MetaDataDto dto) {
-		assertNotNull(dto.getTier());
 		assertNotNull(dto.getType());
-	}
+		assertNotNull(dto.getVersion());
 
-	private void testGoldDto(GoldDto dto) {
-		if (dto.isPurchasable()) {
-			assertTrue(dto.getBase() > 0);
-			assertTrue(dto.getSell() > 0);
-			assertTrue(dto.getTotal() > 0);
-		} else {
-			assertTrue(dto.getBase() == 0);
-			assertTrue(dto.getSell() == 0);
-			assertTrue(dto.getTotal() == 0);
+		Map<String,RuneDto> runeMapDto = dto.getData();
+		assertTrue(runeMapDto.size() > 0);
+		for (RuneDto runeDto : runeMapDto.values()) {
+			assertNotNull(runeDto);
+			testRuneDto(runeDto);
 		}
 	}
 
 	private void testRuneDto(RuneDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getDepth());
 		assertNotNull(dto.getDescription());
 		assertNotNull(dto.getSanitizedDescription());
@@ -1768,6 +2009,116 @@ public class IntegrationTests {
 		BasicDataStatsDto bdsDto = dto.getStats();
 		assertNotNull(bdsDto);
 		testBasicDataStatsDto(bdsDto);
+	}
+	
+	private void testBasicDataStatsDto(BasicDataStatsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void testPassiveDto(PassiveDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertNotNull(dto.getDescription());
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getSanitizedDescription());
+		
+		ImageDto imageDto = dto.getImage();
+		assertNotNull(imageDto);
+		testImageDto(imageDto);
+	}
+
+	private void testImageDto(ImageDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertNotNull(dto.getFull());
+		assertNotNull(dto.getGroup());
+		assertNotNull(dto.getSprite());
+		assertTrue(dto.getH() > 0);
+		assertTrue(dto.getW() > 0);
+	}
+	
+	private void testInfoDto(InfoDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void testRecommendedDto(RecommendedDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertNotNull(dto.getChampion());
+		assertNotNull(dto.getMap());
+		assertNotNull(dto.getMode());
+		assertNotNull(dto.getTitle());
+		assertNotNull(dto.getType());
+		
+		BlockDto[] blockListDto = dto.getBlocks();
+		assertTrue(blockListDto.length > 0);
+		for (BlockDto blockDto : blockListDto) {
+			testBlockDto(blockDto);
+		}
+	}
+	
+	private void testBlockDto(BlockDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		BlockItemDto[] blockItemListDto = dto.getItems();
+		assertTrue(blockItemListDto.length > 0);
+		for (BlockItemDto blockItemDto : blockItemListDto) {
+			testBlockItemDto(blockItemDto);
+		}
+	}
+	
+	private void testBlockItemDto(BlockItemDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(dto.getId() > 0);
+		assertTrue(dto.getCount() > 0);
+	}
+
+	private void testMetaDataDto(MetaDataDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		assertNotNull(dto.getTier());
+		assertNotNull(dto.getType());
+	}
+
+	private void testGoldDto(GoldDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -1850,7 +2201,6 @@ public class IntegrationTests {
 		}
 		
 		assertTrue(dto.getId() > 0);
-		assertNotNull(dto.getCreatedAt());
 
 		Message[] messageListDto = dto.getUpdates();
 		for (Message messageDto : messageListDto) {
@@ -1867,8 +2217,6 @@ public class IntegrationTests {
 		
 		assertTrue(dto.getId() > 0);
 		assertNotNull(dto.getContent());
-		assertNotNull(dto.getCreatedAt());
-		assertNotNull(dto.getSeverity());
 		assertNotNull(dto.getUpdatedAt());
 
 		Translation[] translationListDto = dto.getTranslations();
@@ -1884,9 +2232,9 @@ public class IntegrationTests {
 			e.printStackTrace();
 		}
 		
+		assertNotNull(dto.getUpdatedAt());
 		assertNotNull(dto.getContent());
 		assertNotNull(dto.getLocale());
-		assertNotNull(dto.getUpdatedAt());
 	}
 	
 	private void testShard(Shard dto) {
@@ -1914,15 +2262,88 @@ public class IntegrationTests {
 		
 		// static data POJOs
 		if (testStaticDataRan) {
-			fail();
+			assertTrue(BasicDataDto.getInstanceCount() > 0);
+			assertTrue(BasicDataStatsDto.getInstanceCount() > 0);
+			assertTrue(BlockDto.getInstanceCount() > 0);
+			assertTrue(BlockItemDto.getInstanceCount() > 0);
+			assertTrue(ChampionDto.getInstanceCount() > 0);
+			assertTrue(ChampionListDto.getInstanceCount() > 0);
+			assertTrue(ChampionSpellDto.getInstanceCount() > 0);
+			assertTrue(GoldDto.getInstanceCount() > 0);
+			assertTrue(ImageDto.getInstanceCount() > 0);
+			assertTrue(InfoDto.getInstanceCount() > 0);
+			assertTrue(ItemDto.getInstanceCount() > 0);
+			assertTrue(ItemListDto.getInstanceCount() > 0);
+			assertTrue(LanguageStringsDto.getInstanceCount() > 0);
+			assertTrue(LevelTipDto.getInstanceCount() > 0);
+			assertTrue(MapDataDto.getInstanceCount() > 0);
+			assertTrue(MapDetailsDto.getInstanceCount() > 0);
+			assertTrue(MasteryDto.getInstanceCount() > 0);
+			assertTrue(MasteryListDto.getInstanceCount() > 0);
+			assertTrue(MasteryTreeDto.getInstanceCount() > 0);
+			assertTrue(MasteryTreeItemDto.getInstanceCount() > 0);
+			assertTrue(MasteryTreeListDto.getInstanceCount() > 0);
+			assertTrue(MetaDataDto.getInstanceCount() > 0);
+			assertTrue(PassiveDto.getInstanceCount() > 0);
+			assertTrue(RangeDto.getInstanceCount() > 0);
+			assertTrue(RealmDto.getInstanceCount() > 0);
+			assertTrue(RecommendedDto.getInstanceCount() > 0);
+			assertTrue(RuneDto.getInstanceCount() > 0);
+			assertTrue(RuneListDto.getInstanceCount() > 0);
+			assertTrue(SkinDto.getInstanceCount() > 0);
+			assertTrue(StatsDto.getInstanceCount() > 0);
+
+			String fieldName = register.testClass(BasicDataDto.class);
+			if (!"image".equals(fieldName)) {
+				assertNull(fieldName);
+			}
+			assertNull(register.testClass(BasicDataStatsDto.class));
+			assertNull(register.testClass(BlockDto.class));
+			assertNull(register.testClass(BlockItemDto.class));
+			assertNull(register.testClass(ChampionDto.class));
+			assertNull(register.testClass(ChampionListDto.class));
+			assertNull(register.testClass(ChampionSpellDto.class));
+			assertNull(register.testClass(GoldDto.class));
+			assertNull(register.testClass(ImageDto.class));
+			assertNull(register.testClass(InfoDto.class));
+			assertNull(register.testClass(ItemDto.class));
+			assertNull(register.testClass(ItemListDto.class));
+			assertNull(register.testClass(LanguageStringsDto.class));
+			assertNull(register.testClass(LevelTipDto.class));
+			assertNull(register.testClass(MapDataDto.class));
+			assertNull(register.testClass(MapDetailsDto.class));
+			assertNull(register.testClass(MasteryDto.class));
+			assertNull(register.testClass(MasteryListDto.class));
+			assertNull(register.testClass(MasteryTreeDto.class));
+			assertNull(register.testClass(MasteryTreeItemDto.class));
+			assertNull(register.testClass(MasteryTreeListDto.class));
+			assertNull(register.testClass(MetaDataDto.class));
+			assertNull(register.testClass(PassiveDto.class));
+			assertNull(register.testClass(RangeDto.class));
+			assertNull(register.testClass(RealmDto.class));
+			assertNull(register.testClass(RecommendedDto.class));
+			assertNull(register.testClass(RuneDto.class));
+			assertNull(register.testClass(RuneListDto.class));
+			assertNull(register.testClass(SkinDto.class));
+			assertNull(register.testClass(StatsDto.class));
+			fail("Not all STATIC POJOs covered");
 		}
 		
 		// stats POJOs
 		if (testStatsRan) {
-			fail();
+			assertTrue(AggregatedStatsDto.getInstanceCount() > 0);
+			assertTrue(ChampionStatsDto.getInstanceCount() > 0);
+			assertTrue(PlayerStatsSummaryDto.getInstanceCount() > 0);
+			assertTrue(PlayerStatsSummaryListDto.getInstanceCount() > 0);
+			assertTrue(RankedStatsDto.getInstanceCount() > 0);
+			assertNull(register.testClass(AggregatedStatsDto.class));
+			assertNull(register.testClass(ChampionStatsDto.class));
+			assertNull(register.testClass(PlayerStatsSummaryDto.class));
+			assertNull(register.testClass(PlayerStatsSummaryListDto.class));
+			assertNull(register.testClass(RankedStatsDto.class));
 		}
 		
-		// status POJOs, the status API sometimes doesn't return the commented out instances
+		// status POJOs
 		if (testStatusRan) {
 			assertTrue(Service.getInstanceCount() > 0);
 			assertTrue(Shard.getInstanceCount() > 0);
@@ -1937,17 +2358,21 @@ public class IntegrationTests {
 				prints.println("WARNING", "No " + Translation.class.getSimpleName() + " deserialized");
 			}
 
-			assertTrue(register.testClass(Service.class));
-			assertTrue(register.testClass(Shard.class));
-			assertTrue(register.testClass(ShardStatus.class));
+			assertNull(register.testClass(Service.class));
+			assertNull(register.testClass(Shard.class));
+			assertNull(register.testClass(ShardStatus.class));
+
 			if (Incident.getInstanceCount() > 0) {
-				assertTrue(register.testClass(Incident.class));
+				assertNull(register.testClass(Incident.class));
 			}
 			if (Message.getInstanceCount() > 0) {
-				assertTrue(register.testClass(Message.class));
+				String fieldName = register.testClass(Message.class);
+				if (!"author".equals(fieldName)) {
+					assertNull(fieldName);
+				}
 			}
 			if (Translation.getInstanceCount() > 0) {
-				assertTrue(register.testClass(Translation.class));
+				assertNull(register.testClass(Translation.class));
 			}
 		}
 
@@ -1959,12 +2384,12 @@ public class IntegrationTests {
 			assertTrue(RunePagesDto.getInstanceCount() > 0);
 			assertTrue(RuneSlotDto.getInstanceCount() > 0);
 			assertTrue(SummonerDto.getInstanceCount() > 0);
-			assertTrue(register.testClass(MasteryPageDto.class));
-			assertTrue(register.testClass(MasteryPagesDto.class));
-			assertTrue(register.testClass(RunePageDto.class));
-			assertTrue(register.testClass(RunePagesDto.class));
-			assertTrue(register.testClass(RuneSlotDto.class));
-			assertTrue(register.testClass(SummonerDto.class));
+			assertNull(register.testClass(MasteryPageDto.class));
+			assertNull(register.testClass(MasteryPagesDto.class));
+			assertNull(register.testClass(RunePageDto.class));
+			assertNull(register.testClass(RunePagesDto.class));
+			assertNull(register.testClass(RuneSlotDto.class));
+			assertNull(register.testClass(SummonerDto.class));
 		}
 		
 		// team POJOs
@@ -1974,11 +2399,11 @@ public class IntegrationTests {
 			assertTrue(TeamDto.getInstanceCount() > 0);
 			assertTrue(TeamMemberInfoDto.getInstanceCount() > 0);
 			assertTrue(TeamStatDetailDto.getInstanceCount() > 0);
-			assertTrue(register.testClass(MatchHistorySummaryDto.class));
-			assertTrue(register.testClass(RosterDto.class));
-			assertTrue(register.testClass(TeamDto.class));
-			assertTrue(register.testClass(TeamMemberInfoDto.class));
-			assertTrue(register.testClass(TeamStatDetailDto.class));
+			assertNull(register.testClass(MatchHistorySummaryDto.class));
+			assertNull(register.testClass(RosterDto.class));
+			assertNull(register.testClass(TeamDto.class));
+			assertNull(register.testClass(TeamMemberInfoDto.class));
+			assertNull(register.testClass(TeamStatDetailDto.class));
 		}
 		
 		

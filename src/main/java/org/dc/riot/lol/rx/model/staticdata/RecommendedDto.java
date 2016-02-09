@@ -16,7 +16,7 @@ public class RecommendedDto {
     private String champion;
     private String map;
     private String mode;
-    private boolean priority;
+    private Boolean priority;
     private String title;
     private String type;
     
@@ -44,8 +44,15 @@ public class RecommendedDto {
         return mode;
     }
 
+    /**
+     * @return Is priority or <code>false</code> if not defined.
+     */
     public boolean isPriority() {
-        return priority;
+    	if (priority == null) {
+    		return false;
+    	}
+
+        return priority.booleanValue();
     }
 
     public String getTitle() {

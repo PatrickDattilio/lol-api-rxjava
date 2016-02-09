@@ -14,18 +14,21 @@ public class Message {
 
     private String author;
     private String content;
-    private String createdAt;
+    private String created_at;
     private Long id;
     private Severity severity;
     private Translation[] translations;
-    private String updatedAt;
+    private String updated_at;
     
     public Message() {
     	COUNT++;
     }
 
     /**
-     * @return The author.
+     * Sometimes explicitly defined as <code>null</code> in JSON
+     * response.
+     * 
+     * @return Author or <code>null</code>.
      */
     public String getAuthor() {
         return author;
@@ -39,10 +42,10 @@ public class Message {
     }
 
     /**
-     * @return The creation time.
+     * @return The creation time or <code>null</code> if not defined.
      */
     public String getCreatedAt() {
-        return createdAt;
+        return created_at;
     }
 
     /**
@@ -58,7 +61,7 @@ public class Message {
     }
 
     /**
-     * @return The severity.
+     * @return Severity or <code>null</code> if not defined.
      */
     public Severity getSeverity() {
         return severity;
@@ -76,10 +79,11 @@ public class Message {
     }
 
     /**
-     * @return Last updated time.
+     * @return Last updated time or <code>null</code>
+     * if not defined.
      */
     public String getUpdatedAt() {
-        return updatedAt;
+        return updated_at;
     }
 
     /**
@@ -89,6 +93,6 @@ public class Message {
      * @since 1.0.0
      */
     public enum Severity {
-        Info, Alert, Error
+        Info, info, Alert, alert, Error, error
     }
 }

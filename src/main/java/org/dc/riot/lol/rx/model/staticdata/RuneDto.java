@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This object contains rune data.
+ * This object contains rune data.<br>
+ * <br>
+ * Getters of this class will return <code>-1</code>
+ * or <code>false</code> as appropriate for undefined
+ * values.
  * 
  * @author Dc
  * @since 1.0.0
@@ -16,16 +20,16 @@ public class RuneDto {
 	}
 
     private String colloq;
-    private boolean consumeOnFull;
-    private boolean consumed;
-    private int depth;
+    private Boolean consumeOnFull;
+    private Boolean consumed;
+    private Integer depth;
     private String description;
     private String[] from;
     private String group;
-    private boolean hideFromAll;
-    private int id;
+    private Boolean hideFromAll;
+    private Integer id;
     private ImageDto image;
-    private boolean inStore;
+    private Boolean inStore;
     private String[] into;
     private Map<String, Boolean> maps;
     private String name;
@@ -33,8 +37,8 @@ public class RuneDto {
     private String requiredChampion;
     private MetaDataDto rune;
     private String sanitizedDescription;
-    private int specialRecipe;
-    private int stacks;
+    private Integer specialRecipe;
+    private Integer stacks;
     private BasicDataStatsDto stats;
     private String[] tags;
     
@@ -49,40 +53,32 @@ public class RuneDto {
         return colloq;
     }
 
-    public void setColloq(String colloq) {
-        this.colloq = colloq;
-    }
-
     public boolean isConsumeOnFull() {
+    	if (consumeOnFull == null) {
+    		return false;
+    	}
+
         return consumeOnFull;
     }
 
-    public void setConsumeOnFull(boolean consumeOnFull) {
-        this.consumeOnFull = consumeOnFull;
-    }
-
     public boolean isConsumed() {
+    	if (consumed == null) {
+    		return false;
+    	}
+
         return consumed;
     }
 
-    public void setConsumed(boolean consumed) {
-        this.consumed = consumed;
-    }
-
     public int getDepth() {
-        return depth;
-    }
+    	if (depth == null) {
+    		return -1;
+    	}
 
-    public void setDepth(int depth) {
-        this.depth = depth;
+        return depth;
     }
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String[] getFrom() {
@@ -93,10 +89,6 @@ public class RuneDto {
         return from;
     }
 
-    public void setFrom(String[] from) {
-        this.from = from;
-    }
-
     /**
      * @return group string (e.g. 'rune') or <code>null</code>
      */
@@ -104,40 +96,32 @@ public class RuneDto {
         return group;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
     public boolean isHideFromAll() {
+    	if (hideFromAll == null) {
+    		return false;
+    	}
+
         return hideFromAll;
     }
 
-    public void setHideFromAll(boolean hideFromAll) {
-        this.hideFromAll = hideFromAll;
-    }
-
     public int getId() {
-        return id;
-    }
+    	if (id == null) {
+    		return -1;
+    	}
 
-    public void setId(int id) {
-        this.id = id;
+        return id;
     }
 
     public ImageDto getImage() {
         return image;
     }
 
-    public void setImage(ImageDto image) {
-        this.image = image;
-    }
-
     public boolean isInStore() {
-        return inStore;
-    }
+    	if (inStore == null) {
+    		return false;
+    	}
 
-    public void setInStore(boolean inStore) {
-        this.inStore = inStore;
+        return inStore;
     }
 
     public String[] getInto() {
@@ -149,10 +133,6 @@ public class RuneDto {
 
     }
 
-    public void setInto(String[] into) {
-        this.into = into;
-    }
-
     public Map<String, Boolean> getMaps() {
     	if (maps == null) {
     		return new HashMap<String,Boolean>();
@@ -161,16 +141,8 @@ public class RuneDto {
         return maps;
     }
 
-    public void setMaps(Map<String, Boolean> maps) {
-        this.maps = maps;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -180,10 +152,6 @@ public class RuneDto {
         return plaintext;
     }
 
-    public void setPlaintext(String plaintext) {
-        this.plaintext = plaintext;
-    }
-
     /**
      * @return required champion or <code>null</code>
      */
@@ -191,48 +159,32 @@ public class RuneDto {
         return requiredChampion;
     }
 
-    public void setRequiredChampion(String requiredChampion) {
-        this.requiredChampion = requiredChampion;
-    }
-
     public MetaDataDto getRune() {
         return rune;
-    }
-
-    public void setRune(MetaDataDto rune) {
-        this.rune = rune;
     }
 
     public String getSanitizedDescription() {
         return sanitizedDescription;
     }
 
-    public void setSanitizedDescription(String sanitizedDescription) {
-        this.sanitizedDescription = sanitizedDescription;
-    }
-
     public int getSpecialRecipe() {
+    	if (specialRecipe == null) {
+    		return -1;
+    	}
+
         return specialRecipe;
     }
 
-    public void setSpecialRecipe(int specialRecipe) {
-        this.specialRecipe = specialRecipe;
-    }
-
     public int getStacks() {
-        return stacks;
-    }
+    	if (stacks == null) {
+    		return -1;
+    	}
 
-    public void setStacks(int stacks) {
-        this.stacks = stacks;
+        return stacks;
     }
 
     public BasicDataStatsDto getStats() {
         return stats;
-    }
-
-    public void setStats(BasicDataStatsDto stats) {
-        this.stats = stats;
     }
 
     /**
@@ -244,9 +196,5 @@ public class RuneDto {
     	}
 
         return tags;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
     }
 }

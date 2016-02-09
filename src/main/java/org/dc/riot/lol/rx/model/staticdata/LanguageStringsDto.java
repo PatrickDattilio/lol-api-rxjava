@@ -25,6 +25,10 @@ public class LanguageStringsDto {
     }
 
     /**
+     * <b>HUGE</b> hash map of various kinds of pretty print
+     * strings. Probably not super useful to anybody but
+     * Riot Games.
+     * 
      * @return Data.
      */
     public Map<String, String> getData() {

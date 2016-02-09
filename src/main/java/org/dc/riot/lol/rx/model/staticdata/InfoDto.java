@@ -16,10 +16,10 @@ public class InfoDto {
 		return COUNT;
 	}
 
-    private int attack;
-    private int defense;
-    private int difficulty;
-    private int magic;
+    private Integer attack;
+    private Integer defense;
+    private Integer difficulty;
+    private Integer magic;
     
     public InfoDto() {
     	COUNT++;
@@ -29,37 +29,43 @@ public class InfoDto {
      * @return Attack strength.
      */
     public int getAttack() {
-        return attack;
+    	if (attack == null) {
+    		return 0;
+    	}
+
+        return attack.intValue();
     }
 
     /**
      * @return Defense strength.
      */
     public int getDefense() {
-        return defense;
+    	if (defense == null) {
+    		return 0;
+    	}
+
+        return defense.intValue();
     }
 
     /**
      * @return Difficulty rating.
      */
     public int getDifficulty() {
-        return difficulty;
+    	if (difficulty == null) {
+    		return 0;
+    	}
+
+        return difficulty.intValue();
     }
 
     /**
      * @return Magic strength.
      */
     public int getMagic() {
-        return magic;
-    }
-    
-    /**
-     * Unit testing only. Client code should not
-     * use this method.
-     * 
-     * @return Sum of all fields.
-     */
-    public int sum() {
-    	return attack + defense + difficulty + magic;
+    	if (magic == null) {
+    		return 0;
+    	}
+
+        return magic.intValue();
     }
 }

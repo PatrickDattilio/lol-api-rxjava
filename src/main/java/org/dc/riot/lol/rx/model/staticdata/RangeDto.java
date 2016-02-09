@@ -12,7 +12,7 @@ public class RangeDto {
 		return COUNT;
 	}
 
-    private boolean self;
+    private Boolean self;
     private int[] ranges;
 
     public RangeDto(int[] ranges) {
@@ -29,10 +29,16 @@ public class RangeDto {
      * @return Self range.
      */
     public boolean isSelf() {
-        return self;
+    	if (self == null) {
+    		return false;
+    	}
+
+        return self.booleanValue();
     }
 
     /**
+     * Will be empty if {@link #isSelf()} returns <code>true</code>.
+     * 
      * @return Range values.
      */
     public int[] getRanges() {

@@ -9,7 +9,7 @@ public class ChampionDto {
 	private String[] allytips;
 	private String blurb;
 	private String[] enemytips;
-	private long id;
+	private Long id;
 	private ImageDto image;
 	private InfoDto info;
 	private String key;
@@ -58,9 +58,13 @@ public class ChampionDto {
 	}
 
 	/**
-	 * @return Id.
+	 * @return Id or <code>-1</code> if not defined.
 	 */
 	public long getId() {
+		if (id == null) {
+			return -1;
+		}
+
 		return id;
 	}
 

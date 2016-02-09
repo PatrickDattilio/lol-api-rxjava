@@ -13,7 +13,7 @@ public class BlockDto {
 	}
 
     private BlockItemDto[] items;
-    private boolean recMath;
+    private Boolean recMath;
     private String type;
     
     public BlockDto() {
@@ -32,10 +32,14 @@ public class BlockDto {
     }
 
     /**
-     * @return Is rec math.
+     * @return Is rec math or <code>false</code> if not defined.
      */
     public boolean isRecMath() {
-        return recMath;
+    	if (recMath == null) {
+    		return false;
+    	}
+
+        return recMath.booleanValue();
     }
 
     /**

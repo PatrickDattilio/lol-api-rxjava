@@ -34,12 +34,13 @@ public class RESTFieldRegister {
 	 * Check if all fields have been accounted for.
 	 * 
 	 * @param clazz class object to test
-	 * @return Whether all fields have been accounted for.
+	 * @return <code>null</code> if all fields are accounted for
+	 * (i.e. success) or the name of the offending field if failed.
 	 */
-	public boolean testClass(Class<?> clazz) {
+	public String testClass(Class<?> clazz) {
 		ArrayList<String> fields = seenFields.get(clazz);
 		if (fields == null) {
-			return false;
+			return "Class not registered";
 		}
 
 		for (Field f : clazz.getDeclaredFields()) {
@@ -49,11 +50,11 @@ public class RESTFieldRegister {
 
 			String fieldName = f.getName();
 			if (!fields.contains(fieldName)) {
-				return false;
+				return fieldName;
 			}
 		}
 		
-		return true;
+		return null;
 	}
 	
 	@Override

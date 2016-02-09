@@ -13,7 +13,7 @@ public class Incident {
 	}
 
     private Boolean active;
-    private String createdAt;
+    private String created_at;
     private Long id;
     private Message[] updates;
 
@@ -40,10 +40,10 @@ public class Incident {
     }
 
     /**
-     * @return The creation time.
+     * @return The creation time or <code>null</code> if not defined.
      */
     public String getCreatedAt() {
-        return createdAt;
+        return created_at;
     }
 
     /**

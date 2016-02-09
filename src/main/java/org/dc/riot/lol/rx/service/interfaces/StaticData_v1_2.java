@@ -2,17 +2,17 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.io.IOException;
 
-import org.dc.riot.lol.rx.model.MasteryListDto;
-import org.dc.riot.lol.rx.model.RealmDto;
 import org.dc.riot.lol.rx.model.SummonerSpellDto;
 import org.dc.riot.lol.rx.model.SummonerSpellListDto;
-import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.model.staticdata.ChampionDto;
 import org.dc.riot.lol.rx.model.staticdata.ChampionListDto;
 import org.dc.riot.lol.rx.model.staticdata.ItemDto;
 import org.dc.riot.lol.rx.model.staticdata.ItemListDto;
 import org.dc.riot.lol.rx.model.staticdata.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.staticdata.MapDataDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryListDto;
+import org.dc.riot.lol.rx.model.staticdata.RealmDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
 import org.dc.riot.lol.rx.service.ApiKey;
@@ -136,7 +136,7 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 	}
 
 	@Override
-	public Mastery getMastery(long masteryId, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException {
+	public MasteryDto getMastery(long masteryId, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getMastery(new LowercaseRegion(region), masteryId, apiKey, locale, version, new CSA<MasteryDataTag>(masteryData));
 		});
@@ -229,7 +229,7 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 				@Query("masteryListData") CSA<MasteryListDataTag> masteryListData);
 		
 		@GET("/api/lol/static-data/{region}/v1.2/mastery/{id}")
-		Call<Mastery> getMastery(@Path("region") LowercaseRegion region, @Path("id") long masteryId,
+		Call<MasteryDto> getMastery(@Path("region") LowercaseRegion region, @Path("id") long masteryId,
 				@Query("api_key") ApiKey apiKey,
 				@Query("locale") String locale, @Query("version") String version,
 				@Query("masteryData") CSA<MasteryDataTag> masteryData);

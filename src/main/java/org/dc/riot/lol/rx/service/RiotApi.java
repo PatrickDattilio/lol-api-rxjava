@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.MasteryListDto;
-import org.dc.riot.lol.rx.model.RealmDto;
 import org.dc.riot.lol.rx.model.SummonerSpellDto;
 import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.champion.ChampDto;
 import org.dc.riot.lol.rx.model.champion.ChampListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
-import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.model.common.QueueType;
 import org.dc.riot.lol.rx.model.common.RankedQueue;
 import org.dc.riot.lol.rx.model.common.Season;
@@ -28,6 +25,9 @@ import org.dc.riot.lol.rx.model.staticdata.ItemDto;
 import org.dc.riot.lol.rx.model.staticdata.ItemListDto;
 import org.dc.riot.lol.rx.model.staticdata.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.staticdata.MapDataDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryDto;
+import org.dc.riot.lol.rx.model.staticdata.MasteryListDto;
+import org.dc.riot.lol.rx.model.staticdata.RealmDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryListDto;
@@ -711,11 +711,11 @@ public interface RiotApi {
          * @param masteryData Tags to return additional data. Only id, name, and description are
          *                    returned by default if this parameter isn't specified. To return all
          *                    additional data, use the tag 'all'.
-         * @return {@link Mastery} filled in according to tags
+         * @return {@link MasteryDto} filled in according to tags
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
-        Mastery getMastery(long id, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException;
+        MasteryDto getMastery(long id, String version, String locale, MasteryDataTag... masteryData) throws IOException, HttpException;
 
         /**
          * /api/lol/static-data/{region}/v1.2/realm<br>
