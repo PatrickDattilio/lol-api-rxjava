@@ -261,6 +261,12 @@ public class IntegrationTests {
 	}
 	
 	private void testSummaryDto(PlayerStatsSummaryListDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getSummonerId() > 0);
 		PlayerStatsSummaryDto[] listDto = dto.getPlayerStatSummaries();
 		if (listDto.length == 0) {
@@ -273,58 +279,52 @@ public class IntegrationTests {
 	}
 	
 	private void testPlayerStatSummaryDto(PlayerStatsSummaryDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertNotNull(dto.getPlayerStatSummaryType());
 		AggregatedStatsDto aggDto = dto.getAggregatedStats();
 		assertNotNull(aggDto);
-		testAggregatedStatsDto(aggDto, dto.getPlayerStatSummaryType());
+		testAggregatedStatsDto(aggDto);
 	}
 	
-	private void testAggregatedStatsDto(AggregatedStatsDto dto, PlayerStatsType playerStatsType) {
-//		assertTrue(dto.getMaxTimePlayed() > 0);
-//		assertTrue(dto.getTotalSessionsPlayed() > 0);
-//		assertTrue(dto.getTotalGoldEarned() > 0);
-//		assertTrue(dto.getMostChampionKillsPerSession() > 0);
-
-		if (playerStatsType == PlayerStatsType.OdinUnranked) {
-			prints.println("Dominion scores");
-			prints.println(dto.getAverageAssists());
-			prints.println(dto.getAverageChampionsKilled());
-			prints.println(dto.getAverageCombatPlayerScore());
-			prints.println(dto.getAverageNodeCapture());
-			prints.println(dto.getAverageNodeCaptureAssist());
-			prints.println(dto.getAverageNodeNeutralize());
-			prints.println(dto.getAverageNodeNeutralizeAssist());
-			prints.println(dto.getAverageNumDeaths());
-			prints.println(dto.getAverageObjectivePlayerScore());
-			prints.println(dto.getAverageTeamObjective());
-			prints.println(dto.getAverageTotalPlayerScore());
-			prints.println(dto.getMaxAssists());
-			prints.println(dto.getMaxChampionsKilled());
-			prints.println(dto.getMaxCombatPlayerScore());
-			prints.println(dto.getMaxNodeCapture());
-			prints.println(dto.getMaxNodeCaptureAssist());
-			prints.println(dto.getMaxNodeNeutralize());
-			prints.println(dto.getMaxNodeNeutralizeAssist());
-			prints.println(dto.getMaxObjectivePlayerScore());
-			prints.println(dto.getMaxTeamObjective());
+	private void testAggregatedStatsDto(AggregatedStatsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	private void testRankedStatsDto(RankedStatsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		assertTrue(dto.getModifyDate() > 0);
 		assertTrue(dto.getSummonerId() > 0);
 
 		ChampionStatsDto[] champDto = dto.getChampions();
-		assertTrue(champDto.length > 0);
 		for (ChampionStatsDto championDto : champDto) {
 			testChampionStatsDto(championDto);
 		}
 	}
 	
 	private void testChampionStatsDto(ChampionStatsDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 		AggregatedStatsDto aggDto = dto.getStats();
 		assertNotNull(aggDto);
-		testAggregatedStatsDto(aggDto, null);
+		testAggregatedStatsDto(aggDto);
 	}
 	
 	@Test
