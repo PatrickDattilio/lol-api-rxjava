@@ -13,15 +13,8 @@ public class RankedStatsDto {
 	}
 
     private ChampionStatsDto[] champions;
-    private long modifyDate;
-    private long summonerId;
-    
-    /**
-     * If <code>false</code> all fields in this object will be useless.
-     * This flag is typically set when a code 404 is returned by the
-     * Riot API endpoint.
-     */
-    public boolean isValid = true;
+    private Long modifyDate;
+    private Long summonerId;
     
     public RankedStatsDto() {
     	COUNT++;
@@ -35,16 +28,27 @@ public class RankedStatsDto {
     }
 
     /**
-     * @return Date stats were last modified specified as epoch milliseconds.
+     * @return Date stats were last modified
+     * specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getModifyDate() {
-        return modifyDate;
+    	if (modifyDate == null) {
+    		return -1;
+    	}
+
+        return modifyDate.longValue();
     }
 
     /**
-     * @return Summoner ID.
+     * @return Summoner ID or <code>-1</code> if
+     * not defined.
      */
     public long getSummonerId() {
-        return summonerId;
+    	if (summonerId == null) {
+    		return -1;
+    	}
+
+        return summonerId.longValue();
     }
 }

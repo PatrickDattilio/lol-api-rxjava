@@ -12,9 +12,9 @@ public class TeamStatDetailDto {
 		return COUNT;
 	}
 
-    private int wins;
-    private int losses;
-    private int averageGamesPlayed;
+    private Integer wins;
+    private Integer losses;
+    private Integer averageGamesPlayed;
     private String teamStatType;
 
     public TeamStatDetailDto() {
@@ -22,24 +22,39 @@ public class TeamStatDetailDto {
     }
 
     /**
-     * @return This team's wins.
+     * @return This team's wins
+     * or <code>-1</code> if not defined.
      */
     public int getWins() {
-        return wins;
+    	if (wins == null) {
+    		return -1;
+    	}
+
+        return wins.intValue();
     }
 
     /**
      * @return This team's losses.
+     * or <code>-1</code> if not defined
      */
     public int getLosses() {
-        return losses;
+    	if (losses == null) {
+    		return -1;
+    	}
+
+        return losses.intValue();
     }
 
     /**
      * @return This team's average games played.
+     * or <code>-1</code> if not defined
      */
     public int getAverageGamesPlayed() {
-        return averageGamesPlayed;
+    	if (averageGamesPlayed == null) {
+    		return -1;
+    	}
+
+        return averageGamesPlayed.intValue();
     }
 
     /**

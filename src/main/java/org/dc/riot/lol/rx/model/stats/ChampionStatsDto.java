@@ -12,7 +12,7 @@ public class ChampionStatsDto {
 		return COUNT;
 	}
 
-    private long id;
+    private Long id;
     private AggregatedStatsDto stats;   // Aggregated stats associated with the champion.
     
     public ChampionStatsDto() {
@@ -20,13 +20,19 @@ public class ChampionStatsDto {
     }
 
     /**
-     * @return Champion ID. Note that champion ID 0
+     * Note that champion ID 0
      * represents the combined stats for all champions.
      * For static information correlating to champion IDs,
      * please refer to the LoL Static Data API.
+     * 
+     * @return Champion ID or <code>-1</code> if not defined.
      */
     public long getId() {
-        return id;
+    	if (id == null) {
+    		return -1;
+    	}
+
+        return id.longValue();
     }
 
     /**

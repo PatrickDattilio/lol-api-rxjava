@@ -1,7 +1,10 @@
 package org.dc.riot.lol.rx.model.stats;
 
 /**
- * This object contains aggregated stat information.
+ * This object contains aggregated stat information.<br>
+ * <br>
+ * Getters of this class will return <code>-1</code> if
+ * a value is not defined.
  * 
  * @author Dc
  * @since 1.0.0
@@ -12,62 +15,62 @@ public class AggregatedStatsDto {
 		return COUNT;
 	}
 
-    private int averageAssists;
-    private int averageChampionsKilled;
-    private int averageCombatPlayerScore;
-    private int averageNodeCapture;
-    private int averageNodeCaptureAssist;
-    private int averageNodeNeutralize;
-    private int averageNodeNeutralizeAssist;
-    private int averageNumDeaths;
-    private int averageObjectivePlayerScore;
-    private int averageTeamObjective;
-    private int averageTotalPlayerScore;
-    private int botGamesPlayed;
-    private int killingSpree;
-    private int maxAssists;
-    private int maxChampionsKilled;
-    private int maxCombatPlayerScore;
-    private int maxLargestCriticalStrike;
-    private int maxLargestKillingSpree;
-    private int maxNodeCapture;
-    private int maxNodeCaptureAssist;
-    private int maxNodeNeutralize;
-    private int maxNodeNeutralizeAssist;
-    private int maxNumDeaths;
-    private int maxObjectivePlayerScore;
-    private int maxTeamObjective;
-    private int maxTimePlayed;
-    private int maxTimeSpentLiving;
-    private int maxTotalPlayerScore;
-    private int mostChampionKillsPerSession;
-    private int mostSpellsCast;
-    private int normalGamesPlayed;
-    private int rankedPremadeGamesPlayed;
-    private int rankedSoloGamesPlayed;
-    private int totalAssists;
-    private int totalChampionKills;
-    private int totalDamageDealt;
-    private int totalDamageTaken;
-    private int totalDeathsPerSession;
-    private int totalDoubleKills;
-    private int totalFirstBlood;
-    private int totalGoldEarned;
-    private int totalHeal;
-    private int totalMagicDamageDealt;
-    private int totalMinionKills;
-    private int totalNeutralMinionsKilled;
-    private int totalNodeCapture;  // Dominion only.
-    private int totalNodeNeutralize;   // Dominion only.
-    private int totalPentaKills;
-    private int totalPhysicalDamageDealt;
-    private int totalQuadraKills;
-    private int totalSessionsLost;
-    private int totalSessionsPlayed;
-    private int totalSessionsWon;
-    private int totalTripleKills;
-    private int totalTurretsKilled;
-    private int totalUnrealKills;
+    private Integer averageAssists;
+    private Integer averageChampionsKilled;
+    private Integer averageCombatPlayerScore;
+    private Integer averageNodeCapture;
+    private Integer averageNodeCaptureAssist;
+    private Integer averageNodeNeutralize;
+    private Integer averageNodeNeutralizeAssist;
+    private Integer averageNumDeaths;
+    private Integer averageObjectivePlayerScore;
+    private Integer averageTeamObjective;
+    private Integer averageTotalPlayerScore;
+    private Integer botGamesPlayed;
+    private Integer killingSpree;
+    private Integer maxAssists;
+    private Integer maxChampionsKilled;
+    private Integer maxCombatPlayerScore;
+    private Integer maxLargestCriticalStrike;
+    private Integer maxLargestKillingSpree;
+    private Integer maxNodeCapture;
+    private Integer maxNodeCaptureAssist;
+    private Integer maxNodeNeutralize;
+    private Integer maxNodeNeutralizeAssist;
+    private Integer maxNumDeaths;
+    private Integer maxObjectivePlayerScore;
+    private Integer maxTeamObjective;
+    private Integer maxTimePlayed;
+    private Integer maxTimeSpentLiving;
+    private Integer maxTotalPlayerScore;
+    private Integer mostChampionKillsPerSession;
+    private Integer mostSpellsCast;
+    private Integer normalGamesPlayed;
+    private Integer rankedPremadeGamesPlayed;
+    private Integer rankedSoloGamesPlayed;
+    private Integer totalAssists;
+    private Integer totalChampionKills;
+    private Integer totalDamageDealt;
+    private Integer totalDamageTaken;
+    private Integer totalDeathsPerSession;
+    private Integer totalDoubleKills;
+    private Integer totalFirstBlood;
+    private Integer totalGoldEarned;
+    private Integer totalHeal;
+    private Integer totalMagicDamageDealt;
+    private Integer totalMinionKills;
+    private Integer totalNeutralMinionsKilled;
+    private Integer totalNodeCapture;  // Dominion only.
+    private Integer totalNodeNeutralize;   // Dominion only.
+    private Integer totalPentaKills;
+    private Integer totalPhysicalDamageDealt;
+    private Integer totalQuadraKills;
+    private Integer totalSessionsLost;
+    private Integer totalSessionsPlayed;
+    private Integer totalSessionsWon;
+    private Integer totalTripleKills;
+    private Integer totalTurretsKilled;
+    private Integer totalUnrealKills;
 
     public AggregatedStatsDto() {
     	COUNT++;
@@ -79,7 +82,11 @@ public class AggregatedStatsDto {
      * @return Average assists.
      */
     public int getAverageAssists() {
-        return averageAssists;
+    	if (averageAssists == null) {
+    		return -1;
+    	}
+    
+        return averageAssists.intValue();
     }
 
     /**
@@ -88,7 +95,11 @@ public class AggregatedStatsDto {
      * @return Average champions killed.
      */
     public int getAverageChampionsKilled() {
-        return averageChampionsKilled;
+    	if (averageChampionsKilled == null) {
+    		return -1;
+    	}
+    	
+        return averageChampionsKilled.intValue();
     }
 
     /**
@@ -97,7 +108,11 @@ public class AggregatedStatsDto {
      * @return Average combat player score.
      */
     public int getAverageCombatPlayerScore() {
-        return averageCombatPlayerScore;
+    	if (averageCombatPlayerScore == null) {
+    		return -1;
+    	}
+
+        return averageCombatPlayerScore.intValue();
     }
 
     /**
@@ -106,7 +121,11 @@ public class AggregatedStatsDto {
      * @return Average node captures.
      */
     public int getAverageNodeCapture() {
-        return averageNodeCapture;
+    	if (averageNodeCapture == null) {
+    		return -1;
+    	}
+
+        return averageNodeCapture.intValue();
     }
 
     /**
@@ -115,7 +134,11 @@ public class AggregatedStatsDto {
      * @return Average node capture assists.
      */
     public int getAverageNodeCaptureAssist() {
-        return averageNodeCaptureAssist;
+    	if (averageNodeCaptureAssist == null) {
+    		return -1;
+    	}
+
+        return averageNodeCaptureAssist.intValue();
     }
 
     /**
@@ -124,7 +147,11 @@ public class AggregatedStatsDto {
      * @return Average nodes neutralized.
      */
     public int getAverageNodeNeutralize() {
-        return averageNodeNeutralize;
+    	if (averageNodeNeutralize == null) {
+    		return -1;
+    	}
+
+        return averageNodeNeutralize.intValue();
     }
 
     /**
@@ -133,7 +160,11 @@ public class AggregatedStatsDto {
      * @return Average node neutralize assists.
      */
     public int getAverageNodeNeutralizeAssist() {
-        return averageNodeNeutralizeAssist;
+    	if (averageNodeNeutralizeAssist == null) {
+    		return -1;
+    	}
+
+        return averageNodeNeutralizeAssist.intValue();
     }
 
     /**
@@ -142,7 +173,11 @@ public class AggregatedStatsDto {
      * @return Average deaths.
      */
     public int getAverageNumDeaths() {
-        return averageNumDeaths;
+    	if (averageNumDeaths == null) {
+    		return -1;
+    	}
+
+        return averageNumDeaths.intValue();
     }
 
     /**
@@ -151,7 +186,11 @@ public class AggregatedStatsDto {
      * @return Average objective player score.
      */
     public int getAverageObjectivePlayerScore() {
-        return averageObjectivePlayerScore;
+    	if (averageObjectivePlayerScore == null) {
+    		return -1;
+    	}
+
+        return averageObjectivePlayerScore.intValue();
     }
 
     /**
@@ -160,7 +199,11 @@ public class AggregatedStatsDto {
      * @return Average team objective.
      */
     public int getAverageTeamObjective() {
-        return averageTeamObjective;
+    	if (averageTeamObjective == null) {
+    		return -1;
+    	}
+
+        return averageTeamObjective.intValue();
     }
 
     /**
@@ -169,15 +212,30 @@ public class AggregatedStatsDto {
      * @return Average total player score.
      */
     public int getAverageTotalPlayerScore() {
-        return averageTotalPlayerScore;
+    	if (averageTotalPlayerScore == null) {
+    		return -1;
+    	}
+    	
+        return averageTotalPlayerScore.intValue();
     }
 
+    /**
+     * @return Bot games played.
+     */
     public int getBotGamesPlayed() {
-        return botGamesPlayed;
+    	if (botGamesPlayed == null) {
+    		return -1;
+    	}
+
+        return botGamesPlayed.intValue();
     }
 
     public int getKillingSpree() {
-        return killingSpree;
+    	if (killingSpree == null) {
+    		return -1;
+    	}
+
+        return killingSpree.intValue();
     }
 
     /**
@@ -186,11 +244,19 @@ public class AggregatedStatsDto {
      * @return Max assists.
      */
     public int getMaxAssists() {
-        return maxAssists;
+    	if (maxAssists == null) {
+    		return -1;
+    	}
+
+        return maxAssists.intValue();
     }
 
     public int getMaxChampionsKilled() {
-        return maxChampionsKilled;
+    	if (maxChampionsKilled == null) {
+    		return -1;
+    	}
+
+        return maxChampionsKilled.intValue();
     }
 
     /**
@@ -199,15 +265,27 @@ public class AggregatedStatsDto {
      * @return Max combat player score.
      */
     public int getMaxCombatPlayerScore() {
-        return maxCombatPlayerScore;
+    	if (maxCombatPlayerScore == null) {
+    		return -1;
+    	}
+    	
+        return maxCombatPlayerScore.intValue();
     }
 
     public int getMaxLargestCriticalStrike() {
-        return maxLargestCriticalStrike;
+    	if (maxLargestCriticalStrike == null) {
+    		return -1;
+    	}
+
+        return maxLargestCriticalStrike.intValue();
     }
 
     public int getMaxLargestKillingSpree() {
-        return maxLargestKillingSpree;
+    	if (maxLargestKillingSpree == null) {
+    		return -1;
+    	}
+
+        return maxLargestKillingSpree.intValue();
     }
 
     /**
@@ -216,7 +294,11 @@ public class AggregatedStatsDto {
      * @return Max node captures.
      */
     public int getMaxNodeCapture() {
-        return maxNodeCapture;
+    	if (maxNodeCapture == null) {
+    		return -1;
+    	}
+
+        return maxNodeCapture.intValue();
     }
 
     /**
@@ -225,7 +307,11 @@ public class AggregatedStatsDto {
      * @return Max node capture assists.
      */
     public int getMaxNodeCaptureAssist() {
-        return maxNodeCaptureAssist;
+    	if (maxNodeCaptureAssist == null) {
+    		return -1;
+    	}
+
+        return maxNodeCaptureAssist.intValue();
     }
 
     /**
@@ -234,7 +320,11 @@ public class AggregatedStatsDto {
      * @return Max nodes neutralized.
      */
     public int getMaxNodeNeutralize() {
-        return maxNodeNeutralize;
+    	if (maxNodeNeutralize == null) {
+    		return -1;
+    	}
+
+        return maxNodeNeutralize.intValue();
     }
 
     /**
@@ -243,7 +333,11 @@ public class AggregatedStatsDto {
      * @return Max node neutralize assists.
      */
     public int getMaxNodeNeutralizeAssist() {
-        return maxNodeNeutralizeAssist;
+    	if (maxNodeNeutralizeAssist == null) {
+    		return -1;
+    	}
+
+        return maxNodeNeutralizeAssist.intValue();
     }
 
     /**
@@ -252,7 +346,11 @@ public class AggregatedStatsDto {
      * @return Max deaths.
      */
     public int getMaxNumDeaths() {
-        return maxNumDeaths;
+    	if (maxNumDeaths == null) {
+    		return -1;
+    	}
+
+        return maxNumDeaths.intValue();
     }
 
     /**
@@ -261,7 +359,11 @@ public class AggregatedStatsDto {
      * @return Max objective player score.
      */
     public int getMaxObjectivePlayerScore() {
-        return maxObjectivePlayerScore;
+    	if (maxObjectivePlayerScore == null) {
+    		return -1;
+    	}
+
+        return maxObjectivePlayerScore.intValue();
     }
 
     /**
@@ -270,15 +372,27 @@ public class AggregatedStatsDto {
      * @return Max team objective.
      */
     public int getMaxTeamObjective() {
-        return maxTeamObjective;
+    	if (maxTeamObjective == null) {
+    		return -1;
+    	}
+
+        return maxTeamObjective.intValue();
     }
 
     public int getMaxTimePlayed() {
-        return maxTimePlayed;
+    	if (maxTimePlayed == null) {
+    		return -1;
+    	}
+
+        return maxTimePlayed.intValue();
     }
 
     public int getMaxTimeSpentLiving() {
-        return maxTimeSpentLiving;
+    	if (maxTimeSpentLiving == null) {
+    		return -1;
+    	}
+
+        return maxTimeSpentLiving.intValue();
     }
 
     /**
@@ -287,43 +401,83 @@ public class AggregatedStatsDto {
      * @return Max total player score.
      */
     public int getMaxTotalPlayerScore() {
-        return maxTotalPlayerScore;
+    	if (maxTotalPlayerScore == null) {
+    		return -1;
+    	}
+
+        return maxTotalPlayerScore.intValue();
     }
 
     public int getMostChampionKillsPerSession() {
-        return mostChampionKillsPerSession;
+    	if (mostChampionKillsPerSession == null) {
+    		return -1;
+    	}
+
+        return mostChampionKillsPerSession.intValue();
     }
 
     public int getMostSpellsCast() {
-        return mostSpellsCast;
+    	if (mostSpellsCast == null) {
+    		return -1;
+    	}
+
+        return mostSpellsCast.intValue();
     }
 
     public int getNormalGamesPlayed() {
+    	if (normalGamesPlayed == null) {
+    		return -1;
+    	}
+
         return normalGamesPlayed;
     }
 
     public int getRankedPremadeGamesPlayed() {
-        return rankedPremadeGamesPlayed;
+    	if (rankedPremadeGamesPlayed == null) {
+    		return -1;
+    	}
+
+        return rankedPremadeGamesPlayed.intValue();
     }
 
     public int getRankedSoloGamesPlayed() {
+    	if (rankedSoloGamesPlayed == null) {
+    		return -1;
+    	}
+
         return rankedSoloGamesPlayed;
     }
 
     public int getTotalAssists() {
-        return totalAssists;
+    	if (totalAssists == null) {
+    		return -1;
+    	}
+
+        return totalAssists.intValue();
     }
 
     public int getTotalChampionKills() {
-        return totalChampionKills;
+    	if (totalChampionKills == null) {
+    		return -1;
+    	}
+
+        return totalChampionKills.intValue();
     }
 
     public int getTotalDamageDealt() {
-        return totalDamageDealt;
+    	if (totalDamageDealt == null) {
+    		return -1;
+    	}
+
+        return totalDamageDealt.intValue();
     }
 
     public int getTotalDamageTaken() {
-        return totalDamageTaken;
+    	if (totalDamageTaken == null) {
+    		return -1;
+    	}
+
+        return totalDamageTaken.intValue();
     }
 
     /**
@@ -332,35 +486,67 @@ public class AggregatedStatsDto {
      * @return Total deaths per session.
      */
     public int getTotalDeathsPerSession() {
-        return totalDeathsPerSession;
+    	if (totalDeathsPerSession == null) {
+    		return -1;
+    	}
+
+        return totalDeathsPerSession.intValue();
     }
 
     public int getTotalDoubleKills() {
-        return totalDoubleKills;
+    	if (totalDoubleKills == null) {
+    		return -1;
+    	}
+
+        return totalDoubleKills.intValue();
     }
 
     public int getTotalFirstBlood() {
-        return totalFirstBlood;
+    	if (totalFirstBlood == null) {
+    		return -1;
+    	}
+
+        return totalFirstBlood.intValue();
     }
 
     public int getTotalGoldEarned() {
-        return totalGoldEarned;
+    	if (totalGoldEarned == null) {
+    		return -1;
+    	}
+
+        return totalGoldEarned.intValue();
     }
 
     public int getTotalHeal() {
-        return totalHeal;
+    	if (totalHeal == null) {
+    		return -1;
+    	}
+
+        return totalHeal.intValue();
     }
 
     public int getTotalMagicDamageDealt() {
-        return totalMagicDamageDealt;
+    	if (totalMagicDamageDealt == null) {
+    		return -1;
+    	}
+
+        return totalMagicDamageDealt.intValue();
     }
 
     public int getTotalMinionKills() {
-        return totalMinionKills;
+    	if (totalMinionKills == null) {
+    		return -1;
+    	}
+
+        return totalMinionKills.intValue();
     }
 
     public int getTotalNeutralMinionsKilled() {
-        return totalNeutralMinionsKilled;
+    	if (totalNeutralMinionsKilled == null) {
+    		return -1;
+    	}
+
+        return totalNeutralMinionsKilled.intValue();
     }
 
     /**
@@ -369,7 +555,11 @@ public class AggregatedStatsDto {
      * @return Total nodes captured.
      */
     public int getTotalNodeCapture() {
-        return totalNodeCapture;
+    	if (totalNodeCapture == null) {
+    		return -1;
+    	}
+
+        return totalNodeCapture.intValue();
     }
 
     /**
@@ -378,42 +568,82 @@ public class AggregatedStatsDto {
      * @return Total nodes neutralized.
      */
     public int getTotalNodeNeutralize() {
-        return totalNodeNeutralize;
+    	if (totalNodeNeutralize == null) {
+    		return -1;
+    	}
+
+        return totalNodeNeutralize.intValue();
     }
 
     public int getTotalPentaKills() {
-        return totalPentaKills;
+    	if (totalPentaKills == null) {
+    		return -1;
+    	}
+
+        return totalPentaKills.intValue();
     }
 
     public int getTotalPhysicalDamageDealt() {
-        return totalPhysicalDamageDealt;
+    	if (totalPhysicalDamageDealt == null) {
+    		return -1;
+    	}
+
+        return totalPhysicalDamageDealt.intValue();
     }
 
     public int getTotalQuadraKills() {
-        return totalQuadraKills;
+    	if (totalQuadraKills == null) {
+    		return -1;
+    	}
+
+        return totalQuadraKills.intValue();
     }
 
     public int getTotalSessionsLost() {
-        return totalSessionsLost;
+    	if (totalSessionsLost == null) {
+    		return -1;
+    	}
+
+        return totalSessionsLost.intValue();
     }
 
     public int getTotalSessionsPlayed() {
-        return totalSessionsPlayed;
+    	if (totalSessionsPlayed == null) {
+    		return -1;
+    	}
+
+        return totalSessionsPlayed.intValue();
     }
 
     public int getTotalSessionsWon() {
-        return totalSessionsWon;
+    	if (totalSessionsWon == null) {
+    		return -1;
+    	}
+
+        return totalSessionsWon.intValue();
     }
 
     public int getTotalTripleKills() {
-        return totalTripleKills;
+    	if (totalTripleKills == null) {
+    		return -1;
+    	}
+
+        return totalTripleKills.intValue();
     }
 
     public int getTotalTurretsKilled() {
-        return totalTurretsKilled;
+    	if (totalTurretsKilled == null) {
+    		return -1;
+    	}
+
+        return totalTurretsKilled.intValue();
     }
     
     public int getTotalUnrealKills() {
-    	return totalUnrealKills;
+    	if (totalUnrealKills == null) {
+    		return -1;
+    	}
+
+    	return totalUnrealKills.intValue();
     }
 }

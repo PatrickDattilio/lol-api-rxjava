@@ -141,6 +141,8 @@ public class IntegrationTests {
 	private TestPrints prints = TestPrints.getInstance();
 	private ApiFactory factory = null;
 	
+	private boolean testStaticDataRan = false;
+	private boolean testStatsRan = false;
 	private boolean testSummonerRan = false;
 	private boolean testTeamRan = false;
 	private boolean testStatusRan = false;
@@ -215,6 +217,7 @@ public class IntegrationTests {
 	
 	@Test
 	public void testStats() throws IOException {
+		testStatsRan = true;
 		try {
 			prints.println("Testing STATS interface");
 
@@ -308,11 +311,6 @@ public class IntegrationTests {
 	}
 	
 	private void testRankedStatsDto(RankedStatsDto dto) {
-		if (!dto.isValid) {
-			prints.println("WARNING", "Invalid ranked stats DTO");
-			return;
-		}
-
 		assertTrue(dto.getModifyDate() > 0);
 		assertTrue(dto.getSummonerId() > 0);
 
@@ -1216,6 +1214,9 @@ public class IntegrationTests {
 					assertNotNull(runePagesDto);
 					testRunePagesDto(runePagesDto);
 				}
+				
+				Map<String,String> nameMapDto = summonerInterface.getNames(summonerId);
+				assertTrue(nameMapDto.values().size() == 1);
 			}
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
@@ -1324,48 +1325,9 @@ public class IntegrationTests {
 		assertTrue(dto.getMasteryId() > 0);
 	}
 
-	private void testSummonerRunes(long summonerId) throws IOException, HttpException {
-		Map<String,RunePagesDto> mapDto = summonerInterface.getRunes(summonerId);
-		assertNotNull("Map dto null", mapDto);
-
-		RunePagesDto dto = mapDto.values().toArray(new RunePagesDto[mapDto.values().size()])[0];
-		assertNotNull("Dto null", dto);
-
-		long sid = dto.getSummonerId();
-		assertTrue(summonerId == sid);
-
-		RunePageDto[] pages = dto.getPages();
-		assertNotNull(pages);
-		assertTrue(pages.length > 0);
-
-		for (RunePageDto rp : pages) {
-			assertTrue(rp.getId() > 0);
-			assertNotNull(rp.getName());
-			RuneSlotDto[] slots = rp.getSlots();
-			assertNotNull(slots);
-
-			for (RuneSlotDto s : slots) {
-				long runeId = s.getRuneId();
-				assertTrue(runeId > 0);
-				assertTrue(s.getRuneSlotId() > 0);
-			}
-		}
-	}
-
-	private void testSummonerNames(long summonerId) throws IOException, HttpException {
-		Map<String,String> mapDto = summonerInterface.getNames(summonerId);
-		assertNotNull("Map dto null", mapDto);
-
-		for (String key : mapDto.keySet()) {
-			String name = mapDto.get(key);
-			assertNotNull(name);
-
-			prints.println(key + " : " + name);
-		}
-	}
-
 	@Test
 	public void testStaticData() throws IOException {
+		testStaticDataRan = true;
 		try {
 			// CHAMPION DATA
 			ChampionListDto champListDto = staticInterface.getChampions(true, null, null, ChampListDataTag.ALL);
@@ -1810,7 +1772,6 @@ public class IntegrationTests {
 	
 	@Test
 	public void testStatus() throws IOException {
-		// TODO UPDATE POJOS TO BE ALL REFERENCE BASED
 		testStatusRan = true;
 		try {
 			prints.println("INFO", "Testing STATUS");
@@ -1857,9 +1818,75 @@ public class IntegrationTests {
 		assertNotNull(dto.getName());
 		assertNotNull(dto.getRegionTag());
 		assertNotNull(dto.getSlug());
+		
+		Service[] serviceListDto = dto.getServices();
+		for (Service serviceDto : serviceListDto) {
+			testService(serviceDto);
+		}
+	}
+	
+	private void testService(Service dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getSlug());
+		assertNotNull(dto.getStatus());
 
-		Service[] services = dto.getServices();
-		assertNotNull(services);
+		Incident[] incidentListDto = dto.getIncidents();
+		for (Incident incidentDto : incidentListDto) {
+			testIncident(incidentDto);
+		}
+	}
+	
+	private void testIncident(Incident dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getId() > 0);
+		assertNotNull(dto.getCreatedAt());
+
+		Message[] messageListDto = dto.getUpdates();
+		for (Message messageDto : messageListDto) {
+			testMessage(messageDto);
+		}
+	}
+	
+	private void testMessage(Message dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getId() > 0);
+		assertNotNull(dto.getContent());
+		assertNotNull(dto.getCreatedAt());
+		assertNotNull(dto.getSeverity());
+		assertNotNull(dto.getUpdatedAt());
+
+		Translation[] translationListDto = dto.getTranslations();
+		for (Translation translationDto : translationListDto) {
+			testTranslation(translationDto);
+		}
+	}
+	
+	private void testTranslation(Translation dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertNotNull(dto.getContent());
+		assertNotNull(dto.getLocale());
+		assertNotNull(dto.getUpdatedAt());
 	}
 	
 	private void testShard(Shard dto) {
@@ -1885,20 +1912,43 @@ public class IntegrationTests {
 	public void testPojos() {
 		prints.println("INFO", "Testing POJOs");
 		
-		// status POJOs
+		// static data POJOs
+		if (testStaticDataRan) {
+			fail();
+		}
+		
+		// stats POJOs
+		if (testStatsRan) {
+			fail();
+		}
+		
+		// status POJOs, the status API sometimes doesn't return the commented out instances
 		if (testStatusRan) {
-			assertTrue(Incident.getInstanceCount() > 0);
-			assertTrue(Message.getInstanceCount() > 0);
 			assertTrue(Service.getInstanceCount() > 0);
 			assertTrue(Shard.getInstanceCount() > 0);
 			assertTrue(ShardStatus.getInstanceCount() > 0);
-			assertTrue(Translation.getInstanceCount() > 0);
-			assertTrue(register.testClass(Incident.class));
-			assertTrue(register.testClass(Message.class));
+			if (Incident.getInstanceCount() == 0) {
+				prints.println("WARNING", "No " + Incident.class.getSimpleName() + " deserialized");
+			}
+			if (Message.getInstanceCount() == 0) {
+				prints.println("WARNING", "No " + Message.class.getSimpleName() + " deserialized");
+			}
+			if (Translation.getInstanceCount() == 0) {
+				prints.println("WARNING", "No " + Translation.class.getSimpleName() + " deserialized");
+			}
+
 			assertTrue(register.testClass(Service.class));
 			assertTrue(register.testClass(Shard.class));
 			assertTrue(register.testClass(ShardStatus.class));
-			assertTrue(register.testClass(Translation.class));
+			if (Incident.getInstanceCount() > 0) {
+				assertTrue(register.testClass(Incident.class));
+			}
+			if (Message.getInstanceCount() > 0) {
+				assertTrue(register.testClass(Message.class));
+			}
+			if (Translation.getInstanceCount() > 0) {
+				assertTrue(register.testClass(Translation.class));
+			}
 		}
 
 		// summoner POJOs
@@ -1932,7 +1982,7 @@ public class IntegrationTests {
 		}
 		
 		
-		System.out.println();
+		prints.println("Deserilized details");
 		prints.println(register);
 	}
 

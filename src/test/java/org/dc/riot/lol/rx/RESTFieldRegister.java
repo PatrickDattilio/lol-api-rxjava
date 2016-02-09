@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class RESTFieldRegister {
 	private HashMap<Class<?>, ArrayList<String>> seenFields = new HashMap<>();
@@ -39,6 +38,10 @@ public class RESTFieldRegister {
 	 */
 	public boolean testClass(Class<?> clazz) {
 		ArrayList<String> fields = seenFields.get(clazz);
+		if (fields == null) {
+			return false;
+		}
+
 		for (Field f : clazz.getDeclaredFields()) {
 			if (Modifier.isStatic(f.getModifiers())) {
 				continue;

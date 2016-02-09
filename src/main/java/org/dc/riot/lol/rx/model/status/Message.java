@@ -15,7 +15,7 @@ public class Message {
     private String author;
     private String content;
     private String createdAt;
-    private long id;
+    private Long id;
     private Severity severity;
     private Translation[] translations;
     private String updatedAt;
@@ -46,10 +46,15 @@ public class Message {
     }
 
     /**
-     * @return The ID.
+     * @return The ID or <code>-1</code> if
+     * not defined.
      */
     public long getId() {
-        return id;
+    	if (id == null) {
+    		return -1;
+    	}
+
+        return id.longValue();
     }
 
     /**
@@ -60,9 +65,13 @@ public class Message {
     }
 
     /**
-     * @return Translations.
+     * @return Translations or empty if not defined.
      */
     public Translation[] getTranslations() {
+    	if (translations == null) {
+    		return new Translation[0];
+    	}
+
         return translations;
     }
 

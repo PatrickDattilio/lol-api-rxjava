@@ -8,14 +8,26 @@ public class TestPojo {
 	private Object someObject = null;
 
 	public Integer getSomeInt() {
+		if (someInt == null) {
+			return new Integer(-1);
+		}
+
 		return someInt;
 	}
 
 	public Long getSomeLong() {
+		if (someLong == null) {
+			return new Long(-1);
+		}
+
 		return someLong;
 	}
 
 	public Double getSomeDouble() {
+		if (someDouble == null) {
+			return new Double(-1);
+		}
+
 		return someDouble;
 	}
 	

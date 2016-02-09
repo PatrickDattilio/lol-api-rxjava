@@ -1,7 +1,10 @@
 package org.dc.riot.lol.rx.model.stats;
 
 /**
- * This object contains player stats summary information.
+ * This object contains player stats summary information.<br>
+ * <br>
+ * Getters of this class will return <code>-1</code> for fields
+ * not defined in the JSON response.
  * 
  * @author Dc
  * @since 1.0.0
@@ -14,9 +17,9 @@ public class PlayerStatsSummaryDto {
 
     private PlayerStatsType playerStatSummaryType;
     private AggregatedStatsDto aggregatedStats;
-    private long modifyDate;
-    private int wins;
-    private int losses;
+    private Long modifyDate;
+    private Integer wins;
+    private Integer losses;
     
     public PlayerStatsSummaryDto() {
     	COUNT++;
@@ -48,14 +51,22 @@ public class PlayerStatsSummaryDto {
      * as epoch milliseconds.
      */
     public long getModifyDate() {
-        return modifyDate;
+    	if (modifyDate == null) {
+    		return modifyDate;
+    	}
+
+        return modifyDate.longValue();
     }
 
     /**
-     * @return The wins
+     * @return Wins.
      */
     public int getWins() {
-        return wins;
+    	if (wins == null) {
+    		return -1;
+    	}
+
+        return wins.intValue();
     }
 
     /**
@@ -63,6 +74,10 @@ public class PlayerStatsSummaryDto {
      * Returned for ranked queue types only.
      */
     public int getLosses() {
-        return losses;
+    	if (losses == null) {
+    		return -1;
+    	}
+
+        return losses.intValue();
     }
 }

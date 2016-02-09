@@ -23,7 +23,7 @@ public class Shard {
     }
 
     /**
-     * @return The hostname.
+     * @return Host name.
      */
     public String getHostname() {
         return hostname;
@@ -33,25 +33,29 @@ public class Shard {
      * @return List of locale strings.
      */
     public String[] getLocales() {
+    	if (locales == null) {
+    		return new String[0];
+    	}
+
         return locales;
     }
 
     /**
-     * @return The name.
+     * @return Name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return region tag (e.g. 'na1') or <code>null</code>.
+     * @return Region tag (e.g. 'na1') or <code>null</code>.
      */
     public String getRegionTag() {
         return region_tag;
     }
 
     /**
-     * @return The slug.
+     * @return Slug.
      */
     public String getSlug() {
         return slug;

@@ -15,7 +15,7 @@ public class MatchHistorySummaryDto {
 	}
 
     private GameMode gameMode;
-    private Integer mapId;
+    private Long mapId;
     private Integer assists;
     private String opposingTeamName;
     private Boolean invalid;
@@ -38,17 +38,27 @@ public class MatchHistorySummaryDto {
     }
 
     /**
-     * @return Map ID.
+     * @return Map ID or <code>-1</code> if not
+     * defined.
      */
-    public int getMapId() {
-        return mapId;
+    public long getMapId() {
+    	if (mapId == null) {
+    		return -1;
+    	}
+
+        return mapId.longValue();
     }
 
     /**
-     * @return This team's assists.
+     * @return This team's assists or <code>-1</code> if not
+     * defined.
      */
     public int getAssists() {
-        return assists;
+    	if (assists == null) {
+    		return -1;
+    	}
+
+        return assists.intValue();
     }
 
     /**
@@ -59,52 +69,87 @@ public class MatchHistorySummaryDto {
     }
 
     /**
-     * @return Something is invalid.
+     * @return Something is invalid or <code>false</code>
+     * if not defined.
      */
     public boolean isInvalid() {
-        return invalid;
+    	if (invalid == null) {
+    		return false;
+    	}
+
+        return invalid.booleanValue();
     }
 
     /**
-     * @return This team's deaths.
+     * @return This team's deaths or <code>-1</code> if not
+     * defined.
      */
     public int getDeaths() {
-        return deaths;
+    	if (deaths == null) {
+    		return -1;
+    	}
+
+        return deaths.intValue();
     }
 
     /**
-     * @return Game ID.
+     * @return Game ID or <code>-1</code> if not
+     * defined.
      */
     public long getGameId() {
-        return gameId;
+    	if (gameId == null) {
+    		return -1;
+    	}
+
+        return gameId.longValue();
     }
 
     /**
-     * @return This team's kills.
+     * @return This team's kills or <code>-1</code> if not
+     * defined.
      */
     public int getKills() {
-        return kills;
+    	if (kills == null) {
+    		return -1;
+    	}
+
+        return kills.intValue();
     }
 
     /**
-     * @return Flag if this team won.
+     * @return Flag if this team won or <code>false</code>
+     * if not defined.
      */
     public boolean isWin() {
-        return win;
+    	if (win == null) {
+    		return false;
+    	}
+
+        return win.booleanValue();
     }
 
     /**
      * @return 	Date that match was completed
-     * specified as epoch milliseconds.
+     * specified as epoch milliseconds or <code>-1</code> if not
+     * defined.
      */
     public long getDate() {
-        return date;
+    	if (date == null) {
+    		return -1;
+    	}
+
+        return date.longValue();
     }
 
     /**
-     * @return Opposing team's kills.
+     * @return Opposing team's kills or <code>-1</code> if not
+     * defined.
      */
     public int getOpposingTeamKills() {
-        return opposingTeamKills;
+    	if (opposingTeamKills == null) {
+    		return -1;
+    	}
+
+        return opposingTeamKills.intValue();
     }
 }

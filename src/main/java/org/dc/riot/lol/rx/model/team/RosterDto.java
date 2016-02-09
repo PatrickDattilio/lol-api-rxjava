@@ -13,14 +13,15 @@ public class RosterDto {
 	}
 
     private TeamMemberInfoDto[] memberList;
-    private long ownerId;
+    private Long ownerId;
     
     public RosterDto() {
     	COUNT++;
     }
 
     /**
-     * @return List of team member info objects.
+     * @return List of team member info objects
+     * or empty of not defined.
      */
     public TeamMemberInfoDto[] getMemberList() {
     	if (memberList == null) {
@@ -31,9 +32,14 @@ public class RosterDto {
     }
 
     /**
-     * @return Team owner summoner ID.
+     * @return Team owner summoner ID
+     * or <code>-1</code> if not defined.
      */
     public long getOwnerId() {
-        return ownerId;
+    	if (ownerId == null) {
+    		return -1;
+    	}
+
+        return ownerId.longValue();
     }
 }

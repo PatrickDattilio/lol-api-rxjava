@@ -12,20 +12,20 @@ public class TeamDto {
 		return COUNT;
 	}
 
-    private long secondLastJoinDate;
-    private long lastJoinDate;
+    private Long secondLastJoinDate;
+    private Long lastJoinDate;
     private String fullId;
     private MatchHistorySummaryDto[] matchHistory;
-    private long lastJoinedRankedTeamQueueDate;
+    private Long lastJoinedRankedTeamQueueDate;
     private String status;
     private TeamStatDetailDto[] teamStatDetails;
     private String tag;
     private String name;
-    private long thirdLastJoinDate;
+    private Long thirdLastJoinDate;
     private RosterDto roster;
-    private long lastGameDate;
-    private long modifyDate;
-    private long createDate;
+    private Long lastGameDate;
+    private Long modifyDate;
+    private Long createDate;
     
     public TeamDto() {
     	COUNT++;
@@ -33,18 +33,28 @@ public class TeamDto {
 
     /**
      * @return Date that second to last member
-     * joined specified as epoch milliseconds.
+     * joined specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getSecondLastJoinDate() {
-        return secondLastJoinDate;
+    	if (secondLastJoinDate == null) {
+    		return -1;
+    	}
+
+        return secondLastJoinDate.longValue();
     }
 
     /**
      * @return Date that last member joined specified
-     * as epoch milliseconds.
+     * as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getLastJoinDate() {
-        return lastJoinDate;
+    	if (lastJoinDate == null) {
+    		return -1;
+    	}
+
+        return lastJoinDate.longValue();
     }
 
     /**
@@ -67,10 +77,15 @@ public class TeamDto {
 
     /**
      * @return Date that team last joined the ranked team
-     * queue specified as epoch milliseconds.
+     * queue specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getLastJoinedRankedTeamQueueDate() {
-        return lastJoinedRankedTeamQueueDate;
+    	if (lastJoinedRankedTeamQueueDate == null) {
+    		return -1;
+    	}
+
+        return lastJoinedRankedTeamQueueDate.longValue();
     }
 
     /**
@@ -107,10 +122,15 @@ public class TeamDto {
 
     /**
      * @return Date that third to last member joined
-     * specified as epoch milliseconds.
+     * specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getThirdLastJoinDate() {
-        return thirdLastJoinDate;
+    	if (thirdLastJoinDate == null) {
+    		return -1;
+    	}
+
+        return thirdLastJoinDate.longValue();
     }
 
     /**
@@ -122,25 +142,40 @@ public class TeamDto {
 
     /**
      * @return Date that last game played by team
-     * ended specified as epoch milliseconds.
+     * ended specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getLastGameDate() {
-        return lastGameDate;
+    	if (lastGameDate == null) {
+    		return -1;
+    	}
+
+        return lastGameDate.longValue();
     }
 
     /**
      * @return 	Date that team was last modified
-     * specified as epoch milliseconds.
+     * specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getModifyDate() {
-        return modifyDate;
+    	if (modifyDate == null) {
+    		return -1;
+    	}
+
+        return modifyDate.longValue();
     }
 
     /**
      * @return Date that team was created specified
-     * as epoch milliseconds.
+     * as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getCreateDate() {
-        return createDate;
+    	if (createDate == null) {
+    		return -1;
+    	}
+
+        return createDate.longValue();
     }
 }

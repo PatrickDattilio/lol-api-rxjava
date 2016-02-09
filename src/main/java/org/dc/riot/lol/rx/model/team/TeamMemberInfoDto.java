@@ -12,10 +12,10 @@ public class TeamMemberInfoDto {
 		return COUNT;
 	}
 
-    private long joinDate;
-    private long inviteDate;
+    private Long joinDate;
+    private Long inviteDate;
     private String status;
-    private long playerId;
+    private Long playerId;
     
     public TeamMemberInfoDto() {
     	COUNT++;
@@ -23,21 +23,30 @@ public class TeamMemberInfoDto {
 
     /**
      * Implementation note: this value may not be set by the
-     * server resulting in <code>0</code>.
+     * server resulting in <code>-1</code>.
      * 
      * @return Date that team member joined team
      * specified as epoch milliseconds.
      */
     public long getJoinDate() {
-        return joinDate;
+    	if (joinDate == null) {
+    		return -1;
+    	}
+
+        return joinDate.longValue();
     }
 
     /**
      * @return Date that team member was
-     * invited to team specified as epoch milliseconds.
+     * invited to team specified as epoch milliseconds
+     * or <code>-1</code> if not defined.
      */
     public long getInviteDate() {
-        return inviteDate;
+    	if (inviteDate == null) {
+    		return -1;
+    	}
+
+        return inviteDate.longValue();
     }
 
     /**
@@ -48,9 +57,14 @@ public class TeamMemberInfoDto {
     }
 
     /**
-     * @return This team member ID (summoner ID?).
+     * @return This team member ID (summoner ID?)
+     * or <code>-1</code> if not defined.
      */
     public long getPlayerId() {
-        return playerId;
+    	if (playerId == null) {
+    		return -1;
+    	}
+
+        return playerId.longValue();
     }
 }

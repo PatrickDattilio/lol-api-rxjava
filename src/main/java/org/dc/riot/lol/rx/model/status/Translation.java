@@ -21,7 +21,7 @@ public class Translation {
     }
 
     /**
-     * @return The locale.
+     * @return Locale.
      */
     public String getLocale() {
         return locale;
@@ -35,7 +35,7 @@ public class Translation {
     }
 
     /**
-     * @return The content.
+     * @return Content.
      */
     public String getContent() {
         return content;

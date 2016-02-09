@@ -14,7 +14,7 @@ public class PlayerStatsSummaryListDto {
 	}
 
     private PlayerStatsSummaryDto[] playerStatSummaries;
-    private long summonerId;
+    private Long summonerId;
     
     public PlayerStatsSummaryListDto() {
     	COUNT++;
@@ -33,9 +33,14 @@ public class PlayerStatsSummaryListDto {
     }
 
     /**
-     * @return Summoner ID.
+     * @return Summoner ID or <code>-1</code>
+     * if not defined.
      */
     public long getSummonerId() {
-        return summonerId;
+    	if (summonerId == null) {
+    		return -1;
+    	}
+
+        return summonerId.longValue();
     }
 }

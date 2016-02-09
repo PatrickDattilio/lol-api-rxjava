@@ -22,28 +22,32 @@ public class Service {
     }
 
     /**
-     * @return The incidents.
+     * @return Incidents or <code>-1</code> if not defined.
      */
     public Incident[] getIncidents() {
+    	if (incidents == null) {
+    		return new Incident[0];
+    	}
+
         return incidents;
     }
 
     /**
-     * @return The status.
+     * @return Status.
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     * @return The name.
+     * @return Name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return The slug.
+     * @return Slug.
      */
     public String getSlug() {
         return slug;

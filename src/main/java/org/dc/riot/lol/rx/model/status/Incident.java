@@ -12,9 +12,9 @@ public class Incident {
 		return COUNT;
 	}
 
-    private boolean active;
+    private Boolean active;
     private String createdAt;
-    private long id;
+    private Long id;
     private Message[] updates;
 
     public Incident() {
@@ -29,10 +29,14 @@ public class Incident {
     }
 
     /**
-     * @return The ID.
+     * @return The ID or <code>-1</code> if not defined.
      */
     public long getId() {
-        return id;
+    	if (id == null) {
+    		return -1;
+    	}
+
+        return id.longValue();
     }
 
     /**
@@ -43,9 +47,13 @@ public class Incident {
     }
 
     /**
-     * @return Is active.
+     * @return Is active or <code>false</code> if not defined.
      */
     public boolean isActive() {
-        return active;
+    	if (active == null) {
+    		return false;
+    	}
+
+        return active.booleanValue();
     }
 }

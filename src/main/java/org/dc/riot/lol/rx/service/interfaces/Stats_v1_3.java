@@ -45,7 +45,6 @@ class Stats_v1_3 extends RiotApiBase implements RiotApi.Stats {
 	@Override
 	public RankedStatsDto getRanked(long summonerId, Season season) throws IOException, HttpException {
 		RankedStatsDto noRanked = new RankedStatsDto();
-		noRanked.isValid = false;
 		return RetrofitCaller.processCall(() -> {
 			return inter.getRanked(new LowercaseRegion(region), summonerId, season, apiKey);
 		}, noRanked, 404);
