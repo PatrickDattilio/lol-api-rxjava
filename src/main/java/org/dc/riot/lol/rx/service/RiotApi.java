@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.SummonerSpellDto;
-import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.champion.ChampDto;
 import org.dc.riot.lol.rx.model.champion.ChampListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
@@ -30,6 +28,8 @@ import org.dc.riot.lol.rx.model.staticdata.MasteryListDto;
 import org.dc.riot.lol.rx.model.staticdata.RealmDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
+import org.dc.riot.lol.rx.model.staticdata.SummonerSpellDto;
+import org.dc.riot.lol.rx.model.staticdata.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryListDto;
 import org.dc.riot.lol.rx.model.stats.RankedStatsDto;
 import org.dc.riot.lol.rx.model.status.Shard;

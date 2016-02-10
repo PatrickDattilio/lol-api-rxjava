@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 /**
  * This object contains item group data.

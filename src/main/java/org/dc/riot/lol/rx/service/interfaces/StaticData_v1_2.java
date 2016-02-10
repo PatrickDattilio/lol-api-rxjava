@@ -2,8 +2,6 @@ package org.dc.riot.lol.rx.service.interfaces;
 
 import java.io.IOException;
 
-import org.dc.riot.lol.rx.model.SummonerSpellDto;
-import org.dc.riot.lol.rx.model.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.staticdata.ChampionDto;
 import org.dc.riot.lol.rx.model.staticdata.ChampionListDto;
 import org.dc.riot.lol.rx.model.staticdata.ItemDto;
@@ -15,6 +13,8 @@ import org.dc.riot.lol.rx.model.staticdata.MasteryListDto;
 import org.dc.riot.lol.rx.model.staticdata.RealmDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
+import org.dc.riot.lol.rx.model.staticdata.SummonerSpellDto;
+import org.dc.riot.lol.rx.model.staticdata.SummonerSpellListDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
 import org.dc.riot.lol.rx.service.RiotApi;

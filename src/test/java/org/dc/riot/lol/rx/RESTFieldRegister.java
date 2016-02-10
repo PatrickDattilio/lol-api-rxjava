@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RESTFieldRegister {
-	private HashMap<Class<?>, ArrayList<String>> seenFields = new HashMap<>();
+	private HashMap<String, ArrayList<String>> seenFields = new HashMap<>();
 	
 	public void registerInstance(Object o) throws IllegalArgumentException, IllegalAccessException {
 		Class<?> clazz = o.getClass();
-		ArrayList<String> knownFields = seenFields.get(clazz);
+		ArrayList<String> knownFields = seenFields.get(clazz.getName());
 		if (knownFields == null) {
 			knownFields = new ArrayList<>();
-			seenFields.put(clazz, knownFields);
+			seenFields.put(clazz.getName(), knownFields);
 		}
 
 		for (Field f : clazz.getDeclaredFields()) {
@@ -38,7 +38,7 @@ public class RESTFieldRegister {
 	 * (i.e. success) or the name of the offending field if failed.
 	 */
 	public String testClass(Class<?> clazz) {
-		ArrayList<String> fields = seenFields.get(clazz);
+		ArrayList<String> fields = seenFields.get(clazz.getName());
 		if (fields == null) {
 			return "Class not registered";
 		}
@@ -61,10 +61,10 @@ public class RESTFieldRegister {
 	public String toString() {
 		String retVal = "";
 		
-		Class<?>[] clazzes = seenFields.keySet().toArray(new Class<?>[seenFields.size()]);
+		String[] clazzes = seenFields.keySet().toArray(new String[seenFields.size()]);
 		for (int i=0; i<clazzes.length; i++) {
-			Class<?> clazz = clazzes[i];
-			retVal += clazz.getSimpleName() + " -> ";
+			String clazz = clazzes[i];
+			retVal += clazz + " -> ";
 			
 			ArrayList<String> fields = seenFields.get(clazz);
 			for (int j=0; j<fields.size(); j++) {

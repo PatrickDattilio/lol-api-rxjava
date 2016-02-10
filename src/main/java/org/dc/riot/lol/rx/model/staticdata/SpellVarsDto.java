@@ -1,4 +1,4 @@
-package org.dc.riot.lol.rx.model;
+package org.dc.riot.lol.rx.model.staticdata;
 
 /**
  * This object contains spell vars data.
@@ -7,49 +7,57 @@ package org.dc.riot.lol.rx.model;
  * @since 1.0.0
  */
 public class SpellVarsDto {
+	private static long COUNT = 0;
+	public static long getInstanceCount() {
+		return COUNT;
+	}
+
     private double[] coeff;
     private String dyn;
     private String key;
     private String link;
     private String ranksWith;
+    
+    public SpellVarsDto() {
+    	COUNT++;
+    }
 
+    /**
+     * @return Coeff data.
+     */
     public double[] getCoeff() {
+    	if (coeff == null) {
+    		return new double[0];
+    	}
+
         return coeff;
     }
 
-    public void setCoeff(double[] coeff) {
-        this.coeff = coeff;
-    }
-
+    /**
+     * @return Dyn.
+     */
     public String getDyn() {
         return dyn;
     }
 
-    public void setDyn(String dyn) {
-        this.dyn = dyn;
-    }
-
+    /**
+     * @return Key.
+     */
     public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
+    /**
+     * @return Link.
+     */
     public String getLink() {
         return link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
+    /**
+     * @return Ranks with.
+     */
     public String getRanksWith() {
         return ranksWith;
-    }
-
-    public void setRanksWith(String ranksWith) {
-        this.ranksWith = ranksWith;
     }
 }

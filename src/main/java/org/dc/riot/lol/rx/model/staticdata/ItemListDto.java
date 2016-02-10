@@ -3,9 +3,6 @@ package org.dc.riot.lol.rx.model.staticdata;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.GroupDto;
-import org.dc.riot.lol.rx.model.ItemTreeDto;
-
 /**
  * This object contains item list data.
  * 

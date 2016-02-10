@@ -1,6 +1,5 @@
 package org.dc.riot.lol.rx;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -12,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
-import org.dc.riot.lol.rx.model.GroupDto;
-import org.dc.riot.lol.rx.model.ItemTreeDto;
-import org.dc.riot.lol.rx.model.SpellVarsDto;
 import org.dc.riot.lol.rx.model.champion.ChampDto;
 import org.dc.riot.lol.rx.model.champion.ChampListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
@@ -64,10 +60,12 @@ import org.dc.riot.lol.rx.model.staticdata.ChampionDto;
 import org.dc.riot.lol.rx.model.staticdata.ChampionListDto;
 import org.dc.riot.lol.rx.model.staticdata.ChampionSpellDto;
 import org.dc.riot.lol.rx.model.staticdata.GoldDto;
+import org.dc.riot.lol.rx.model.staticdata.GroupDto;
 import org.dc.riot.lol.rx.model.staticdata.ImageDto;
 import org.dc.riot.lol.rx.model.staticdata.InfoDto;
 import org.dc.riot.lol.rx.model.staticdata.ItemDto;
 import org.dc.riot.lol.rx.model.staticdata.ItemListDto;
+import org.dc.riot.lol.rx.model.staticdata.ItemTreeDto;
 import org.dc.riot.lol.rx.model.staticdata.LanguageStringsDto;
 import org.dc.riot.lol.rx.model.staticdata.LevelTipDto;
 import org.dc.riot.lol.rx.model.staticdata.MapDataDto;
@@ -85,12 +83,14 @@ import org.dc.riot.lol.rx.model.staticdata.RecommendedDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneDto;
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
 import org.dc.riot.lol.rx.model.staticdata.SkinDto;
+import org.dc.riot.lol.rx.model.staticdata.SpellVarsDto;
 import org.dc.riot.lol.rx.model.staticdata.StatsDto;
+import org.dc.riot.lol.rx.model.staticdata.SummonerSpellDto;
+import org.dc.riot.lol.rx.model.staticdata.SummonerSpellListDto;
 import org.dc.riot.lol.rx.model.stats.AggregatedStatsDto;
 import org.dc.riot.lol.rx.model.stats.ChampionStatsDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryDto;
 import org.dc.riot.lol.rx.model.stats.PlayerStatsSummaryListDto;
-import org.dc.riot.lol.rx.model.stats.PlayerStatsType;
 import org.dc.riot.lol.rx.model.stats.RankedStatsDto;
 import org.dc.riot.lol.rx.model.status.Incident;
 import org.dc.riot.lol.rx.model.status.Message;
@@ -122,6 +122,7 @@ import org.dc.riot.lol.rx.service.request.MasteryDataTag;
 import org.dc.riot.lol.rx.service.request.MasteryListDataTag;
 import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
+import org.dc.riot.lol.rx.service.request.SpellDataTag;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -194,14 +195,18 @@ public class IntegrationTests {
 	public void testRegister() throws IllegalArgumentException, IllegalAccessException {
 		prints.println("Testing TEST REGISTER");
 		RESTFieldRegister testRegister = new RESTFieldRegister();
-		TestPojo p1 = new TestPojo().withDouble(new Double(3.14));
+
+		TestPojo p1 = new TestPojo()
+				.withDouble(new Double(3.14));
+
 		testRegister.registerInstance(p1);
-		prints.println(testRegister);
+		prints.println("p1 " + testRegister);
 		assertNotNull(testRegister.testClass(TestPojo.class));
 		
 		p1.withInteger(new Integer(42));
+
 		testRegister.registerInstance(p1);
-		prints.println(testRegister);
+		prints.println("p1 " + testRegister);
 		assertNotNull(testRegister.testClass(TestPojo.class));
 		
 		TestPojo p2 = new TestPojo()
@@ -210,14 +215,24 @@ public class IntegrationTests {
 				.withString("Some string");
 		
 		testRegister.registerInstance(p2);
-		prints.println(testRegister);
+		prints.println("p2 " + testRegister);
 		assertNotNull(testRegister.testClass(TestPojo.class));
 		
 		TestPojo p3 = new TestPojo()
 				.withObject(new Object());
 		
 		testRegister.registerInstance(p3);
-		prints.println(testRegister);
+		prints.println("p3 " + testRegister);
+		assertNull(testRegister.testClass(TestPojo.class));
+		
+		TestPojo p4 = new TestPojo()
+				.withDouble(new Double(Math.PI))
+				.withInteger(new Integer(4))
+				.withObject(new Object())
+				.withString("Should still pass");
+		
+		testRegister.registerInstance(p4);
+		prints.println("p4 " + testRegister);
 		assertNull(testRegister.testClass(TestPojo.class));
 		
 		System.out.println();
@@ -1505,9 +1520,24 @@ public class IntegrationTests {
 				testRuneDto(rDto);
 			}
 			
+			// SUMMONER SPELL DATA
+			SummonerSpellListDto summonerSpellListDto = staticInterface.getSummonerSpells(true, null, null, SpellDataTag.ALL);
+			assertNotNull(summonerSpellListDto);
+			testSummonerSpellListDto(summonerSpellListDto);
 			
-			fail("Not all endpoints exercised");
+			for (SummonerSpellDto summonerSpellDto : summonerSpellListDto.getData().values()) {
+				assertNotNull(summonerSpellDto);
+				SummonerSpellDto sDto = staticInterface.getSummonerSpell(summonerSpellDto.getId(), null, null, SpellDataTag.ALL);
+				assertNotNull(sDto);
+				prints.println(sDto.getName() + " : " + sDto.getId());
+				testSummonerSpellDto(sDto);
+			}
 			
+			// VERSION DATA
+			String[] versionListDto = staticInterface.getVersions();
+			assertNotNull(versionListDto);
+			assertTrue(versionListDto.length > 0);
+
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -1519,6 +1549,71 @@ public class IntegrationTests {
 			System.out.println();
 			System.out.println();
 		}
+	}
+	
+	private void testSummonerSpellListDto(SummonerSpellListDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertNotNull(dto.getType());
+		assertNotNull(dto.getVersion());
+		assertTrue(dto.getData().size() > 0);
+		
+		for (SummonerSpellDto summonerSpellDto : dto.getData().values()) {
+			assertNotNull(summonerSpellDto);
+			testSummonerSpellDto(summonerSpellDto);
+		}
+	}
+	
+	private void testSummonerSpellDto(SummonerSpellDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getCooldown().length > 0);
+		assertNotNull(dto.getCooldownBurn());
+		assertTrue(dto.getCost().length > 0);
+		assertNotNull(dto.getCostBurn());
+		assertNotNull(dto.getCostType());
+		assertNotNull(dto.getDescription());
+//		assertTrue(dto.getEffect().length > 0);
+		assertNotNull(dto.getEffectBurn());
+		assertTrue(dto.getId() > 0);
+		assertNotNull(dto.getKey());
+		assertTrue(dto.getMaxrank() > 0);
+		assertTrue(dto.getModes().length > 0);
+		assertNotNull(dto.getName());
+		assertNotNull(dto.getRangeBurn());
+		assertNotNull(dto.getResource());
+		assertNotNull(dto.getSanitizedDescription());
+		assertNotNull(dto.getSanitizedTooltip());
+		assertTrue(dto.getSummonerLevel() > 0);
+		assertNotNull(dto.getTooltip());
+
+		SpellVarsDto[] spellVarsListDto = dto.getVars();
+//		assertTrue(spellVarsListDto.length > 0);
+		for (SpellVarsDto spellVarsDto : spellVarsListDto) {
+			assertNotNull(spellVarsDto);
+			testSpellVarsDto(spellVarsDto);
+		}
+		
+		LevelTipDto levelTipDto = dto.getLeveltip();
+		if (levelTipDto != null) {
+			testLevelTipDto(levelTipDto);
+		}
+		
+		ImageDto imageDto = dto.getImage();
+		assertNotNull(imageDto);
+		testImageDto(imageDto);
+		
+		RangeDto rangeDto = dto.getRange();
+		assertNotNull(rangeDto);
+		testRangeDto(rangeDto);
 	}
 	
 	private void testRealmDto(RealmDto dto) {
@@ -2270,10 +2365,12 @@ public class IntegrationTests {
 			assertTrue(ChampionListDto.getInstanceCount() > 0);
 			assertTrue(ChampionSpellDto.getInstanceCount() > 0);
 			assertTrue(GoldDto.getInstanceCount() > 0);
+			assertTrue(GroupDto.getInstanceCount() > 0);
 			assertTrue(ImageDto.getInstanceCount() > 0);
 			assertTrue(InfoDto.getInstanceCount() > 0);
 			assertTrue(ItemDto.getInstanceCount() > 0);
 			assertTrue(ItemListDto.getInstanceCount() > 0);
+			assertTrue(ItemTreeDto.getInstanceCount() > 0);
 			assertTrue(LanguageStringsDto.getInstanceCount() > 0);
 			assertTrue(LevelTipDto.getInstanceCount() > 0);
 			assertTrue(MapDataDto.getInstanceCount() > 0);
@@ -2291,12 +2388,12 @@ public class IntegrationTests {
 			assertTrue(RuneDto.getInstanceCount() > 0);
 			assertTrue(RuneListDto.getInstanceCount() > 0);
 			assertTrue(SkinDto.getInstanceCount() > 0);
+			assertTrue(SpellVarsDto.getInstanceCount() > 0);
 			assertTrue(StatsDto.getInstanceCount() > 0);
+			assertTrue(SummonerSpellDto.getInstanceCount() > 0);
+			assertTrue(SummonerSpellListDto.getInstanceCount() > 0);
 
-			String fieldName = register.testClass(BasicDataDto.class);
-			if (!"image".equals(fieldName)) {
-				assertNull(fieldName);
-			}
+			assertNull(register.testClass(BasicDataDto.class));
 			assertNull(register.testClass(BasicDataStatsDto.class));
 			assertNull(register.testClass(BlockDto.class));
 			assertNull(register.testClass(BlockItemDto.class));
@@ -2304,10 +2401,12 @@ public class IntegrationTests {
 			assertNull(register.testClass(ChampionListDto.class));
 			assertNull(register.testClass(ChampionSpellDto.class));
 			assertNull(register.testClass(GoldDto.class));
+			assertNull(register.testClass(GroupDto.class));
 			assertNull(register.testClass(ImageDto.class));
 			assertNull(register.testClass(InfoDto.class));
 			assertNull(register.testClass(ItemDto.class));
 			assertNull(register.testClass(ItemListDto.class));
+			assertNull(register.testClass(ItemTreeDto.class));
 			assertNull(register.testClass(LanguageStringsDto.class));
 			assertNull(register.testClass(LevelTipDto.class));
 			assertNull(register.testClass(MapDataDto.class));
@@ -2326,7 +2425,6 @@ public class IntegrationTests {
 			assertNull(register.testClass(RuneListDto.class));
 			assertNull(register.testClass(SkinDto.class));
 			assertNull(register.testClass(StatsDto.class));
-			fail("Not all STATIC POJOs covered");
 		}
 		
 		// stats POJOs

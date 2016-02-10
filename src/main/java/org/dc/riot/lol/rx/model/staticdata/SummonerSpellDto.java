@@ -1,59 +1,53 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.dc.riot.lol.rx.model.common.GameMode;
 
 /**
- * This object contains champion spell data.
+ * This object contains summoner spell data.<br>
+ * <br>
+ * Shares many fields with {@link ChampionSpellDto} but
+ * the classes look different enough
+ * to preclude inheritance.
  * 
  * @author Dc
  * @since 1.0.0
  */
-public class ChampionSpellDto {
+public class SummonerSpellDto {
 	private static long COUNT = 0;
 	public static long getInstanceCount() {
 		return COUNT;
 	}
 
-    private ImageDto[] altimages;
     private double[] cooldown;
     private String cooldownBurn;
     private int[] cost;
     private String costBurn;
     private String costType;
     private String description;
-    private List<double[]> effect;
+    private double[][] effect;
     private String[] effectBurn;
+    private Long id;
     private ImageDto image;
     private String key;
     private LevelTipDto leveltip;
     private Integer maxrank;
+    private GameMode[] modes;
     private String name;
     private RangeDto range;
     private String rangeBurn;
     private String resource;
     private String sanitizedDescription;
     private String sanitizedTooltip;
+    private Integer summonerLevel;
     private String tooltip;
     private SpellVarsDto[] vars;
     
-    public ChampionSpellDto() {
+    public SummonerSpellDto() {
     	COUNT++;
     }
 
     /**
-     * @return Alt images.
-     */
-    public ImageDto[] getAltimages() {
-    	if (altimages == null) {
-    		return new ImageDto[0];
-    	}
-
-        return altimages;
-    }
-
-    /**
-     * @return Cooldowns.
+     * @return Cooldown data.
      */
     public double[] getCooldown() {
     	if (cooldown == null) {
@@ -64,10 +58,6 @@ public class ChampionSpellDto {
     }
 
     /**
-     * Cooldown reduction for leveling up a skill, or
-     * cooldown at each subsequent skill level.
-     * E.g. 2 or 16/15/14/13/12 or 120/110/100.
-     * 
      * @return Cooldown burn.
      */
     public String getCooldownBurn() {
@@ -75,7 +65,7 @@ public class ChampionSpellDto {
     }
 
     /**
-     * @return Costs.
+     * @return Cost data.
      */
     public int[] getCost() {
     	if (cost == null) {
@@ -107,28 +97,35 @@ public class ChampionSpellDto {
     }
 
     /**
-     * Implementation note: it is OK for this value to
-     * return empty.
+     * Implementation note: not applicable to all
+     * summoner spells, so some will return empty.
      * 
-     * @return Effects.
+     * @return Effect data.
      */
-    public List<double[]> getEffect() {
+    public double[][] getEffect() {
     	if (effect == null) {
-    		return new ArrayList<double[]>();
+    		return new double[0][0];
     	}
 
         return effect;
     }
 
     /**
-     * @return Effect burns.
+     * @return Effect burn.
      */
     public String[] getEffectBurn() {
     	if (effectBurn == null) {
     		return new String[0];
     	}
-    	
+
         return effectBurn;
+    }
+
+    /**
+     * @return ID or <code>-1</code> if not defined.
+     */
+    public long getId() {
+        return id;
     }
 
     /**
@@ -146,14 +143,19 @@ public class ChampionSpellDto {
     }
 
     /**
-     * @return Level tip data.
+     * Implementation note: not all summoner spells
+     * define a level tip.
+     * 
+     * @return Level tip data or <code>null</code> if
+     * not defined.
      */
     public LevelTipDto getLeveltip() {
         return leveltip;
     }
 
     /**
-     * @return Max rank or <code>-1</code> if not defined.
+     * @return Max rank or <code>-1</code> if not
+     * defined.
      */
     public int getMaxrank() {
     	if (maxrank == null) {
@@ -161,6 +163,17 @@ public class ChampionSpellDto {
     	}
 
         return maxrank.intValue();
+    }
+
+    /**
+     * @return Game modes.
+     */
+    public GameMode[] getModes() {
+    	if (modes == null) {
+    		return new GameMode[0];
+    	}
+
+        return modes;
     }
 
     /**
@@ -185,10 +198,6 @@ public class ChampionSpellDto {
     }
 
     /**
-     * Some sort of resource type description.
-     * E.g. No cost, {{ cost }} Mana, {{ cost }} Mana Per Second,
-     * {{ e2 }}% of Current Health, etc. Looks like they're expecting
-     * pages to be using Angular JS.
      * @return Resource.
      */
     public String getResource() {
@@ -203,24 +212,35 @@ public class ChampionSpellDto {
     }
 
     /**
-     * @return Sanitized tooltip.
+     * @return Sanitized tool tip.
      */
     public String getSanitizedTooltip() {
         return sanitizedTooltip;
     }
 
     /**
-     * @return Tooltip.
+     * @return Summoner level to unlock this spell.
+     */
+    public int getSummonerLevel() {
+    	if (summonerLevel == null) {
+    		return -1;
+    	}
+
+        return summonerLevel.intValue();
+    }
+
+    /**
+     * @return Tool tip.
      */
     public String getTooltip() {
         return tooltip;
     }
 
     /**
-     * May or may not exist. It is perfectly OK for this
-     * list to be empty.
+     * Implementation note: not all summoner spells
+     * define vars.
      * 
-     * @return Spell vars.
+     * @return Vars or empty if not defined.
      */
     public SpellVarsDto[] getVars() {
     	if (vars == null) {
