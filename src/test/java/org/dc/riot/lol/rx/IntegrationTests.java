@@ -158,11 +158,19 @@ public class IntegrationTests {
 	private TestPrints prints = TestPrints.getInstance();
 	private ApiFactory factory = null;
 	
+	private boolean testChampionRan = false;
+	private boolean testChampionMasteryRan = false;
+	private boolean testCurrentGameRan = false;
+	private boolean testFeaturedGamesRan = false;
+	private boolean testGameRan = false;
+	private boolean testLeagueRan = false;
 	private boolean testStaticDataRan = false;
+	private boolean testStatusRan = false;
+	private boolean testMatchRan = false;
+	private boolean testMatchListRan = false;
 	private boolean testStatsRan = false;
 	private boolean testSummonerRan = false;
 	private boolean testTeamRan = false;
-	private boolean testStatusRan = false;
 
 	@Before
 	public void setup() throws FileNotFoundException {
@@ -2385,8 +2393,38 @@ public class IntegrationTests {
 	}
 	
 	@After
-	public void testPojos() {
+	public void verifyTests() {
 		prints.println("INFO", "Testing POJOs");
+		
+		// champion POJOs
+		if (testChampionRan) {
+			fail();
+		}
+		
+		// champion mastery POJOs
+		if (testChampionMasteryRan) {
+			fail();
+		}
+		
+		// current game POJOs
+		if (testCurrentGameRan) {
+			fail();
+		}
+		
+		// featured game POJOs
+		if (testFeaturedGamesRan) {
+			fail();
+		}
+		
+		// game POJOs
+		if (testGameRan) {
+			fail();
+		}
+		
+		// league POJOs
+		if (testLeagueRan) {
+			fail();
+		}
 		
 		// static data POJOs
 		if (testStaticDataRan) {
@@ -2462,21 +2500,7 @@ public class IntegrationTests {
 			assertNull(register.testClass(SkinDto.class));
 			assertNull(register.testClass(StatsDto.class));
 		}
-		
-		// stats POJOs
-		if (testStatsRan) {
-			assertTrue(AggregatedStatsDto.getInstanceCount() > 0);
-			assertTrue(ChampionStatsDto.getInstanceCount() > 0);
-			assertTrue(PlayerStatsSummaryDto.getInstanceCount() > 0);
-			assertTrue(PlayerStatsSummaryListDto.getInstanceCount() > 0);
-			assertTrue(RankedStatsDto.getInstanceCount() > 0);
-			assertNull(register.testClass(AggregatedStatsDto.class));
-			assertNull(register.testClass(ChampionStatsDto.class));
-			assertNull(register.testClass(PlayerStatsSummaryDto.class));
-			assertNull(register.testClass(PlayerStatsSummaryListDto.class));
-			assertNull(register.testClass(RankedStatsDto.class));
-		}
-		
+
 		// status POJOs
 		if (testStatusRan) {
 			assertTrue(Service.getInstanceCount() > 0);
@@ -2505,6 +2529,25 @@ public class IntegrationTests {
 			if (Translation.getInstanceCount() > 0) {
 				assertNull(register.testClass(Translation.class));
 			}
+		}
+		
+		// match POJOs
+		if (testMatchListRan && testMatchRan) {
+			fail();
+		}
+		
+		// stats POJOs
+		if (testStatsRan) {
+			assertTrue(AggregatedStatsDto.getInstanceCount() > 0);
+			assertTrue(ChampionStatsDto.getInstanceCount() > 0);
+			assertTrue(PlayerStatsSummaryDto.getInstanceCount() > 0);
+			assertTrue(PlayerStatsSummaryListDto.getInstanceCount() > 0);
+			assertTrue(RankedStatsDto.getInstanceCount() > 0);
+			assertNull(register.testClass(AggregatedStatsDto.class));
+			assertNull(register.testClass(ChampionStatsDto.class));
+			assertNull(register.testClass(PlayerStatsSummaryDto.class));
+			assertNull(register.testClass(PlayerStatsSummaryListDto.class));
+			assertNull(register.testClass(RankedStatsDto.class));
 		}
 
 		// summoner POJOs
@@ -2537,9 +2580,11 @@ public class IntegrationTests {
 			assertNull(register.testClass(TeamStatDetailDto.class));
 		}
 		
-		
-		prints.println("Deserilized details");
-		prints.println(register);
+		assertTrue(testTeamRan && testSummonerRan && testStatsRan &&
+				testMatchRan && testMatchListRan && testStatusRan &&
+				testStaticDataRan && testLeagueRan && testGameRan &&
+				testFeaturedGamesRan && testCurrentGameRan &&
+				testChampionMasteryRan && testChampionRan);
 	}
 
 }
