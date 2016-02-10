@@ -37,24 +37,51 @@ public class RESTFieldRegister {
 	 * @return <code>null</code> if all fields are accounted for
 	 * (i.e. success) or the name of the offending field if failed.
 	 */
-	public String testClass(Class<?> clazz) {
+	public MissingFieldReport testClass(Class<?> clazz) {
+		return testClass(clazz, (String[]) null);
+	}
+	
+	/**
+	 * Check if all fields have been accounted for.
+	 * 
+	 * @param clazz class object to test
+	 * @param exceptions list of fields that are allowed to never be found
+	 * @return <code>null</code> if all fields are accounted for
+	 * (i.e. success) or the name of the offending field if failed.
+	 */
+	public MissingFieldReport testClass(Class<?> clazz, String... exceptions) {
 		ArrayList<String> fields = seenFields.get(clazz.getName());
 		if (fields == null) {
-			return "Class not registered";
+			return new MissingFieldReport("Class not registered");
 		}
 
+		ArrayList<String> missingFields = new ArrayList<>();
 		for (Field f : clazz.getDeclaredFields()) {
 			if (Modifier.isStatic(f.getModifiers())) {
 				continue;
 			}
 
 			String fieldName = f.getName();
-			if (!fields.contains(fieldName)) {
-				return fieldName;
+			boolean isException = false;
+			if (exceptions != null) {
+				for (String e : exceptions) {
+					if (fieldName.equals(e)) {
+						isException = true;
+						break;
+					}
+				}
+			}
+
+			if (!isException && !fields.contains(fieldName)) {
+				missingFields.add(fieldName);
 			}
 		}
 		
-		return null;
+		if (missingFields.isEmpty()) {
+			return null;
+		} else {
+			return new MissingFieldReport(missingFields.toArray(new String[missingFields.size()]));
+		}
 	}
 	
 	@Override

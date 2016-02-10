@@ -203,7 +203,7 @@ class StaticData_v1_2 extends RiotApiBase implements RiotApi.StaticData {
 		Call<ItemListDto> getItems(@Path("region") LowercaseRegion region,
 				@Query("api_key") ApiKey apiKey,
 				@Query("locale") String locale, @Query("version") String version,
-				@Query("itemData") CSA<ItemListDataTag> itemData);
+				@Query("itemListData") CSA<ItemListDataTag> itemData);
 		
 		@GET("/api/lol/static-data/{region}/v1.2/item/{id}")
 		Call<ItemDto> getItem(@Path("region") LowercaseRegion region, @Path("id") long itemId,

@@ -14,6 +14,10 @@ public class ItemTreeDto {
 
     private String header;
     private String[] tags;
+    
+    public ItemTreeDto() {
+    	COUNT++;
+    }
 
     /**
      * @return Header.

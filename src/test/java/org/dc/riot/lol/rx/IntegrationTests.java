@@ -5,8 +5,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
@@ -125,7 +129,10 @@ import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.dc.riot.lol.rx.service.request.SpellDataTag;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import com.google.gson.Gson;
 
 public class IntegrationTests {
 
@@ -164,31 +171,18 @@ public class IntegrationTests {
 		factory = ApiFactory.newDefaultFactory(apiKey);
 
 		summonerInterface = factory.newSummonerInterface(region, true);
-		summonerInterface.setPrintUrl(true);
 		staticInterface = factory.newStaticDataInterface(region, true);
-		staticInterface.setPrintUrl(false);
 		statusInterface = factory.newStatusInterface(Region.EUROPE_WEST, true);	// EUW has more incidents and languages and stuff
-		statusInterface.setPrintUrl(true);
 		championInterface = factory.newChampionInterface(region, true);
-		championInterface.setPrintUrl(true);
 		currentGameInterface = factory.newCurrentGameInterface(region, true);
-		currentGameInterface.setPrintUrl(true);
 		featuredGameInterface = factory.newFeaturedGamesInterface(region, true);
-		featuredGameInterface.setPrintUrl(true);
 		leagueInterface = factory.newLeagueInterface(region, true);
-		leagueInterface.setPrintUrl(true);
 		teamInterface = factory.newTeamInterface(region, true);
-		teamInterface.setPrintUrl(true);
 		matchInterface = factory.newMatchInterface(region, true);
-		matchInterface.setPrintUrl(true);
 		matchlistInterface = factory.newMatchListInterface(region, true);
-		matchlistInterface.setPrintUrl(true);
 		masteryInterface = factory.newChampionMasteryInterface(region, true);
-		masteryInterface.setPrintUrl(true);
 		recentGameInterface = factory.newRecentGamesInterface(region, true);
-		recentGameInterface.setPrintUrl(true);
 		statsInterface = factory.newStatsInterface(region, true);
-		statsInterface.setPrintUrl(true);
 	}
 	
 	@Test
@@ -237,6 +231,46 @@ public class IntegrationTests {
 		
 		System.out.println();
 		System.out.println();
+	}
+	
+	@Ignore
+	@Test
+	public void testSpecificResources() throws IOException, HttpException {
+		File resourceDirectory = new File("./src/test/resources/");
+		
+		File outputFile = new File(resourceDirectory, "out.log");
+		FileWriter writer = new FileWriter(outputFile);
+		
+		// static-items.json
+		File staticItemsJson = new File(resourceDirectory, "static-items.json");
+		FileReader reader = new FileReader(staticItemsJson);
+		CharBuffer buffer = CharBuffer.allocate((int)staticItemsJson.length());
+		prints.println(reader.read(buffer));
+		buffer.rewind();
+		String json = buffer.toString().trim();
+		reader.close();
+		
+		writer.write(json);
+		Gson gson = new Gson();
+		ItemListDto itemListDto = gson.fromJson(json, ItemListDto.class);
+		assertNotNull(itemListDto);
+		assertTrue(itemListDto.getGroups().length > 0);
+		assertTrue(GroupDto.getInstanceCount() > 0);
+		
+		itemListDto = ApiFactory.getGson().fromJson(json, ItemListDto.class);
+		assertNotNull(itemListDto);
+		assertTrue(itemListDto.getGroups().length > 0);
+		assertTrue(GroupDto.getInstanceCount() > 0);
+		
+		itemListDto = staticInterface.getItems(null, null, ItemListDataTag.ALL);
+		String json1 = gson.toJson(itemListDto).trim();
+		writer.write("\n");
+		writer.write(json1);
+		writer.close();
+		assertTrue(json1.equals(json));
+		
+		prints.println(null);
+		prints.println(null);
 	}
 	
 	@Test
@@ -1829,7 +1863,7 @@ public class IntegrationTests {
 			e.printStackTrace();
 		}
 
-		assertNotNull(dto.getMaxGroupOwnable());
+//		assertNotNull(dto.getMaxGroupOwnable());
 		assertNotNull(dto.getKey());
 	}
 	
@@ -1861,7 +1895,6 @@ public class IntegrationTests {
 		}
 
 		if (dto.getId() == 0) {
-			prints.println("WARNING", dto);
 			return;
 		}
 
@@ -2393,7 +2426,7 @@ public class IntegrationTests {
 			assertTrue(SummonerSpellDto.getInstanceCount() > 0);
 			assertTrue(SummonerSpellListDto.getInstanceCount() > 0);
 
-			assertNull(register.testClass(BasicDataDto.class));
+			assertNull(register.testClass(BasicDataDto.class, "image"));
 			assertNull(register.testClass(BasicDataStatsDto.class));
 			assertNull(register.testClass(BlockDto.class));
 			assertNull(register.testClass(BlockItemDto.class));
@@ -2410,7 +2443,7 @@ public class IntegrationTests {
 			assertNull(register.testClass(LanguageStringsDto.class));
 			assertNull(register.testClass(LevelTipDto.class));
 			assertNull(register.testClass(MapDataDto.class));
-			assertNull(register.testClass(MapDetailsDto.class));
+			assertNull(register.testClass(MapDetailsDto.class, "unpurchaseableItemList"));
 			assertNull(register.testClass(MasteryDto.class));
 			assertNull(register.testClass(MasteryListDto.class));
 			assertNull(register.testClass(MasteryTreeDto.class));
@@ -2419,9 +2452,12 @@ public class IntegrationTests {
 			assertNull(register.testClass(MetaDataDto.class));
 			assertNull(register.testClass(PassiveDto.class));
 			assertNull(register.testClass(RangeDto.class));
-			assertNull(register.testClass(RealmDto.class));
+			assertNull(register.testClass(RealmDto.class, "store"));
 			assertNull(register.testClass(RecommendedDto.class));
-			assertNull(register.testClass(RuneDto.class));
+			assertNull(register.testClass(RuneDto.class,
+					"colloq", "consumeOnFull", "consumed", "depth", "from",
+					"group", "hideFromAll", "inStore", "into", "maps", "plaintext",
+					"requiredChampion", "specialRecipe", "stacks"));	// these fields are exempted because the BasicDataDto has them
 			assertNull(register.testClass(RuneListDto.class));
 			assertNull(register.testClass(SkinDto.class));
 			assertNull(register.testClass(StatsDto.class));
@@ -2464,10 +2500,7 @@ public class IntegrationTests {
 				assertNull(register.testClass(Incident.class));
 			}
 			if (Message.getInstanceCount() > 0) {
-				String fieldName = register.testClass(Message.class);
-				if (!"author".equals(fieldName)) {
-					assertNull(fieldName);
-				}
+				assertNull(register.testClass(Message.class, "author"));
 			}
 			if (Translation.getInstanceCount() > 0) {
 				assertNull(register.testClass(Translation.class));

@@ -1,5 +1,8 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 /**
  * This object contains item group data.
  * 
@@ -20,6 +23,10 @@ public class GroupDto {
     }
 
     /**
+     * How many of a particular kind of item
+     * a player can pack into one slot.
+     * <code>null</code> if not defined.
+     * 
      * @return Max group ownable.
      */
     public String getMaxGroupOwnable() {
@@ -31,5 +38,29 @@ public class GroupDto {
      */
     public String getKey() {
         return key;
+    }
+    
+    @Override
+    public String toString() {
+    	String retVal = "";
+    	
+    	retVal += "[" + this.getClass().getSimpleName();
+    	
+    	Field[] fields = this.getClass().getDeclaredFields();
+    	for (Field f : fields) {
+    		if (Modifier.isStatic(f.getModifiers())) {
+    			continue;
+    		}
+    		
+    		try {
+				retVal += " " + f.getName() + "=" + f.get(this);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				// won't happen inside the class under reflection, I hope
+			}
+    	}
+    	
+    	retVal += "]";
+    	
+    	return retVal;
     }
 }

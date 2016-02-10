@@ -47,6 +47,8 @@ public class MapDetailsDto {
     }
 
     /**
+     * Implementation note: may be deprecated.
+     * 
      * @return List of items (IDs) that cannot be
      * purchased on this map.
      */

@@ -25,6 +25,12 @@ public class RuneListDto {
     }
 
     /**
+     * Details returned by this object can be
+     * applied to all {@link RuneDto} objects
+     * returned by {@link #getData()}. So individual
+     * {@link RuneDto} instances may not have certain items
+     * defined, those items are defined here.
+     * 
      * @return Basic data.
      */
     public BasicDataDto getBasic() {

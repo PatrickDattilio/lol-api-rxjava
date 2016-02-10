@@ -163,7 +163,9 @@ public class BasicDataDto {
     }
 
     /**
-     * @return Image data.
+     * Implementation note: this field may be deprecated.
+     * 
+     * @return Image data, likely to be <code>null</code>.
      */
     public ImageDto getImage() {
         return image;

@@ -29,6 +29,8 @@ public class RealmDto {
     }
 
     /**
+     * E.g. http://ddragon.leagueoflegends.com/cdn
+     * 
      * @return Base CDN URL.
      */
     public String getCdn() {
@@ -36,6 +38,8 @@ public class RealmDto {
     }
 
     /**
+     * Usually just the current patch (e.g. 6.3.1)
+     * 
      * @return Latest changed version of Dragon Magic's CSS file.
      */
     public String getCss() {
@@ -43,6 +47,8 @@ public class RealmDto {
     }
 
     /**
+     * Usually just the current patch (e.g. 6.3.1)
+     * 
      * @return Latest changed version of Dragon Magic.
      */
     public String getDd() {
@@ -50,13 +56,17 @@ public class RealmDto {
     }
 
     /**
-     * @return Default language for this realm.
+     * Usually just the current patch (e.g. 6.3.1)
+     * 
+     * @return Default language (locale e.g. en_US for NA) for this realm.
      */
     public String getL() {
         return l;
     }
 
     /**
+     * Usually just the current patch (e.g. 6.3.1)
+     * 
      * @return Legacy script mode for IE6 or older.
      */
     public String getLg() {
@@ -64,10 +74,22 @@ public class RealmDto {
     }
 
     /**
+     * Usually just the current patch (e.g. 6.3.1)
+     * <pre>
+     "item": "6.3.1",
+     "rune": "6.3.1",
+     "mastery": "6.3.1",
+     "summoner": "6.3.1",
+     "champion": "6.3.1",
+     "profileicon": "6.3.1",
+     "map": "6.3.1",
+     "language": "6.3.1"
+    </pre>
+     * 
      * @return Latest changed version for each data type listed.
      */
     public Map<String, String> getN() {
-        return n;
+    	return n;
     }
 
     /**
