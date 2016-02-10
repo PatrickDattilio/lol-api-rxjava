@@ -552,6 +552,8 @@ public class IntegrationTests {
 
 	@Test
 	public void testMatchAndMatchlist() throws IOException {
+		testMatchListRan = testMatchRan = true;
+		fail("POJOs aren't refernceified");
 		try {
 			prints.println("Testing MATCH interface");
 
@@ -586,21 +588,6 @@ public class IntegrationTests {
 			assertNotNull(noTimelineDetail);
 			testMatchDetail(noTimelineDetail, includeTimeline);
 
-			assertTrue(Event.getCount() > 0);
-			assertTrue(Frame.getCount() > 0);
-			assertTrue(MatchDetail.getCount() > 0);
-			assertTrue(MatchListDto.getCount() > 0);
-			assertTrue(MatchReference.getCount() > 0);
-			assertTrue(Participant.getCount() > 0);
-			assertTrue(ParticipantFrame.getCount() > 0);
-			assertTrue(ParticipantIdentity.getCount() > 0);
-			assertTrue(ParticipantStats.getCount() > 0);
-			assertTrue(ParticipantTimeline.getCount() > 0);
-			assertTrue(ParticipantTimelineData.getCount() > 0);
-			assertTrue(Player.getCount() > 0);
-			assertTrue(Position.getCount() > 0);
-			assertTrue(Team.getCount() > 0);
-			assertTrue(Timeline.getCount() > 0);
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -2533,7 +2520,24 @@ public class IntegrationTests {
 		
 		// match POJOs
 		if (testMatchListRan && testMatchRan) {
-			fail();
+			assertTrue(Event.getCount() > 0);
+			assertTrue(Frame.getCount() > 0);
+			assertTrue(MatchDetail.getCount() > 0);
+			assertTrue(MatchListDto.getCount() > 0);
+			assertTrue(MatchReference.getCount() > 0);
+			assertTrue(Participant.getCount() > 0);
+			assertTrue(ParticipantFrame.getCount() > 0);
+			assertTrue(ParticipantIdentity.getCount() > 0);
+			assertTrue(ParticipantStats.getCount() > 0);
+			assertTrue(ParticipantTimeline.getCount() > 0);
+			assertTrue(ParticipantTimelineData.getCount() > 0);
+			assertTrue(Player.getCount() > 0);
+			assertTrue(Position.getCount() > 0);
+			assertTrue(Team.getCount() > 0);
+			assertTrue(Timeline.getCount() > 0);
+			
+			assertNull(register.testClass(Event.class));
+			fail("Test all pojos");
 		}
 		
 		// stats POJOs
