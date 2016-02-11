@@ -35,7 +35,7 @@ public class RESTFieldRegister {
 	 * 
 	 * @param clazz class object to test
 	 * @return <code>null</code> if all fields are accounted for
-	 * (i.e. success) or the name of the offending field if failed.
+	 * (i.e. success) or the name of the offending field(s) if failed.
 	 */
 	public MissingFieldReport testClass(Class<?> clazz) {
 		return testClass(clazz, (String[]) null);
@@ -47,7 +47,7 @@ public class RESTFieldRegister {
 	 * @param clazz class object to test
 	 * @param exceptions list of fields that are allowed to never be found
 	 * @return <code>null</code> if all fields are accounted for
-	 * (i.e. success) or the name of the offending field if failed.
+	 * (i.e. success) or the name of the offending field(s) if failed.
 	 */
 	public MissingFieldReport testClass(Class<?> clazz, String... exceptions) {
 		ArrayList<String> fields = seenFields.get(clazz.getName());

@@ -1,5 +1,15 @@
 package org.dc.riot.lol.rx.model.match;
 
+/**
+ * This object contains game event information.
+ * Note that not all legal type values documented below
+ * are valid for all games. Event data evolves over
+ * time and certain values may be relevant only for
+ * older or newer games.
+ * 
+ * @author Dc
+ * @since 1.0.0
+ */
 public class Event {
 	private static long COUNT = 0;
 	public static long getCount() {
@@ -9,23 +19,23 @@ public class Event {
 	private AscendedType ascendedType;
 	private long[] assistingParticipantIds;
 	private BuildingType buildingType;
-	private long creatorId;
+	private Long creatorId;
 	private EventType eventType;
-	private long itemAfter;
-	private long itemBefore;
-	private long itemId;
-	private long killerId;
+	private Long itemAfter;
+	private Long itemBefore;
+	private Long itemId;
+	private Long killerId;
 	private LaneType laneType;
 	private LevelUpType levelUpType;
 	private MonsterType monsterType;
-	private long participantId;
+	private Long participantId;
 	private CapturePoint pointCaptured;
 	private Position position;
-	private int skillSlot;
-	private int teamId;
-	private long timestamp;
+	private Integer skillSlot;
+	private Integer teamId;
+	private Long timestamp;
 	private TowerType towerType;
-	private long victimId;
+	private Long victimId;
 	private WardType wardType;
 	
 	public Event() {
@@ -43,7 +53,8 @@ public class Event {
 	}
 
 	/**
-	 * @return The assisting participant IDs of the event. Only present if relevant.
+	 * @return The assisting participant IDs of the event.
+	 * Only present if relevant.
 	 */
 	public long[] getAssistingParticipantIds() {
 		if (assistingParticipantIds == null) {
@@ -63,10 +74,15 @@ public class Event {
 	}
 
 	/**
-	 * @return The creator ID of the event. Only present if relevant.
+	 * @return The creator ID of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getCreatorId() {
-		return creatorId;
+		if (creatorId == null) {
+			return -1;
+		}
+
+		return creatorId.longValue();
 	}
 
 	/**
@@ -82,32 +98,52 @@ public class Event {
 	}
 
 	/**
-	 * @return The ending item ID of the event. Only present if relevant.
+	 * @return The ending item ID of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getItemAfter() {
-		return itemAfter;
+		if (itemAfter == null) {
+			return -1;
+		}
+
+		return itemAfter.longValue();
 	}
 
 	/**
-	 * @return The starting item ID of the event. Only present if relevant.
+	 * @return The starting item ID of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getItemBefore() {
-		return itemBefore;
+		if (itemBefore == null) {
+			return -1;
+		}
+
+		return itemBefore.longValue();
 	}
 
 	/**
-	 * @return The item ID of the event. Only present if relevant.
+	 * @return The item ID of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getItemId() {
-		return itemId;
+		if (itemId == null) {
+			return -1;
+		}
+
+		return itemId.longValue();
 	}
 
 	/**
-	 * @return The killer ID of the event. Only present if relevant.
+	 * @return The killer ID of the event or
+	 * <code>-1</code> if not defined.
 	 * Killer ID <code>0</code> indicates a minion.
 	 */
 	public long getKillerId() {
-		return killerId;
+		if (killerId == null) {
+			return -1;
+		}
+
+		return killerId.longValue();
 	}
 
 	/**
@@ -137,10 +173,15 @@ public class Event {
 	}
 
 	/**
-	 * @return The participant ID of the event. Only present if relevant.
+	 * @return The participant ID of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getParticipantId() {
-		return participantId;
+		if (participantId == null) {
+			return -1;
+		}
+
+		return participantId.longValue();
 	}
 
 	/**
@@ -159,25 +200,40 @@ public class Event {
 	}
 
 	/**
-	 * @return The skill slot of the event. Only present if relevant.
+	 * @return The skill slot of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public int getSkillSlot() {
-		return skillSlot;
+		if (skillSlot == null) {
+			return -1;
+		}
+
+		return skillSlot.intValue();
 	}
 
 	/**
-	 * @return The team ID of the event. Only present if relevant.
+	 * @return The team ID of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public int getTeamId() {
-		return teamId;
+		if (teamId == null) {
+			return -1;
+		}
+
+		return teamId.intValue();
 	}
 
 	/**
 	 * @return Represents how many milliseconds into
-	 * the game the event occurred.
+	 * the game the event occurred or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getTimestamp() {
-		return timestamp;
+		if (timestamp == null) {
+			return -1;
+		}
+
+		return timestamp.longValue();
 	}
 
 	/**
@@ -192,10 +248,15 @@ public class Event {
 	}
 
 	/**
-	 * @return The victim ID of the event. Only present if relevant.
+	 * @return The victim ID of the event or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getVictimId() {
-		return victimId;
+		if (victimId == null) {
+			return -1;
+		}
+
+		return victimId.longValue();
 	}
 
 	/**
@@ -209,4 +270,3 @@ public class Event {
 		return wardType;
 	}
 }
-

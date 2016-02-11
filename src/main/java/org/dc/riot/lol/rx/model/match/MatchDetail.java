@@ -19,10 +19,10 @@ public class MatchDetail {
 		return COUNT;
 	}
 
-	private int mapId;
-	private long matchCreation;
-	private long matchDuration;
-	private long matchId;
+	private Integer mapId;
+	private Long matchCreation;
+	private Long matchDuration;
+	private Long matchId;
 	private MatchMode matchMode;
 	private MatchType matchType;
 	private String matchVersion;
@@ -40,44 +40,66 @@ public class MatchDetail {
 	}
 
 	/**
-	 * @return Match map ID.
+	 * @return Match map ID or <code>-1</code>
+	 * if not defined.
 	 */
 	public int getMapId() {
-		return mapId;
+		if (mapId == null) {
+			return -1;
+		}
+		
+		return mapId.intValue();
 	}
 
 	/**
-	 * @return Match creation time. Designates when the team select
-	 * lobby is created and/or the match is made through match making,
+	 * Designates when the team select
+	 * lobby is created and/or the match
+	 * is made through match making,
 	 * not when the game actually starts.
+	 * 
+	 * @return Match creation time or <code>-1</code>
+	 * if not defined.
 	 */
 	public long getMatchCreation() {
-		return matchCreation;
+		if (matchCreation == null) {
+			return matchCreation;
+		}
+
+		return matchCreation.longValue();
 	}
 
 	/**
-	 * @return matchCreation Match duration.
+	 * @return Match duration or <code>-1</code>
+	 * if not defined.
 	 */
 	public long getMatchDuration() {
-		return matchDuration;
+		if (matchDuration == null) {
+			return -1;
+		}
+
+		return matchDuration.longValue();
 	}
 
 	/**
 	 * @return ID of the match.
 	 */
 	public long getMatchId() {
-		return matchId;
+		if (matchId == null) {
+			return -1;
+		}
+
+		return matchId.longValue();
 	}
 
 	/**
-	 * @return the {@link MatchMode}.
+	 * @return {@link MatchMode}.
 	 */
 	public MatchMode getMatchMode() {
 		return matchMode;
 	}
 
 	/**
-	 * @return the {@link MatchType}.
+	 * @return {@link MatchType}.
 	 */
 	public MatchType getMatchType() {
 		return matchType;

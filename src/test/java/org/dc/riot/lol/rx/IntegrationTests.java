@@ -2537,6 +2537,20 @@ public class IntegrationTests {
 			assertTrue(Timeline.getCount() > 0);
 			
 			assertNull(register.testClass(Event.class));
+			assertNull(register.testClass(Frame.class));
+			assertNull(register.testClass(MatchDetail.class));
+			assertNull(register.testClass(MatchListDto.class));
+			assertNull(register.testClass(MatchReference.class));
+			assertNull(register.testClass(Participant.class));
+			assertNull(register.testClass(ParticipantFrame.class));
+			assertNull(register.testClass(ParticipantIdentity.class));
+			assertNull(register.testClass(ParticipantStats.class));
+			assertNull(register.testClass(ParticipantTimeline.class));
+			assertNull(register.testClass(ParticipantTimelineData.class));
+			assertNull(register.testClass(Player.class));
+			assertNull(register.testClass(Position.class));
+			assertNull(register.testClass(Team.class));
+			assertNull(register.testClass(Timeline.class));
 			fail("Test all pojos");
 		}
 		

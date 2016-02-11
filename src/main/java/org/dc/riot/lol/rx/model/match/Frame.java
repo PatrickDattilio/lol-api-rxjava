@@ -17,7 +17,7 @@ public class Frame {
 
 	private Event[] events;
 	private Map<String, ParticipantFrame> participantFrames;
-	private long timestamp;
+	private Long timestamp;
 	
 	public Frame() {
 		COUNT++;
@@ -47,8 +47,13 @@ public class Frame {
 	
 	/**
 	 * @return Represents how many milliseconds into the game the frame occurred.
+	 * <code>-1</code> if not defined.
 	 */
 	public long getTimestamp() {
-		return timestamp;
+		if (timestamp == null) {
+			return -1;
+		}
+
+		return timestamp.longValue();
 	}
 }
