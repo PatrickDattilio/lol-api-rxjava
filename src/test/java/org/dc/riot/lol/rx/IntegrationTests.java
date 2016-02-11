@@ -2656,22 +2656,24 @@ public class IntegrationTests {
 			assertNull(register.testClass(TeamStatDetailDto.class));
 		}
 		
-//		assertTrue("Partial test complete", testTeamRan && testSummonerRan && testStatsRan &&
-//				testMatchRan && testMatchListRan && testStatusRan &&
-//				testStaticDataRan && testLeagueRan && testRecentGameRan &&
-//				testFeaturedGamesRan && testCurrentGameRan &&
-//				testChampionMasteryRan && testChampionRan);
-		
 		// common POJOs
-//		assertTrue(BannedChampion.getInstanceCount() > 0);
-//		assertTrue(Mastery.getInstanceCount() > 0);
-//		assertTrue(Observer.getInstanceCount() > 0);
-//		assertTrue(Rune.getInstanceCount() > 0);
-//		
-//		assertNull(register.testClass(BannedChampion.class));
-//		assertNull(register.testClass(Mastery.class));
-//		assertNull(register.testClass(Observer.class));
-//		assertNull(register.testClass(Rune.class));
+		if (BannedChampion.getInstanceCount() > 0) {
+			prints.println("INFO", "BannedChampion.class verified");
+			assertNull(register.testClass(BannedChampion.class));
+		}
+		if (Mastery.getInstanceCount() > 0) {
+			prints.println("INFO", "Mastery.class verified");
+			assertNull(register.testClass(Mastery.class));
+		}
+		if (Observer.getInstanceCount() > 0) {
+			prints.println("INFO", "Observer.class verified");
+			assertNull(register.testClass(Observer.class));
+		}
+		if (Rune.getInstanceCount() > 0) {
+			prints.println("INFO", "Rune.class verified");
+			assertNull(register.testClass(Rune.class));
+		}
+		
 		
 		prints.println("SUCCESS", "All tests passed with expected fields");
 	}
