@@ -13,16 +13,16 @@ public class LeagueEntryDto {
 		return COUNT;
 	}
 
-    private int leaguePoints;
-    private boolean isFreshBlood;
-    private boolean isHotStreak;
+    private Integer leaguePoints;
+    private Boolean isFreshBlood;
+    private Boolean isHotStreak;
     private String division;
-    private boolean isInactive;
-    private boolean isVeteran;
-    private int losses;
+    private Boolean isInactive;
+    private Boolean isVeteran;
+    private Integer losses;
     private String playerOrTeamName;
     private String playerOrTeamId;
-    private int wins;
+    private Integer wins;
     private MiniSeriesDto miniSeries;
     
     public LeagueEntryDto() {
@@ -30,10 +30,14 @@ public class LeagueEntryDto {
     }
 
     /**
-     * @return The league points of the participant.
+     * @return League points of the participant.
      */
     public int getLeaguePoints() {
-        return leaguePoints;
+    	if (leaguePoints == null) {
+    		return -1;
+    	}
+
+        return leaguePoints.intValue();
     }
 
     /**
@@ -41,18 +45,26 @@ public class LeagueEntryDto {
      * (i.e. new to the league).
      */
     public boolean isFreshBlood() {
-        return isFreshBlood;
+    	if (isFreshBlood == null) {
+    		return false;
+    	}
+
+        return isFreshBlood.booleanValue();
     }
 
     /**
      * @return Specifies if the participant is on a hot streak.
      */
     public boolean isHotStreak() {
-        return isHotStreak;
+    	if (isHotStreak == null) {
+    		return false;
+    	}
+
+        return isHotStreak.booleanValue();
     }
 
     /**
-     * @return The league division of the participant.
+     * @return League division of the participant.
      */
     public String getDivision() {
         return division;
@@ -62,25 +74,37 @@ public class LeagueEntryDto {
      * @return Specifies if the participant is inactive.
      */
     public boolean isInactive() {
-        return isInactive;
+    	if (isInactive == null) {
+    		return false;
+    	}
+
+        return isInactive.booleanValue();
     }
 
     /**
      * @return Specifies if the participant is a veteran.
      */
     public boolean isVeteran() {
-        return isVeteran;
+    	if (isVeteran == null) {
+    		return false;
+    	}
+
+        return isVeteran.booleanValue();
     }
 
     /**
-     * @return The number of losses for the participant.
+     * @return Number of losses for the participant.
      */
     public int getLosses() {
-        return losses;
+    	if (losses == null) {
+    		return -1;
+    	}
+
+        return losses.intValue();
     }
 
     /**
-     * @return The name of the the participant (i.e.,
+     * @return Name of the the participant (i.e.,
      * summoner or team) represented by this entry.
      */
     public String getPlayerOrTeamName() {
@@ -88,7 +112,7 @@ public class LeagueEntryDto {
     }
 
     /**
-     * @return The ID of the participant
+     * @return ID of the participant
      * (i.e., summoner or team) represented by this entry.
      */
     public String getPlayerOrTeamId() {
@@ -96,10 +120,14 @@ public class LeagueEntryDto {
     }
 
     /**
-     * @return The number of wins for the participant.
+     * @return Number of wins for the participant.
      */
     public int getWins() {
-        return wins;
+    	if (wins == null) {
+    		return -1;
+    	}
+
+        return wins.intValue();
     }
 
     /**

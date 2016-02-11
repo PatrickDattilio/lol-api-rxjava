@@ -1,7 +1,11 @@
 package org.dc.riot.lol.rx.model.game;
 
 /**
- * This object contains raw stat information.
+ * This object contains raw stat information.<br>
+ * <br>
+ * With the announcement that Dominion is being
+ * retired we need to keep an eye on unit tests
+ * pertaining to this class.
  * 
  * @author Dc
  * @since 1.0.0
@@ -12,229 +16,365 @@ public class RawStatsDto {
 		return COUNT;
 	}
 
-    private int assists;
-    private int barracksKilled;
-    private int championsKilled;
-    private int totalDamageDealtToChampions;
-    private int combatPlayerScore;
-    private int consumablesPurchased;
-    private int damageDealtPlayer;
-    private int doubleKills;
-    private int firstBlood;
-    private int gold;
-    private int goldEarned;
-    private int goldSpent;
-    private int item0;
-    private int item1;
-    private int item2;
-    private int item3;
-    private int item4;
-    private int item5;
-    private int item6;
-    private int itemsPurchased;
-    private int killingSprees;
-    private int largestCriticalStrike;
-    private int largestKillingSpree;
-    private int largestMultiKill;
-    private int legendaryItemsCreated;
-    private int level;
-    private int magicDamageDealtPlayer;
-    private int magicDamageDealtToChampions;
-    private int magicDamageTaken;
-    private int minionsDenied;
-    private int minionsKilled;
-    private int neutralMinionsKilled;
-    private int neutralMinionsKilledEnemyJungle;
-    private int neutralMinionsKilledYourJungle;
-    private boolean nexusKilled;
-    private int nodeCapture;
-    private int nodeCaptureAssist;
-    private int nodeNeutralize;
-    private int nodeNeutralizeAssist;
-    private int numDeaths;
-    private int numItemsBought;
-    private int objectivePlayerScore;
-    private int pentaKills;
-    private int physicalDamageDealtPlayer;
-    private int physicalDamageDealtToChampions;
-    private int physicalDamageTaken;
+    private Integer assists;
+    private Integer barracksKilled;
+    private Integer championsKilled;
+    private Integer totalDamageDealtToChampions;
+    private Integer combatPlayerScore;
+    private Integer consumablesPurchased;
+    private Integer damageDealtPlayer;
+    private Integer doubleKills;
+    private Integer firstBlood;
+    private Integer gold;
+    private Integer goldEarned;
+    private Integer goldSpent;
+    private Integer item0;
+    private Integer item1;
+    private Integer item2;
+    private Integer item3;
+    private Integer item4;
+    private Integer item5;
+    private Integer item6;
+    private Integer itemsPurchased;
+    private Integer killingSprees;
+    private Integer largestCriticalStrike;
+    private Integer largestKillingSpree;
+    private Integer largestMultiKill;
+    private Integer legendaryItemsCreated;
+    private Integer level;
+    private Integer magicDamageDealtPlayer;
+    private Integer magicDamageDealtToChampions;
+    private Integer magicDamageTaken;
+    private Integer minionsDenied;
+    private Integer minionsKilled;
+    private Integer neutralMinionsKilled;
+    private Integer neutralMinionsKilledEnemyJungle;
+    private Integer neutralMinionsKilledYourJungle;
+    private Boolean nexusKilled;
+    private Integer nodeCapture;
+    private Integer nodeCaptureAssist;
+    private Integer nodeNeutralize;
+    private Integer nodeNeutralizeAssist;
+    private Integer numDeaths;
+    private Integer numItemsBought;
+    private Integer objectivePlayerScore;
+    private Integer pentaKills;
+    private Integer physicalDamageDealtPlayer;
+    private Integer physicalDamageDealtToChampions;
+    private Integer physicalDamageTaken;
     private PlayerPosition playerPosition;
     private PlayerRole playerRole;
-    private int quadraKills;
-    private int sightWardsBought;
-    private int spell1Cast;
-    private int spell2Cast;
-    private int spell3Cast;
-    private int spell4Cast;
-    private int summonSpell1Cast;
-    private int summonSpell2Cast;
-    private int superMonsterKilled;
-    private int team;
-    private int teamObjective;
-    private int timePlayed;
-    private int totalDamageDealt;
-    private int totalDamageTaken;
-    private int totalHeal;
-    private int totalPlayerScore;
-    private int totalScoreRank;
-    private int totalTimeCrowdControlDealt;
-    private int totalUnitsHealed;
-    private int tripleKills;
-    private int trueDamageDealtPlayer;
-    private int trueDamageDealtToChampions;
-    private int trueDamageTaken;
-    private int turretsKilled;
-    private int unrealKills;
-    private int victoryPointTotal;
-    private int visionWardsBought;
-    private int wardKilled;
-    private int wardPlaced;
-    private boolean win;
+    private Integer quadraKills;
+    private Integer sightWardsBought;
+    private Integer spell1Cast;
+    private Integer spell2Cast;
+    private Integer spell3Cast;
+    private Integer spell4Cast;
+    private Integer summonSpell1Cast;
+    private Integer summonSpell2Cast;
+    private Integer superMonsterKilled;
+    private Integer team;
+    private Integer teamObjective;
+    private Integer timePlayed;
+    private Integer totalDamageDealt;
+    private Integer totalDamageTaken;
+    private Integer totalHeal;
+    private Integer totalPlayerScore;
+    private Integer totalScoreRank;
+    private Integer totalTimeCrowdControlDealt;
+    private Integer totalUnitsHealed;
+    private Integer tripleKills;
+    private Integer trueDamageDealtPlayer;
+    private Integer trueDamageDealtToChampions;
+    private Integer trueDamageTaken;
+    private Integer turretsKilled;
+    private Integer unrealKills;
+    private Integer victoryPointTotal;
+    private Integer visionWardsBought;
+    private Integer wardKilled;
+    private Integer wardPlaced;
+    private Boolean win;
     
     public RawStatsDto() {
     	COUNT++;
     }
 
     public int getAssists() {
-        return assists;
+    	if (assists == null) {
+    		return -1;
+    	}
+
+        return assists.intValue();
     }
 
     /**
      * @return Number of enemy inhibitors killed.
      */
     public int getBarracksKilled() {
-        return barracksKilled;
+    	if (barracksKilled == null) {
+    		return -1;
+    	}
+
+        return barracksKilled.intValue();
     }
 
     public int getChampionsKilled() {
-        return championsKilled;
+    	if (championsKilled == null) {
+    		return -1;
+    	}
+
+        return championsKilled.intValue();
     }
 
     public int getTotalDamageDealtToChampions() {
-        return totalDamageDealtToChampions;
+    	if (totalDamageDealtToChampions == null) {
+    		return -1;
+    	}
+
+        return totalDamageDealtToChampions.intValue();
     }
 
     public int getCombatPlayerScore() {
-        return combatPlayerScore;
+    	if (combatPlayerScore == null) {
+    		return -1;
+    	}
+
+        return combatPlayerScore.intValue();
     }
 
     public int getConsumablesPurchased() {
-        return consumablesPurchased;
+    	if (consumablesPurchased == null) {
+    		return -1;
+    	}
+
+        return consumablesPurchased.intValue();
     }
 
     public int getDamageDealtPlayer() {
-        return damageDealtPlayer;
+    	if (damageDealtPlayer == null) {
+    		return -1;
+    	}
+
+        return damageDealtPlayer.intValue();
     }
 
     public int getDoubleKills() {
-        return doubleKills;
+    	if (doubleKills == null) {
+    		return -1;
+    	}
+
+        return doubleKills.intValue();
     }
 
     public int getFirstBlood() {
-        return firstBlood;
+    	if (firstBlood == null) {
+    		return -1;
+    	}
+
+        return firstBlood.intValue();
     }
 
     public int getGold() {
-        return gold;
+    	if (gold == null) {
+    		return -1;
+    	}
+
+        return gold.intValue();
     }
 
     public int getGoldEarned() {
-        return goldEarned;
+    	if (goldEarned == null) {
+    		return -1;
+    	}
+
+        return goldEarned.intValue();
     }
 
     public int getGoldSpent() {
-        return goldSpent;
+    	if (goldSpent == null) {
+    		return -1;
+    	}
+
+        return goldSpent.intValue();
     }
 
     public int getItem0() {
-        return item0;
+    	if (item0 == null) {
+    		return -1;
+    	}
+
+        return item0.intValue();
     }
 
     public int getItem1() {
-        return item1;
+    	if (item1 == null) {
+    		return -1;
+    	}
+
+        return item1.intValue();
     }
 
     public int getItem2() {
-        return item2;
+    	if (item2 == null) {
+    		return -1;
+    	}
+
+        return item2.intValue();
     }
 
     public int getItem3() {
-        return item3;
+    	if (item3 == null) {
+    		return -1;
+    	}
+
+        return item3.intValue();
     }
 
     public int getItem4() {
-        return item4;
+    	if (item4 == null) {
+    		return -1;
+    	}
+
+        return item4.intValue();
     }
 
     public int getItem5() {
-        return item5;
+    	if (item5 == null) {
+    		return -1;
+    	}
+
+        return item5.intValue();
     }
 
     public int getItem6() {
-        return item6;
+    	if (item6 == null) {
+    		return -1;
+    	}
+
+        return item6.intValue();
     }
 
     public int getItemsPurchased() {
-        return itemsPurchased;
+    	if (itemsPurchased == null) {
+    		return -1;
+    	}
+
+        return itemsPurchased.intValue();
     }
 
     public int getKillingSprees() {
-        return killingSprees;
+    	if (killingSprees == null) {
+    		return -1;
+    	}
+
+        return killingSprees.intValue();
     }
 
     public int getLargestCriticalStrike() {
-        return largestCriticalStrike;
+    	if (largestCriticalStrike == null) {
+    		return -1;
+    	}
+
+        return largestCriticalStrike.intValue();
     }
 
     public int getLargestKillingSpree() {
-        return largestKillingSpree;
+    	if (largestKillingSpree == null) {
+    		return -1;
+    	}
+
+        return largestKillingSpree.intValue();
     }
 
     public int getLargestMultiKill() {
-        return largestMultiKill;
+    	if (largestMultiKill == null) {
+    		return -1;
+    	}
+
+        return largestMultiKill.intValue();
     }
 
     /**
      * @return 	Number of tier 3 items built.
      */
     public int getLegendaryItemsCreated() {
-        return legendaryItemsCreated;
+    	if (legendaryItemsCreated == null) {
+    		return -1;
+    	}
+
+        return legendaryItemsCreated.intValue();
     }
 
     public int getLevel() {
-        return level;
+    	if (level == null) {
+    		return -1;
+    	}
+
+        return level.intValue();
     }
 
     public int getMagicDamageDealtPlayer() {
-        return magicDamageDealtPlayer;
+    	if (magicDamageDealtPlayer == null) {
+    		return -1;
+    	}
+
+        return magicDamageDealtPlayer.intValue();
     }
 
     public int getMagicDamageDealtToChampions() {
-        return magicDamageDealtToChampions;
+    	if (magicDamageDealtToChampions == null) {
+    		return -1;
+    	}
+
+        return magicDamageDealtToChampions.intValue();
     }
 
     public int getMagicDamageTaken() {
-        return magicDamageTaken;
+    	if (magicDamageTaken == null) {
+    		return -1;
+    	}
+
+        return magicDamageTaken.intValue();
     }
 
     public int getMinionsDenied() {
-        return minionsDenied;
+    	if (minionsDenied == null) {
+    		return -1;
+    	}
+
+        return minionsDenied.intValue();
     }
 
     public int getMinionsKilled() {
-        return minionsKilled;
+    	if (minionsKilled == null) {
+    		return -1;
+    	}
+
+        return minionsKilled.intValue();
     }
 
     public int getNeutralMinionsKilled() {
-        return neutralMinionsKilled;
+    	if (neutralMinionsKilled == null) {
+    		return -1;
+    	}
+
+        return neutralMinionsKilled.intValue();
     }
 
     public int getNeutralMinionsKilledEnemyJungle() {
-        return neutralMinionsKilledEnemyJungle;
+    	if (neutralMinionsKilledEnemyJungle == null) {
+    		return -1;
+    	}
+
+        return neutralMinionsKilledEnemyJungle.intValue();
     }
 
     public int getNeutralMinionsKilledYourJungle() {
-        return neutralMinionsKilledYourJungle;
+    	if (neutralMinionsKilledYourJungle == null) {
+    		return -1;
+    	}
+
+        return neutralMinionsKilledYourJungle.intValue();
     }
 
     /**
@@ -242,51 +382,99 @@ public class RawStatsDto {
      * got the killing blow on the nexus.
      */
     public boolean isNexusKilled() {
-        return nexusKilled;
+    	if (nexusKilled == null) {
+    		return false;
+    	}
+
+        return nexusKilled.booleanValue();
     }
 
     public int getNodeCapture() {
-        return nodeCapture;
+    	if (nodeCapture == null) {
+    		return -1;
+    	}
+
+        return nodeCapture.intValue();
     }
 
     public int getNodeCaptureAssist() {
-        return nodeCaptureAssist;
+    	if (nodeCaptureAssist == null) {
+    		return -1;
+    	}
+
+        return nodeCaptureAssist.intValue();
     }
 
     public int getNodeNeutralize() {
-        return nodeNeutralize;
+    	if (nodeNeutralize == null) {
+    		return -1;
+    	}
+
+        return nodeNeutralize.intValue();
     }
 
     public int getNodeNeutralizeAssist() {
-        return nodeNeutralizeAssist;
+    	if (nodeNeutralizeAssist == null) {
+    		return -1;
+    	}
+
+        return nodeNeutralizeAssist.intValue();
     }
 
     public int getNumDeaths() {
-        return numDeaths;
+    	if (numDeaths == null) {
+    		return -1;
+    	}
+
+        return numDeaths.intValue();
     }
 
     public int getNumItemsBought() {
-        return numItemsBought;
+    	if (numItemsBought == null) {
+    		return -1;
+    	}
+
+        return numItemsBought.intValue();
     }
 
     public int getObjectivePlayerScore() {
-        return objectivePlayerScore;
+    	if (objectivePlayerScore == null) {
+    		return -1;
+    	}
+
+        return objectivePlayerScore.intValue();
     }
 
     public int getPentaKills() {
-        return pentaKills;
+    	if (pentaKills == null) {
+    		return -1;
+    	}
+
+        return pentaKills.intValue();
     }
 
     public int getPhysicalDamageDealtPlayer() {
-        return physicalDamageDealtPlayer;
+    	if (physicalDamageDealtPlayer == null) {
+    		return -1;
+    	}
+
+        return physicalDamageDealtPlayer.intValue();
     }
 
     public int getPhysicalDamageDealtToChampions() {
+    	if (physicalDamageDealtToChampions == null) {
+    		return -1;
+    	}
+
         return physicalDamageDealtToChampions;
     }
 
     public int getPhysicalDamageTaken() {
-        return physicalDamageTaken;
+    	if (physicalDamageTaken == null) {
+    		return -1;
+    	}
+
+        return physicalDamageTaken.intValue();
     }
 
     /**
@@ -306,137 +494,257 @@ public class RawStatsDto {
     }
 
     public int getQuadraKills() {
-        return quadraKills;
+    	if (quadraKills == null) {
+    		return -1;
+    	}
+
+        return quadraKills.intValue();
     }
 
     public int getSightWardsBought() {
-        return sightWardsBought;
+    	if (sightWardsBought == null) {
+    		return -1;
+    	}
+
+        return sightWardsBought.intValue();
     }
 
     /**
      * @return Number of times first champion spell was cast.
      */
     public int getSpell1Cast() {
-        return spell1Cast;
+    	if (spell1Cast == null) {
+    		return -1;
+    	}
+
+        return spell1Cast.intValue();
     }
 
     /**
      * @return Number of times second champion spell was cast.
      */
     public int getSpell2Cast() {
-        return spell2Cast;
+    	if (spell2Cast == null) {
+    		return -1;
+    	}
+
+        return spell2Cast.intValue();
     }
 
     /**
      * @return Number of times third champion spell was cast.
      */
     public int getSpell3Cast() {
-        return spell3Cast;
+    	if (spell3Cast == null) {
+    		return -1;
+    	}
+
+        return spell3Cast.intValue();
     }
 
     /**
      * @return Number of times fourth champion spell was cast.
      */
     public int getSpell4Cast() {
-        return spell4Cast;
+    	if (spell4Cast == null) {
+    		return -1;
+    	}
+
+        return spell4Cast.intValue();
     }
 
     public int getSummonSpell1Cast() {
-        return summonSpell1Cast;
+    	if (summonSpell1Cast == null) {
+    		return -1;
+    	}
+
+        return summonSpell1Cast.intValue();
     }
 
     public int getSummonSpell2Cast() {
-        return summonSpell2Cast;
+    	if (summonSpell2Cast == null) {
+    		return -1;
+    	}
+
+        return summonSpell2Cast.intValue();
     }
 
     public int getSuperMonsterKilled() {
-        return superMonsterKilled;
+    	if (superMonsterKilled == null) {
+    		return -1;
+    	}
+
+        return superMonsterKilled.intValue();
     }
 
     public int getTeam() {
-        return team;
+    	if (team == null) {
+    		return -1;
+    	}
+
+        return team.intValue();
     }
 
     public int getTeamObjective() {
-        return teamObjective;
+    	if (teamObjective == null) {
+    		return -1;
+    	}
+
+        return teamObjective.intValue();
     }
 
     public int getTimePlayed() {
-        return timePlayed;
+    	if (timePlayed == null) {
+    		return -1;
+    	}
+
+        return timePlayed.intValue();
     }
 
     public int getTotalDamageDealt() {
-        return totalDamageDealt;
+    	if (totalDamageDealt == null) {
+    		return -1;
+    	}
+
+        return totalDamageDealt.intValue();
     }
 
     public int getTotalDamageTaken() {
-        return totalDamageTaken;
+    	if (totalDamageTaken == null) {
+    		return -1;
+    	}
+
+        return totalDamageTaken.intValue();
     }
 
     public int getTotalHeal() {
-        return totalHeal;
+    	if (totalHeal == null) {
+    		return -1;
+    	}
+
+        return totalHeal.intValue();
     }
 
     public int getTotalPlayerScore() {
-        return totalPlayerScore;
+    	if (totalPlayerScore == null) {
+    		return -1;
+    	}
+
+        return totalPlayerScore.intValue();
     }
 
     public int getTotalScoreRank() {
-        return totalScoreRank;
+    	if (totalScoreRank == null) {
+    		return -1;
+    	}
+
+        return totalScoreRank.intValue();
     }
 
     public int getTotalTimeCrowdControlDealt() {
-        return totalTimeCrowdControlDealt;
+    	if (totalTimeCrowdControlDealt == null) {
+    		return -1;
+    	}
+
+        return totalTimeCrowdControlDealt.intValue();
     }
 
     public int getTotalUnitsHealed() {
-        return totalUnitsHealed;
+    	if (totalUnitsHealed == null) {
+    		return -1;
+    	}
+
+        return totalUnitsHealed.intValue();
     }
 
     public int getTripleKills() {
-        return tripleKills;
+    	if (tripleKills == null) {
+    		return -1;
+    	}
+
+        return tripleKills.intValue();
     }
 
     public int getTrueDamageDealtPlayer() {
-        return trueDamageDealtPlayer;
+    	if (trueDamageDealtPlayer == null) {
+    		return -1;
+    	}
+
+        return trueDamageDealtPlayer.intValue();
     }
 
     public int getTrueDamageDealtToChampions() {
-        return trueDamageDealtToChampions;
+    	if (trueDamageDealtToChampions == null) {
+    		return -1;
+    	}
+
+        return trueDamageDealtToChampions.intValue();
     }
 
     public int getTrueDamageTaken() {
-        return trueDamageTaken;
+    	if (trueDamageTaken == null) {
+    		return -1;
+    	}
+
+        return trueDamageTaken.intValue();
     }
 
     public int getTurretsKilled() {
-        return turretsKilled;
+    	if (turretsKilled == null) {
+    		return -1;
+    	}
+
+        return turretsKilled.intValue();
     }
 
     public int getUnrealKills() {
-        return unrealKills;
+    	if (unrealKills == null) {
+    		return -1;
+    	}
+
+        return unrealKills.intValue();
     }
 
     public int getVictoryPointTotal() {
-        return victoryPointTotal;
+    	if (victoryPointTotal == null) {
+    		return -1;
+    	}
+
+        return victoryPointTotal.intValue();
     }
 
     public int getVisionWardsBought() {
-        return visionWardsBought;
+    	if (visionWardsBought == null) {
+    		return -1;
+    	}
+
+        return visionWardsBought.intValue();
     }
 
     public int getWardKilled() {
-        return wardKilled;
+    	if (wardKilled == null) {
+    		return -1;
+    	}
+
+        return wardKilled.intValue();
     }
 
     public int getWardPlaced() {
-        return wardPlaced;
+    	if (wardPlaced == null) {
+    		return -1;
+    	}
+
+        return wardPlaced.intValue();
     }
 
     /**
      * @return Flag specifying whether or not this game was won.
      */
     public boolean isWin() {
-        return win;
+    	if (win == null) {
+    		return false;
+    	}
+
+        return win.booleanValue();
     }
 }

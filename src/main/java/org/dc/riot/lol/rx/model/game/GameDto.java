@@ -18,18 +18,18 @@ public class GameDto {
     private PlayerDto[] fellowPlayers;
     private GameType gameType;
     private RawStatsDto stats;
-    private long gameId;
-    private int ipEarned;
-    private int spell1;
-    private int teamId;
-    private int spell2;
+    private Long gameId;
+    private Integer ipEarned;
+    private Long spell1;
+    private Integer teamId;
+    private Long spell2;
     private GameMode gameMode;
-    private int mapId;
-    private int level;
-    private boolean invalid;
+    private Integer mapId;
+    private Integer level;
+    private Boolean invalid;
     private GameSubType subType;
-    private long createDate;
-    private int championId;
+    private Long createDate;
+    private Long championId;
 
     public GameDto() {
     	COUNT++;
@@ -64,21 +64,33 @@ public class GameDto {
      * @return 	Game ID.
      */
     public long getGameId() {
-        return gameId;
+    	if (gameId == null) {
+    		return -1;
+    	}
+
+        return gameId.longValue();
     }
 
     /**
      * @return IP Earned.
      */
     public int getIpEarned() {
-        return ipEarned;
+    	if (ipEarned == null) {
+    		return -1;
+    	}
+
+        return ipEarned.intValue();
     }
 
     /**
      * @return 	ID of first summoner spell.
      */
-    public int getSpell1() {
-        return spell1;
+    public long getSpell1() {
+    	if (spell1 == null) {
+    		return -1;
+    	}
+
+        return spell1.longValue();
     }
 
     /**
@@ -86,14 +98,22 @@ public class GameDto {
      * Team ID 100 is blue team. Team ID 200 is purple team.
      */
     public int getTeamId() {
-        return teamId;
+    	if (teamId == null) {
+    		return -1;
+    	}
+
+        return teamId.intValue();
     }
 
     /**
      * @return ID of second summoner spell.
      */
-    public int getSpell2() {
-        return spell2;
+    public long getSpell2() {
+    	if (spell2 == null) {
+    		return -1;
+    	}
+
+        return spell2.longValue();
     }
 
     /**
@@ -107,21 +127,33 @@ public class GameDto {
      * @return Map ID.
      */
     public int getMapId() {
-        return mapId;
+    	if (mapId == null) {
+    		return -1;
+    	}
+
+        return mapId.intValue();
     }
 
     /**
      * @return Level.
      */
     public int getLevel() {
-        return level;
+    	if (level == null) {
+    		return -1;
+    	}
+
+        return level.intValue();
     }
 
     /**
      * @return 	Invalid flag.
      */
     public boolean isInvalid() {
-        return invalid;
+    	if (invalid == null) {
+    		return false;
+    	}
+
+        return invalid.booleanValue();
     }
 
     /**
@@ -136,13 +168,21 @@ public class GameDto {
      * recorded, specified as epoch milliseconds.
      */
     public long getCreateDate() {
-        return createDate;
+    	if (createDate == null) {
+    		return -1;
+    	}
+
+        return createDate.longValue();
     }
 
     /**
      * @return 	Champion ID associated with game.
      */
-    public int getChampionId() {
-        return championId;
+    public long getChampionId() {
+    	if (championId == null) {
+    		return -1;
+    	}
+
+        return championId.longValue();
     }
 }

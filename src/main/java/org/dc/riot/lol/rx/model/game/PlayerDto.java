@@ -12,33 +12,49 @@ public class PlayerDto {
 		return COUNT;
 	}
 
-    private int championId;
-    private int teamId;
-    private long summonerId;
+    private Long championId;
+    private Integer teamId;
+    private Long summonerId;
     
     public PlayerDto() {
     	COUNT++;
     }
 
     /**
-     * @return Champion id associated with player.
+     * @return Champion id associated with player
+     * or <code>-1</code> if not defined.
      */
-    public int getChampionId() {
-        return championId;
+    public long getChampionId() {
+    	if (championId == null) {
+    		return -1;
+    	}
+
+        return championId.longValue();
     }
 
     /**
-     * @return Team id associated with player.
-     * 100 for blue, 200 for red
+     * Implementation note: 100 for blue, 200 for red.
+     * 
+     * @return Team id associated with player
+     * or <code>-1</code> if not defined.
      */
     public int getTeamId() {
-        return teamId;
+    	if (teamId == null) {
+    		return -1;
+    	}
+
+        return teamId.intValue();
     }
 
     /**
-     * @return Summoner id associated with player.
+     * @return Summoner id associated with player
+     * or <code>-1</code> if not defined.
      */
     public long getSummonerId() {
-        return summonerId;
+    	if (summonerId == null) {
+    		return -1;
+    	}
+
+        return summonerId.longValue();
     }
 }

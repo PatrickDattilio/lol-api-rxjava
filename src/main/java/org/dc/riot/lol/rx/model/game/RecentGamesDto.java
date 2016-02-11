@@ -13,14 +13,15 @@ public class RecentGamesDto {
 	}
 
     private GameDto[] games;
-    private long summonerId;
+    private Long summonerId;
     
     public RecentGamesDto() {
     	COUNT++;
     }
 
     /**
-     * @return Collection of recent games played (max 10).
+     * @return Collection of recent games played (max 10)
+     * or empty if not defined.
      */
     public GameDto[] getGames() {
     	if (games == null) {
@@ -31,9 +32,14 @@ public class RecentGamesDto {
     }
 
     /**
-     * @return Summoner ID.
+     * @return Summoner ID or <code>-1</code>
+     * if not defined.
      */
     public long getSummonerId() {
-        return summonerId;
+    	if (summonerId == null) {
+    		return -1;
+    	}
+
+        return summonerId.longValue();
     }
 }

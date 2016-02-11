@@ -31,6 +31,19 @@ public class Rune {
 	}
 	
 	/**
+	 * Allows one time setting. This is to
+	 * handle inconsistencies in the JSON
+	 * schema.
+	 * 
+	 * @param count number of runes used
+	 */
+	public void setCount(int count) {
+		if (this.count == null) {
+			this.count = new Integer(count);
+		}
+	}
+	
+	/**
 	 * The ID of the rune.
 	 */
 	public long getRuneId() {
@@ -39,5 +52,18 @@ public class Rune {
 		}
 
 		return runeId.longValue();
+	}
+	
+	/**
+	 * Allows one time setting. This is to
+	 * handle inconsistencies in the JSON
+	 * schema.
+	 * 
+	 * @param runeId ID of the rune
+	 */
+	public void setRuneId(long runeId) {
+		if (this.runeId == null) {
+			this.runeId = new Long(runeId);
+		}
 	}
 }

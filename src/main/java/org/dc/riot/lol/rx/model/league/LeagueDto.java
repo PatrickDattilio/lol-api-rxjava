@@ -34,7 +34,8 @@ public class LeagueDto {
     }
 
     /**
-     * @return The requested league entries.
+     * @return The requested league entries or
+     * empty if not defined.
      */
     public LeagueEntryDto[] getEntries() {
     	if (entries == null) {
@@ -67,7 +68,7 @@ public class LeagueDto {
      * Only present when full league is requested so that participant's entry
      * can be identified. Not present when individual entry is requested.
      *
-     * @return Some kind of relevant ID based on context or <code>null</code>
+     * @return Some kind of relevant ID based on context or <code>null</code>.
      */
     public String getParticipantId() {
         return participantId;

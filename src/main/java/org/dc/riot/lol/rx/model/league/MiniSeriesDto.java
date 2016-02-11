@@ -13,9 +13,9 @@ public class MiniSeriesDto {
 	}
 
     private String progress;
-    private int target;
-    private int losses;
-    private int wins;
+    private Integer target;
+    private Integer losses;
+    private Integer wins;
     
     public MiniSeriesDto() {
     	COUNT++;
@@ -35,20 +35,32 @@ public class MiniSeriesDto {
      * @return Number of wins required for promotion.
      */
     public int getTarget() {
-        return target;
+    	if (target == null) {
+    		return -1;
+    	}
+
+        return target.intValue();
     }
 
     /**
      * @return Number of current losses in the mini series.
      */
     public int getLosses() {
-        return losses;
+    	if (losses == null) {
+    		return -1;
+    	}
+
+        return losses.intValue();
     }
 
     /**
      * @return Number of current wins in the mini series.
      */
     public int getWins() {
-        return wins;
+    	if (wins == null) {
+    		return -1;
+    	}
+
+        return wins.intValue();
     }
 }
