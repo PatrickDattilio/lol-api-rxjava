@@ -19,15 +19,15 @@ public class FeaturedGameInfo {
 	}
 
 	private BannedChampion[] bannedChampions;
-	private long gameId;
-	private long gameLength;
+	private Long gameId;
+	private Long gameLength;
 	private GameMode gameMode;
-	private long gameQueueConfigId;
-	private long gameStartTime;
+	private Long gameQueueConfigId;
+	private Long gameStartTime;
 	private GameType gameType;
-	private long mapId;
+	private Long mapId;
 	private Observer observers;
-	private FeaturedParticipant[] participants;
+	private FeaturedGameParticipant[] participants;
 	private PlatformId platformId;
 	
 	public FeaturedGameInfo() {
@@ -46,22 +46,32 @@ public class FeaturedGameInfo {
 	}
 
 	/**
-	 * @return The ID of the game.
+	 * @return ID of the game or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getGameId() {
-		return gameId;
+		if (gameId == null) {
+			return -1;
+		}
+
+		return gameId.longValue();
 	}
 
 	/**
-	 * @return The amount of time in seconds that has
-	 * passed since the game started.
+	 * @return Amount of time in seconds that has
+	 * passed since the game started or <code>-1</code>
+	 * if not defined.
 	 */
 	public long getGameLength() {
-		return gameLength;
+		if (gameLength == null) {
+			return -1;
+		}
+
+		return gameLength.longValue();
 	}
 	
 	/**
-	 * @return The game mode
+	 * @return Game mode
 	 * (Legal values: CLASSIC, ODIN, ARAM, TUTORIAL,
 	 * ONEFORALL, ASCENSION, FIRSTBLOOD, KINGPORO).
 	 */
@@ -70,55 +80,71 @@ public class FeaturedGameInfo {
 	}
 	
 	/**
-	 * @return The queue type (queue types are
-	 * documented on the Game Constants page).
+	 * @return Queue type (queue types are
+	 * documented on the Game Constants page)
+	 * or <code>-1</code> if not defined.
 	 */
 	public long getGameQueueConfigId() {
-		return gameQueueConfigId;
+		if (gameQueueConfigId == null) {
+			return -1;
+		}
+
+		return gameQueueConfigId.longValue();
 	}
 	
 	/**
-	 * @return The game start time represented
-	 * in epoch milliseconds.
+	 * @return Game start time represented
+	 * in epoch milliseconds or <code>-1</code>
+	 * if not defined.
 	 */
 	public long getGameStartTime() {
-		return gameStartTime;
+		if (gameStartTime == null) {
+			return -1;
+		}
+
+		return gameStartTime.longValue();
 	}
 	
 	/**
-	 * @return The game type.
+	 * @return Game type.
 	 */
 	public GameType getGameType() {
 		return gameType;
 	}
 	
 	/**
-	 * @return The ID of the map.
+	 * @return ID of the map or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getMapId() {
-		return mapId;
+		if (mapId == null) {
+			return -1;
+		}
+
+		return mapId.longValue();
 	}
 	
 	/**
-	 * @return The observer information.
+	 * @return Observer information.
 	 */
 	public Observer getObservers() {
 		return observers;
 	}
 	
 	/**
-	 * @return The participant information.
+	 * @return Participant information or empty
+	 * if not defined.
 	 */
-	public FeaturedParticipant[] getParticipants() {
+	public FeaturedGameParticipant[] getParticipants() {
 		if (participants == null) {
-			return new FeaturedParticipant[0];
+			return new FeaturedGameParticipant[0];
 		}
 
 		return participants;
 	}
 	
 	/**
-	 * @return 	The ID of the platform on which the game
+	 * @return 	ID of the platform on which the game
 	 * is being played.
 	 */
 	public PlatformId getPlatformId() {

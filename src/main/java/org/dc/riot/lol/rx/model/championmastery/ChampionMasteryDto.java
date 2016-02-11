@@ -9,19 +9,19 @@ package org.dc.riot.lol.rx.model.championmastery;
  */
 public class ChampionMasteryDto {
 	private static long COUNT = 0;
-	public static long getCount() {
+	public static long getInstanceCount() {
 		return COUNT;
 	}
 
-	private long championId;
-	private int championLevel;
-	private int championPoints;
-	private long championPointsSinceLastLevel;
-	private long championPointsUntilNextLevel;
-	private boolean chestGranted;
+	private Long championId;
+	private Integer championLevel;
+	private Integer championPoints;
+	private Long championPointsSinceLastLevel;
+	private Long championPointsUntilNextLevel;
+	private Boolean chestGranted;
 	private String highestGrade;
-	private long lastPlayTime;
-	private long playerId;
+	private Long lastPlayTime;
+	private Long playerId;
 
 	public ChampionMasteryDto() {
 		COUNT++;
@@ -31,14 +31,22 @@ public class ChampionMasteryDto {
 	 * @return champion ID
 	 */
 	public long getChampionId() {
-		return championId;
+		if (championId == null) {
+			return -1;
+		}
+
+		return championId.longValue();
 	}
 
 	/**
 	 * @return champion level for specified player and champion combination
 	 */
 	public int getChampionLevel() {
-		return championLevel;
+		if (championLevel == null) {
+			return -1;
+		}
+
+		return championLevel.intValue();
 	}
 
 	/**
@@ -46,7 +54,11 @@ public class ChampionMasteryDto {
 	 * they are used to determine championLevel
 	 */
 	public int getChampionPoints() {
-		return championPoints;
+		if (championPoints == null) {
+			return -1;
+		}
+
+		return championPoints.intValue();
 	}
 
 	/**
@@ -54,22 +66,34 @@ public class ChampionMasteryDto {
 	 * player reached maximum champion for this champion.
 	 */
 	public long getChampionPointsSinceLastLevel() {
-		return championPointsSinceLastLevel;
+		if (championPointsSinceLastLevel == null) {
+			return -1;
+		}
+
+		return championPointsSinceLastLevel.longValue();
 	}
 
 	/**
-	 * @return number of points needed to achieve next level. Zero if player 
+	 * @return Number of points needed to achieve next level. Zero if player 
 	 * has reached maximum level for this champion.
 	 */
 	public long getChampionPointsUntilNextLevel() {
-		return championPointsUntilNextLevel;
+		if (championPointsUntilNextLevel == null) {
+			return -1;
+		}
+
+		return championPointsUntilNextLevel.longValue();
 	}
 
 	/**
-	 * @return if chest has been granted for this champion in the current season
+	 * @return If chest has been granted for this champion in the current season
 	 */
 	public boolean isChestGranted() {
-		return chestGranted;
+		if (chestGranted == null) {
+			return false;
+		}
+
+		return chestGranted.booleanValue();
 	}
 
 	/**
@@ -81,16 +105,28 @@ public class ChampionMasteryDto {
 	}
 
 	/**
-	 * @return last time this champion was played by this player - in Unix milliseconds time format
+	 * In Unix milliseconds time format.
+	 * 
+	 * @return Last time this champion was played by this player
+	 * or <code>-1</code> if not defined.
 	 */
 	public long getLastPlayTime() {
-		return lastPlayTime;
+		if (lastPlayTime == null) {
+			return -1;
+		}
+
+		return lastPlayTime.longValue();
 	}
 
 	/**
-	 * @return summoner ID
+	 * @return Summoner ID or <code>-1</code> if not
+	 * defined.
 	 */
 	public long getPlayerId() {
-		return playerId;
+		if (playerId == null) {
+			return -1;
+		}
+
+		return playerId.longValue();
 	}
 }

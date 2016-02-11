@@ -1,5 +1,11 @@
 package org.dc.riot.lol.rx.model.staticdata;
 
+/**
+ * Detailed statistics for champions.
+ * 
+ * @author Dc
+ * @since 1.0.0
+ */
 public class ChampionDto {
 	private static long COUNT = 0;
 	public static long getInstanceCount() {

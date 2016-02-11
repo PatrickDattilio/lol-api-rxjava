@@ -12,8 +12,8 @@ public class Mastery {
 		return COUNT;
 	}
 
-	private long masteryId;
-	private int rank;
+	private Long masteryId;
+	private Integer rank;
 	
 	public Mastery() {
 		COUNT++;
@@ -23,35 +23,21 @@ public class Mastery {
 	 * @return The ID of the mastery.
 	 */
 	public long getMasteryId() {
-		return masteryId;
+		if (masteryId == null) {
+			return masteryId;
+		}
+
+		return masteryId.longValue();
 	}
 	
-	/**
-	 * One time setting for custom deserialize.
-	 * 
-	 * @param masteryId The mastery ID.
-	 */
-	public void setMasteryId(long masteryId) {
-		if (this.masteryId == 0) {
-			this.masteryId = masteryId;
-		}
-	}
-
 	/**
 	 * @return The number of points put into this mastery by the user.
 	 */
 	public int getRank() {
-		return rank;
-	}
-
-	/**
-	 * One time setting for custom deserialize.
-	 * 
-	 * @param rank The rank.
-	 */
-	public void setRank(int rank) {
-		if (this.rank == 0) {
-			this.rank = rank;
+		if (rank == null) {
+			return -1;
 		}
-	} 
+
+		return rank.intValue();
+	}
 }

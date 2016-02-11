@@ -12,7 +12,7 @@ import org.dc.riot.lol.rx.model.common.Tier;
  */
 public class Participant {
 	private static long COUNT = 0;
-	public static long getCount() {
+	public static long getInstanceCount() {
 		return COUNT;
 	}
 

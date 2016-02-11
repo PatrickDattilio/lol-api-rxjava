@@ -1,7 +1,11 @@
 package org.dc.riot.lol.rx.model.champion;
 
 /**
- * This object contains champion data.
+ * This object contains champion data.<br>
+ * <br>
+ * If looking for stats on champions and details like that
+ * check out {@link org.dc.riot.lol.rx.model.staticdata.ChampionDto ChampionDto}
+ * in the Static Data package.
  * 
  * @author Dc
  * @since 1.0.0
@@ -12,12 +16,12 @@ public class ChampDto {
 		return COUNT;
 	}
 
-	private boolean active;
-	private boolean botEnabled;
-	private boolean botMmEnabled;
-	private boolean freeToPlay;
-	private long id;
-	private boolean	rankedPlayEnabled;
+	private Boolean active;
+	private Boolean botEnabled;
+	private Boolean botMmEnabled;
+	private Boolean freeToPlay;
+	private Long id;
+	private Boolean	rankedPlayEnabled;
 	
 	public ChampDto() {
 		COUNT++;
@@ -27,41 +31,71 @@ public class ChampDto {
 	 * @return Indicates if the champion is active.
 	 */
 	public boolean isActive() {
-		return active;
+		if (active == null) {
+			return false;
+		}
+
+		return active.booleanValue();
 	}
 	
 	/**
 	 * @return Bot enabled flag (for custom games).
 	 */
 	public boolean isBotEnabled() {
-		return botEnabled;
+		if (botEnabled == null) {
+			return false;
+		}
+
+		return botEnabled.booleanValue();
 	}
 	
 	/**
 	 * @return Bot Match Made enabled flag (for Co-op vs. AI games).
 	 */
 	public boolean isBotMmEnabled() {
-		return botMmEnabled;
+		if (botMmEnabled == null) {
+			return false;
+		}
+
+		return botMmEnabled.booleanValue();
 	}
 	
 	/**
-	 * @return Indicates if the champion is free to play. Free to play champions are rotated periodically.
+	 * Free to play champions are rotated periodically.
+	 * 
+	 * @return Indicates if the champion is free to play.
 	 */
 	public boolean isFreeToPlay() {
-		return freeToPlay;
+		if (freeToPlay == null) {
+			return false;
+		}
+
+		return freeToPlay.booleanValue();
 	}
 	
 	/**
-	 * @return Champion ID. For static information correlating to champion IDs, please refer to the LoL Static Data API.
+	 * For static information correlating to champion IDs,
+	 * please refer to the LoL Static Data API.
+	 * 
+	 * @return Champion ID or <code>-1</code> if not
+	 * defined.
 	 */
 	public long getId() {
-		return id;
+		if (id == null) {
+			return -1;
+		}
+
+		return id.intValue();
 	}
 	
 	/**
 	 * @return Ranked play enabled flag.
 	 */
 	public boolean isRankedPlayEnabled() {
-		return rankedPlayEnabled;
+		if (rankedPlayEnabled == null) {
+			return false;
+		}
+
+		return rankedPlayEnabled.booleanValue();
 	}
 }

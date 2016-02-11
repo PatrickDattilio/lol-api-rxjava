@@ -12,56 +12,87 @@ public class FeaturedGameParticipant {
 		return COUNT;
 	}
 
-	private boolean bot;
-	private long championId;
-	private long profileIconId;
-	private long spell1Id;
-	private long spell2Id;
-	private String summonerName;
-	private long teamId;
-	
+	private Boolean bot;	// Flag indicating whether or not this participant is a bot
+	private Long championId;	// The ID of the champion played by this participant
+	private Long profileIconId;	// The ID of the profile icon used by this participant
+	private Long spell1Id;	// The ID of the first summoner spell used by this participant
+	private Long spell2Id;	// The ID of the second summoner spell used by this participant
+	private String summonerName;	// The summoner name of this participant
+	private Long teamId;	// The team ID of this participant, indicating the participant's team
+
 	public FeaturedGameParticipant() {
 		COUNT++;
 	}
 
 	/**
 	 * @return Flag indicating whether or not this
-	 * participant is a bot.
+	 * participant is a bot or
+	 * <code>false</code> if not defined.
 	 */
 	public boolean isBot() {
-		return bot;
+		if (bot == null) {
+			return false;
+		}
+
+		return bot.booleanValue();
 	}
 
 	/**
 	 * @return The ID of the champion played by
-	 * this participant.
+	 * this participant or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getChampionId() {
-		return championId;
+		if (championId == null) {
+			return -1;
+		}
+
+		return championId.longValue();
 	}
 
 	/**
+	 * Implementation note: <code>0</code> is a
+	 * valid icon ID. It happens to be this little
+	 * guy:<br>
+	 * <br>
+	 * <img src="http://sk2.op.gg/images/profile_icons/profileIcon1.jpg"></img>
+	 * 
 	 * @return The ID of the profile icon used by
-	 * this participant.
+	 * this participant or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getProfileIconId() {
-		return profileIconId;
+		if (profileIconId == null) {
+			return -1;
+		}
+
+		return profileIconId.longValue();
 	}
 	
 	/**
 	 * @return The ID of the first summoner spell
-	 * used by this participant.
+	 * used by this participant or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getSpell1Id() {
-		return spell1Id;
+		if (spell1Id == null) {
+			return -1;
+		}
+
+		return spell1Id.longValue();
 	}
 	
 	/**
 	 * @return The ID of the second summoner spell
-	 * used by this participant.
+	 * used by this participant or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getSpell2Id() {
-		return spell2Id;
+		if (spell2Id == null) {
+			return -1;
+		}
+
+		return spell2Id.longValue();
 	}
 	
 	/**
@@ -73,9 +104,14 @@ public class FeaturedGameParticipant {
 	
 	/**
 	 * @return The team ID of this participant,
-	 * indicating the participant's team.
+	 * indicating the participant's team or
+	 * <code>-1</code> if not defined.
 	 */
 	public long getTeamId() {
-		return teamId;
+		if (teamId == null) {
+			return -1;
+		}
+
+		return teamId.longValue();
 	}
 }

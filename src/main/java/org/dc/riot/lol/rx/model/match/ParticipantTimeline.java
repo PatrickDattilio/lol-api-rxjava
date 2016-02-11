@@ -2,7 +2,7 @@ package org.dc.riot.lol.rx.model.match;
 
 public class ParticipantTimeline {
 	private static long COUNT = 0;
-	public static long getCount() {
+	public static long getInstanceCount() {
 		return COUNT;
 	}
 

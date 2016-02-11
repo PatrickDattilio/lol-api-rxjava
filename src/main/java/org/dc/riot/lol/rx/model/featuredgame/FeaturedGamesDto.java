@@ -12,7 +12,7 @@ public class FeaturedGamesDto {
 		return COUNT;
 	}
 
-    private long clientRefreshInterval;
+    private Long clientRefreshInterval;
     private FeaturedGameInfo[] gameList;
     
     public FeaturedGamesDto() {
@@ -21,10 +21,15 @@ public class FeaturedGamesDto {
 
     /**
      * @return The suggested interval to wait before
-     * requesting FeaturedGames again.
+     * requesting FeaturedGames again or
+     * <code>-1</code> if not defined.
      */
     public long getClientRefreshInterval() {
-        return clientRefreshInterval;
+    	if (clientRefreshInterval == null) {
+    		return -1;
+    	}
+
+        return clientRefreshInterval.longValue();
     }
 
     /**

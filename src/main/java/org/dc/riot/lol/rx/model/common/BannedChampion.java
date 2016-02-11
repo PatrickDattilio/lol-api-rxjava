@@ -12,35 +12,49 @@ public class BannedChampion {
 		return COUNT;
 	}
 
-    private long championId;
-    private int pickTurn;
-    private long teamId;
+    private Long championId;
+    private Integer pickTurn;
+    private Long teamId;
     
     public BannedChampion() {
     	COUNT++;
     }
 
     /**
-     * @return Banned champion ID.
+     * @return Banned champion ID or
+     * <code>-1</code> if not defined.
      */
     public long getChampionId() {
-        return championId;
+    	if (championId == null) {
+    		return -1;
+    	}
+
+        return championId.longValue();
     }
 
     /**
-     * @return Turn during which the champion was banned.
+     * @return Turn during which the champion was banned or
+     * <code>-1</code> if not defined.
      */
     public int getPickTurn() {
-        return pickTurn;
+    	if (pickTurn == null) {
+    		return -1;
+    	}
+
+        return pickTurn.intValue();
     }
 
     /**
      * Implementation note: the {@link org.dc.riot.lol.rx.service.RiotApi.Match
      * RiotApi.Match} interface may not set this field.
      * 
-     * @return Banning team ID.
+     * @return Banning team ID or <code>-1</code> if not defined.
      */
     public long getTeamId() {
-        return teamId;
+    	if (teamId == null) {
+    		return teamId;
+    	}
+
+        return teamId.longValue();
     }
 }

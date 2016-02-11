@@ -15,7 +15,7 @@ import org.dc.riot.lol.rx.service.Region;
  */
 public class MatchDetail {
 	private static long COUNT = 0;
-	public static long getCount() {
+	public static long getInstanceCount() {
 		return COUNT;
 	}
 

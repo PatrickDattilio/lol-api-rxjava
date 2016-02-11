@@ -12,8 +12,8 @@ public class Rune {
 		return COUNT;
 	}
 
-	private int count;
-	private long runeId; 
+	private Integer count;
+	private Long runeId; 
 	
 	public Rune() {
 		COUNT++;
@@ -23,35 +23,21 @@ public class Rune {
 	 * The count of this rune used by the participant.
 	 */
 	public int getCount() {
-		return count;
-	}
-	
-	/**
-	 * One time setting for custom deserialize.
-	 * 
-	 * @param count The count.
-	 */
-	public void setCount(int count) {
-		if (this.count == 0) {
-			this.count = count;
+		if (count == null) {
+			return 0;
 		}
+
+		return count.intValue();
 	}
 	
 	/**
 	 * The ID of the rune.
 	 */
 	public long getRuneId() {
-		return runeId;
-	}
-
-	/**
-	 * One time setting for custom deserialize.
-	 * 
-	 * @param runeId The rune ID.
-	 */
-	public void setRuneId(long runeId) {
-		if (this.runeId == 0) {
-			this.runeId = runeId;
+		if (runeId == null) {
+			return -1;
 		}
+
+		return runeId.longValue();
 	}
 }

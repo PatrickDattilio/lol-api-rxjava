@@ -15,16 +15,16 @@ public class CurrentGameParticipant {
 		return COUNT;
 	}
 
-    private boolean bot;
-    private long championId;
+    private Boolean bot;
+    private Long championId;
     private Mastery[] masteries;
-    private long profileIconId;
+    private Long profileIconId;
     private Rune[] runes;
-    private long spell1Id;
-    private long spell2Id;
-    private long summonerId;
+    private Long spell1Id;
+    private Long spell2Id;
+    private Long summonerId;
     private String summonerName;
-    private long teamId;
+    private Long teamId;
     
     public CurrentGameParticipant() {
     	COUNT++;
@@ -35,7 +35,11 @@ public class CurrentGameParticipant {
      * this participant is a bot.
      */
     public boolean isBot() {
-        return bot;
+    	if (bot == null) {
+    		return false;
+    	}
+
+        return bot.booleanValue();
     }
 
     /**
@@ -43,7 +47,11 @@ public class CurrentGameParticipant {
      * by this participant.
      */
     public long getChampionId() {
-        return championId;
+    	if (championId == null) {
+    		return -1;
+    	}
+
+        return championId.longValue();
     }
 
     /**
@@ -62,7 +70,11 @@ public class CurrentGameParticipant {
      * by this participant.
      */
     public long getProfileIconId() {
-        return profileIconId;
+    	if (profileIconId == null) {
+    		return -1;
+    	}
+
+        return profileIconId.longValue();
     }
 
     /**
@@ -81,7 +93,11 @@ public class CurrentGameParticipant {
      * by this participant.
      */
     public long getSpell1Id() {
-        return spell1Id;
+    	if (spell1Id == null) {
+    		return -1;
+    	}
+
+        return spell1Id.longValue();
     }
 
     /**
@@ -89,14 +105,22 @@ public class CurrentGameParticipant {
      * used by this participant.
      */
     public long getSpell2Id() {
-        return spell2Id;
+    	if (spell2Id == null) {
+    		return -1;
+    	}
+
+        return spell2Id.longValue();
     }
 
     /**
      * @return The summoner ID of this participant.
      */
     public long getSummonerId() {
-        return summonerId;
+    	if (summonerId == null) {
+    		return -1;
+    	}
+
+        return summonerId.longValue();
     }
 
     /**
@@ -111,6 +135,10 @@ public class CurrentGameParticipant {
      * indicating the participant's team.
      */
     public long getTeamId() {
-        return teamId;
+    	if (teamId == null) {
+    		return -1;
+    	}
+
+        return teamId.longValue();
     }
 }

@@ -3,8 +3,6 @@ package org.dc.riot.lol.rx.service.interfaces;
 import java.lang.reflect.Type;
 import java.net.Proxy;
 
-import org.dc.riot.lol.rx.model.common.Mastery;
-import org.dc.riot.lol.rx.model.common.Rune;
 import org.dc.riot.lol.rx.model.staticdata.RangeDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
@@ -18,7 +16,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 /**
@@ -60,43 +57,43 @@ public final class ApiFactory {
         /*
          * Deserialize inconsistencies with Mastery objects returned from the LoL API
          */
-        builder.registerTypeAdapter(Mastery.class, new JsonDeserializer<Mastery>() {
-
-			@Override
-			public Mastery deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-					throws JsonParseException {
-				Mastery dto = new Mastery();
-
-				JsonObject jsonObject = json.getAsJsonObject();
-				int rank = jsonObject.get("rank").getAsInt();
-				dto.setRank(rank);
-
-				long id = (jsonObject.get("id") != null) ? jsonObject.get("id").getAsLong() : jsonObject.get("masteryId").getAsLong();
-				dto.setMasteryId(id);
-				
-				return dto;
-			}
-		});
+//        builder.registerTypeAdapter(Mastery.class, new JsonDeserializer<Mastery>() {
+//
+//			@Override
+//			public Mastery deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+//					throws JsonParseException {
+//				Mastery dto = new Mastery();
+//
+//				JsonObject jsonObject = json.getAsJsonObject();
+//				int rank = jsonObject.get("rank").getAsInt();
+//				dto.setRank(rank);
+//
+//				long id = (jsonObject.get("id") != null) ? jsonObject.get("id").getAsLong() : jsonObject.get("masteryId").getAsLong();
+//				dto.setMasteryId(id);
+//				
+//				return dto;
+//			}
+//		});
         
         /*
          * Deserialize inconsistencies with Rune objects returned from the LoL API
          */
-        builder.registerTypeAdapter(Rune.class, new JsonDeserializer<Rune>() {
-			@Override
-			public Rune deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-					throws JsonParseException {
-				Rune dto = new Rune();
-				
-				JsonObject jsonObject = json.getAsJsonObject();
-				long runeId = jsonObject.get("runeId").getAsLong();
-				dto.setRuneId(runeId);
-				
-				int rank = (jsonObject.get("count") != null) ? jsonObject.get("count").getAsInt() : jsonObject.get("rank").getAsInt();
-				dto.setCount(rank);
-				
-				return dto;
-			}
-		});
+//        builder.registerTypeAdapter(Rune.class, new JsonDeserializer<Rune>() {
+//			@Override
+//			public Rune deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+//					throws JsonParseException {
+//				Rune dto = new Rune();
+//				
+//				JsonObject jsonObject = json.getAsJsonObject();
+//				long runeId = jsonObject.get("runeId").getAsLong();
+//				dto.setRuneId(runeId);
+//				
+//				int rank = (jsonObject.get("count") != null) ? jsonObject.get("count").getAsInt() : jsonObject.get("rank").getAsInt();
+//				dto.setCount(rank);
+//				
+//				return dto;
+//			}
+//		});
 
         GSON = builder.create();
     }
