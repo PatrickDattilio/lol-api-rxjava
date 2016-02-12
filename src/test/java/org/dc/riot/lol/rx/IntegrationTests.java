@@ -19,11 +19,9 @@ import org.dc.riot.lol.rx.model.champion.ChampDto;
 import org.dc.riot.lol.rx.model.champion.ChampListDto;
 import org.dc.riot.lol.rx.model.championmastery.ChampionMasteryDto;
 import org.dc.riot.lol.rx.model.common.BannedChampion;
-import org.dc.riot.lol.rx.model.common.GameMode;
 import org.dc.riot.lol.rx.model.common.GameType;
 import org.dc.riot.lol.rx.model.common.Mastery;
 import org.dc.riot.lol.rx.model.common.Observer;
-import org.dc.riot.lol.rx.model.common.PlatformId;
 import org.dc.riot.lol.rx.model.common.QueueType;
 import org.dc.riot.lol.rx.model.common.RankedQueue;
 import org.dc.riot.lol.rx.model.common.Rune;
@@ -33,7 +31,6 @@ import org.dc.riot.lol.rx.model.currentgame.CurrentGameParticipant;
 import org.dc.riot.lol.rx.model.featuredgame.FeaturedGameInfo;
 import org.dc.riot.lol.rx.model.featuredgame.FeaturedGameParticipant;
 import org.dc.riot.lol.rx.model.featuredgame.FeaturedGamesDto;
-import org.dc.riot.lol.rx.model.featuredgame.FeaturedGameParticipant;
 import org.dc.riot.lol.rx.model.game.GameDto;
 import org.dc.riot.lol.rx.model.game.PlayerDto;
 import org.dc.riot.lol.rx.model.game.RawStatsDto;
@@ -127,8 +124,8 @@ import org.dc.riot.lol.rx.service.request.MasteryListDataTag;
 import org.dc.riot.lol.rx.service.request.RuneDataTag;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
 import org.dc.riot.lol.rx.service.request.SpellDataTag;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -136,44 +133,44 @@ import com.google.gson.Gson;
 
 public class IntegrationTests {
 
-	private final RESTFieldRegister register = new RESTFieldRegister();
+	private static final RESTFieldRegister register = new RESTFieldRegister();
 
-	private final String[] names = { "HuskarDc","Ctrl Alt Dc","Nightblue3","TheOddOne","C9 Meteos","C9 TOXIC MID","C9 TOXIC JUNGLE","C9 StealthBomber","CHATSPAMKAPPA123" };
-	private final Region region = Region.NORTH_AMERICA;
+	private static final String[] names = { "HuskarDc","Ctrl Alt Dc","Nightblue3","TheOddOne","C9 Meteos","C9 TOXIC MID","C9 TOXIC JUNGLE","C9 StealthBomber","CHATSPAMKAPPA123" };
+	private static final Region region = Region.NORTH_AMERICA;
 
-	private RiotApi.Summoner summonerInterface = null;
-	private RiotApi.StaticData staticInterface = null;
-	private RiotApi.LolStatus statusInterface = null;
-	private RiotApi.Champion championInterface = null;
-	private RiotApi.ChampionMastery masteryInterface = null;
-	private RiotApi.CurrentGame currentGameInterface = null;
-	private RiotApi.FeaturedGames featuredGameInterface = null;
-	private RiotApi.League leagueInterface = null;
-	private RiotApi.Match matchInterface = null;
-	private RiotApi.MatchList matchlistInterface = null;
-	private RiotApi.RecentGames recentGameInterface = null;
-	private RiotApi.Stats statsInterface = null;
-	private RiotApi.Team teamInterface = null;
+	private static RiotApi.Summoner summonerInterface = null;
+	private static RiotApi.StaticData staticInterface = null;
+	private static RiotApi.LolStatus statusInterface = null;
+	private static RiotApi.Champion championInterface = null;
+	private static RiotApi.ChampionMastery masteryInterface = null;
+	private static RiotApi.CurrentGame currentGameInterface = null;
+	private static RiotApi.FeaturedGames featuredGameInterface = null;
+	private static RiotApi.League leagueInterface = null;
+	private static RiotApi.Match matchInterface = null;
+	private static RiotApi.MatchList matchlistInterface = null;
+	private static RiotApi.RecentGames recentGameInterface = null;
+	private static RiotApi.Stats statsInterface = null;
+	private static RiotApi.Team teamInterface = null;
 
-	private TestPrints prints = TestPrints.getInstance();
-	private ApiFactory factory = null;
+	private static TestPrints prints = TestPrints.getInstance();
+	private static ApiFactory factory = null;
 	
-	private boolean testChampionRan = false;
-	private boolean testChampionMasteryRan = false;
-	private boolean testCurrentGameRan, somebodyInCurrentGame = false;	// these fields are related
-	private boolean testFeaturedGamesRan = false;
-	private boolean testRecentGameRan = false;
-	private boolean testLeagueRan = false;
-	private boolean testStaticDataRan = false;
-	private boolean testStatusRan = false;
-	private boolean testMatchRan = false;
-	private boolean testMatchListRan = false;
-	private boolean testStatsRan = false;
-	private boolean testSummonerRan = false;
-	private boolean testTeamRan = false;
+	private static boolean testChampionRan = false;
+	private static boolean testChampionMasteryRan = false;
+	private static boolean testCurrentGameRan, somebodyInCurrentGame = false;	// these fields are related
+	private static boolean testFeaturedGamesRan = false;
+	private static boolean testRecentGameRan = false;
+	private static boolean testLeagueRan = false;
+	private static boolean testStaticDataRan = false;
+	private static boolean testStatusRan = false;
+	private static boolean testMatchRan = false;
+	private static boolean testMatchListRan = false;
+	private static boolean testStatsRan = false;
+	private static boolean testSummonerRan = false;
+	private static boolean testTeamRan = false;
 
-	@Before
-	public void setup() throws FileNotFoundException {
+	@BeforeClass
+	public static void setup() throws FileNotFoundException {
 
 		final ApiKey apiKey = ApiKey.loadApiKeys()[0];
 		factory = ApiFactory.newDefaultFactory(apiKey);
@@ -552,7 +549,6 @@ public class IntegrationTests {
 	@Test
 	public void testMatchAndMatchlist() throws IOException {
 		testMatchListRan = testMatchRan = true;
-		fail("POJOs aren't refernceified");
 		try {
 			prints.println("Testing MATCH interface");
 
@@ -561,7 +557,7 @@ public class IntegrationTests {
 			long summonerId = summonerDto.getId();
 			MatchListDto matchListDto = matchlistInterface.getMatchList(summonerId, null, new RankedQueue[] {RankedQueue.RANKED_SOLO_5x5}, new Season[] {Season.SEASON2016}, -1, -1,  -1,  -1);
 			assertNotNull(matchListDto);
-			long matchId = testMatchListDto(matchListDto, false);
+			testMatchListDto(matchListDto);
 
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.YEAR, 2016);
@@ -576,17 +572,16 @@ public class IntegrationTests {
 			long[] championIds = new long[] { 5, 245 };	// Xin Zhao, Ekko
 			MatchListDto boundedListDto = matchlistInterface.getMatchList(summonerId, championIds, null, null, beginTime, endTime, 0, 5);
 			assertNotNull(boundedListDto);
-			testMatchListDto(boundedListDto, true);
+			testMatchListDto(boundedListDto);
 
-			MatchDetail matchDetail = matchInterface.getMatch(matchId, true);
-			assertNotNull(matchDetail);
-			testMatchDetail(matchDetail, true);
-
-			boolean includeTimeline = true;
-			MatchDetail noTimelineDetail = matchInterface.getMatch(matchId, includeTimeline);
-			assertNotNull(noTimelineDetail);
-			testMatchDetail(noTimelineDetail, includeTimeline);
-
+			for (MatchReference matchReference : boundedListDto.getMatches()) {
+				long matchId = matchReference.getMatchId();
+				prints.println("INFO", "Match ID: " + matchId);
+				boolean includeTimeline = true;
+				MatchDetail noTimelineDetail = matchInterface.getMatch(matchId, includeTimeline);
+				assertNotNull(noTimelineDetail);
+				testMatchDetail(noTimelineDetail, includeTimeline);
+			}
 		} catch (HttpException e) {
 			prints.println("ERROR", e.getCode());
 			if (e.getCode() == 500) {
@@ -615,10 +610,11 @@ public class IntegrationTests {
 		assertNotNull(dto.getMatchType());
 		assertNotNull(dto.getMatchVersion());
 		assertNotNull(dto.getParticipantIdentities());
-		ParticipantIdentity[] identities = dto.getParticipantIdentities();
-		assertNotNull(identities);
-		for (ParticipantIdentity mpi : identities) {
-			testParticipantIdentity(mpi);
+		ParticipantIdentity[] participantIdentityList = dto.getParticipantIdentities();
+		assertNotNull(participantIdentityList);
+		for (ParticipantIdentity participantIdentity : participantIdentityList) {
+			assertNotNull(participantIdentity);
+			testParticipantIdentity(participantIdentity);
 		}
 
 		Participant[] participants = dto.getParticipants();
@@ -628,7 +624,7 @@ public class IntegrationTests {
 		}
 
 		assertNotNull(dto.getPlatformId());
-		assertNotNull(dto.getQueueType());
+//		assertNotNull(dto.getQueueType());
 		assertNotNull(dto.getRegion());
 		assertNotNull(dto.getSeason());
 
@@ -688,7 +684,23 @@ public class IntegrationTests {
 		}
 
 		assertTrue(dto.getParticipantId() > 0);
-		assertNotNull(dto.getPlayer());
+
+		Player player = dto.getPlayer();
+		assertNotNull(player);
+		testPlayer(player);
+	}
+	
+	private void testPlayer(Player dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		assertTrue(dto.getProfileIcon() >= 0);
+		assertTrue(dto.getSummonerId() > 0);
+		assertNotNull(dto.getSummonerName());
+		assertNotNull(dto.getMatchHistoryUri());
 	}
 
 	private void testTimeline(Timeline dto) {
@@ -700,7 +712,7 @@ public class IntegrationTests {
 
 		assertTrue(dto.getFrameInterval() > 0);
 		Frame[] frames = dto.getFrames();
-		assertNotNull(frames);
+		assertTrue(frames.length > 0);
 		boolean firstFrame = true;
 		for (Frame f : frames) {
 			testFrame(f, firstFrame);
@@ -728,9 +740,9 @@ public class IntegrationTests {
 		Map<String, ParticipantFrame> frames = dto.getParticipantFrames();
 		assertNotNull(frames);
 		for (String k : frames.keySet()) {
-			prints.println("MATCH frames " + k);
-			ParticipantFrame pf = frames.get(k);
-			testParticipantFrame(pf);
+			ParticipantFrame participantFrame = frames.get(k);
+			assertNotNull(participantFrame);
+			testParticipantFrame(participantFrame);
 		}
 	}
 	
@@ -752,26 +764,38 @@ public class IntegrationTests {
 			e.printStackTrace();
 		}
 
-//		assertTrue(dto.getCurrentGold() > 0);
 		assertTrue(dto.getLevel() > 0);
 		assertTrue(dto.getParticipantId() > 0);
-//		assertNotNull(dto.getPosition());
-//		assertTrue(dto.getTotalGold() > 0);
+		Position position = dto.getPosition();
+		if (position != null) {
+			testPosition(position);
+		}
+	}
+	
+	private void testPosition(Position dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private long testMatchListDto(MatchListDto dto, boolean expectNullQueue) {
-		assertTrue(dto.getTotalGames() > 0);
-		MatchReference[] matchRefs = dto.getMatches();
-		long matchId = 0;
-		for (MatchReference mf : matchRefs) {
-			testMatchReference(mf, expectNullQueue);
-			matchId = mf.getMatchId();
+	private void testMatchListDto(MatchListDto dto) {
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 
-		return matchId;
+		assertTrue(dto.getTotalGames() > 0);
+		MatchReference[] matchReferenceListsDto = dto.getMatches();
+		for (MatchReference matchReference : matchReferenceListsDto) {
+			assertNotNull(matchReference);
+			testMatchReference(matchReference);
+		}
 	}
 
-	private void testMatchReference(MatchReference dto, boolean expectNullQueue) {
+	private void testMatchReference(MatchReference dto) {
 		try {
 			register.registerInstance(dto);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -783,11 +807,7 @@ public class IntegrationTests {
 		assertTrue(dto.getTimestamp() > 0);
 		assertNotNull(dto.getLane());
 		assertNotNull(dto.getPlatformId());
-		if (expectNullQueue) {
-			assertNull(dto.getQueue());
-		} else {
-			assertNotNull(dto.getQueue());
-		}
+//		assertNotNull(dto.getQueue());
 		assertNotNull(dto.getRegion());
 		assertNotNull(dto.getRole());
 		assertNotNull(dto.getSeason());
@@ -809,34 +829,95 @@ public class IntegrationTests {
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		
 
-//		assertNotNull(dto.getAncientGolemAssistsPerMinCounts());
-//		assertNotNull(dto.getAncientGolemKillsPerMinCounts());
-//		assertNotNull(dto.getAssistedLaneDeathsPerMinDeltas());
-//		assertNotNull(dto.getAssistedLaneKillsPerMinDeltas());
-//		assertNotNull(dto.getBaronAssistsPerMinCounts());
-//		assertNotNull(dto.getBaronKillsPerMinCounts());
-//		assertNotNull(dto.getCreepsPerMinDeltas());
-//		assertNotNull(dto.getCsDiffPerMinDeltas());
-//		assertNotNull(dto.getDamageTakenDiffPerMinDeltas());
-//		assertNotNull(dto.getDamageTakenPerMinDeltas());
-//		assertNotNull(dto.getDragonAssistsPerMinCounts());
-//		assertNotNull(dto.getDragonKillsPerMinCounts());
-//		assertNotNull(dto.getElderLizardAssistsPerMinCounts());
-//		assertNotNull(dto.getElderLizardKillsPerMinCounts());
-//		assertNotNull(dto.getGoldPerMinDeltas());
-//		assertNotNull(dto.getInhibitorAssistsPerMinCounts());
-//		assertNotNull(dto.getInhibitorKillsPerMinCounts());
+		if (dto.getAncientGolemAssistsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getAncientGolemAssistsPerMinCounts());
+		}
+		if (dto.getAncientGolemKillsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getAncientGolemKillsPerMinCounts());
+		}
+		if (dto.getAssistedLaneDeathsPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getAssistedLaneDeathsPerMinDeltas());
+		}
+		if (dto.getAssistedLaneKillsPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getAssistedLaneKillsPerMinDeltas());
+		}
+		if (dto.getBaronAssistsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getBaronAssistsPerMinCounts());
+		}
+		if (dto.getBaronKillsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getBaronKillsPerMinCounts());
+		}
+		if (dto.getCreepsPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getCreepsPerMinDeltas());
+		}
+		if (dto.getCsDiffPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getCsDiffPerMinDeltas());
+		}
+		if (dto.getDamageTakenDiffPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getDamageTakenDiffPerMinDeltas());
+		}
+		if (dto.getDamageTakenPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getDamageTakenPerMinDeltas());
+		}
+		if (dto.getDragonAssistsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getDragonAssistsPerMinCounts());
+		}
+		if (dto.getDragonKillsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getDragonKillsPerMinCounts());
+		}
+		if (dto.getElderLizardAssistsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getElderLizardAssistsPerMinCounts());
+		}
+		if (dto.getElderLizardKillsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getElderLizardKillsPerMinCounts());
+		}
+		if (dto.getGoldPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getGoldPerMinDeltas());
+		}
+		if (dto.getInhibitorAssistsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getInhibitorAssistsPerMinCounts());
+		}
+		if (dto.getInhibitorKillsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getInhibitorKillsPerMinCounts());
+		}
 		assertNotNull(dto.getLane());
 		assertNotNull(dto.getRole());
-//		assertNotNull(dto.getTowerAssistsPerMinCounts());
-//		assertNotNull(dto.getTowerKillsPerMinCounts());
-//		assertNotNull(dto.getTowerKillsPerMinDeltas());
-//		assertNotNull(dto.getVilemawAssistsPerMinCounts());
-//		assertNotNull(dto.getVilemawKillsPerMinCounts());
-//		assertNotNull(dto.getWardsPerMinDeltas());
-//		assertNotNull(dto.getXpDiffPerMinDeltas());
-//		assertNotNull(dto.getXpPerMinDeltas());
+		if (dto.getTowerAssistsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getTowerAssistsPerMinCounts());
+		}
+		if (dto.getTowerKillsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getTowerKillsPerMinCounts());
+		}
+		if (dto.getTowerKillsPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getTowerKillsPerMinDeltas());
+		}
+		if (dto.getVilemawAssistsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getVilemawAssistsPerMinCounts());
+		}
+		if (dto.getVilemawKillsPerMinCounts() != null) {
+			testParticipantTimelineData(dto.getVilemawKillsPerMinCounts());
+		}
+		if (dto.getWardsPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getWardsPerMinDeltas());
+		}
+		if (dto.getXpDiffPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getXpDiffPerMinDeltas());
+		}
+		if (dto.getXpPerMinDeltas() != null) {
+			testParticipantTimelineData(dto.getXpPerMinDeltas());
+		}
+	}
+	
+	private void testParticipantTimelineData(ParticipantTimelineData dto) {
+		assertNotNull(dto);
+		
+		try {
+			register.registerInstance(dto);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -1020,7 +1101,8 @@ public class IntegrationTests {
 			if (e.getCode() == 500) {
 				prints.println("WARNING", "Server error interrupted test");
 			} else {
-				fail(e.getMessage());
+				e.printStackTrace();
+				fail(e.getCode() + " " + e.getMessage());
 			}
 		} finally {
 			System.out.println();
@@ -2399,8 +2481,8 @@ public class IntegrationTests {
 		return ids;
 	}
 	
-	@After
-	public void verifyTests() {
+	@AfterClass
+	public static void verifyTests() {
 		prints.println("INFO", "Testing POJOs");
 		
 		// champion POJOs
@@ -2594,7 +2676,7 @@ public class IntegrationTests {
 			assertTrue(Team.getInstanceCount() > 0);
 			assertTrue(Timeline.getInstanceCount() > 0);
 			
-			assertNull(register.testClass(Event.class));
+			assertNull(register.testClass(Event.class, "ascendedType","pointCaptured"));
 			assertNull(register.testClass(Frame.class));
 			assertNull(register.testClass(MatchDetail.class));
 			assertNull(register.testClass(MatchListDto.class));
@@ -2602,14 +2684,23 @@ public class IntegrationTests {
 			assertNull(register.testClass(Participant.class));
 			assertNull(register.testClass(ParticipantFrame.class));
 			assertNull(register.testClass(ParticipantIdentity.class));
-			assertNull(register.testClass(ParticipantStats.class));
-			assertNull(register.testClass(ParticipantTimeline.class));
+			assertNull(register.testClass(ParticipantStats.class,
+					"nodeCapture", "nodeCaptureAssist", "nodeNeutralize",
+					"nodeNeutralizeAssist", "teamObjective"));
+			assertNull(register.testClass(ParticipantTimeline.class,
+					"ancientGolemAssistsPerMinCounts", "ancientGolemKillsPerMinCounts",
+					"assistedLaneDeathsPerMinDeltas", "assistedLaneKillsPerMinDeltas",
+					"baronAssistsPerMinCounts", "baronKillsPerMinCounts", "dragonAssistsPerMinCounts",
+					"dragonKillsPerMinCounts", "elderLizardAssistsPerMinCounts",
+					"elderLizardKillsPerMinCounts", "inhibitorAssistsPerMinCounts",
+					"inhibitorKillsPerMinCounts", "towerAssistsPerMinCounts",
+					"towerKillsPerMinCounts", "towerKillsPerMinDeltas", "vilemawAssistsPerMinCounts",
+					"vilemawKillsPerMinCounts", "wardsPerMinDeltas"));
 			assertNull(register.testClass(ParticipantTimelineData.class));
 			assertNull(register.testClass(Player.class));
 			assertNull(register.testClass(Position.class));
-			assertNull(register.testClass(Team.class));
+			assertNull(register.testClass(Team.class, "bans"));
 			assertNull(register.testClass(Timeline.class));
-			fail("Test all pojos");
 		}
 		
 		// stats POJOs
@@ -2655,26 +2746,36 @@ public class IntegrationTests {
 			assertNull(register.testClass(TeamMemberInfoDto.class));
 			assertNull(register.testClass(TeamStatDetailDto.class));
 		}
-		
-		// common POJOs
-		if (BannedChampion.getInstanceCount() > 0) {
-			prints.println("INFO", "BannedChampion.class verified");
+
+		boolean allTestsComplete = false;
+		if (testChampionRan &&
+				testChampionMasteryRan &&
+				testCurrentGameRan && somebodyInCurrentGame &&
+				testFeaturedGamesRan &&
+				testRecentGameRan &&
+				testLeagueRan &&
+				testStaticDataRan &&
+				testStatusRan &&
+				testMatchRan &&
+				testMatchListRan &&
+				testStatsRan &&
+				testSummonerRan &&
+				testTeamRan) {
+
+			// common POJOs
+			assertTrue(BannedChampion.getInstanceCount() > 0);
+			assertTrue(Mastery.getInstanceCount() > 0);
+			assertTrue(Observer.getInstanceCount() > 0);
+			assertTrue(Rune.getInstanceCount() > 0);
 			assertNull(register.testClass(BannedChampion.class));
-		}
-		if (Mastery.getInstanceCount() > 0) {
-			prints.println("INFO", "Mastery.class verified");
 			assertNull(register.testClass(Mastery.class));
-		}
-		if (Observer.getInstanceCount() > 0) {
-			prints.println("INFO", "Observer.class verified");
 			assertNull(register.testClass(Observer.class));
-		}
-		if (Rune.getInstanceCount() > 0) {
-			prints.println("INFO", "Rune.class verified");
 			assertNull(register.testClass(Rune.class));
+			
+			allTestsComplete = true;
 		}
-		
-		
+
+		assertTrue("Partial tests complete", allTestsComplete);
 		prints.println("SUCCESS", "All tests passed with expected fields");
 	}
 

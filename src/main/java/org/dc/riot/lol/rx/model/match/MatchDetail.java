@@ -139,7 +139,8 @@ public class MatchDetail {
 	}
 
 	/**
-	 * @return The {@link QueueType}.
+	 * @return {@link QueueType} or <code>null</code>
+	 * if not defined.
 	 */
 	public QueueType getQueueType() {
 		return queueType;

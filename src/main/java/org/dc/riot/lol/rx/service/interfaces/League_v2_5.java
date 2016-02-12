@@ -46,42 +46,42 @@ class League_v2_5 extends RiotApiBase implements RiotApi.League {
 	public Map<String, LeagueDto[]> getBySummoners(long... summonerIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getBySummoners(new LowercaseRegion(region), new CSA.Long(summonerIds), apiKey);
-		});
+		}, null, 400);
 	}
 
 	@Override
 	public Map<String, LeagueDto[]> getBySummonerEntries(long... summonerIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getBySummonerEntries(new LowercaseRegion(region), new CSA.Long(summonerIds), apiKey);
-		});
+		}, null, 400);
 	}
 
 	@Override
 	public Map<String, LeagueDto[]> getByTeams(String... teamIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getByTeams(new LowercaseRegion(region), new CSA<String>(teamIds), apiKey);
-		});
+		}, null, 400);
 	}
 
 	@Override
 	public Map<String, LeagueDto[]> getByTeamEntries(String... teamIds) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getByTeamEntries(new LowercaseRegion(region), new CSA<String>(teamIds), apiKey);
-		});
+		}, null, 400);
 	}
 
 	@Override
 	public LeagueDto getChallenger(QueueType.ChallengerMaster queue) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getChallenger(new LowercaseRegion(region), apiKey, queue);
-		});
+		}, null, 400);
 	}
 
 	@Override
 	public LeagueDto getMaster(QueueType.ChallengerMaster queue) throws IOException, HttpException {
 		return RetrofitCaller.processCall(() -> {
 			return inter.getMaster(new LowercaseRegion(region), apiKey, queue);
-		});
+		}, null, 400);
 	}
 
 	private interface Interface {

@@ -97,6 +97,18 @@ public final class ApiFactory {
 				return dto;
 			}
 		});
+        
+        /*
+         * Deserialize Regions.
+         */
+        builder.registerTypeAdapter(Region.class, new JsonDeserializer<Region>() {
+			@Override
+			public Region deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				String regionCode = json.getAsString();
+				return Region.from(regionCode);
+			}
+        });
 
         GSON = builder.create();
     }

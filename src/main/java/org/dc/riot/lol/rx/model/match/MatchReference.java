@@ -68,8 +68,10 @@ public class MatchReference {
     }
 
     /**
-     * @return Legal values: TEAM_BUILDER_DRAFT_RANKED_5x5,
+     * Legal values: TEAM_BUILDER_DRAFT_RANKED_5x5,
      * RANKED_SOLO_5x5, RANKED_TEAM_3x3, RANKED_TEAM_5x5.
+     * 
+     * @return Queue or <code>null</code> if not relevant.
      */
     public RankedQueue getQueue() {
         return queue;

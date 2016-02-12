@@ -43,7 +43,12 @@ public enum QueueType {
 	BILGEWATER_ARAM_5x5,
 	KING_PORO_5x5,
 	COUNTER_PICK,
-	BILGEWATER_5x5;
+	BILGEWATER_5x5,
+	
+	/**
+	 * This looks like the new dynamic queue.
+	 */
+	TEAM_BUILDER_DRAFT_RANKED_5x5;
 	
 	public boolean isRanked() {
 		return toString().contains("RANKED");
@@ -52,6 +57,11 @@ public enum QueueType {
 	public enum ChallengerMaster {
 		RANKED_SOLO_5x5,
 		RANKED_TEAM_3x3,
-		RANKED_TEAM_5x5
+		RANKED_TEAM_5x5,
+	
+		/**
+		 * This looks like the new dynamic queue.
+		 */
+		TEAM_BUILDER_DRAFT_RANKED_5x5;
 	}
 }

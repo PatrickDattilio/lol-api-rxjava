@@ -38,6 +38,9 @@ public class Team {
 	}
 
 	/**
+	 * Implementation note: seems to frequently not be set, even
+	 * for ranked games.
+	 * 
 	 * @return If game was draft mode, contains banned champion data,
 	 * otherwise empty.
 	 */

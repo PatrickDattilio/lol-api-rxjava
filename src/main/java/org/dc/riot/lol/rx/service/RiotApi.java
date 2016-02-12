@@ -391,7 +391,9 @@ public interface RiotApi {
     }
 
     /**
-     * Retrieves data about players' leagues.
+     * Retrieves data about players' leagues. Generally, requests with invalid
+     * parameters will return null instead of of throwing exceptions.
+     * 
      * @see LeagueDto
      * @see LeagueEntryDto
      * 
@@ -488,7 +490,7 @@ public interface RiotApi {
         /**
          * /api/lol/{region}/v2.5/league/challenger<br>
          * <br>
-         * 400	Bad request, (e.g. you request Challenger data for an unranked queue type)<br>
+         * 400	Bad request, (e.g. requested Challenger data for an unranked queue type)<br>
          * 401	Unauthorized<br>
          * 404  League data not found<br>
          * 429	Rate limit exceeded<br>
@@ -496,7 +498,7 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param queue  the queue type to search for
-         * @return a {@link LeagueDto} object with data
+         * @return a {@link LeagueDto} object with data or <code>null</code> if bad request.
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
@@ -513,7 +515,7 @@ public interface RiotApi {
          * 503	Service unavailable
          *
          * @param queue  the queue type to search for
-         * @return a {@link LeagueDto} object with data
+         * @return a {@link LeagueDto} object with data or <code>null</code> if bad request
          * @throws HttpException non 2XX response code returned
          * @throws IOException some connection error (e.g. server down)
          */
