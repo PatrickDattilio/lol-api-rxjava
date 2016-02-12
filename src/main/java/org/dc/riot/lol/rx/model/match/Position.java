@@ -12,18 +12,26 @@ public class Position {
 		return COUNT;
 	}
 	
-	private int x;
-	private int y;
+	private Integer x;
+	private Integer y;
 	
 	public Position() {
 		COUNT++;
 	}
 	
 	public int getX() {
+		if (x == null) {
+			return 0;
+		}
+
 		return x;
 	}
 	
 	public int getY() {
+		if (y == null) {
+			return 0;
+		}
+
 		return y;
 	}
 }

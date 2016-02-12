@@ -16,27 +16,31 @@ public class Team {
 		return COUNT;
 	}
 
-	private BannedChampion[] bans;	// BannedChampion]	If game was draft mode, contains banned champion data, otherwise null
-	private int baronKills;	// Number of times the team killed baron
-	private long dominionVictoryScore;	// If game was a dominion game, specifies the points the team had at game end, otherwise null
-	private int dragonKills;	// Number of times the team killed dragon
-	private boolean firstBaron;	// Flag indicating whether or not the team got the first baron kill
-	private boolean firstBlood;	// Flag indicating whether or not the team got first blood
-	private boolean firstDragon;	// Flag indicating whether or not the team got the first dragon kill
-	private boolean firstInhibitor;	// Flag indicating whether or not the team destroyed the first inhibitor
-	private boolean firstRiftHerald;	// Flag indicating whether or not the team got the first rift herald kill
-	private boolean firstTower;	// Flag indicating whether or not the team destroyed the first tower
-	private int inhibitorKills;	// Number of inhibitors the team destroyed
-	private int riftHeraldKills;	// Number of times the team killed rift herald
-	private int teamId;	// Team ID
-	private int towerKills;	// Number of towers the team destroyed
-	private int vilemawKills;	// Number of times the team killed vilemaw
-	private boolean winner;	// Flag indicating whether or not the team won
+	private BannedChampion[] bans;
+	private Integer baronKills;
+	private Long dominionVictoryScore;
+	private Integer dragonKills;
+	private Boolean firstBaron;
+	private Boolean firstBlood;
+	private Boolean firstDragon;
+	private Boolean firstInhibitor;
+	private Boolean firstRiftHerald;
+	private Boolean firstTower;
+	private Integer inhibitorKills;
+	private Integer riftHeraldKills;
+	private Integer teamId;
+	private Integer towerKills;
+	private Integer vilemawKills;
+	private Boolean winner;
 	
 	public Team() {
 		COUNT++;
 	}
 
+	/**
+	 * @return If game was draft mode, contains banned champion data,
+	 * otherwise empty.
+	 */
 	public BannedChampion[] getBans() {
 		if (bans == null) {
 			return new BannedChampion[0];
@@ -45,127 +49,187 @@ public class Team {
 		return bans;
 	}
 
-	public void setBans(BannedChampion[] bans) {
-		this.bans = bans;
-	}
-
+	/**
+	 * @return Number of times the team killed baron.
+	 */
 	public int getBaronKills() {
-		return baronKills;
+		if (baronKills == null) {
+			return -1;
+		}
+
+		return baronKills.intValue();
 	}
 
-	public void setBaronKills(int baronKills) {
-		this.baronKills = baronKills;
-	}
-
+	/**
+	 * @return If game was a dominion game, specifies
+	 * the points the team had at game end,
+	 * otherwise <code>-1</code>.
+	 */
 	public long getDominionVictoryScore() {
-		return dominionVictoryScore;
+		if (dominionVictoryScore == null) {
+			return -1;
+		}
+
+		return dominionVictoryScore.longValue();
 	}
 
-	public void setDominionVictoryScore(long dominionVictoryScore) {
-		this.dominionVictoryScore = dominionVictoryScore;
-	}
-
+	/**
+	 * @return Number of times the team killed
+	 * dragon or <code>-1</code> if not defined.
+	 */
 	public int getDragonKills() {
-		return dragonKills;
+		if (dragonKills == null) {
+			return -1;
+		}
+
+		return dragonKills.intValue();
 	}
 
-	public void setDragonKills(int dragonKills) {
-		this.dragonKills = dragonKills;
-	}
-
+	/**
+	 * @return Flag indicating whether or not the
+	 * team got the first baron kill.
+	 */
 	public boolean isFirstBaron() {
-		return firstBaron;
+		if (firstBaron == null) {
+			return false;
+		}
+
+		return firstBaron.booleanValue();
 	}
 
-	public void setFirstBaron(boolean firstBaron) {
-		this.firstBaron = firstBaron;
-	}
-
+	/**
+	 * @return Flag indicating whether or not the
+	 * team got first blood.
+	 */
 	public boolean isFirstBlood() {
-		return firstBlood;
+		if (firstBlood == null) {
+			return false;
+		}
+
+		return firstBlood.booleanValue();
 	}
 
-	public void setFirstBlood(boolean firstBlood) {
-		this.firstBlood = firstBlood;
-	}
-
+	/**
+	 * @return Flag indicating whether or not
+	 * the team got the first dragon kill.
+	 */
 	public boolean isFirstDragon() {
-		return firstDragon;
+		if (firstDragon == null) {
+			return false;
+		}
+
+		return firstDragon.booleanValue();
 	}
 
-	public void setFirstDragon(boolean firstDragon) {
-		this.firstDragon = firstDragon;
-	}
-
+	/**
+	 * @return Flag indicating whether or
+	 * not the team destroyed the first inhibitor.
+	 */
 	public boolean isFirstInhibitor() {
-		return firstInhibitor;
+		if (firstInhibitor == null) {
+			return false;
+		}
+
+		return firstInhibitor.booleanValue();
 	}
 
-	public void setFirstInhibitor(boolean firstInhibitor) {
-		this.firstInhibitor = firstInhibitor;
-	}
-
+	/**
+	 * @return Flag indicating whether or not the team got
+	 * the first rift herald kill.
+	 */
 	public boolean isFirstRiftHerald() {
-		return firstRiftHerald;
+		if (firstRiftHerald == null) {
+			return false;
+		}
+
+		return firstRiftHerald.booleanValue();
 	}
 
-	public void setFirstRiftHerald(boolean firstRiftHerald) {
-		this.firstRiftHerald = firstRiftHerald;
-	}
-
+	/**
+	 * @return Flag indicating whether or not
+	 * the team destroyed the first tower.
+	 */
 	public boolean isFirstTower() {
-		return firstTower;
+		if (firstTower == null) {
+			return false;
+		}
+
+		return firstTower.booleanValue();
 	}
 
-	public void setFirstTower(boolean firstTower) {
-		this.firstTower = firstTower;
-	}
-
+	/**
+	 * @return Number of inhibitors the
+	 * team destroyed or <code>-1</code>
+	 * if not defined.
+	 */
 	public int getInhibitorKills() {
-		return inhibitorKills;
+		if (inhibitorKills == null) {
+			return -1;
+		}
+
+		return inhibitorKills.intValue();
 	}
 
-	public void setInhibitorKills(int inhibitorKills) {
-		this.inhibitorKills = inhibitorKills;
-	}
-
+	/**
+	 * @return Number of times the team killed
+	 * rift herald or <code>-1</code>
+	 * if not defined.
+	 */
 	public int getRiftHeraldKills() {
-		return riftHeraldKills;
+		if (riftHeraldKills == null) {
+			return -1;
+		}
+
+		return riftHeraldKills.intValue();
 	}
 
-	public void setRiftHeraldKills(int riftHeraldKills) {
-		this.riftHeraldKills = riftHeraldKills;
-	}
-
+	/**
+	 * @return Team ID or <code>-1</code> if
+	 * not defined.
+	 */
 	public int getTeamId() {
-		return teamId;
+		if (teamId == null) {
+			return -1;
+		}
+
+		return teamId.intValue();
 	}
 
-	public void setTeamId(int teamId) {
-		this.teamId = teamId;
-	}
-
+	/**
+	 * @return Number of towers the
+	 * team destroyed or <code>-1</code>
+	 * if not defined.
+	 */
 	public int getTowerKills() {
-		return towerKills;
+		if (towerKills == null) {
+			return -1;
+		}
+
+		return towerKills.intValue();
 	}
 
-	public void setTowerKills(int towerKills) {
-		this.towerKills = towerKills;
-	}
-
+	/**
+	 * @return Number of times the team killed
+	 * vilemaw or <code>-1</code>
+	 * if not defined.
+	 */
 	public int getVilemawKills() {
-		return vilemawKills;
+		if (vilemawKills == null) {
+			return -1;
+		}
+
+		return vilemawKills.intValue();
 	}
 
-	public void setVilemawKills(int vilemawKills) {
-		this.vilemawKills = vilemawKills;
-	}
-
+	/**
+	 * @return Flag indicating whether or not
+	 * the team won.
+	 */
 	public boolean isWinner() {
-		return winner;
-	}
+		if (winner == null) {
+			return false;
+		}
 
-	public void setWinner(boolean winner) {
-		this.winner = winner;
+		return winner.booleanValue();
 	}
 }

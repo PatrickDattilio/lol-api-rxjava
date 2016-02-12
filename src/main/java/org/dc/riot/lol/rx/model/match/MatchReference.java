@@ -17,15 +17,15 @@ public class MatchReference {
 		return COUNT;
 	}
 
-    private long champion;
+    private Long champion;
     private Lane lane;
-    private long matchId;
+    private Long matchId;
     private PlatformId platformId;
     private RankedQueue queue;
     private Region region;
     private Role role;
     private Season season;
-    private long timestamp;
+    private Long timestamp;
     
     public MatchReference() {
     	COUNT++;
@@ -35,7 +35,11 @@ public class MatchReference {
      * @return Champion ID.
      */
     public long getChampion() {
-        return champion;
+    	if (champion == null) {
+    		return -1;
+    	}
+
+        return champion.longValue();
     }
 
     /**
@@ -49,7 +53,11 @@ public class MatchReference {
      * @return The match ID.
      */
     public long getMatchId() {
-        return matchId;
+    	if (matchId == null) {
+    		return -1;
+    	}
+
+        return matchId.longValue();
     }
 
     /**
@@ -103,6 +111,10 @@ public class MatchReference {
      * @return The time stamp.
      */
     public long getTimestamp() {
-        return timestamp;
+    	if (timestamp == null) {
+    		return -1;
+    	}
+
+        return timestamp.longValue();
     }
 }

@@ -5,7 +5,7 @@ import org.dc.riot.lol.rx.model.common.Rune;
 import org.dc.riot.lol.rx.model.common.Tier;
 
 /**
- * Participant information.
+ * Participant information. 
  * 
  * @author Dc
  * @since 1.0.0
@@ -16,15 +16,15 @@ public class Participant {
 		return COUNT;
 	}
 
-	private int championId;
+	private Long championId;
 	private Tier highestAchievedSeasonTier;
 	private Mastery[] masteries;
-	private int participantId;
+	private Long participantId;
 	private Rune[] runes;
-	private long spell1Id;
-	private long spell2Id;
+	private Long spell1Id;
+	private Long spell2Id;
 	private ParticipantStats stats;
-	private int teamId;
+	private Integer teamId;
 	private ParticipantTimeline timeline;
 	
 	public Participant() {
@@ -32,9 +32,14 @@ public class Participant {
 	}
 
 	/**
-	 * @return Champion ID.
+	 * @return Champion ID or <code>-1</code> if
+	 * not defined.
 	 */
-	public int getChampionId() {
+	public long getChampionId() {
+		if (championId == null) {
+			return -1;
+		}
+
 		return championId;
 	}
 
@@ -48,37 +53,58 @@ public class Participant {
 	}
 
 	/**
-	 * @return List of mastery information.
+	 * @return List of mastery information or
+	 * empty if not defined.
 	 */
 	public Mastery[] getMasteries() {
+		if (masteries == null) {
+			return new Mastery[0];
+		}
+
 		return masteries;
 	}
 
 	/**
-	 * @return Participant ID.
+	 * @return Participant ID or
+	 * <code>-1</code> if not defined.
 	 */
-	public int getParticipantId() {
+	public long getParticipantId() {
+		if (participantId == null) {
+			return -1;
+		}
+
 		return participantId;
 	}
 
 	/**
-	 * @return List of rune information.
+	 * @return List of rune information
+	 * or empty if not defined.
 	 */
 	public Rune[] getRunes() {
 		return runes;
 	}
 
 	/**
-	 * @return First summoner spell ID.
+	 * @return First summoner spell ID
+	 * or <code>-1</code> if not defined.
 	 */
 	public long getSpell1Id() {
+		if (spell1Id == null) {
+			return -1;
+		}
+
 		return spell1Id;
 	}
 
 	/**
-	 * @return Second summoner spell ID.
+	 * @return Second summoner spell ID
+	 * or <code>-1</code> if not defined.
 	 */
 	public long getSpell2Id() {
+		if (spell2Id == null) {
+			return -1;
+		}
+
 		return spell2Id;
 	}
 
@@ -90,18 +116,19 @@ public class Participant {
 	}
 
 	/**
-	 * @return Team ID.
+	 * @return Team ID or <code>-1</code>
+	 * if not defined.
 	 */
 	public int getTeamId() {
+		if (teamId == null) {
+			return -1;
+		}
+
 		return teamId;
 	}
 
 	/**
-	 * @return Timeline data. Delta fields refer to values for
-	 * the specified period (e.g., the gold per minute over
-	 * the first 10 minutes of the game versus the second 20
-	 * minutes of the game. Diffs fields refer to the deltas
-	 * versus the calculated lane opponent(s).
+	 * @return Timeline data. 
 	 */
 	public ParticipantTimeline getTimeline() {
 		return timeline;

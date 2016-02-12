@@ -12,10 +12,10 @@ public class ParticipantTimelineData {
 		return COUNT;
 	}
 
-	private double tenToTwenty;
-	private double thirtyToEnd;
-	private double twentyToThirty;
-	private double zeroToTen;
+	private Double tenToTwenty;
+	private Double thirtyToEnd;
+	private Double twentyToThirty;
+	private Double zeroToTen;
 	
 	public ParticipantTimelineData() {
 		COUNT++;
@@ -25,27 +25,43 @@ public class ParticipantTimelineData {
 	 * @return Value per minute from 10 min to 20 min.
 	 */
 	public double getTenToTwenty() {
-		return tenToTwenty;
+		if (tenToTwenty == null) {
+			return 0;
+		}
+
+		return tenToTwenty.doubleValue();
 	}
 	
 	/**
 	 * @return Value per minute from 30 min to the end of the game.
 	 */
 	public double getThirtyToEnd() {
-		return thirtyToEnd;
+		if (thirtyToEnd == null) {
+			return 0;
+		}
+
+		return thirtyToEnd.doubleValue();
 	}
 	
 	/**
 	 * @return Value per minute from 20 min to 30 min.
 	 */
 	public double getTwentyToThirty() {
-		return twentyToThirty;
+		if (twentyToThirty == null) {
+			return 0;
+		}
+
+		return twentyToThirty.doubleValue();
 	}
 	
 	/**
 	 * @return Value per minute from the beginning of the game to 10 min.
 	 */
 	public double getZeroToTen() {
-		return zeroToTen;
+		if (zeroToTen == null) {
+			return 0;
+		}
+
+		return zeroToTen.doubleValue();
 	}
 }

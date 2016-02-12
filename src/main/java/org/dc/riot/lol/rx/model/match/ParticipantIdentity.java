@@ -12,7 +12,7 @@ public class ParticipantIdentity {
 		return COUNT;
 	}
 
-	private int participantId;
+	private Long participantId;
 	private Player player;
 	
 	public ParticipantIdentity() {
@@ -20,14 +20,19 @@ public class ParticipantIdentity {
 	}
 
 	/**
-	 * @return Participant ID
+	 * @return Participant ID or <code>-1</code>
+	 * if not defined.
 	 */
-	public int getParticipantId() {
-		return participantId;
+	public long getParticipantId() {
+		if (participantId == null) {
+			return -1;
+		}
+
+		return participantId.longValue();
 	}
 	
 	/**
-	 * @return Player information
+	 * @return Player information.
 	 */
 	public Player getPlayer() {
 		return player;

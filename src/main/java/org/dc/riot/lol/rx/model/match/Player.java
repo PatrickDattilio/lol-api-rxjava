@@ -13,8 +13,8 @@ public class Player {
 	}
 
 	private String matchHistoryUri;
-	private int profileIcon;
-	private long summonerId;
+	private Integer profileIcon;
+	private Long summonerId;
 	private String summonerName;
 	
 	public Player() {
@@ -29,16 +29,29 @@ public class Player {
 	}
 
 	/**
-	 * @return Profile icon ID.
+	 * Implementation note: <code>0</code> is a valid
+	 * icon ID.
+	 * 
+	 * @return Profile icon ID or <code>-1</code>
+	 * if not defined.
 	 */
 	public int getProfileIcon() {
+		if (profileIcon == null) {
+			return -1;
+		}
+
 		return profileIcon;
 	}
 
 	/**
-	 * @return Summoner ID.
+	 * @return Summoner ID or <code>-1</code>
+	 * if not defined.
 	 */
 	public long getSummonerId() {
+		if (summonerId == null) {
+			return -1;
+		}
+
 		return summonerId;
 	}
 

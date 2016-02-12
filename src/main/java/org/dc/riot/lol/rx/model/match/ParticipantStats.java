@@ -7,74 +7,74 @@ package org.dc.riot.lol.rx.model.match;
  * @since 1.0.0
  */
 public class ParticipantStats {
-	private static long COUNT = 0;
+	private static int COUNT = 0;
 	public static long getInstanceCount() {
 		return COUNT;
 	}
 
-	private long assists;
-	private long champLevel;
-	private long combatPlayerScore;
-	private long deaths;
-	private long doubleKills;
-	private boolean firstBloodAssist;
-	private boolean firstBloodKill;
-	private boolean firstInhibitorAssist;
-	private boolean firstInhibitorKill;
-	private boolean firstTowerAssist;
-	private boolean firstTowerKill;
-	private long goldEarned;
-	private long goldSpent;
-	private long inhibitorKills;
-	private long item0;
-	private long item1;
-	private long item2;
-	private long item3;
-	private long item4;
-	private long item5;
-	private long item6;
-	private long killingSprees;
-	private long kills;
-	private long largestCriticalStrike;
-	private long largestKillingSpree;
-	private long largestMultiKill;
-	private long magicDamageDealt;
-	private long magicDamageDealtToChampions;
-	private long magicDamageTaken;
-	private long minionsKilled;
-	private long neutralMinionsKilled;
-	private long neutralMinionsKilledEnemyJungle;
-	private long neutralMinionsKilledTeamJungle;
-	private long nodeCapture;
-	private long nodeCaptureAssist;
-	private long nodeNeutralize;
-	private long nodeNeutralizeAssist;
-	private long objectivePlayerScore;
-	private long pentaKills;
-	private long physicalDamageDealt;
-	private long physicalDamageDealtToChampions;
-	private long physicalDamageTaken;
-	private long quadraKills;
-	private long sightWardsBoughtInGame;
-	private long teamObjective;
-	private long totalDamageDealt;
-	private long totalDamageDealtToChampions;
-	private long totalDamageTaken;
-	private long totalHeal;
-	private long totalPlayerScore;
-	private long totalScoreRank;
-	private long totalTimeCrowdControlDealt;
-	private long totalUnitsHealed;
-	private long towerKills;
-	private long tripleKills;
-	private long trueDamageDealt;
-	private long trueDamageDealtToChampions;
-	private long trueDamageTaken;
-	private long unrealKills;
-	private long visionWardsBoughtInGame;
-	private long wardsKilled;
-	private long wardsPlaced;
-	private boolean winner;
+	private Integer assists;
+	private Integer champLevel;
+	private Integer combatPlayerScore;
+	private Integer deaths;
+	private Integer doubleKills;
+	private Boolean firstBloodAssist;
+	private Boolean firstBloodKill;
+	private Boolean firstInhibitorAssist;
+	private Boolean firstInhibitorKill;
+	private Boolean firstTowerAssist;
+	private Boolean firstTowerKill;
+	private Integer goldEarned;
+	private Integer goldSpent;
+	private Integer inhibitorKills;
+	private Long item0;
+	private Long item1;
+	private Long item2;
+	private Long item3;
+	private Long item4;
+	private Long item5;
+	private Long item6;
+	private Integer killingSprees;
+	private Integer kills;
+	private Integer largestCriticalStrike;
+	private Integer largestKillingSpree;
+	private Integer largestMultiKill;
+	private Integer magicDamageDealt;
+	private Integer magicDamageDealtToChampions;
+	private Integer magicDamageTaken;
+	private Integer minionsKilled;
+	private Integer neutralMinionsKilled;
+	private Integer neutralMinionsKilledEnemyJungle;
+	private Integer neutralMinionsKilledTeamJungle;
+	private Integer nodeCapture;
+	private Integer nodeCaptureAssist;
+	private Integer nodeNeutralize;
+	private Integer nodeNeutralizeAssist;
+	private Integer objectivePlayerScore;
+	private Integer pentaKills;
+	private Integer physicalDamageDealt;
+	private Integer physicalDamageDealtToChampions;
+	private Integer physicalDamageTaken;
+	private Integer quadraKills;
+	private Integer sightWardsBoughtInGame;
+	private Integer teamObjective;
+	private Integer totalDamageDealt;
+	private Integer totalDamageDealtToChampions;
+	private Integer totalDamageTaken;
+	private Integer totalHeal;
+	private Integer totalPlayerScore;
+	private Integer totalScoreRank;
+	private Integer totalTimeCrowdControlDealt;
+	private Integer totalUnitsHealed;
+	private Integer towerKills;
+	private Integer tripleKills;
+	private Integer trueDamageDealt;
+	private Integer trueDamageDealtToChampions;
+	private Integer trueDamageTaken;
+	private Integer unrealKills;
+	private Integer visionWardsBoughtInGame;
+	private Integer wardsKilled;
+	private Integer wardsPlaced;
+	private Boolean winner;
 	
 	public ParticipantStats() {
 		COUNT++;
@@ -83,441 +83,693 @@ public class ParticipantStats {
 	/**
 	 * @return Number of assists.
 	 */
-	public long getAssists() {
-		return assists;
+	public int getAssists() {
+		if (assists == null) {
+			return -1;
+		}
+
+		return assists.intValue();
 	}
 
 	/**
 	 * @return Champion level achieved.
 	 */
-	public long getChampLevel() {
-		return champLevel;
+	public int getChampLevel() {
+		if (champLevel == null) {
+			return -1;
+		}
+
+		return champLevel.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, player's combat score, otherwise 0.
 	 */
-	public long getCombatPlayerScore() {
-		return combatPlayerScore;
+	public int getCombatPlayerScore() {
+		if (combatPlayerScore == null) {
+			return -1;
+		}
+
+		return combatPlayerScore.intValue();
 	}
 
 	/**
 	 * @return Number of deaths.
 	 */
-	public long getDeaths() {
-		return deaths;
+	public int getDeaths() {
+		if (deaths == null) {
+			return -1;
+		}
+
+		return deaths.intValue();
 	}
 
 	/**
 	 * @return Number of double kills.
 	 */
-	public long getDoubleKills() {
-		return doubleKills;
+	public int getDoubleKills() {
+		if (doubleKills == null) {
+			return -1;
+		}
+
+		return doubleKills.intValue();
 	}
 
 	/**
 	 * @return Flag indicating if participant got an assist on first blood.
 	 */
 	public boolean isFirstBloodAssist() {
-		return firstBloodAssist;
+		if (firstBloodAssist == null) {
+			return false;
+		}
+
+		return firstBloodAssist.booleanValue();
 	}
 
 	/**
 	 * @return Flag indicating if participant got first blood.
 	 */
 	public boolean isFirstBloodKill() {
-		return firstBloodKill;
+		if (firstBloodKill == null) {
+			return false;
+		}
+
+		return firstBloodKill.booleanValue();
 	}
 
 	/**
 	 * @return Flag indicating if participant got an assist on the first inhibitor.
 	 */
 	public boolean isFirstInhibitorAssist() {
-		return firstInhibitorAssist;
+		if (firstInhibitorAssist == null) {
+			return false;
+		}
+
+		return firstInhibitorAssist.booleanValue();
 	}
 
 	/**
 	 * @return Flag indicating if participant destroyed the first inhibitor.
 	 */
 	public boolean isFirstInhibitorKill() {
-		return firstInhibitorKill;
+		if (firstInhibitorKill == null) {
+			return false;
+		}
+
+		return firstInhibitorKill.booleanValue();
 	}
 
 	/**
 	 * @return Flag indicating if participant got an assist on the first tower.
 	 */
 	public boolean isFirstTowerAssist() {
-		return firstTowerAssist;
+		if (firstTowerAssist == null) {
+			return false;
+		}
+
+		return firstTowerAssist.booleanValue();
 	}
 
 	/**
 	 * @return Flag indicating if participant destroyed the first tower.
 	 */
 	public boolean isFirstTowerKill() {
-		return firstTowerKill;
+		if (firstTowerKill == null) {
+			return false;
+		}
+
+		return firstTowerKill.booleanValue();
 	}
 
 	/**
 	 * @return Gold earned.
 	 */
-	public long getGoldEarned() {
-		return goldEarned;
+	public int getGoldEarned() {
+		if (goldEarned == null) {
+			return -1;
+		}
+
+		return goldEarned.intValue();
 	}
 
 	/**
 	 * @return Gold spent.
 	 */
-	public long getGoldSpent() {
-		return goldSpent;
+	public int getGoldSpent() {
+		if (goldSpent == null) {
+			return -1;
+		}
+
+		return goldSpent.intValue();
 	}
 
 	/**
 	 * @return Number of inhibitor kills.
 	 */
-	public long getInhibitorKills() {
-		return inhibitorKills;
+	public int getInhibitorKills() {
+		if (inhibitorKills == null) {
+			return -1;
+		}
+
+		return inhibitorKills.intValue();
 	}
 
 	/**
 	 * @return First item ID.
 	 */
 	public long getItem0() {
-		return item0;
+		if (item0 == null) {
+			return -1;
+		}
+
+		return item0.longValue();
 	}
 
 	/**
 	 * @return Second item ID.
 	 */
 	public long getItem1() {
-		return item1;
+		if (item1 == null) {
+			return -1;
+		}
+
+		return item1.longValue();
 	}
 
 	/**
 	 * @return Third item ID.
 	 */
 	public long getItem2() {
-		return item2;
+		if (item2 == null) {
+			return -1;
+		}
+
+		return item2.longValue();
 	}
 
 	/**
 	 * @return Fourth item ID.
 	 */
 	public long getItem3() {
-		return item3;
+		if (item3 == null) {
+			return -1;
+		}
+
+		return item3.longValue();
 	}
 
 	/**
 	 * @return Fifth item ID.
 	 */
 	public long getItem4() {
-		return item4;
+		if (item4 == null) {
+			return -1;
+		}
+
+		return item4.longValue();
 	}
 
 	/**
 	 * @return Sixth item ID.
 	 */
 	public long getItem5() {
-		return item5;
+		if (item5 == null) {
+			return -1;
+		}
+
+		return item5.longValue();
 	}
 
 	/**
 	 * @return Seventh item ID.
 	 */
 	public long getItem6() {
-		return item6;
+		if (item6 == null) {
+			return -1;
+		}
+
+		return item6.longValue();
 	}
 
 	/**
 	 * @return Number of killing sprees.
 	 */
-	public long getKillingSprees() {
-		return killingSprees;
+	public int getKillingSprees() {
+		if (killingSprees == null) {
+			return -1;
+		}
+
+		return killingSprees.intValue();
 	}
 
 	/**
 	 * @return Number of kills.
 	 */
-	public long getKills() {
-		return kills;
+	public int getKills() {
+		if (kills == null) {
+			return -1;
+		}
+
+		return kills.intValue();
 	}
 
 	/**
 	 * @return Largest critical strike.
 	 */
-	public long getLargestCriticalStrike() {
-		return largestCriticalStrike;
+	public int getLargestCriticalStrike() {
+		if (largestCriticalStrike == null) {
+			return -1;
+		}
+
+		return largestCriticalStrike.intValue();
 	}
 
 	/**
 	 * @return Largest killing spree.
 	 */
-	public long getLargestKillingSpree() {
-		return largestKillingSpree;
+	public int getLargestKillingSpree() {
+		if (largestKillingSpree == null) {
+			return -1;
+		}
+
+		return largestKillingSpree.intValue();
 	}
 
 	/**
 	 * @return Largest multi kill.
 	 */
-	public long getLargestMultiKill() {
-		return largestMultiKill;
+	public int getLargestMultiKill() {
+		if (largestMultiKill == null) {
+			return -1;
+		}
+
+		return largestMultiKill.intValue();
 	}
 
 	/**
 	 * @return Magical damage dealt.
 	 */
-	public long getMagicDamageDealt() {
-		return magicDamageDealt;
+	public int getMagicDamageDealt() {
+		if (magicDamageDealt == null) {
+			return -1;
+		}
+
+		return magicDamageDealt.intValue();
 	}
 
 	/**
 	 * @return Magical damage dealt to champions.
 	 */
-	public long getMagicDamageDealtToChampions() {
-		return magicDamageDealtToChampions;
+	public int getMagicDamageDealtToChampions() {
+		if (magicDamageDealtToChampions == null) {
+			return -1;
+		}
+
+		return magicDamageDealtToChampions.intValue();
 	}
 
 	/**
 	 * @return Magic damage taken.
 	 */
-	public long getMagicDamageTaken() {
-		return magicDamageTaken;
+	public int getMagicDamageTaken() {
+		if (magicDamageTaken == null) {
+			return -1;
+		}
+
+		return magicDamageTaken.intValue();
 	}
 
 	/**
 	 * @return Minions killed.
 	 */
-	public long getMinionsKilled() {
-		return minionsKilled;
+	public int getMinionsKilled() {
+		if (minionsKilled == null) {
+			return -1;
+		}
+
+		return minionsKilled.intValue();
 	}
 
 	/**
 	 * @return Neutral minions killed.
 	 */
-	public long getNeutralMinionsKilled() {
-		return neutralMinionsKilled;
+	public int getNeutralMinionsKilled() {
+		if (neutralMinionsKilled == null) {
+			return -1;
+		}
+
+		return neutralMinionsKilled.intValue();
 	}
 
 	/**
 	 * @return Neutral jungle minions killed in the enemy team's jungle.
 	 */
-	public long getNeutralMinionsKilledEnemyJungle() {
-		return neutralMinionsKilledEnemyJungle;
+	public int getNeutralMinionsKilledEnemyJungle() {
+		if (neutralMinionsKilledEnemyJungle == null) {
+			return -1;
+		}
+
+		return neutralMinionsKilledEnemyJungle.intValue();
 	}
 
 	/**
 	 * @return Neutral jungle minions killed in your team's jungle.
 	 */
-	public long getNeutralMinionsKilledTeamJungle() {
-		return neutralMinionsKilledTeamJungle;
+	public int getNeutralMinionsKilledTeamJungle() {
+		if (neutralMinionsKilledTeamJungle == null) {
+			return -1;
+		}
+
+		return neutralMinionsKilledTeamJungle.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, number of node captures.
 	 */
-	public long getNodeCapture() {
-		return nodeCapture;
+	public int getNodeCapture() {
+		if (nodeCapture == null) {
+			return -1;
+		}
+
+		return nodeCapture.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, number of node capture assists.
 	 */
-	public long getNodeCaptureAssist() {
-		return nodeCaptureAssist;
+	public int getNodeCaptureAssist() {
+		if (nodeCaptureAssist == null) {
+			return -1;
+		}
+
+		return nodeCaptureAssist.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, number of node neutralizations.
 	 */
-	public long getNodeNeutralize() {
-		return nodeNeutralize;
+	public int getNodeNeutralize() {
+		if (nodeNeutralize == null) {
+			return -1;
+		}
+
+		return nodeNeutralize.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, number of node neutralization assists.
 	 */
-	public long getNodeNeutralizeAssist() {
-		return nodeNeutralizeAssist;
+	public int getNodeNeutralizeAssist() {
+		if (nodeNeutralizeAssist == null) {
+			return -1;
+		}
+
+		return nodeNeutralizeAssist.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, player's objectives score, otherwise 0.
 	 */
-	public long getObjectivePlayerScore() {
-		return objectivePlayerScore;
+	public int getObjectivePlayerScore() {
+		if (objectivePlayerScore == null) {
+			return -1;
+		}
+
+		return objectivePlayerScore.intValue();
 	}
 
 	/**
 	 * @return Number of penta kills.
 	 */
-	public long getPentaKills() {
-		return pentaKills;
+	public int getPentaKills() {
+		if (pentaKills == null) {
+			return -1;
+		}
+
+		return pentaKills.intValue();
 	}
 
 	/**
 	 * @return Physical damage dealt.
 	 */
-	public long getPhysicalDamageDealt() {
-		return physicalDamageDealt;
+	public int getPhysicalDamageDealt() {
+		if (physicalDamageDealt == null) {
+			return -1;
+		}
+
+		return physicalDamageDealt.intValue();
 	}
 
 	/**
 	 * @return Physical damage dealt to champions.
 	 */
-	public long getPhysicalDamageDealtToChampions() {
-		return physicalDamageDealtToChampions;
+	public int getPhysicalDamageDealtToChampions() {
+		if (physicalDamageDealtToChampions == null) {
+			return -1;
+		}
+
+		return physicalDamageDealtToChampions.intValue();
 	}
 
 	/**
 	 * @return Physical damage taken.
 	 */
-	public long getPhysicalDamageTaken() {
-		return physicalDamageTaken;
+	public int getPhysicalDamageTaken() {
+		if (physicalDamageTaken == null) {
+			return -1;
+		}
+
+		return physicalDamageTaken.intValue();
 	}
 
 	/**
 	 * @return Number of quadra kills.
 	 */
-	public long getQuadraKills() {
-		return quadraKills;
+	public int getQuadraKills() {
+		if (quadraKills == null) {
+			return -1;
+		}
+
+		return quadraKills.intValue();
 	}
 
 	/**
 	 * @return Sight wards purchased.
 	 */
-	public long getSightWardsBoughtInGame() {
-		return sightWardsBoughtInGame;
+	public int getSightWardsBoughtInGame() {
+		if (sightWardsBoughtInGame == null) {
+			return -1;
+		}
+
+		return sightWardsBoughtInGame.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, number of completed team objectives (i.e., quests).
 	 */
-	public long getTeamObjective() {
-		return teamObjective;
+	public int getTeamObjective() {
+		if (teamObjective == null) {
+			return -1;
+		}
+
+		return teamObjective.intValue();
 	}
 
 	/**
 	 * @return Total damage dealt.
 	 */
-	public long getTotalDamageDealt() {
-		return totalDamageDealt;
+	public int getTotalDamageDealt() {
+		if (totalDamageDealt == null) {
+			return -1;
+		}
+
+		return totalDamageDealt.intValue();
 	}
 
 	/**
 	 * @return Total damage dealt to champions.
 	 */
-	public long getTotalDamageDealtToChampions() {
-		return totalDamageDealtToChampions;
+	public int getTotalDamageDealtToChampions() {
+		if (totalDamageDealtToChampions == null) {
+			return -1;
+		}
+
+		return totalDamageDealtToChampions.intValue();
 	}
 
 	/**
 	 * @return Total damage taken.
 	 */
-	public long getTotalDamageTaken() {
-		return totalDamageTaken;
+	public int getTotalDamageTaken() {
+		if (totalDamageTaken == null) {
+			return -1;
+		}
+
+		return totalDamageTaken.intValue();
 	}
 
 	/**
 	 * @return Total heal amount.
 	 */
-	public long getTotalHeal() {
-		return totalHeal;
+	public int getTotalHeal() {
+		if (totalHeal == null) {
+			return -1;
+		}
+
+		return totalHeal.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, player's total score, otherwise 0.
 	 */
-	public long getTotalPlayerScore() {
-		return totalPlayerScore;
+	public int getTotalPlayerScore() {
+		if (totalPlayerScore == null) {
+			return -1;
+		}
+
+		return totalPlayerScore.intValue();
 	}
 
 	/**
 	 * @return If game was a dominion game, team rank of the player's total score (e.g., 1-5).
 	 */
-	public long getTotalScoreRank() {
-		return totalScoreRank;
+	public int getTotalScoreRank() {
+		if (totalScoreRank == null) {
+			return -1;
+		}
+
+		return totalScoreRank.intValue();
 	}
 
 	/**
 	 * @return Total dealt crowd control time.
 	 */
-	public long getTotalTimeCrowdControlDealt() {
-		return totalTimeCrowdControlDealt;
+	public int getTotalTimeCrowdControlDealt() {
+		if (totalTimeCrowdControlDealt == null) {
+			return -1;
+		}
+
+		return totalTimeCrowdControlDealt.intValue();
 	}
 
 	/**
 	 * @return Total units healed.
 	 */
-	public long getTotalUnitsHealed() {
-		return totalUnitsHealed;
+	public int getTotalUnitsHealed() {
+		if (totalUnitsHealed == null) {
+			return -1;
+		}
+
+		return totalUnitsHealed.intValue();
 	}
 
 	/**
 	 * @return Number of tower kills.
 	 */
-	public long getTowerKills() {
-		return towerKills;
+	public int getTowerKills() {
+		if (towerKills == null) {
+			return -1;
+		}
+
+		return towerKills.intValue();
 	}
 
 	/**
 	 * @return Number of triple kills.
 	 */
-	public long getTripleKills() {
-		return tripleKills;
+	public int getTripleKills() {
+		if (tripleKills == null) {
+			return -1;
+		}
+
+		return tripleKills.intValue();
 	}
 
 	/**
 	 * @return True damage dealt.
 	 */
-	public long getTrueDamageDealt() {
-		return trueDamageDealt;
+	public int getTrueDamageDealt() {
+		if (trueDamageDealt == null) {
+			return -1;
+		}
+
+		return trueDamageDealt.intValue();
 	}
 
 	/**
 	 * @return True damage dealt to champions.
 	 */
-	public long getTrueDamageDealtToChampions() {
-		return trueDamageDealtToChampions;
+	public int getTrueDamageDealtToChampions() {
+		if (trueDamageDealtToChampions == null) {
+			return -1;
+		}
+
+		return trueDamageDealtToChampions.intValue();
 	}
 
 	/**
 	 * @return True damage taken.
 	 */
-	public long getTrueDamageTaken() {
-		return trueDamageTaken;
+	public int getTrueDamageTaken() {
+		if (trueDamageTaken == null) {
+			return -1;
+		}
+
+		return trueDamageTaken.intValue();
 	}
 
 	/**
 	 * @return Number of unreal kills.
 	 */
-	public long getUnrealKills() {
-		return unrealKills;
+	public int getUnrealKills() {
+		if (unrealKills == null) {
+			return -1;
+		}
+
+		return unrealKills.intValue();
 	}
 
 	/**
 	 * @return Vision wards purchased.
 	 */
-	public long getVisionWardsBoughtInGame() {
-		return visionWardsBoughtInGame;
+	public int getVisionWardsBoughtInGame() {
+		if (visionWardsBoughtInGame == null) {
+			return -1;
+		}
+
+		return visionWardsBoughtInGame.intValue();
 	}
 
 	/**
 	 * @return Number of wards killed.
 	 */
-	public long getWardsKilled() {
-		return wardsKilled;
+	public int getWardsKilled() {
+		if (wardsKilled == null) {
+			return -1;
+		}
+
+		return wardsKilled.intValue();
 	}
 
 	/**
 	 * @return Number of wards placed.
 	 */
-	public long getWardsPlaced() {
-		return wardsPlaced;
+	public int getWardsPlaced() {
+		if (wardsPlaced == null) {
+			return -1;
+		}
+
+		return wardsPlaced.intValue();
 	}
 
 	/**
 	 * @return Flag indicating whether or not the participant won.
 	 */
 	public boolean isWinner() {
-		return winner;
+		if (winner == null) {
+			return false;
+		}
+
+		return winner.booleanValue();
 	}
  }

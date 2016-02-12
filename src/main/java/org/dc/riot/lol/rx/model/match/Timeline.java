@@ -12,7 +12,7 @@ public class Timeline {
 		return COUNT;
 	}
 	
-	private long frameInterval;	
+	private Long frameInterval;	
 	private Frame[] frames;	
 	
 	public Timeline() {
@@ -20,17 +20,27 @@ public class Timeline {
 	}
 
 	/**
-	 * @return Time between each returned frame in milliseconds.
+	 * @return Time between each returned frame in
+	 * milliseconds or <code>0</code> if not
+	 * defined.
 	 */
 	public long getFrameInterval() {
+		if (frameInterval == null) {
+			return 0;
+		}
 
-		return frameInterval;
+		return frameInterval.longValue();
 	}
 
 	/**
-	 * @return List of timeline frames for the game.
+	 * @return List of timeline frames for the game or
+	 * empty if not defined.
 	 */
 	public Frame[] getFrames() {
+		if (frames == null) {
+			return new Frame[0];
+		}
+
 		return frames;
 	}
 }
