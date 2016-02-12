@@ -2,6 +2,10 @@ package org.dc.riot.lol.rx.model.match;
 
 /**
  * This object contains participant statistics information.
+ * <br>
+ * <br>
+ * Getters of this class will return <code>-1</code>
+ * for undefined values.
  * 
  * @author Dc
  * @since 1.0.0
@@ -103,7 +107,8 @@ public class ParticipantStats {
 	}
 
 	/**
-	 * @return If game was a dominion game, player's combat score, otherwise 0.
+	 * @return If game was a dominion game, player's
+	 * combat score, otherwise <code>-1</code>.
 	 */
 	public int getCombatPlayerScore() {
 		if (combatPlayerScore == null) {

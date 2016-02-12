@@ -123,6 +123,10 @@ public class MatchDetail {
 	 * @return {@link Participant} information.
 	 */
 	public Participant[] getParticipants() {
+		if (participants == null) {
+			return new Participant[0];
+		}
+
 		return participants;
 	}
 
