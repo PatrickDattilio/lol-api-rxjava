@@ -55,7 +55,7 @@ public class FeaturedGameParticipant {
 	 * valid icon ID. It happens to be this little
 	 * guy:<br>
 	 * <br>
-	 * <img src="http://sk2.op.gg/images/profile_icons/profileIcon1.jpg"></img>
+	 * <img src="http://sk2.op.gg/images/profile_icons/profileIcon1.jpg" alt="Old fashioned blue siege minion.">
 	 * 
 	 * @return The ID of the profile icon used by
 	 * this participant or

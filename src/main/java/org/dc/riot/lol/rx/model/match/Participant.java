@@ -81,6 +81,10 @@ public class Participant {
 	 * or empty if not defined.
 	 */
 	public Rune[] getRunes() {
+		if (runes == null) {
+			return new Rune[0];
+		}
+
 		return runes;
 	}
 

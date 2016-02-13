@@ -20,7 +20,7 @@ public class Rune {
 	}
 
 	/**
-	 * The count of this rune used by the participant.
+	 * @return Count of this rune used by the participant.
 	 */
 	public int getCount() {
 		if (count == null) {
@@ -44,7 +44,7 @@ public class Rune {
 	}
 	
 	/**
-	 * The ID of the rune.
+	 * @return ID of the rune.
 	 */
 	public long getRuneId() {
 		if (runeId == null) {

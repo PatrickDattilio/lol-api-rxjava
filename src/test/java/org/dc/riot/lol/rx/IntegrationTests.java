@@ -659,9 +659,14 @@ public class IntegrationTests {
 		assertTrue(dto.getChampionId() > 0);
 		assertNotNull(dto.getHighestAchievedSeasonTier());
 		assertTrue(dto.getParticipantId() > 0);
-		assertNotNull(dto.getRunes());
 		assertTrue(dto.getSpell1Id() > 0);
 		assertTrue(dto.getSpell2Id() > 0);
+
+		Rune[] runeListDto = dto.getRunes();
+		for (Rune rune : runeListDto) {
+			assertNotNull(rune);
+			testRune(rune);
+		}
 
 		ParticipantStats matchParticipantStats = dto.getStats();
 		assertNotNull(matchParticipantStats);
@@ -2750,7 +2755,7 @@ public class IntegrationTests {
 		boolean allTestsComplete = false;
 		if (testChampionRan &&
 				testChampionMasteryRan &&
-				testCurrentGameRan && somebodyInCurrentGame &&
+				testCurrentGameRan &&
 				testFeaturedGamesRan &&
 				testRecentGameRan &&
 				testLeagueRan &&
@@ -2763,16 +2768,23 @@ public class IntegrationTests {
 				testTeamRan) {
 
 			// common POJOs
-			assertTrue(BannedChampion.getInstanceCount() > 0);
 			assertTrue(Mastery.getInstanceCount() > 0);
 			assertTrue(Observer.getInstanceCount() > 0);
 			assertTrue(Rune.getInstanceCount() > 0);
-			assertNull(register.testClass(BannedChampion.class));
+			if (BannedChampion.getInstanceCount() > 0) {
+				assertNull(register.testClass(BannedChampion.class));
+			} else {
+				prints.println("WARNING", "No Banned Champions");
+			}
 			assertNull(register.testClass(Mastery.class));
 			assertNull(register.testClass(Observer.class));
 			assertNull(register.testClass(Rune.class));
 			
 			allTestsComplete = true;
+			
+			if (!somebodyInCurrentGame) {
+				prints.println("WARNING", "Nobody in current game to properly test.");
+			}
 		}
 
 		assertTrue("Partial tests complete", allTestsComplete);

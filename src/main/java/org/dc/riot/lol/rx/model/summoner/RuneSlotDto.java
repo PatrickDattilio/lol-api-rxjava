@@ -35,7 +35,7 @@ public class RuneSlotDto {
     }
 
     /**
-     * <img src="https://s3-us-west-1.amazonaws.com/riot-api/img/rune-slot-ids.png"></img>
+     * <img src="https://s3-us-west-1.amazonaws.com/riot-api/img/rune-slot-ids.png" alt="Slots 1-9 reds, 10-18 yellows, 19-27 blues, and 28-30 quints">
      * 
      * @return Rune slot ID or <code>-1</code> if not defined.
      */
