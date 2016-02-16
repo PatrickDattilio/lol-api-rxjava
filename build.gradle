@@ -6,17 +6,17 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.squareup.retrofit:retrofit:2.+'
-    compile 'io.reactivex:rxjava:1.+'
-    compile 'com.squareup.retrofit:converter-gson:2.+'
-    testCompile 'junit:junit:4.+'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'io.reactivex:rxjava:1.1.1'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    testCompile 'junit:junit:4.12'
 }
 
 apply plugin: 'maven'
 apply plugin: 'signing'
 
 // maven coordinates
-group = 'dancarpenter21.github.com'
+group = 'com.github.dancarpenter21'
 version = '1.0.0'
 
 signing {
@@ -29,7 +29,7 @@ uploadArchives {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
  
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-              authentication(userName: sonatypeUsername, password: sonatypePassword)
+              	authentication(userName: sonatypeUsername, password: sonatypePassword)
             }
  
             pom.project {
