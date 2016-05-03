@@ -15,7 +15,7 @@ public class Message {
     private String author;
     private String content;
     private String created_at;
-    private Long id;
+    private String id;
     private Severity severity;
     private Translation[] translations;
     private String updated_at;
@@ -49,15 +49,12 @@ public class Message {
     }
 
     /**
-     * @return The ID or <code>-1</code> if
-     * not defined.
+     * Changed in 1.0.1 to return a String instead of a Long.
+     * 
+     * @return The ID.
      */
-    public long getId() {
-    	if (id == null) {
-    		return -1;
-    	}
-
-        return id.longValue();
+    public String getId() {
+    	return id;
     }
 
     /**
