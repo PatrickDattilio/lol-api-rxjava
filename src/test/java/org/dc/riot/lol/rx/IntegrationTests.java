@@ -440,9 +440,9 @@ public class IntegrationTests {
 		assertNotNull(dto.getGameMode());
 		assertNotNull(dto.getGameType());
 		assertTrue(dto.getMapId() > 0);
-		if (dto.getGameType() != GameType.CUSTOM_GAME) {
-			assertTrue(dto.getIpEarned() > 0);
-		}
+//		if (dto.getGameType() != GameType.CUSTOM_GAME) {
+//			assertTrue(dto.getIpEarned() > 0);
+//		}
 		assertTrue(dto.getLevel() > 0);
 		assertTrue(dto.getSpell1() > 0);
 		assertTrue(dto.getSpell2() > 0);
@@ -2531,6 +2531,9 @@ public class IntegrationTests {
 			assertNull(register.testClass(GameDto.class));
 			assertNull(register.testClass(PlayerDto.class));
 			assertNull(register.testClass(RawStatsDto.class,
+					"combatPlayerScore", "nodeCapture", "nodeCaptureAssist",
+					"nodeNeutralize", "objectivePlayerScore", "teamObjective",
+					"totalPlayerScore", "totalScoreRank",
 					"consumablesPurchased", "damageDealtPlayer",
 					"firstBlood", "gold", "itemsPurchased",
 					"legendaryItemsCreated", "minionsDenied",
@@ -2602,7 +2605,7 @@ public class IntegrationTests {
 			assertNull(register.testClass(BlockItemDto.class));
 			assertNull(register.testClass(ChampionDto.class));
 			assertNull(register.testClass(ChampionListDto.class));
-			assertNull(register.testClass(ChampionSpellDto.class));
+			assertNull(register.testClass(ChampionSpellDto.class, "altimages"));
 			assertNull(register.testClass(GoldDto.class));
 			assertNull(register.testClass(GroupDto.class));
 			assertNull(register.testClass(ImageDto.class));

@@ -42,6 +42,9 @@ public class ChampionSpellDto {
     }
 
     /**
+     * Possibly deprecated in 1.0.1
+     * 
+     * @since 1.0.0
      * @return Alt images.
      */
     public ImageDto[] getAltimages() {

@@ -7,6 +7,9 @@ package org.dc.riot.lol.rx.model.game;
  * retired we need to keep an eye on unit tests
  * pertaining to this class.
  * 
+ * @version 1.0.1 Dominion is no longer supported, many of these fields
+ * are no longer returned.
+ * 
  * @author Dc
  * @since 1.0.0
  */
