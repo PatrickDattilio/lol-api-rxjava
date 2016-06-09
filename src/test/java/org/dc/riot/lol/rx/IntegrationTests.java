@@ -112,6 +112,7 @@ import org.dc.riot.lol.rx.model.team.TeamMemberInfoDto;
 import org.dc.riot.lol.rx.model.team.TeamStatDetailDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.Region;
+import org.dc.riot.lol.rx.service.Regions;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.error.HttpException;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
@@ -136,7 +137,7 @@ public class IntegrationTests {
 	private static final RESTFieldRegister register = new RESTFieldRegister();
 
 	private static final String[] names = { "HuskarDc","Ctrl Alt Dc","Nightblue3","TheOddOne","C9 Meteos","C9 TOXIC MID","C9 TOXIC JUNGLE","C9 StealthBomber","CHATSPAMKAPPA123" };
-	private static final Region region = Region.NORTH_AMERICA;
+	private static final Region region = Regions.getByCode("NA");
 
 	private static RiotApi.Summoner summonerInterface = null;
 	private static RiotApi.StaticData staticInterface = null;
@@ -177,7 +178,7 @@ public class IntegrationTests {
 
 		summonerInterface = factory.newSummonerInterface(region, true);
 		staticInterface = factory.newStaticDataInterface(region, true);
-		statusInterface = factory.newStatusInterface(Region.EUROPE_WEST, true);	// EUW has more incidents and languages and stuff
+		statusInterface = factory.newStatusInterface(Regions.getByCode("EUW"), true);	// EUW has more incidents and languages and stuff
 		championInterface = factory.newChampionInterface(region, true);
 		currentGameInterface = factory.newCurrentGameInterface(region, true);
 		featuredGameInterface = factory.newFeaturedGamesInterface(region, true);
@@ -2358,7 +2359,7 @@ public class IntegrationTests {
 			prints.println("INFO", "Testing STATUS");
 			boolean correctUnsupportedRegion = false;
 			try {
-				factory.newStatusInterface(Region.KOREA, false);
+				factory.newStatusInterface(Regions.getByCode("KR"), false);
 			} catch (IllegalArgumentException e) {
 				correctUnsupportedRegion = true;
 			}

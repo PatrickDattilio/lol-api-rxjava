@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 
 import org.dc.riot.lol.rx.model.staticdata.RuneListDto;
 import org.dc.riot.lol.rx.service.ApiKey;
-import org.dc.riot.lol.rx.service.Region;
+import org.dc.riot.lol.rx.service.Regions;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.interfaces.ApiFactory;
 import org.dc.riot.lol.rx.service.request.RuneListDataTag;
@@ -24,7 +24,7 @@ public class SpecialTestCases {
 	public void setup() throws FileNotFoundException {
 		ApiKey apiKey = ApiKey.loadApiKeys()[0];
 		ApiFactory factory = ApiFactory.newDefaultFactory(apiKey);
-		staticData = factory.newStaticDataInterface(Region.NORTH_AMERICA, true);
+		staticData = factory.newStaticDataInterface(Regions.getByCode("NA"), true);
 	}
 
 	@Ignore

@@ -19,6 +19,7 @@ import org.dc.riot.lol.rx.model.summoner.SummonerDto;
 import org.dc.riot.lol.rx.service.ApiKey;
 import org.dc.riot.lol.rx.service.ObservableFactory;
 import org.dc.riot.lol.rx.service.Region;
+import org.dc.riot.lol.rx.service.Regions;
 import org.dc.riot.lol.rx.service.RiotApi;
 import org.dc.riot.lol.rx.service.RiotApiExecutors;
 import org.dc.riot.lol.rx.service.error.HttpException;
@@ -52,7 +53,7 @@ public class RetrofitTests {
 	public void setup() throws FileNotFoundException {
 		apiKey = ApiKey.loadApiKeys()[0];
 		factory = ApiFactory.newDefaultFactory(apiKey);
-		region = Region.NORTH_AMERICA;
+		region = Regions.getByCode("NA");
 		debug = TestPrints.getInstance();
 		scheduler = Schedulers.from(RiotApiExecutors.newFixedThreadPool(apiKey.getRules()));
 	}

@@ -17,7 +17,7 @@ apply plugin: 'signing'
 
 // maven coordinates
 group = 'com.github.dancarpenter21'
-version = '1.0.1'
+version = '1.0.2'
 
 signing {
     sign configurations.archives

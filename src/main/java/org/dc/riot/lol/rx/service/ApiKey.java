@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -27,7 +28,7 @@ public class ApiKey {
     private final String key;
     private final RateRule[] rules;
     
-    private EnumMap<Region, TicketBucket> buckets = new EnumMap<>(Region.class);
+    private Map<Region, TicketBucket> buckets = new HashMap<>();
     
     /**
      * This constructor is exposed for convenience, but a better approach

@@ -164,7 +164,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.2f) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -219,7 +219,7 @@ public interface RiotApi {
     	 */
     	public static Region[] getSupportedRegions(float version) {
     		if (version >= 1.0) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
     		} else {
     			throw new InvalidVersionException();
     		}
@@ -296,7 +296,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
-				return Region.values();
+				return Regions.getRegions();
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -331,7 +331,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
-				return Region.values();
+				return Regions.getRegions();
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -366,7 +366,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.3f) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -409,7 +409,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.5f) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -538,7 +538,7 @@ public interface RiotApi {
     	 */
     	public static Region[] getSupportedRegions(float version) {
     		if (version >= 1.2f) {
-				return Region.values();
+				return Regions.getRegions();
     		} else {
     			throw new InvalidVersionException();
     		}
@@ -848,7 +848,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.0f) {
-				return Region.getExcluding(Region.KOREA);
+				return Regions.getExcluding(Regions.getByCode("KR"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -897,7 +897,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.2f) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -939,7 +939,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 2.2f) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -995,7 +995,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.3f) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -1057,7 +1057,7 @@ public interface RiotApi {
     	 */
 		public static Region[] getSupportedRegions(float version) {
 			if (version >= 1.4f) {
-				return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+				return Regions.getExcluding(Regions.getByCode("PBE"));
 			} else {
 				throw new InvalidVersionException();
 			}
@@ -1178,7 +1178,7 @@ public interface RiotApi {
 
     	public static Region[] getSupportedRegions(float version) {
     		if (version >= 2.4f) {
-    			return Region.getExcluding(Region.PUBLIC_BETA_ENVIRONMENT);
+    			return Regions.getExcluding(Regions.getByCode("PBE"));
     		} else {
     			throw new InvalidVersionException();
     		}
