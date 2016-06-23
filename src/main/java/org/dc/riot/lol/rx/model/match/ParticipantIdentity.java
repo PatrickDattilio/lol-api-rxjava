@@ -2,6 +2,11 @@ package org.dc.riot.lol.rx.model.match;
 
 /**
  * This object contains participant identity information.
+ * <br>
+ * <br>
+ * The embedded {@link Player} object is essentially a {@link
+ * org.dc.riot.lol.rx.model.summoner.SummonerDto SummonerDto}
+ * object.
  * 
  * @author Dc
  * @since 1.0.0

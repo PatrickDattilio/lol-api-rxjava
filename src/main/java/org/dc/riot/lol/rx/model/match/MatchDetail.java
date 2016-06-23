@@ -178,4 +178,43 @@ public class MatchDetail {
 	public Timeline getTimeline() {
 		return timeline;
 	}
+	
+	/**
+	 * Converts a {@link Participant} from {{@link #getParticipants()} to a
+	 * {@link ParticipantIdentity}.
+	 * 
+	 * @param participant {@link Participant} from {@link #getParticipants()}
+	 * @return {@link ParticipantIdentity} that corresponds to this {@link Participant}
+	 */
+	public ParticipantIdentity getParticipantIdentity(Participant participant) {
+		if (participantIdentities != null) {
+			for (ParticipantIdentity participantIdentity : participantIdentities) {
+				if (participant.getParticipantId() == participantIdentity.getParticipantId()) {
+					return participantIdentity;
+				}
+			}
+		}
+		
+		return null;
+	}
+
+	/**
+	 * Converts a {@link ParticipantIdentity} from {{@link #getParticipantIdentities()} to a
+	 * {@link Participant}.
+	 * 
+	 * 
+	 * @param participantIdentity {@link ParticipantIdentity} from {@link #getParticipantIdentities()()}
+	 * @return {@link Participant} that corresponds to this {@link ParticipantIdentity}
+	 */
+	public Participant getParticipant(ParticipantIdentity participantIdentity) {
+		if (participants != null) {
+			for (Participant participant: participants) {
+				if (participant.getParticipantId() == participantIdentity.getParticipantId()) {
+					return participant;
+				}
+			}
+		}
+		
+		return null;
+	}
 }
