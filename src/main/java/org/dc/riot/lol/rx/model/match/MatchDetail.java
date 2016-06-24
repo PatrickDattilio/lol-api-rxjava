@@ -203,7 +203,7 @@ public class MatchDetail {
 	 * {@link Participant}.
 	 * 
 	 * 
-	 * @param participantIdentity {@link ParticipantIdentity} from {@link #getParticipantIdentities()()}
+	 * @param participantIdentity {@link ParticipantIdentity} from {@link #getParticipantIdentities()}
 	 * @return {@link Participant} that corresponds to this {@link ParticipantIdentity}
 	 */
 	public Participant getParticipant(ParticipantIdentity participantIdentity) {
