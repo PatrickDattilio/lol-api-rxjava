@@ -52,7 +52,7 @@ class MatchList_v2_2 extends RiotApiBase implements RiotApi.MatchList {
 		final Long beginTimeParam = (beginTime > -1) ? new Long(beginTime) : null;
 		final Long endTimeParam = (endTime > -1) ? new Long(endTime) : null;
 		final Integer beginIndexParam = (beginIndex > -1) ? new Integer(beginIndex) : null;
-		final Integer endIndexParam = (endTime > -1) ? new Integer(endIndex) : null;
+		final Integer endIndexParam = (endIndex > -1) ? new Integer(endIndex) : null;
 		
 		return RetrofitCaller.processCall(() -> {
 			return inter.getMatchList(new LowercaseRegion(region), summonerId, apiKey, champIdParam,
