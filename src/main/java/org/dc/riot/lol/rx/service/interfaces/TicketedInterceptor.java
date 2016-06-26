@@ -31,9 +31,14 @@ class TicketedInterceptor implements Interceptor {
 	public Response intercept(Chain chain) throws IOException {
 		try {
 			Ticket[] tickets = bucket.take();
-			Request r = chain.request();
-			Response response = chain.proceed(r);
-			bucket.put(tickets);
+			Response response = null;
+			try {
+				Request r = chain.request();
+				response = chain.proceed(r);
+			} finally {
+				bucket.put(tickets);
+			}
+
 			return response;
 		} catch (InterruptedException e) {
 			throw new IOException(e);
